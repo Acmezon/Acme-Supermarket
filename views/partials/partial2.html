@@ -1,5 +1,8 @@
-<p>This is the partial for view 2.</p>
-<p>
-  Showing of 'interpolate' filter:
-  {{ 'Current version is v%VERSION%.' | interpolate }}
-</p>
+<script src="js/controllers/ThirdController.js"></script>
+<div ng-controller="MyCtrl2">
+	<p>This is the partial for view 2, {{name}}</p>
+	<p>
+		Showing of 'interpolate' filter:
+		{{ 'Current version is v%VERSION%.' | interpolate }}
+	</p>
+</div>

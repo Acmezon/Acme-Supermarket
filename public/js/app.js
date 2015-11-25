@@ -2,13 +2,18 @@
 
 // Declare app level module which depends on filters, and services
 
-angular.module('acme_supermarket', [
-  'acme_supermarket.controllers',
-  'acme_supermarket.filters',
-  'acme_supermarket.services',
-  'acme_supermarket.directives'
-]).
-config(function ($routeProvider, $locationProvider) {
+var app = angular.module('acme_supermarket', [
+        'ngRoute',
+        'acme_supermarket.controllers',
+        'acme_supermarket.filters',
+        'acme_supermarket.services',
+        'acme_supermarket.directives'
+]);
+
+app.config(['$routeProvider', '$locationProvider', '$controllerProvider',
+ function ($routeProvider, $locationProvider, $controllerProvider) {
+  app.registerCtrl = $controllerProvider.register;
+
   $routeProvider.
     when('/view1', {
       templateUrl: 'partials/partial1.html',
@@ -23,4 +28,4 @@ config(function ($routeProvider, $locationProvider) {
     });
 
   $locationProvider.html5Mode(true);
-});
+}]);
