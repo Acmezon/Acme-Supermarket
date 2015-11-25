@@ -1,22 +1,44 @@
 <!DOCTYPE html>
 <html ng-app="acme_supermarket">
 <head>
-	<meta charset="utf8">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 	<base href="/">
 	<title>Angular Express Seed App</title>
+	<link href="css/template_bootstrap/style.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/template_bootstrap/form.css" rel="stylesheet" type="text/css" media="all" />
+    <link href='http://fonts.googleapis.com/css?family=Exo+2' rel='stylesheet' type='text/css' />
+    <!-- start menu -->
+    <link href="css/template_bootstrap/megamenu.css" rel="stylesheet" type="text/css" media="all" />
+    <!--start slider -->
+    <link rel="stylesheet" href="css/template_bootstrap/fwslider.css" media="all">
 	<link rel="stylesheet" href="/css/app.css">
 </head>
 <body>
-	<div ng-controller="main_controller">
-		<h2>Hello {{name}}</h2>
-		<ul class="menu">
-			<li><a href="view1">view1</a></li>
-			<li><a href="view2">view2</a></li>
-		</ul>
-		<div ng-view="ng-view"></div>
-		<div>Angular seed app: v<span app-version="app-version"></span></div>
-	</div>
+
+	<div ng-include src="'partials/header.html'"></div>
+
+	<div ng-view></div>
+
+	<div ng-include src="'partials/footer.html'"></div>
+	
+
 	<script src="js/lib/jquery.js"></script>
+
+	<!-- start menu -->
+	<script type="text/javascript" src="js/lib/template_bootstrap/megamenu.js"></script>
+    <script type="text/javascript">
+    	$(document).ready(function(){
+    		$(".megamenu").megamenu();
+    	});
+    </script>
+    <!--start slider -->
+	<script type="text/javascript" src="js/lib/template_bootstrap/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="js/lib/template_bootstrap/css3-mediaqueries.js"></script>
+    <script type="text/javascript" src="js/lib/template_bootstrap/fwslider.js"></script>
+	<!--end slider -->
+    <script type="text/javascript" src="js/lib/template_bootstrap/jquery.easydropdown.js"></script>
+
 	<script src="js/lib/angular/angular.js"></script>
 	<script src="js/lib/angular/angular-route.js"></script>
 	<script src="js/app.js"></script>
@@ -25,6 +47,8 @@
 	<script src="js/controllers/MainController.js"></script>
 	<script src="js/filters.js"></script>
 	<script src="js/directives.js"></script>
+
+	
 </script>
 </body>
 </html>
