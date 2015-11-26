@@ -8,8 +8,8 @@ var express = require('express'),
   methodOverride = require('method-override'),
   errorhandler = require('errorhandler'),
   morgan = require('morgan'),
-  routes = require('./routes'),
-  api = require('./routes/api'),
+  routes = require('./routes/routes'),
+  products_api = require('./routes/products_api'),
   http = require('http'),
   path = require('path');
   
@@ -45,10 +45,10 @@ if (env === 'production') {
 
 // serve index and view partials
 app.get('/', routes.index);
-app.get('/partials/:name', routes.partials);
+app.get('/views/:name', routes.views);
 
 // JSON API
-app.get('/api/products', api.getAllProducts);
+app.get('/api/products', products_api.getAllProducts);
 
 // redirect all others to the index (HTML5 history)
 app.get('*', routes.index);

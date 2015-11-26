@@ -16,11 +16,11 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider',
 
   $routeProvider.
     when('/home', {
-      templateUrl: 'partials/home.html',
+      templateUrl: 'views/home/home.html',
       controller: 'HomeCtrl'
     }).
     when('/products', {
-      templateUrl: 'partials/partial2.html',
+      templateUrl: 'views/products/products.html',
       controller: 'MyCtrl2'
     }).
     otherwise({

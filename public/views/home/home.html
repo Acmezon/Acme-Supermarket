@@ -1,47 +1,42 @@
-<script src="js/controllers/HomeController.js"></script>
+<script src="views/home/HomeController.js"></script>
 
-<!-- start slider -->
-<div id="fwslider">
-    <div class="slider_container">
-        <div class="slide">
-            <!-- Slide image -->
-            <img src="img/template_bootstrap/banner.jpg" alt=""/>
-            <!-- /Slide image -->
-            <!-- Texts container -->
-            <div class="slide_content">
-                <div class="slide_content_wrap">
-                    <!-- Text title -->
-                    <h4 class="title">{{message}}</h4>
-                    <!-- /Text title -->
-                    <!-- Text description -->
-                    <p class="description">Anuncio 1 texto aqui</p>
-                    <!-- /Text description -->
-                </div>
-            </div>
-            <!-- /Texts container -->
+<!-- Carousel
+================================================== -->
+<div class="overlay"><h1>Texto opcional</h1></div>
+<div id="home-carousel" class="carousel slide">
+  <!-- Indicators -->
+  <ol class="carousel-indicators">
+    <li data-target="#home-carousel" data-slide-to="0" class="active"></li>
+    <li data-target="#home-carousel" data-slide-to="1"></li>
+  </ol>
+  <div class="carousel-inner">
+    <div class="item active">
+      <img src="img/template_bootstrap/banner.jpg" class="img-responsive">
+      <div class="container">
+        <div class="carousel-caption">
+          </div>
+      </div>
+    </div>
+    <div class="item">
+      <img src="img/template_bootstrap/banner1.jpg" class="img-responsive">
+      <div class="container">
+        <div class="carousel-caption">
+          
         </div>
-        <!-- /Duplicate to create more slides -->
-        <div class="slide">
-            <img src="img/template_bootstrap/banner1.jpg" alt=""/>
-            <div class="slide_content">
-                <div class="slide_content_wrap">
-                    <h4 class="title">Anuncio 2 - Titulo</h4>
-                    <p class="description">Anuncio 2 texto aqui</p>
-                </div>
-            </div>
-        </div>
-        <!--/slide -->
+      </div>
     </div>
-    <div class="timers"></div>
-    <div class="slidePrev">
-        <span></span>
-    </div>
-    <div class="slideNext">
-        <span></span>
-    </div>
+  </div>
+ 
+  <!-- Controls -->
+  <a class="left carousel-control" href="#home-carousel" data-slide="prev">
+    <i class="glyphicon glyphicon-chevron-left"></i>
+  </a>
+  <a class="right carousel-control" href="#home-carousel" data-slide="next">
+    <i class="glyphicon glyphicon-chevron-right"></i>
+  </a>  
 </div>
-<div class="clear"></div>
-<!--/slider -->
+<!-- /.carousel -->
+
 <div class="main">
     <div class="wrap">
         <div class="section group">
