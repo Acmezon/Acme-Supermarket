@@ -1,7 +1,7 @@
 //var crypto = require('crypto');//Necesario para encriptacion por MD5
 
-var db_connection = require('./routes/db_connection');
-var Product = require('./model/product')
+var db_connection = require('./db_connection');
+var Product = require('../models/product')
 
 //Esto lo borras y usas la variable Product
 //var productModel = mongoose.model('product',productSchema)

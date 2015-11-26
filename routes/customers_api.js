@@ -1,5 +1,5 @@
-var db_connection = require('./routes/db_connection');
-var Customer = require('./models/customer')
+var db_connection = require('./db_connection');
+var Customer = require('../models/customer')
 var extend = require('mongoose-schema-extend');//Necesario para la herencia
 
 

@@ -6,7 +6,7 @@
 //Declaracion de la base de datos
 var mongoose = require('mongoose');
 var extend = require('mongoose-schema-extend');//Necesario para la herencia
-var config = require('./config')
+var config = require('../config')
 
 exports.connect = function () {
 	mongoose.connect(config.database);

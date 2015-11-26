@@ -9,10 +9,12 @@ var express = require('express'),
   errorhandler = require('errorhandler'),
   morgan = require('morgan'),
   routes = require('./routes/routes'),
+  db_connection = require('./routes/db_connection'),
   products_api = require('./routes/products_api'),
   customers_api = require('./routes/customers_api'),
   http = require('http'),
-  path = require('path');
+  path = require('path'),
+  config = require('./config');
   
 var app = module.exports = express();
 
