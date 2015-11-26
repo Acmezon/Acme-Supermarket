@@ -50,6 +50,8 @@ app.get('/views/:name', routes.views);
 // JSON API
 app.get('/api/products', products_api.getAllProducts);
 
+app.get('/api/resetDataset', products_api.resetDataset);
+
 // redirect all others to the index (HTML5 history)
 app.get('*', routes.index);
 

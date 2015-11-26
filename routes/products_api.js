@@ -5,7 +5,7 @@
 //MongoDB
 //Declaracion de la base de datos
 var mongoose = require('mongoose');
-//var extend = require('mongoose-schema-extend');//Necesario para la herencia
+var extend = require('mongoose-schema-extend');//Necesario para la herencia
 mongoose.connect('mongodb://localhost/Acme-Supermarket');
 
 //Creación de la conexion con mongodb
@@ -16,7 +16,7 @@ db.once('open', function (callback) {
 });
 
 
-
+//var crypto = require('crypto');//Necesario para encriptacion por MD5
 
 
 //////PRODUCTS////////////////////////////////////////
@@ -54,7 +54,7 @@ exports.getAllProducts = function (req, res) {
 
 
 
-/*
+
 
 //////CUSTOMERS////////////////////////////////////////
 
@@ -80,29 +80,31 @@ var adminSchema = actorSchema.extend({
 //Creacion del modelo en base a los schemas
 //El modelo se crea sobre la coleccion de products,
 // pero en el nombre hay que ponerlo sin la s final
-var customerModel = mongoose.model('customer',productSchema)
+var customerModel = mongoose.model('customer',customerSchema)
 
-exports.getConstumer = function (req, res) {
+exports.getCustomer = function (req, res) {
 	var _email = req.params.email;
 	var _pasword = req.params.password;
-	console.log('Function-productsApi-getConstumer');
-	customerModel.findOne({email:_email},function(err,costumer){
+	console.log('Function-productsApi-getCustumer -- _email:'+_email+' _pasword:'+_pasword);
+
+
+	customerModel.findOne({email:_email},function(err,custumer){
 		if(err){
 			//console.log('--Costumer not found');
 			console.error(err);
 			res.sendStatus(404);
 		}
 		else{
-			//if(costumer.)
-			//console.log('--Costumer found'+costumer);
-			res.json(costumer);
+			//if(custumer.)
+			//console.log('--Costumer found'+custumer);
+			res.json(custumer);
 			res.sendStatus(200);
 		}
 	});
 };
 
-exports.newConstumer = function (req, res) {
-	console.log('Function-productsApi-newConstumer');
+exports.newCustomer = function (req, res) {
+	console.log('Function-productsApi-newCustomer');
 
 	//Guardar la entrada de datos en variables
     var _name = req.params.name;
@@ -115,12 +117,10 @@ exports.newConstumer = function (req, res) {
 
     //TODO Chequear que los campos son correctos
 
-	var data = "do shash'owania";
-	var crypto = require('crypto');
-	crypto.createHash('md5').update(data).digest("hex");
-    var md5Password = 
+	
+    //var md5Password = crypto.createHash('md5').update(_password).digest("hex");
 
-    var newConstumer = new customerModel({
+    var newCustomer = new customerModel({
 	    name: _name,
 	    surname: _surname,
 	    email: _email,
@@ -130,13 +130,18 @@ exports.newConstumer = function (req, res) {
 	    credict_card: _credict_car
     });
 
-	customerModel.find(function(err,products){
-		if(err)
+
+    newCustomer.save(function (err) {
+  		if(err){
 			console.error(err);
-		else
-			//console.log('--New costumer created');
+			res.sendStatus(404);
+		}
+		else{
+			//console.log('--New custumer created');
 			res.sendStatus(200);
+		}
 	});
+
 };
 
 
@@ -151,45 +156,48 @@ exports.resetDataset = function (req, res) {
 
 	productModel.remove({}, function(err) {
 		if(err){
+			console.log('--ERROR products collection NOT removed');
 			console.error(err);
 		}else{
 			console.log('--products collection removed');
-			console.log('--Populating Database');
+			console.log('--Populating products');
+			var product1 = new productModel({"name":"sunglases","description":"Fantastic sunglases for the suny days","code":"12b34a1","price":43.3,"rating":4.5,"image":"no-image.png"});
+			var product2 = new productModel({"name":"Cheap Sunglases","description":"Fantastic sunglases for the suny days","code":"12buua1","price":1.3,"rating":4.5,"image":"no-image.png"});
+
+			product1.save(function (err) {
+		  		if(err)
+					console.error(err);
+			});
+
+			product2.save(function (err) {
+		  		if(err)
+					console.error(err);
+			});
 
 
 		}
-
 	});
+
+	customerModel.remove({}, function(err) {
+		if(err){
+			console.log('--ERROR customers collection NOT removed');
+			console.error(err);
+		}else{
+			console.log('--customers collection removed');
+			console.log('--Populating customers');
+			var customer1 = new customerModel({ "name": "userName", "surname": "userSurname", "email": "reder.pablo@gmail.com","password": "12345", "address": "String", "coordinates": "[37.358716, -5.987814]", "credict_card": "String"});
+			
+			customer1.save(function (err) {
+		  		if(err)
+					console.error(err);
+			});
+		}
+	});
+
+
+	res.json("Done, check the console");
+
+	
 };
 
-*/
 
-/*
-//MongoDB
-var MongoClient = require('mongodb').MongoClient;
-var assert = require('assert');
-var ObjectId = require('mongodb').ObjectID;
-var url = 'mongodb://localhost:27017/Acme-Supermarket';
-
-exports.getAllProducts = function (req, res) {
-	//Conexion a mongoDB
-	MongoClient.connect(url, function(err, db) {
-		assert.equal(null, err);
-
-		//Find de todos los productos
-		var cursor = db.collection('products').find( );
-
-		//Por cada documento encontrado en el Find se mete en documentos
-		var documentos = [];
-		cursor.each(function(err, doc) {
-			assert.equal(err, null);
-			if (doc != null) {
-				documentos.push(doc);
-			} else {
-				db.close();
-				//Transformamos la cola de documentos a JSON
-				res.json(documentos);
-			}
-		});
-	});
-};*/
