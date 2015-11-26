@@ -23,9 +23,12 @@ var app = module.exports = express();
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.use(morgan('dev'));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverride());
 app.use(express.static(__dirname+"/public"));
+
+app.set('superSecret', config.secret);
 
 var env = process.env.NODE_ENV || 'development';
 
