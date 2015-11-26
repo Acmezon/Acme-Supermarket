@@ -10,7 +10,6 @@ var express = require('express'),
   morgan = require('morgan'),
   routes = require('./routes'),
   api = require('./routes/api'),
-  apimongo = require('./Mongo/apimongo'),
   http = require('http'),
   path = require('path');
 
@@ -52,9 +51,6 @@ app.get('/partials/:name', routes.partials);
 
 // JSON API
 app.get('/api/products', api.getAllProducts);
-
-// Mongo products API
-app.get('/products', apimongo.getAllProducts);
 
 // redirect all others to the index (HTML5 history)
 app.get('*', routes.index);
