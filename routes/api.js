@@ -31,7 +31,9 @@ exports.getAllProducts = function (req, res) {
 	          db.close();
 	          //console.log(cursor);
 	   		//Transformamos la cola de documentos a JSON
+
 	          res.json(documentos);
+				console.log(documentos);
 	      }
 	   });		
 	});

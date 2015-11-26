@@ -5,10 +5,10 @@ angular.module('acme_supermarket').registerCtrl('HomeCtrl', ['$scope', '$http', 
 		method: 'GET',
 		url: '/api/products'
 	}).
-	success(function (data, status, headers, config) {
-		$scope.products = data;
-	}).
-	error(function (data, status, headers, config) {
-		
+	then(function success(response) {
+		//$scope.products = data;
+		console.log("RES: " + response.data);
+	}, function error(response) {
+		console.log("ERROR: " + response);
 	});
 }]);
