@@ -19,9 +19,13 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider',
       templateUrl: 'views/home/home.html',
       controller: 'HomeCtrl'
     }).
-    when('/products', {
-      templateUrl: 'views/products/products.html',
-      controller: 'MyCtrl2'
+    when('/login', {
+      templateUrl: 'views/login/login.html',
+      controller: 'LoginCtrl'
+    }).
+    when('/signup', {
+      templateUrl: 'views/signup/signup.html',
+      controller: 'SignupCtrl'
     }).
     otherwise({
       redirectTo: '/home'
