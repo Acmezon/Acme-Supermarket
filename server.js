@@ -12,6 +12,7 @@ var express = require('express'),
   db_connection = require('./routes/db_connection'),
   products_api = require('./routes/products_api'),
   customers_api = require('./routes/customers_api'),
+  authentication = require('./routes/authentication')
   http = require('http'),
   path = require('path'),
   config = require('./config');
@@ -56,7 +57,13 @@ app.get('/views/:name', routes.views);
 // JSON API
 app.get('/api/products', products_api.getAllProducts);
 
+app.get('/api/users', function(req, res) {
+  res.json({users : 'users'});
+});
+
 app.get('/api/resetDataset', db_connection.resetDataset);
+
+app.post('/signin', authentication.authenticate)
 
 // redirect all others to the index (HTML5 history)
 app.get('*', routes.index);

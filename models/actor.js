@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-module.exports = mongoose.Schema({
+var actorSchema = mongoose.Schema({
 	name: String,
 	surname: String,
 	email: String,
@@ -9,3 +9,7 @@ module.exports = mongoose.Schema({
 	coordinates: String,
 	credict_card: String
 });
+
+exports.schema = actorSchema;
+
+exports.model = mongoose.model('Actor', actorSchema);
