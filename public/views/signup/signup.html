@@ -1,22 +1,22 @@
 <script src="views/signup/SignupController.js"></script>
 
 
-<div class="register_account">
+<div class="register_account" ng-controller="SignupCtrl">
   	<div class="wrap">
       	<h4 class="title">Create an Account</h4>
 	   	<form>
 		 	<div class="col_1_of_2 span_1_of_2">
    			 	<div>
-   			 		<input type="text" value="Name" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Name';}">
+   			 		<input type="text" value="Name" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Name';}" ng-model="customer.name">
    			 	</div>
     			<div>
-    				<input type="text" value="Surname" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Surname';}">
+    				<input type="text" value="Surname" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Surname';}" ng-model="customer.surname">
     			</div>
     			<div>
-    				<input type="text" value="E-Mail" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'E-Mail';}">
+    				<input type="text" value="E-Mail" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'E-Mail';}" ng-model="customer.email">
     			</div>
     			<div>
-    				<input type="password" placeholder="Password">
+    				<input type="password" placeholder="Password" ng-model="customer.password">
     			</div>
     	 	</div>
     	  	<div class="col_1_of_2 span_1_of_2">	
@@ -230,7 +230,7 @@
           	<input type="text" value="" class="code"> - <input type="text" value="" class="number">
           	<p class="code">Country Code + Phone Number</p>
           	</div>
-      		<button class="grey">Submit</button>
+      		<button id="signup-submit" class="grey" ng-click="signUp()">Submit</button>
     	<p class="terms">By clicking 'Create Account' you agree to the <a href="/terms">Terms &amp; Conditions</a>.</p>
     	<div class="clear"></div>
     	</form>

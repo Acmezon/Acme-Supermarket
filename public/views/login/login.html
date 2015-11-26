@@ -1,6 +1,6 @@
 <script src="views/login/LoginController.js"></script>
 
-<div class="login">
+<div class="login" ng-controller="LoginCtrl">
   	<div class="wrap">
 		<div class="col_1_of_login span_1_of_login">
 			<h4 class="title">New Customers</h4>
@@ -18,17 +18,18 @@
 						<fieldset class="input">
 					    	<p id="login-form-username">
 					      		<label for="modlgn_username">Email</label>
-					      		<input id="modlgn_username" type="text" name="email" class="inputbox" size="18" autocomplete="off">
+					      		<input id="modlgn_username" type="text" name="email" class="inputbox" size="18" autocomplete="off" ng-model="customer.email">
 					    	</p>
 					    	<p id="login-form-password">
 					      		<label for="modlgn_passwd">Password</label>
-					      		<input id="modlgn_passwd" type="password" name="password" class="inputbox" size="18" autocomplete="off">
+					      		<input id="modlgn_passwd" type="password" name="password" class="inputbox" size="18" autocomplete="off" ng-model="customer.password">
 					    	</p>
 					    	<div class="remember">
 							    <p id="login-form-remember">
 							    	<label for="modlgn_remember"><a href="#">Remember Password</a></label>
 							   	</p>
-							    <input type="submit" name="Submit" class="button" value="Login"><div class="clear"></div>
+							   	<button id="login-submit" class="grey" ng-click="login()">Login</button>
+							    <div class="clear"></div>
 							</div>
 						</fieldset>
 					</form>
