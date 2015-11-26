@@ -6,9 +6,7 @@ angular.module('acme_supermarket').registerCtrl('HomeCtrl', ['$scope', '$http', 
 		url: '/api/products'
 	}).
 	then(function success(response) {
-		//$scope.products = data;
-		console.log("RES: " + response.data);
+		$scope.products = response.data;
 	}, function error(response) {
-		console.log("ERROR: " + response);
 	});
 }]);

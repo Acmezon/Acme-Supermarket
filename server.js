@@ -12,9 +12,7 @@ var express = require('express'),
   api = require('./routes/api'),
   http = require('http'),
   path = require('path');
-
-console.log(routes.index);
-
+  
 var app = module.exports = express();
 
 
