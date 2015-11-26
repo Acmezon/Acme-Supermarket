@@ -42,10 +42,6 @@ if (env === 'production') {
   // TODO
 }
 
-
-
-
-
 /**
  * Routes
  */
@@ -55,7 +51,7 @@ app.get('/', routes.index);
 app.get('/partials/:name', routes.partials);
 
 // JSON API
-app.get('/api/name', api.name);
+app.get('/api/products', api.getAllProducts);
 
 // Mongo products API
 app.get('/products', apimongo.getAllProducts);
