@@ -6,7 +6,7 @@
 var MongoClient = require('mongodb').MongoClient;
 var assert = require('assert');
 var ObjectId = require('mongodb').ObjectID;
-var url = 'mongodb://localhost:27017/acme';
+var url = 'mongodb://localhost:27017/Acme-Supermarket';
 
 exports.getAllProducts = function (req, res) {
 	console.log('Function-apimongo-getAllProducts');
