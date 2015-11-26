@@ -10,6 +10,7 @@ var express = require('express'),
   morgan = require('morgan'),
   routes = require('./routes/routes'),
   products_api = require('./routes/products_api'),
+  customers_api = require('./routes/customers_api'),
   http = require('http'),
   path = require('path');
   
@@ -52,6 +53,8 @@ app.get('/views/:name', routes.views);
 
 // JSON API
 app.get('/api/products', products_api.getAllProducts);
+
+app.get('/api/resetDataset', db_connection.resetDataset);
 
 // redirect all others to the index (HTML5 history)
 app.get('*', routes.index);
