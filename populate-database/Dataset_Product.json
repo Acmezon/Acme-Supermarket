@@ -1,2 +1,2 @@
-{"name":"sunglases","description":"Fantastic sunglases for the suny days","code":"12b34a1","cost":43.3,"rating":4.5,"image":"/Mongo/img/no-image.png"}
-{"name":"Cheap Sunglases","description":"Fantastic sunglases for the suny days","code":"12buua1","cost":1.3,"rating":4.5,"image":"/Mongo/img/no-image.png"}
+{"name":"sunglases","description":"Fantastic sunglases for the suny days","code":"12b34a1","price":43.3,"rating":4.5,"image":"no-image.png"}
+{"name":"Cheap Sunglases","description":"Fantastic sunglases for the suny days","code":"12buua1","price":1.3,"rating":4.5,"image":"no-image.png"}
