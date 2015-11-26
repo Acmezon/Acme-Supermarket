@@ -6,25 +6,29 @@
 //Declaracion de la base de datos
 var mongoose = require('mongoose');
 var extend = require('mongoose-schema-extend');//Necesario para la herencia
-mongoose.connect('mongodb://localhost/Acme-Supermarket');
+var config = require('../config')
 
-//Creación de la conexion con mongodb
+exports.connect = function () {
+	mongoose.connect(config.database);
+
 	var db = mongoose.connection;
 	db.on('error', console.error.bind(console, 'connection error: '));
 	db.once('open', function (callback) {
 	  console.log('Mongoose connection to Acme-Supermarket database successfull');
 	});
 
-exports.getConnection = function (req, res) {
-	
-
+	return db;
 };
 
 
+exports.disconnect = function () {
+	mongoose.disconnect();
+}
 
 
 
 //////MANAGEMENT////////////////////////////////////////
+//Esto también lo quitas de aquí y lo mueves a otro lado
 
 //Restaura la base de datos de productos al estado del dataset
 exports.resetDataset = function (req, res) {

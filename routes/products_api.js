@@ -1,26 +1,10 @@
-//////PRODUCTS////////////////////////////////////////
-
-
 //var crypto = require('crypto');//Necesario para encriptacion por MD5
 
-var db_connection = require('./routes/db_connection');
+var db_connection = require('./db_connection');
+var Product = require('../models/product')
 
-//Declaracion de los schemas, es la estructura que tienen 
-//los documentos en la base de datos
-var productSchema = mongoose.Schema({
-    name: String,
-    description: String,
-    code: String,
-    price: {type:Number,min:0},
-    rating: {type:Number,min:0,max:5},
-    image: String
-});
-
-
-//Creacion del modelo en base a los schemas
-//El modelo se crea sobre la coleccion de products,
-// pero en el nombre hay que ponerlo sin la s final
-var productModel = mongoose.model('product',productSchema)
+//Esto lo borras y usas la variable Product
+//var productModel = mongoose.model('product',productSchema)
 
 
 exports.getAllProducts = function (req, res) {

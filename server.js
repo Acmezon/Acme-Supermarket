@@ -9,10 +9,12 @@ var express = require('express'),
   errorhandler = require('errorhandler'),
   morgan = require('morgan'),
   routes = require('./routes/routes'),
+  db_connection = require('./routes/db_connection'),
   products_api = require('./routes/products_api'),
   customers_api = require('./routes/customers_api'),
   http = require('http'),
-  path = require('path');
+  path = require('path'),
+  config = require('./config');
   
 var app = module.exports = express();
 
@@ -24,9 +26,12 @@ var app = module.exports = express();
 // all environments
 app.set('port', process.env.PORT || 3000);
 app.use(morgan('dev'));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(methodOverride());
 app.use(express.static(__dirname+"/public"));
+
+app.set('superSecret', config.secret);
 
 var env = process.env.NODE_ENV || 'development';
 

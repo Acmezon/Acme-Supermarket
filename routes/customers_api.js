@@ -1,34 +1,10 @@
-//////CUSTOMERS////////////////////////////////////////
-
-var db_connection = require('./routes/db_connection');
-
+var db_connection = require('./db_connection');
+var Customer = require('../models/customer')
 var extend = require('mongoose-schema-extend');//Necesario para la herencia
 
 
-
-//Declaracion de los schemas, es la estructura que tienen 
-//los documentos en la base de datos
-var actorSchema = mongoose.Schema({
-    name: String,
-    surname: String,
-    email: String,
-    password: String,
-    address: String,
-    coordinates: String,
-    credict_card: String
-});
-
-var customerSchema = actorSchema.extend({
-	//TODO
-});
-var adminSchema = actorSchema.extend({
-	//TODO
-});
-
-//Creacion del modelo en base a los schemas
-//El modelo se crea sobre la coleccion de products,
-// pero en el nombre hay que ponerlo sin la s final
-var customerModel = mongoose.model('customer',customerSchema)
+//Esto lo borras y usas la variable Customer
+//var customerModel = mongoose.model('customer',customerSchema)
 
 exports.getCustomer = function (req, res) {
 	var _email = req.params.email;
