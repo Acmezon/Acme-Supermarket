@@ -4,7 +4,12 @@ angular.module('acme_supermarket').registerCtrl('SignupCtrl', ['$scope', '$http'
 	
 	// Function invoked by login submit
 	$scope.submitSignUp = function() {
-		console.log($scope.customer);
+		$http.post('/api/signup', $scope.customer)
+		.then(function success(response) {
+
+		}, function error(response) {
+
+		});
 
 		return false;
 	}
