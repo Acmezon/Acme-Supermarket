@@ -1,10 +1,6 @@
 var db_connection = require('./db_connection');
-var Customer = require('../models/customer')
-var extend = require('mongoose-schema-extend');//Necesario para la herencia
+var Customer = require('../models/customer');
 
-
-//Esto lo borras y usas la variable Customer
-//var customerModel = mongoose.model('customer',customerSchema)
 
 exports.getCustomer = function (req, res) {
 	var _email = req.params.email;
@@ -12,7 +8,7 @@ exports.getCustomer = function (req, res) {
 	console.log('Function-productsApi-getCustumer -- _email:'+_email+' _pasword:'+_pasword);
 
 
-	customerModel.findOne({email:_email},function(err,custumer){
+	Customer.findOne({email:_email},function(err,custumer){
 		if(err){
 			//console.log('--Costumer not found');
 			console.error(err);
@@ -44,7 +40,7 @@ exports.newCustomer = function (req, res) {
 	
     //var md5Password = crypto.createHash('md5').update(_password).digest("hex");
 
-    var newCustomer = new customerModel({
+    var newCustomer = new Customer({
 	    name: _name,
 	    surname: _surname,
 	    email: _email,
@@ -58,7 +54,6 @@ exports.newCustomer = function (req, res) {
     newCustomer.save(function (err) {
   		if(err){
 			console.error(err);
-			res.sendStatus(404);
 		}
 		else{
 			//console.log('--New custumer created');
