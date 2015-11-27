@@ -998,6 +998,11 @@ fieldset.input input[type="submit"] {
 	outline:none;
 	font-size:1em;
 }
+fieldset.input input[type="submit"]:disabled{
+	background:#AAA;
+	text-decoration: none;
+	pointer-events: none;
+}
 fieldset.input input[type="submit"]:hover, .button1 input[type="submit"]:hover{
 	text-decoration:underline;
 }

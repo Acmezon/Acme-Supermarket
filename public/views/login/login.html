@@ -14,24 +14,33 @@
 			<div class="login-title">
        			<h4 class="title">Log in</h4>
 				<div id="loginbox" class="loginbox">
-					<form action="" method="post" name="login" id="login-form" novalidate>
+					<form action="" method="post" name="loginForm" id="login-form" novalidate>
 						<fieldset class="input">
 							<!-- TODO: Change this username tags for email tags. Note: Check CSSs. By Dani.-->
-					    	<p id="login-form-username">
+					    	<p id="login-form-username" ng-class="{ 'has-error' : loginForm.email.$invalid && !loginForm.email.$pristine }">
 					      		<label for="modlgn_username">Email</label>
-					      		<input id="modlgn_username" type="text" name="email" class="inputbox" size="18" autocomplete="off" ng-model="email" required>
-					      		<span style="color:red" ng-show="login.email.$dirty && login.email.$invalid">
-  									<span ng-show="login.email.$error.required">
+					      		<input id="modlgn_username" type="email" name="email" class="inputbox" size="18" autocomplete="off" ng-model="email" required>
+					      		<span style="color:red" ng-show="loginForm.email.$dirty && loginForm.email.$invalid">
+  									<span ng-show="loginForm.email.$error.required">
   										Email is required.
+  									</span>
+  									<span ng-show="loginForm.email.$error.email">
+  										Must be an email
   									</span>
   								</span>
 					    	</p>
 					    	<p id="login-form-password">
 					      		<label for="modlgn_passwd">Password</label>
-					      		<input id="modlgn_passwd" type="password" name="password" class="inputbox" size="18" autocomplete="off" ng-model="password" required>
-					      		<span style="color:red" ng-show="login.password.$dirty && login.password.$invalid">
-  									<span ng-show="login.password.$error.required">
+					      		<input id="modlgn_passwd" type="password" name="password" class="inputbox" size="18" autocomplete="off" ng-model="password" ng-minlength="8" ng-maxlength="32" required>
+					      		<span style="color:red" ng-show="loginForm.password.$dirty && loginForm.password.$invalid">
+  									<span ng-show="loginForm.password.$error.required">
   										Password is required.
+  									</span>
+  									<span ng-show="loginForm.password.$error.minlength">
+  										Password is too short.
+  									</span>
+  									<span ng-show="loginForm.password.$error.maxlength">
+  										Password is too long.
   									</span>
   								</span>
 					    	</p>
@@ -39,12 +48,7 @@
 							    <p id="login-form-remember">
 							    	<label for="modlgn_remember"><a href="#">Remember Password</a></label>
 							   	</p>
-							   	<!--TODO: Check if ng-disabled works with buttons. It worked with input-button. By Dani -->
-							   	<button id="login-submit" class="grey" ng-click="login()"
-							   		ng-disabled="login.password.$dirty && login.password.$invalid ||
-  									login.email.$dirty && login.email.$invalid">
-  									Login
-  								</button>
+  								<input login-submit type="submit" name="Submit" class="button" value="Login" ng-click="submitLogin()" ng-disabled="loginForm.$invalid">
 							    <div class="clear"></div>
 							</div>
 						</fieldset>
