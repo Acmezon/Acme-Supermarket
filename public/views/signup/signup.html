@@ -4,28 +4,56 @@
 <div class="register_account" ng-controller="SignupCtrl">
   	<div class="wrap">
       	<h4 class="title">Create an Account</h4>
-	   	<form>
+	   	<form action="" method="post" name="signupForm" id="submit-form" novalidate>
 		 	<div class="col_1_of_2 span_1_of_2">
    			 	<div>
-   			 		<input type="text" value="Name" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Name';}" ng-model="customer.name">
+   			 		<input name="name" type="text" value="Name" placeholder="Name" ng-model="customer.name" required>
+   			 		<span style="color:red" ng-show="signupForm.name.$dirty && signupForm.name.$invalid">
+						<span ng-show="signupForm.name.$error.required">
+							Name is required.
+						</span>
+  					</span>
    			 	</div>
     			<div>
-    				<input type="text" value="Surname" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Surname';}" ng-model="customer.surname">
+    				<input name="surname" type="text" value="Surname" placeholder="Surname" ng-model="customer.surname" required>
+    				<span style="color:red" ng-show="signupForm.surname.$dirty && signupForm.surname.$invalid">
+						<span ng-show="signupForm.surname.$error.required">
+							Surname is required.
+						</span>
+  					</span>
     			</div>
     			<div>
-    				<input type="text" value="E-Mail" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'E-Mail';}" ng-model="customer.email">
+    				<input name="email" type="email" value="E-Mail" placeholder="Email" ng-model="customer.email" autocomplete="off" required>
+    				<span style="color:red" ng-show="signupForm.email.$dirty && signupForm.email.$invalid">
+						<span ng-show="signupForm.email.$error.required">
+							Email is required.
+						</span>
+						<span ng-show="signupForm.email.$error.email">
+							Must be an email
+						</span>
+  					</span>
     			</div>
     			<div>
-    				<input type="password" placeholder="Password" ng-model="customer.password">
+    				<input name="password" type="password" placeholder="Password" autocomplete="off" ng-model="customer.password" ng-minlength="8" ng-maxlength="32" required>
+    				<span style="color:red" ng-show="signupForm.password.$dirty && signupForm.password.$invalid">
+						<span ng-show="signupForm.password.$error.required">
+							Password is required.
+						</span>
+  					</span>
     			</div>
     	 	</div>
     	  	<div class="col_1_of_2 span_1_of_2">	
     			<div>
-    				<input type="text" value="Address" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Address';}">
+    				<input name="address" type="text" value="Address" ng-model="customer.address" placeholder="Address" required>
+    				<span style="color:red" ng-show="signupForm.address.$dirty && signupForm.address.$invalid">
+						<span ng-show="signupForm.address.$error.required">
+							Address is required.
+						</span>
+  					</span>
     			</div>
     			<div>
-    				<select id="country" name="country" onchange="change_country(this.value)" class="frm-field required">
-			            <option value="null">Select a Country</option>         
+    				<select id="country" name="country" value="Select a country" ng-model="customer.country" class="frm-field required">
+			            <option value="" disabled>Select a Country</option>         
 			            <option value="AX">Åland Islands</option>
 			            <option value="AF">Afghanistan</option>
 			            <option value="AL">Albania</option>
@@ -221,16 +249,36 @@
 			            <option value="SA">Saudi Arabia</option>
 			            <option value="SN">Senegal</option>
          			</select>
+         			<span style="color:red" ng-show="signupForm.country.$dirty && signupForm.country.$invalid">
+						<span ng-show="signupForm.country.$error.required">
+							Country is required.
+						</span>
+  					</span>
          		</div>		        
           	<div>
-          		<input type="text" value="City" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'City';}">
+          		<input name="city" type="text" value="City" ng-model="customer.city" placeholder="City" required>
+          		<span style="color:red" ng-show="signupForm.city.$dirty && signupForm.city.$invalid">
+					<span ng-show="signupForm.city.$error.required">
+						City is required.
+					</span>
+				</span>
           	</div>
            	<div>
           	</div>
-          	<input type="text" value="" class="code"> - <input type="text" value="" class="number">
-          	<p class="code">Country Code + Phone Number</p>
+          	<input class="phone" name="phone" type="text" value="Phone number" ng-model="customer.phone" placeholder="Phone" ng-minlength="9" ng-maxlength="15" required>
+          	<span style="color:red" ng-show="signupForm.phone.$dirty && signupForm.phone.$invalid">
+					<span ng-show="signupForm.phone.$error.required">
+						Phone number is required.
+					</span>
+					<span ng-show="loginForm.phone.$error.minlength">
+  						Phone number is too short.
+					</span>
+					<span ng-show="loginForm.phone.$error.maxlength">
+						Phone number is too long.
+					</span>
+				</span>
           	</div>
-      		<button id="signup-submit" class="grey" ng-click="signUp()">Submit</button>
+      		<button id="signup-submit" name="submit" class="grey" ng-click="submitSignUp()" ng-disabled="signupForm.$invalid">Submit</button>
     	<p class="terms">By clicking 'Create Account' you agree to the <a href="/terms">Terms &amp; Conditions</a>.</p>
     	<div class="clear"></div>
     	</form>

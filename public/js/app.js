@@ -19,9 +19,9 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider',
       templateUrl: 'views/home/home.html',
       controller: 'HomeCtrl'
     }).
-    when('/login', {
-      templateUrl: 'views/login/login.html',
-      controller: 'LoginCtrl'
+    when('/signin', {
+      templateUrl: 'views/signin/signin.html',
+      controller: 'SigninCtrl'
     }).
     when('/signup', {
       templateUrl: 'views/signup/signup.html',

@@ -1,6 +1,6 @@
-<script src="views/login/LoginController.js"></script>
+<script src="views/signin/SigninController.js"></script>
 
-<div class="login" ng-controller="LoginCtrl">
+<div class="login" ng-controller="SigninCtrl">
   	<div class="wrap">
 		<div class="col_1_of_login span_1_of_login">
 			<h4 class="title">New Customers</h4>
@@ -14,17 +14,17 @@
 			<div class="login-title">
        			<h4 class="title">Log in</h4>
 				<div id="loginbox" class="loginbox">
-					<form action="" method="post" name="loginForm" id="login-form" novalidate>
+					<form action="" method="post" name="signinForm" id="login-form" novalidate>
 						<fieldset class="input">
 							<!-- TODO: Change this username tags for email tags. Note: Check CSSs. By Dani.-->
-					    	<p id="login-form-username" ng-class="{ 'has-error' : loginForm.email.$invalid && !loginForm.email.$pristine }">
+					    	<p id="login-form-username" ng-class="{ 'has-error' : signinForm.email.$invalid && !signinForm.email.$pristine }">
 					      		<label for="modlgn_username">Email</label>
 					      		<input id="modlgn_username" type="email" name="email" class="inputbox" size="18" autocomplete="off" ng-model="email" required>
-					      		<span style="color:red" ng-show="loginForm.email.$dirty && loginForm.email.$invalid">
-  									<span ng-show="loginForm.email.$error.required">
+					      		<span style="color:red" ng-show="signinForm.email.$dirty && signinForm.email.$invalid">
+  									<span ng-show="signinForm.email.$error.required">
   										Email is required.
   									</span>
-  									<span ng-show="loginForm.email.$error.email">
+  									<span ng-show="signinForm.email.$error.email">
   										Must be an email
   									</span>
   								</span>
@@ -32,14 +32,14 @@
 					    	<p id="login-form-password">
 					      		<label for="modlgn_passwd">Password</label>
 					      		<input id="modlgn_passwd" type="password" name="password" class="inputbox" size="18" autocomplete="off" ng-model="password" ng-minlength="8" ng-maxlength="32" required>
-					      		<span style="color:red" ng-show="loginForm.password.$dirty && loginForm.password.$invalid">
-  									<span ng-show="loginForm.password.$error.required">
+					      		<span style="color:red" ng-show="signinForm.password.$dirty && signinForm.password.$invalid">
+  									<span ng-show="signinForm.password.$error.required">
   										Password is required.
   									</span>
-  									<span ng-show="loginForm.password.$error.minlength">
+  									<span ng-show="signinForm.password.$error.minlength">
   										Password is too short.
   									</span>
-  									<span ng-show="loginForm.password.$error.maxlength">
+  									<span ng-show="signinForm.password.$error.maxlength">
   										Password is too long.
   									</span>
   								</span>
@@ -48,7 +48,7 @@
 							    <p id="login-form-remember">
 							    	<label for="modlgn_remember"><a href="#">Remember Password</a></label>
 							   	</p>
-  								<input login-submit type="submit" name="Submit" class="button" value="Login" ng-click="submitLogin()" ng-disabled="loginForm.$invalid">
+  								<input id="login-submit" type="submit" name="Submit" class="button" value="Login" ng-click="submitSignin()" ng-disabled="signinForm.$invalid">
 							    <div class="clear"></div>
 							</div>
 						</fieldset>
