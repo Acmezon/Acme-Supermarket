@@ -56,6 +56,9 @@ app.get('/views/:name', routes.views);
 
 // JSON API
 app.get('/api/products', products_api.getAllProducts);
+app.get('/api/getCustomer/:email&:password', customers_api.getCustomer);
+app.get('/api/newCustomer/:name&:surname&:email&:password&:address&:coordinates&:credict_card', customers_api.newCustomer);
+//Test -> /api/newCustomer/Daniel&De los Reyes&dani@email.com&noessegura&TODO&[37.358716, -5.987814]&1234-12345678
 
 app.get('/api/resetDataset', management.resetDataset);
 

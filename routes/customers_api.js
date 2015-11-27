@@ -1,33 +1,47 @@
 var db_connection = require('./db_connection');
 var Customer = require('../models/customer');
-
+var crypto = require('crypto');//Necesario para encriptacion por MD5
 
 exports.getCustomer = function (req, res) {
-	var connection = db_connection.connect;
+	//var connection = db_connection.connect;
 	var _email = req.params.email;
-	var _pasword = req.params.password;
-	console.log('Function-productsApi-getCustumer -- _email:'+_email+' _pasword:'+_pasword);
+	var _password = req.params.password;
+	console.log('Function-productsApi-getCustumer -- _email:'+_email+'   _password:'+_password);
 
-
-	Customer.findOne({email:_email},function(err,custumer){
+	Customer.findOne({email:_email},function(err,customer){
 		if(err){
-			//console.log('--Costumer not found');
+			//console.log('--Error in Customer.findOne{email:_email} query');
 			console.error(err);
-			res.sendStatus(404);
-			connection.disconnect;
 		}
 		else{
-			//if(custumer.)
-			//console.log('--Costumer found'+custumer);
-			res.json(custumer);
-			res.sendStatus(200);
-			connection.disconnect;
+			if(customer != null){
+				console.log('---Customer found');
+				var md5Password = crypto.createHash('md5').update(_password).digest("hex");
+				//console.log('---md5Password: '+md5Password);
+				//console.log('---customer: '+customer);
+				if(customer.password.valueOf() == md5Password.valueOf()){
+					//console.log('---Customer found'+customer);
+					res.json(customer);
+				}else{
+					console.log('---Customer found, wrong password ');
+					res.json({});
+				}
+			}
+			else{
+				console.log('---Customer not found, incorrect email');
+				res.json({});
+			}
+
 		}
+
 	});
+
+	//connection.disconnect;
+	
 };
 
 exports.newCustomer = function (req, res) {
-	var connection = db_connection.connect;
+	//var connection = db_connection.connect;
 	console.log('Function-productsApi-newCustomer');
 
 	//Guardar la entrada de datos en variables
@@ -42,13 +56,13 @@ exports.newCustomer = function (req, res) {
     //TODO Chequear que los campos son correctos
 
 	
-    //var md5Password = crypto.createHash('md5').update(_password).digest("hex");
+    var md5Password = crypto.createHash('md5').update(_password).digest("hex");
 
     var newCustomer = new Customer({
 	    name: _name,
 	    surname: _surname,
 	    email: _email,
-	    password: _password,
+	    password: md5Password,
 	    address: _address,
 	    coordinates: _coordinates,
 	    credict_card: _credict_car
@@ -60,11 +74,12 @@ exports.newCustomer = function (req, res) {
 			console.error(err);
 		}
 		else{
-			//console.log('--New custumer created');
-			res.sendStatus(200);
+			//console.log('--New custumer created '+newCustomer);
+			res.json(newCustomer);
 		}
 	});
-	connection.disconnect;
+
+	//connection.disconnect;
 
 };
 
