@@ -63,7 +63,8 @@ app.get('/api/users', function(req, res) {
 
 app.get('/api/resetDataset', db_connection.resetDataset);
 
-app.post('/signin', authentication.authenticate)
+app.post('/signup', authentication.signup);
+app.post('/signin', authentication.authenticate);
 
 // redirect all others to the index (HTML5 history)
 app.get('*', routes.index);
