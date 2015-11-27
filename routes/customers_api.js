@@ -3,6 +3,7 @@ var Customer = require('../models/customer');
 
 
 exports.getCustomer = function (req, res) {
+	var connection = db_connection.connect;
 	var _email = req.params.email;
 	var _pasword = req.params.password;
 	console.log('Function-productsApi-getCustumer -- _email:'+_email+' _pasword:'+_pasword);
@@ -13,17 +14,20 @@ exports.getCustomer = function (req, res) {
 			//console.log('--Costumer not found');
 			console.error(err);
 			res.sendStatus(404);
+			connection.disconnect;
 		}
 		else{
 			//if(custumer.)
 			//console.log('--Costumer found'+custumer);
 			res.json(custumer);
 			res.sendStatus(200);
+			connection.disconnect;
 		}
 	});
 };
 
 exports.newCustomer = function (req, res) {
+	var connection = db_connection.connect;
 	console.log('Function-productsApi-newCustomer');
 
 	//Guardar la entrada de datos en variables
@@ -60,6 +64,7 @@ exports.newCustomer = function (req, res) {
 			res.sendStatus(200);
 		}
 	});
+	connection.disconnect;
 
 };
 

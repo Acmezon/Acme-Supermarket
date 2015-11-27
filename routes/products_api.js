@@ -5,6 +5,7 @@ var Product = require('../models/product');
 
 //Devuelve una lista con todos los productos de la coleccion
 exports.getAllProducts = function (req, res) {
+	var connection = db_connection.connect;
 	console.log('Function-productsApi-getAllProducts');
 
 	//Find sin condiciones
@@ -16,6 +17,7 @@ exports.getAllProducts = function (req, res) {
 			res.json(products);
 		}
 	});
+	connection.disconnect;
 };
 
 
