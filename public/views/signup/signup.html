@@ -1,10 +1,10 @@
 <script src="views/signup/SignupController.js"></script>
 
 
-<div class="register_account" ng-controller="SignupCtrl">
+<div class="register_account">
   	<div class="wrap">
       	<h4 class="title">Create an Account</h4>
-	   	<form action="" method="post" name="signupForm" id="submit-form" novalidate>
+	   	<form action="" method="post" name="signupForm" id="submit-form" ng-submit="submitSignUp();" ng-controller="SignupCtrl" novalidate>
 		 	<div class="col_1_of_2 span_1_of_2">
    			 	<div>
    			 		<input name="name" type="text" value="Name" placeholder="Name" ng-model="customer.name" required>
@@ -278,7 +278,7 @@
 					</span>
 				</span>
           	</div>
-      		<button id="signup-submit" name="submit" class="grey" ng-click="submitSignUp()" ng-disabled="signupForm.$invalid">Submit</button>
+      		<button id="signup-submit" type="submit" name="submit" class="grey" ng-disabled="signupForm.$invalid">Submit</button>
     	<p class="terms">By clicking 'Create Account' you agree to the <a href="/terms">Terms &amp; Conditions</a>.</p>
     	<div class="clear"></div>
     	</form>

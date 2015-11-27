@@ -45,4 +45,12 @@ exports.signup = function (req, res) {
 		city : req.body.city,
 		phone : req.body.phone
 	});
+
+	user.save(function(err) {
+		if(err) throw err;
+
+		console.log("Success");
+
+		res.json({success: true});
+	})
 }

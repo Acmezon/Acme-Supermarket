@@ -10,7 +10,7 @@ var Product = require('../models/product')
 exports.getAllProducts = function (req, res) {
 	console.log('Function-productsApi-getAllProducts');
 	//productModel.find();
-	productModel.find(function(err,products){
+	Product.find(function(err,products){
 		if(err){
 			console.error(err);
 		}else{
