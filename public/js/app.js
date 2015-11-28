@@ -27,7 +27,7 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider',
       templateUrl: 'views/public/signup/signup.html',
       controller: 'SignupCtrl'
     }).
-    when('/protected', {
+    when('/customer/products', {
       templateUrl: 'views/customer/protected/protected.html',
       controller: 'ProtectedCtrl'
     }).
