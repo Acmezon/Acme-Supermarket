@@ -52,13 +52,24 @@ exports.newCustomer = function (req, res) {
 
 
     newCustomer.save(function (err) {
-  		if(err){
-			console.error(err);
-			throw err;
-			res.sendStatus(500);
+    	var errors = [];
+		if(err){
+			console.log(error)
+			keys = Object.keys(err.errors);
+			for(key in keys) {
+				key = keys[key];
+				errors.push({
+					key: key,
+					value: err.errors[key].name
+				});
+			}
 		}
-		else{
-			//console.log('--New custumer created');
+		
+		if(errors) {
+			res.json({success: false, message: errors});
+			res.sendStatus(500);
+		} else {
+			res.json({success: true});
 			res.sendStatus(200);
 		}
 	});

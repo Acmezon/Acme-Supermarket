@@ -5,10 +5,7 @@ var jwt    = require('jsonwebtoken');
 var customer_api = require('./customers_api')
 
 exports.authenticate = function (req, res) {
-	console.log(req.body);
-	db.connect();
-	
-	Actor.model.findOne({
+	Customer.findOne({
 		email: req.body.email
 	}, function (err, user){
 		if (err) throw err;
@@ -47,10 +44,34 @@ exports.signup = function (req, res) {
 	});
 
 	user.save(function(err) {
-		if(err) throw err;
+		var errors = [];
+		if(err){
+			var keys = Object.keys(err.errors);
+			for(key in keys) {
+				key = keys[key];
+				errors.push({
+					key: key,
+					value: err.errors[key].name
+				});
+			}
+		}
+		
+		if(errors.length > 0) {
+			res.status(500).json({success: false, message: errors});
+		} else {
+			console.log("Saved");
+			res.status(200).json({success: true});
+		}
+	});
+}
 
-		console.log("Success");
-
-		res.json({success: true});
-	})
+exports.checkToken = function(token) {
+	// verifies secret and checks exp
+	jwt.verify(token, app.get('superSecret'), function(err, decoded) {			
+		if (err) {
+			return false;
+		} else {
+			return true;
+		}
+	});
 }

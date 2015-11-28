@@ -21,12 +21,6 @@ exports.connect = function () {
 };
 
 
-exports.disconnect = function () {
-	mongoose.disconnect();
-}
-
-
-
 //////MANAGEMENT////////////////////////////////////////
 //Esto también lo quitas de aquí y lo mueves a otro lado
 

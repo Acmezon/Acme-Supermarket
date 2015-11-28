@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
 var actorSchema = mongoose.Schema({
 	name: {type: String, required: true},
 	surname: {type: String, required: true},
-	email: {type: String, validate: validators.isEmail()},
+	email: {type: String, unique: true, validate: validators.isEmail()},
 	password: {type: String, validate: validators.isLength(8, 32)}
 });
 

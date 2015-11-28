@@ -19,7 +19,6 @@ var express = require('express'),
   
 var app = module.exports = express();
 
-
 /**
  * Configuration
  */
@@ -46,13 +45,18 @@ if (env === 'production') {
   // TODO
 }
 
+//Database connection
+db_connection.connect();
+
 /**
  * Routes
  */
 
+var router = express.Router();
+
 // serve index and view partials
 app.get('/', routes.index);
-app.get('/views/:name', routes.views);
+app.get('/views/public/:name', routes.views);
 
 // JSON API
 app.get('/api/products', products_api.getAllProducts);
@@ -69,7 +73,7 @@ app.post('/api/signin', authentication.authenticate);
 // redirect all others to the index (HTML5 history)
 app.get('*', routes.index);
 
-
+app.use('/views/customer', router);
 /**
  * Start Server
  */
