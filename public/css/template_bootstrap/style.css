@@ -1140,7 +1140,7 @@ p.cart a:hover{
 }
 .mens-toolbar .sort {
 	float: left;
-	width:20.5%;
+	width:22%;
 }
 .sort{
 	padding: 3px 8px;
@@ -1149,11 +1149,20 @@ p.cart a:hover{
 	color:#777;
 	font-size:0.85;
 }
+.sort-by label {
+	margin: 0 5% 0 0;
+}
+.sort-by select {
+	margin: 0 5% 0 0;
+	padding: 3%;
+	border-radius: 2px;
+	background-color: white;
+}
 .mens-toolbar .pager {
 	padding: 3px 8px;
 	float: right;
 	margin: 0;
-	width:26.5%;
+	width:28%;
 }
 .pager .limiter {
 	float: right;
@@ -1164,9 +1173,11 @@ p.cart a:hover{
 	vertical-align: middle;
 }
 .pager .limiter select {
-	padding: 0;
+	padding: 3%;
 	margin: 0 0 1px;
 	vertical-align: middle;
+	border-radius: 2px;
+	background-color: white;
 }
 .pager .pages {
 	margin: 0 30px 0 0;
