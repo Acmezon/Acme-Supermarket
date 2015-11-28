@@ -7,13 +7,24 @@
 	<title>Acme-Supermarket - Home</title>
 	<link href="css/template_bootstrap/style.css" rel="stylesheet" type="text/css" media="all" />
     <link href="css/template_bootstrap/form.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/template_bootstrap/easydropdown.metro.css" rel="stylesheet" type="text/css" media="all" />
+    
     <link href='http://fonts.googleapis.com/css?family=Exo+2' rel='stylesheet' type='text/css' />
+
+    <script src="js/lib/jquery.js"></script>
+    <script src="js/lib/template_bootstrap/jquery-ui.min.js"></script>
+
     <!-- start menu -->
     <link href="css/template_bootstrap/megamenu.css" rel="stylesheet" type="text/css" media="all" />
+	<script type="text/javascript" src="js/lib/template_bootstrap/megamenu.js"></script>
+    <script>$(document).ready(function(){$(".megamenu").megamenu();});</script>
+
+    <script type="text/javascript" src="js/lib/template_bootstrap/jquery.easydropdown.js"></script>
+
     <!--start slider -->
     <link rel="stylesheet" href="css/template_bootstrap/slider.css" media="all">
     <link rel="stylesheet" href="css/bootstrap.css">
-	<link rel="stylesheet" href="/css/app.css">
+	<link rel="stylesheet" href="css/app.css">
 
 	
 </head>
@@ -26,20 +37,8 @@
 	<div ng-include src="'views/public/footer.html'"></div>
 	
 
+
 	
-    
-	<script src="js/lib/jquery.js"></script>
-
-	<!-- start menu -->
-	<script type="text/javascript" src="js/lib/template_bootstrap/megamenu.js"></script>
-    <script type="text/javascript">
-    	$(document).ready(function(){
-    		$(".megamenu").megamenu();
-    	});
-    </script>
-
-
-	<script type="text/javascript" src="js/lib/template_bootstrap/jquery.easydropdown.js"></script>
 
 	<script src="js/lib/angular/angular.js"></script>
 	<script src="js/lib/angular/angular-route.js"></script>

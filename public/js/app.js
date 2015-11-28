@@ -31,6 +31,10 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider',
       templateUrl: 'views/customer/protected/protected.html',
       controller: 'ProtectedCtrl'
     }).
+    when('/products', {
+      templateUrl: 'views/products/products.html',
+      controller: 'ProductListCtrl'
+    }).
     otherwise({
       redirectTo: '/home'
     });
