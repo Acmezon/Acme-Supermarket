@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Api for mongodb
  */
 
@@ -20,6 +20,27 @@ exports.connect = function () {
 };
 
 
+
 exports.disconnect = function () {
 	mongoose.disconnect();
+}
+
+
+
+
+exports.handleErrors = function(err){
+	var errors = null;
+	if(err){
+		errors = [];
+		//console.log(error)
+		keys = Object.keys(err.errors);
+		for(key in keys) {
+			key = keys[key];
+			errors.push({
+				key: key,
+				value: err.errors[key].name
+			});
+		}
+	}
+	return errors;
 }

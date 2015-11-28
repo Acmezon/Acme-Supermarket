@@ -2,13 +2,7 @@
 /*
  * GET home page.
  */
-
 exports.index = function(req, res){
-	res.sendFile('index.html', {root: './public/views'});
-};
-
-exports.views = function (req, res) {
-	var name = req.params.name;
-	console.log(name);
-	res.sendFile(name, {root: './public/views'});
+	console.log("Public");
+	res.sendFile('index.html', {root: './public/views/public'});
 };

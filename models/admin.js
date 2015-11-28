@@ -1,10 +1,12 @@
 var mongoose = require('mongoose');
 var extend = require('mongoose-schema-extend');
-var actorSchema = require('./actor');
+var Actor = require('./actor');
 
-var adminSchema = actorSchema.extend({
+
+var adminSchema = Actor.schema.extend({
 	//TODO
-	});
+});
 
 
-module.exports = mongoose.model('Admin', customerSchema);
+module.exports = mongoose.model('Admin', adminSchema);
+

@@ -1,11 +1,13 @@
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+	validators = require('mongoose-validators');
 
-module.exports = mongoose.Schema({
-	name: String,
-	surname: String,
-	email: String,
-	password: String,
-	address: String,
-	coordinates: String,
-	credict_card: String
+var actorSchema = mongoose.Schema({
+	name: {type: String, required: true},
+	surname: {type: String, required: true},
+	email: {type: String, unique: true, validate: validators.isEmail()},
+	password: {type: String, required: true}
 });
+
+exports.schema = actorSchema;
+
+//exports.model = mongoose.model('Actor', actorSchema);

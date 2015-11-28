@@ -1,24 +1,20 @@
 
 /**
- * Module dependencies
- */
+* Module dependencies
+*/
 
 var express = require('express'),
-  bodyParser = require('body-parser'),
-  methodOverride = require('method-override'),
-  errorhandler = require('errorhandler'),
-  morgan = require('morgan'),
-  routes = require('./routes/routes'),
-  db_connection = require('./routes/db_connection'),
-  products_api = require('./routes/products_api'),
-  customers_api = require('./routes/customers_api'),
-  management = require('./routes/management'),
-  http = require('http'),
-  path = require('path'),
-  config = require('./config');
-  
-var app = module.exports = express();
+bodyParser = require('body-parser'),
+methodOverride = require('method-override'),
+errorhandler = require('errorhandler'),
+morgan = require('morgan'),
+routes = require('./routes/routes'),
+api = require('./routes/api'),
+http = require('http'),
+path = require('path'),
+config = require('./config');
 
+var app = module.exports = express();
 
 /**
  * Configuration
@@ -38,38 +34,96 @@ var env = process.env.NODE_ENV || 'development';
 
 // development only
 if (env === 'development') {
-  app.use(errorhandler());
+	app.use(errorhandler());
 }
 
 // production only
 if (env === 'production') {
-  // TODO
+	// TODO
 }
+
+//Database connection
+api.db_connection.connect();
 
 /**
  * Routes
  */
 
+var router_customer = express.Router();
+
+var router_admin = express.Router();
+
+var router_private_function = function(req, res, next) {
+	console.log("Private");
+	// check header or url parameters or post parameters for token
+	var token = req.body.token || req.query.token || req.headers['x-access-token'];
+
+	// decode token
+	if (token) {
+
+		// verifies secret and checks exp
+		jwt.verify(token, app.get('superSecret'), function(err, decoded) {      
+			if (err) {
+				return res.json({ success: false, message: 'Failed to authenticate token.' });    
+			} else {
+				// if everything is good, save to request for use in other routes
+				req.decoded = decoded;  
+				next();
+			}
+		});
+
+	} else {
+		// if there is no token
+		// return an error
+
+		/*
+		return res.status(403).send({ 
+			success: false, 
+			message: 'No token provided.'
+		});
+		*/
+		res.send(403);
+		//next();
+	}
+};
+
+router_customer.use(router_private_function);
+router_admin.use(router_private_function);
+
 // serve index and view partials
 app.get('/', routes.index);
-app.get('/views/:name', routes.views);
+app.get('/home', routes.index);
 
 // JSON API
-app.get('/api/products', products_api.getAllProducts);
-app.get('/api/getCustomer/:email&:password', customers_api.getCustomer);
-app.get('/api/newCustomer/:name&:surname&:email&:password&:address&:coordinates&:credict_card', customers_api.newCustomer);
-//Test -> /api/newCustomer/Daniel&De los Reyes&dani@email.com&noessegura&TODO&[37.358716, -5.987814]&1234-12345678
 
-app.get('/api/resetDataset', management.resetDataset);
+app.get('/api/products', api.Products.getAllProducts);
+app.get('/api/getCustomer/:email&:password', api.Customer.getCustomer);
+app.get('/api/newCustomer/:name&:surname&:email&:password&:coordinates&:credict_card&:address&:country&:city&:phone', api.Customer.newCustomer);
+//Test-> /api/newCustomer/Daniel&De los Reyes&dani@email.com&noessegura&[37.358716,-5.987814]&1234-12345678&TODO&Spain&Sevile&111111111
 
-// redirect all others to the index (HTML5 history)
+
+
+app.get('/api/product/:code', api.Products.getProduct);
+
+app.get('/api/resetDataset', api.Management.resetDataset);
+
+
+app.post('/api/signup', api.Authentication.signup);
+app.post('/api/signin', api.Authentication.authenticate);
+
+//router_customer.get('/:route', routes.index);
+//router_admin.get('/:route', routes.index);
+
+//app.use('/customer', router_customer);
+//app.use('/admin', router_admin);
+
+// redirect all others to the index (HTML5 history) Use in production only
 app.get('*', routes.index);
-
 
 /**
  * Start Server
  */
 
-http.createServer(app).listen(app.get('port'), function () {
-  console.log('Express server listening on port ' + app.get('port'));
+ http.createServer(app).listen(app.get('port'), function () {
+	console.log('Express server listening on port ' + app.get('port'));
 });

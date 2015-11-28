@@ -5,23 +5,35 @@ var Product = require('../models/product');
 
 //Devuelve una lista con todos los productos de la coleccion
 exports.getAllProducts = function (req, res) {
-	//var connection = db_connection.connect;
 	console.log('Function-productsApi-getAllProducts');
 
 	//Find sin condiciones
 	Product.find(function(err,products){
-		if(err){
-			console.error(err);
+		var errors=db_connection.handleErrors(err);
+		if(errors){
+			console.log('---ERROR finding AllProduct - message: '+errors);
+			res.status(500).json({success: false, message: errors});
 		}else{
-			//console.log(products);
-			res.json(products);
+			res.status(200).json(products);
 		}
 	});
-	//connection.disconnect;
 };
 
 
+//Devuelve un producto de la coleccion
+exports.getProduct = function (req, res) {
+	console.log('Function-productsApi-getProduct');
+	var _code = req.params.code;
 
-
-
+	Product.findOne({'code':_code},function(err,product){
+		var errors=db_connection.handleErrors(err);
+		if(errors){
+			console.log('---ERROR finding Product: '+_code+' message: '+errors);
+			res.status(500).json({success: false, message: errors});
+		}else{
+			//console.log(products);
+			res.status(200).json(product);
+		}
+	});
+};
 
