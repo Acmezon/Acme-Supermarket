@@ -57,8 +57,6 @@ app.get('/home', routes.index);
 // JSON API
 app.get('/api/products', api.Products.getAllProducts);
 
-app.get('/api/resetDataset', api.db_connection.resetDataset);
-
 app.post('/api/signup', api.Authentication.signup);
 app.post('/api/signin', api.Authentication.authenticate);
 

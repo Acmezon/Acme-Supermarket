@@ -21,6 +21,7 @@ angular.module('acme_supermarket').registerCtrl('SigninCtrl', ['$scope', '$http'
 			email: $scope.email,
 			password: $scope.password
 		}).then(function success(response) {
+			$rootScope.loginFailed = false;
 			if(response.data.success == false) {
 				console.log(response.data);
 				$scope.loginFailed = true;
@@ -29,6 +30,7 @@ angular.module('acme_supermarket').registerCtrl('SigninCtrl', ['$scope', '$http'
 				$window.location.href = '/home';
 			}
 		}, function error(response) {
+			$rootScope.loginFailed = false;
 			$scope.loginFailed = true;
 		});
 	}

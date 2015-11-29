@@ -36,6 +36,8 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			}, function error(response) {
 				$rootScope.loginFailed = true;
 				$rootScope.loginFailedMessage = 'You need to log in.';
+				deferred.reject();
+				$location.url('/signin');
 			});
 
 			return deferred.promise;
