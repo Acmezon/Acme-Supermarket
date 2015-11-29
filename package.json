@@ -16,6 +16,11 @@
     "mongoose-validators": ">=0.1.0",
     "morgan": "^1.0.0",
     "should": ">=7.1.1",
+<<<<<<< HEAD
     "supertest": ">=1.1.0"
+=======
+    "jsonwebtoken": ">=5.4.1",
+    "mongoose-validators" : ">=0.1.0"
+>>>>>>> origin/Mongo-Mongoose
   }
 }

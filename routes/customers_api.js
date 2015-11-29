@@ -16,7 +16,7 @@ exports.getCustomer = function (req, res) {
 		}
 		else{
 			//if(custumer.)
-			//console.log('--Costumer found'+custumer);
+				console.log('---Customer not found, incorrect email');
 			res.json(custumer);
 			res.sendStatus(200);
 		}
@@ -31,23 +31,32 @@ exports.newCustomer = function (req, res) {
     var _surname = req.params.surname;
     var _email = req.params.email;
     var _password = req.params.password;
-    var _address = req.params.address;
     var _coordinates = req.params.coordinates;
-    var _credict_car = req.params.credict_card;
+    var _credict_card = req.params.credict_card;
+    var _address = req.params.address;
+    var _country = req.params.country;
+    var _city = req.params.city;
+    var _phone = req.params.phone;
+
+
+
 
     //TODO Chequear que los campos son correctos
 
 	
-    //var md5Password = crypto.createHash('md5').update(_password).digest("hex");
+    var md5Password = crypto.createHash('md5').update(_password).digest("hex");
 
     var newCustomer = new Customer({
 	    name: _name,
 	    surname: _surname,
 	    email: _email,
-	    password: _password,
-	    address: _address,
+	    password: md5Password,
 	    coordinates: _coordinates,
-	    credict_card: _credict_car
+	    credict_card: _credict_card,
+	    address: _address,
+	    country: _country,
+	    city: _city,
+	    phone: _phone
     });
 
 
@@ -75,6 +84,4 @@ exports.newCustomer = function (req, res) {
 	});
 
 };
-
-
 
