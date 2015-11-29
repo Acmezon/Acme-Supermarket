@@ -97,25 +97,20 @@ app.get('/home', routes.index);
 // JSON API
 
 app.get('/api/products', api.Products.getAllProducts);
-app.get('/api/getCustomer/:email&:password', api.Customer.getCustomer);
-app.get('/api/newCustomer/:name&:surname&:email&:password&:coordinates&:credict_card&:address&:country&:city&:phone', api.Customer.newCustomer);
-//Test-> /api/newCustomer/Daniel&De los Reyes&dani@email.com&noessegura&[37.358716,-5.987814]&1234-12345678&TODO&Spain&Sevile&111111111
+app.get('/api/getCustomer', api.Customer.getCustomer);
 
 
-
-app.get('/api/product/:code', api.Products.getProduct);
-
-app.get('/api/resetDataset', api.Management.resetDataset);
+app.get('/api/resetDataset', api.Management.resetDataset);//TODO Should not be public in the final version
 
 
 app.post('/api/signup', api.Authentication.signup);
 app.post('/api/signin', api.Authentication.authenticate);
 
-//router_customer.get('/:route', routes.index);
-//router_admin.get('/:route', routes.index);
+router_customer.get('/:route', routes.index);
+router_admin.get('/:route', routes.index);
 
-//app.use('/customer', router_customer);
-//app.use('/admin', router_admin);
+app.use('/customer', router_customer);
+app.use('/admin', router_admin);
 
 // redirect all others to the index (HTML5 history) Use in production only
 app.get('*', routes.index);

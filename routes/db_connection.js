@@ -23,7 +23,7 @@ exports.connect = function () {
 
 exports.disconnect = function () {
 	mongoose.disconnect();
-}
+};
 
 
 
@@ -32,7 +32,7 @@ exports.handleErrors = function(err){
 	var errors = null;
 	if(err){
 		errors = [];
-		//console.log(error)
+		console.log(err.errors)
 		keys = Object.keys(err.errors);
 		for(key in keys) {
 			key = keys[key];
@@ -43,4 +43,4 @@ exports.handleErrors = function(err){
 		}
 	}
 	return errors;
-}
+};

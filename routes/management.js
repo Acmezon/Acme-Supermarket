@@ -125,9 +125,6 @@ exports.resetDataset = function (req, res) {
 					console.log('---Admin: '+newAdmin.email);
 				}
 			});
-
-
-
 		}
 	});
 
