@@ -14,8 +14,14 @@
 			<div class="login-title">
        			<h4 class="title">Log in</h4>
 				<div id="loginbox" class="loginbox">
-					<form action="" method="post" name="signinForm" id="login-form" novalidate>
+					<form method="post" name="signinForm" id="login-form" ng-submit="submitSignin()" novalidate>
 						<fieldset class="input">
+							<div class="alert alert-danger" ng-show="loginFailed">
+								</span>{{loginFailedMessage}}</span>
+							</div>
+							<div class="alert alert-success" ng-show="registerCompleted">
+								</span>Register completed. Please, sign in.</span>
+							</div>
 							<!-- TODO: Change this username tags for email tags. Note: Check CSSs. By Dani.-->
 					    	<p id="login-form-username" ng-class="{ 'has-error' : signinForm.email.$invalid && !signinForm.email.$pristine }">
 					      		<label for="modlgn_username">Email</label>
@@ -48,7 +54,7 @@
 							    <p id="login-form-remember">
 							    	<label for="modlgn_remember"><a href="#">Remember Password</a></label>
 							   	</p>
-  								<input id="login-submit" type="submit" name="Submit" class="button" value="Login" ng-click="submitSignin()" ng-disabled="signinForm.$invalid">
+  								<input id="login-submit" type="submit" name="Submit" class="button" value="Login" ng-disabled="signinForm.$invalid">
 							    <div class="clear"></div>
 							</div>
 						</fieldset>

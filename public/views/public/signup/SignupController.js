@@ -1,15 +1,14 @@
 'use strict'
 
-angular.module('acme_supermarket').registerCtrl('SignupCtrl', ['$scope', '$http', '$window', function ($scope, $http, $window) {
+angular.module('acme_supermarket').registerCtrl('SignupCtrl', ['$scope', '$http', '$window', '$rootScope', function ($scope, $http, $window, $rootScope) {
 	
 	// Function invoked by login submit
 	$scope.submitSignUp = function() {
 		$http.post('/api/signup', $scope.customer)
 		.then(function success(response) {
+			$rootScope.registerCompleted = true;
 			$window.location.href = '/signin';
 		}, function error(response) {
-			console.log(response.status);
-			console.log(response.data);
 			angular.forEach(response.data.message, function(error_msg) {
 				var field = error_msg.key;
 				$scope.signupForm[field].$setValidity("invalid", false);
