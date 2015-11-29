@@ -1,7 +1,9 @@
-var db_connection = require('./db_connection')
-var Actor = require('../models/actor');
-var Customer = require('../models/customer');
-var jwt    = require('jsonwebtoken');
+var db_connection = require('./db_connection'),
+	Actor = require('../models/actor'),
+	Customer = require('../models/customer'),
+	jwt = require('jsonwebtoken'),
+	customer_api = require('./customers_api'),
+	cookieParser = require('cookie-parser');
 
 exports.authenticate = function (req, res) {
 
@@ -12,20 +14,23 @@ exports.authenticate = function (req, res) {
 		if (err) throw err;
 
 		if(!user){
-			res.json({success: false, message: 'Authentication failed. User not found.'});
+			res.json({success: false, message: 'Login failed. Email not found.'});
 		}else if (user) {
 			if(user.password != req.body.password) {
-				res.json({success: false, message: 'Authentication failed. Wrong password.'})
+				res.json({success: false, message: 'Login failed. Wrong password.'})
 			} else {
 				var token = jwt.sign(user, req.app.get('superSecret'), {
-					expiresInMinutes: 525600 //1 year
+					expiresIn: 365 * 24 * 60 * 60 //1 year
 				});
 
-				res.json({
-					success: true,
-					message: 'Login success.',
-					token: token
-				})
+				console.log(token);
+				res.cookie('session', {
+					token: token,
+					type: 'customer'
+				}, {
+					maxAge: 365 * 24 * 60 * 60 * 1000
+				});
+				res.json({success: true});
 			}
 		}
 	});
@@ -74,13 +79,30 @@ exports.signup = function (req, res) {
 	});
 };
 
-exports.checkToken = function(token) {
-	// verifies secret and checks exp
-	jwt.verify(token, app.get('superSecret'), function(err, decoded) {			
-		if (err) {
-			return false;
+exports.isAuthenticated = function(req, res) {
+	var cookie = req.cookies.session;
+
+	if (cookie !== undefined) {
+		var token = cookie.token;
+
+		// decode token
+		if (token) {
+
+			// verifies secret and checks exp
+			jwt.verify(token, req.app.get('superSecret'), function(err, decoded) {
+				if (err) {
+					res.sendStatus(401);
+				} else {
+					// if everything is good, save to request for use in other routes
+					req.decoded = decoded;
+					res.json({success: true});
+				}
+			});
+
 		} else {
-			return true;
+			res.sendStatus(401);
 		}
-	});
-}
+	} else {
+		res.sendStatus(401);
+	}
+};
