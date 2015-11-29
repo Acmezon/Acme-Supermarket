@@ -64,6 +64,8 @@ app.post('/api/signin', api.Authentication.authenticate);
 
 app.get('/islogged', api.Authentication.isAuthenticated)
 
+app.get('/api/resetDataset', api.Management.resetDataset);
+
 // redirect all others to the index (HTML5 history) Use in production only
 app.get('*', routes.index);
 
