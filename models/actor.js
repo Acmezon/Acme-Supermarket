@@ -6,8 +6,8 @@ var actorSchema = mongoose.Schema({
 	surname: {type: String, required: true},
 	email: {type: String, unique: true, validate: validators.isEmail()},
 	password: {type: String, required: true}
-});
+}/*, {collection: 'actors', discriminatorKey: '_type'}*/);
 
 exports.schema = actorSchema;
 
-exports.model = mongoose.model('Actor', actorSchema);
+module.exports = mongoose.model('Actor', actorSchema);

@@ -6,10 +6,10 @@ var mongoose = require('mongoose'),
 var customerSchema = Actor.schema.extend({
 	coordinates: String, //TODO validator [number,number]
 	credit_card: {type: String, validate: validators.isCreditCard()},
-	address: {type: String, require: true},
-	country: {type: String, require: true},
-	city: {type: String, require: true},
-	phone: {type: String, require: true, validate: validators.isLength(9, 15)}
+	address: {type: String, required: true},
+	country: {type: String, required: true},
+	city: {type: String, required: true},
+	phone: {type: String, required: true, validate: validators.isLength(9, 15)}
 });
 
 module.exports = mongoose.model('Customer', customerSchema);

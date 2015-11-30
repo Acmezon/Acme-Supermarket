@@ -1,4 +1,4 @@
-var db_connection = require('./db_connection');
+var db_utils = require('./db_utils');
 var Customer = require('../models/customer');
 var Product = require('../models/product');
 var Admin = require('../models/admin');
@@ -38,7 +38,7 @@ exports.resetDataset = function (req, res) {
 
 
 			product1.save(function (err) {
-				var errors = db_connection.handleErrors(err);
+				var errors = null;//TODO: db_utils.handleErrors(err);
 
 				if(errors) {
 					console.log('---ERROR saving Product: '+product1.name+' message: '+errors);
@@ -50,7 +50,7 @@ exports.resetDataset = function (req, res) {
 			});
 
 			product2.save(function (err) {
-				var errors = db_connection.handleErrors(err);
+				var errors = null;//db_utils.handleErrors(err);
 
 				if(errors) {
 					console.log('---ERROR saving Product: '+product2.name+' message: '+errors);
@@ -88,7 +88,7 @@ exports.resetDataset = function (req, res) {
 			});
 
 			customer1.save(function (err) {
-				var errors = db_connection.handleErrors(err);
+				var errors = null; //TODO: db_utils.handleErrors(err);
 		  		if(errors){
 					console.log('---ERROR saving Customer: '+customer1.email+' message: '+errors);
 				}
@@ -117,7 +117,7 @@ exports.resetDataset = function (req, res) {
 			});
 			
 			newAdmin.save(function (err) {
-				var errors = db_connection.handleErrors(err);
+				var errors = null; //TODO: db_utils.handleErrors(err);
 		  		if(errors){
 					console.log('---ERROR saving Admin: '+newAdmin.email+' message: '+errors);
 				}
@@ -125,9 +125,6 @@ exports.resetDataset = function (req, res) {
 					console.log('---Admin: '+newAdmin.email);
 				}
 			});
-
-
-
 		}
 	});
 

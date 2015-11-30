@@ -26,4 +26,8 @@ angular.module('acme_supermarket').registerCtrl('SignupCtrl', ['$scope', '$http'
 			$scope.signupForm.country.$setValidity("invalid", false);
 	}
 
+	$scope.setValid = function (field) {
+		$scope.signupForm[field].$setValidity("invalid", true);
+	}
+
 }]);

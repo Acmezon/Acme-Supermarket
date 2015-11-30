@@ -1,6 +1,6 @@
 //var crypto = require('crypto');//Necesario para encriptacion por MD5
 
-var db_connection = require('./db_connection');
+var db_utils = require('./db_utils');
 var Product = require('../models/product');
 
 //Devuelve una lista con todos los productos de la coleccion
@@ -9,8 +9,9 @@ exports.getAllProducts = function (req, res) {
 
 	//Find sin condiciones
 	Product.find(function(err,products){
-		var errors=db_connection.handleErrors(err);
-		if(errors){
+		//TODO: Comprobar errores correctamente
+		var errors= [];//db_utils.handleErrors(err);
+		if(errors.length > 0){
 			console.log('---ERROR finding AllProduct - message: '+errors);
 			res.status(500).json({success: false, message: errors});
 		}else{
@@ -26,7 +27,8 @@ exports.getProduct = function (req, res) {
 	var _code = req.params.code;
 
 	Product.findOne({'code':_code},function(err,product){
-		var errors=db_connection.handleErrors(err);
+		//TODO: Comprobar errores correctamente
+		var errors= [];//db_utils.handleErrors(err);
 		if(errors){
 			console.log('---ERROR finding Product: '+_code+' message: '+errors);
 			res.status(500).json({success: false, message: errors});

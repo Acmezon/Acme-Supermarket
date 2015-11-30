@@ -24,13 +24,19 @@ exports.connect = function () {
 
 exports.disconnect = function () {
 	mongoose.disconnect();
-}
+};
 
-exports.handleErrors = function(err){
-	var errors = null;
-	if(err){
-		errors = [];
-		//console.log(error)
+exports.handleInsertErrors = function(err){
+	var errors = [];
+
+	if(err != null && err.code == 11000){
+		if(err.message.indexOf('duplicate') > -1 && err.message.indexOf('email') > -1) {
+			errors.push({
+				key: "email",
+				vale : "ValidationError"
+			});
+		}
+	} else if (err != null) {
 		keys = Object.keys(err.errors);
 		for(key in keys) {
 			key = keys[key];
@@ -41,4 +47,4 @@ exports.handleErrors = function(err){
 		}
 	}
 	return errors;
-}
+};

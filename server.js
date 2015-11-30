@@ -45,7 +45,7 @@ if (env === 'production') {
 }
 
 //Database connection
-api.db_connection.connect();
+api.db_utils.connect();
 
 /**
  * Routes
