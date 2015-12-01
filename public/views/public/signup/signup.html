@@ -7,64 +7,21 @@
 	   	<form method="post" name="signupForm" id="submit-form" ng-submit="submitSignUp()" ng-controller="SignupCtrl" novalidate>
 		 	<div class="col_1_of_2 span_1_of_2">
    			 	<div>
-   			 		<input name="name" type="text" value="Name" placeholder="Name" ng-model="customer.name" ng-blur="setValid('name')" required>
-   			 		<span style="color:red" ng-show="signupForm.name.$dirty && signupForm.name.$invalid">
-						<span ng-show="signupForm.name.$error.required">
-							Name is required.
-						</span>
-						<span ng-show="signupForm.name.$error.invalid">
-							Name is not valid.
-						</span>
-  					</span>
+   			 		<input name="name" type="text" value="Name" placeholder="Name" ng-model="customer.name" ng-blur="setValid('name')" ng-class="{'has-error': signupForm.name.$dirty && (signupForm.name.$error.required || signupForm.name.$error.invalid)}" required>
    			 	</div>
     			<div>
-    				<input name="surname" type="text" value="Surname" placeholder="Surname" ng-model="customer.surname" ng-blur="setValid('surname')" required>
-    				<span style="color:red" ng-show="signupForm.surname.$dirty && signupForm.surname.$invalid">
-						<span ng-show="signupForm.surname.$error.required">
-							Surname is required.
-						</span>
-						<span ng-show="signupForm.surname.$error.invalid">
-							Surname is not valid.
-						</span>
-  					</span>
+    				<input name="surname" type="text" value="Surname" placeholder="Surname" ng-model="customer.surname" ng-blur="setValid('surname')" ng-class="{'has-error': signupForm.surname.$dirty && (signupForm.surname.$error.required || signupForm.surname.$error.invalid)}" required>
     			</div>
     			<div>
-    				<input name="email" type="email" value="E-Mail" placeholder="Email" ng-model="customer.email" autocomplete="off" ng-blur="setValid('email')" required>
-    				<span style="color:red" ng-show="signupForm.email.$dirty && signupForm.email.$invalid">
-						<span ng-show="signupForm.email.$error.required">
-							Email is required.
-						</span>
-						<span ng-show="signupForm.email.$error.email">
-							Must be an email
-						</span>
-						<span ng-show="signupForm.email.$error.invalid">
-							Email is not valid.
-						</span>
-  					</span>
+    				<input name="email" type="email" value="E-Mail" placeholder="Email" ng-model="customer.email" autocomplete="off" ng-blur="setValid('email')" ng-class="{'has-error': signupForm.email.$dirty && (signupForm.email.$error.required || signupForm.email.$error.invalid || signupForm.email.$error.email)}" required>
     			</div>
     			<div>
-    				<input name="password" type="password" placeholder="Password" autocomplete="off" ng-model="customer.password" ng-minlength="8" ng-maxlength="32" ng-blur="setValid('password')" required>
-    				<span style="color:red" ng-show="signupForm.password.$dirty && signupForm.password.$invalid">
-						<span ng-show="signupForm.password.$error.required">
-							Password is required.
-						</span>
-						<span ng-show="signupForm.password.$error.invalid">
-							Password is not valid.
-						</span>
-  					</span>
+    				<input name="password" type="password" placeholder="Password" autocomplete="off" ng-model="customer.password" ng-minlength="8" ng-maxlength="32" ng-blur="setValid('password')" ng-class="{'has-error': signupForm.password.$dirty && (signupForm.password.$error.required || signupForm.password.$error.invalid || signupForm.password.$error.minlength || signupForm.password.$error.maxlength)}" required>
     			</div>
     	 	</div>
     	  	<div class="col_1_of_2 span_1_of_2">	
     			<div>
-    				<input name="address" type="text" value="Address" ng-model="customer.address" placeholder="Address" ng-blur="setValid('address')" required>
-    				<span style="color:red" ng-show="signupForm.address.$dirty && signupForm.address.$invalid">
-						<span ng-show="signupForm.address.$error.required">
-							Address is required.
-						</span>
-						<span ng-show="signupForm.address.$error.invalid">
-							Address is not valid.
-						</span>
-  					</span>
+    				<input name="address" type="text" value="Address" ng-model="customer.address" placeholder="Address" ng-blur="setValid('address')" ng-class="{'has-error': signupForm.address.$dirty && (signupForm.address.$error.required || signupForm.address.$error.invalid)}" required>
     			</div>
     			<div>
     				<select id="country" name="country" value="Select a country" ng-model="customer.country" class="frm-field required" ng-change="validateCountry()">
@@ -317,43 +274,13 @@
 						<option value="Zambia">Zambia</option>
 						<option value="Zimbabwe">Zimbabwe</option>
          			</select>
-         			<span style="color:red" ng-show="signupForm.country.$dirty && signupForm.country.$invalid">
-						<span ng-show="signupForm.country.$error.required">
-							Country is required.
-						</span>
-						<span ng-show="signupForm.country.$error.invalid">
-							Country is not valid.
-						</span>
-  					</span>
          		</div>		        
           	<div>
-          		<input name="city" type="text" value="City" ng-model="customer.city" placeholder="City" ng-blur="setValid('city')" required>
-          		<span style="color:red" ng-show="signupForm.city.$dirty && signupForm.city.$invalid">
-					<span ng-show="signupForm.city.$error.required">
-						City is required.
-					</span>
-					<span ng-show="signupForm.city.$error.invalid">
-						City is not valid.
-					</span>
-				</span>
+          		<input name="city" type="text" value="City" ng-model="customer.city" placeholder="City" ng-blur="setValid('city')" ng-class="{'has-error': signupForm.city.$dirty && (signupForm.city.$error.required || signupForm.city.$error.invalid)}" required>
           	</div>
            	<div>
           	</div>
-          	<input class="phone" name="phone" type="text" value="Phone number" ng-model="customer.phone" placeholder="Phone" ng-minlength="9" ng-maxlength="15" ng-blur="setValid('phone')" required>
-          	<span style="color:red" ng-show="signupForm.phone.$dirty && signupForm.phone.$invalid">
-					<span ng-show="signupForm.phone.$error.required">
-						Phone number is required.
-					</span>
-					<span ng-show="loginForm.phone.$error.minlength">
-  						Phone number is too short.
-					</span>
-					<span ng-show="loginForm.phone.$error.maxlength">
-						Phone number is too long.
-					</span>
-					<span ng-show="signupForm.phone.$error.invalid">
-						Phone is not valid.
-					</span>
-				</span>
+          	<input class="phone" name="phone" type="text" value="Phone number" ng-model="customer.phone" placeholder="Phone" ng-minlength="9" ng-maxlength="15" ng-blur="setValid('phone')" ng-pattern="/^\d*$/" ng-class="{'has-error': signupForm.phone.$dirty && (signupForm.phone.$error.required || signupForm.phone.$error.invalid) || signupForm.phone.$error.minlength || signupForm.phone.$error.maxlength || signupForm.phone.$error.pattern}" required>
           	</div>
       		<button id="signup-submit" type="submit" name="submit" class="grey" ng-disabled="signupForm.$invalid">Submit</button>
     	<p class="terms">By clicking 'Create Account' you agree to the <a href="/terms">Terms &amp; Conditions</a>.</p>

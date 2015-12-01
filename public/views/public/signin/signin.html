@@ -26,29 +26,10 @@
 					    	<p id="login-form-username" ng-class="{ 'has-error' : signinForm.email.$invalid && !signinForm.email.$pristine }">
 					      		<label for="modlgn_username">Email</label>
 					      		<input id="modlgn_username" type="email" name="email" class="inputbox" size="18" autocomplete="off" ng-model="email" required>
-					      		<span style="color:red" ng-show="signinForm.email.$dirty && signinForm.email.$invalid">
-  									<span ng-show="signinForm.email.$error.required">
-  										Email is required.
-  									</span>
-  									<span ng-show="signinForm.email.$error.email">
-  										Must be an email
-  									</span>
-  								</span>
 					    	</p>
 					    	<p id="login-form-password">
 					      		<label for="modlgn_passwd">Password</label>
 					      		<input id="modlgn_passwd" type="password" name="password" class="inputbox" size="18" autocomplete="off" ng-model="password" ng-minlength="8" ng-maxlength="32" required>
-					      		<span style="color:red" ng-show="signinForm.password.$dirty && signinForm.password.$invalid">
-  									<span ng-show="signinForm.password.$error.required">
-  										Password is required.
-  									</span>
-  									<span ng-show="signinForm.password.$error.minlength">
-  										Password is too short.
-  									</span>
-  									<span ng-show="signinForm.password.$error.maxlength">
-  										Password is too long.
-  									</span>
-  								</span>
 					    	</p>
 					    	<div class="remember">
 							    <p id="login-form-remember">
