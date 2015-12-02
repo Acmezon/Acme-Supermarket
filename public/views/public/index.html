@@ -7,7 +7,6 @@
 	<title>Acme-Supermarket - Home</title>
 	<link href="css/template_bootstrap/style.css" rel="stylesheet" type="text/css" media="all" />
     <link href="css/template_bootstrap/form.css" rel="stylesheet" type="text/css" media="all" />
-    <link href="css/template_bootstrap/easydropdown.metro.css" rel="stylesheet" type="text/css" media="all" />
     
     <link href='http://fonts.googleapis.com/css?family=Exo+2' rel='stylesheet' type='text/css' />
 
@@ -30,18 +29,15 @@
 </head>
 <body>
 
-	<div ng-include src="'views/header.html'"></div>
+	<div ng-include src="'views/public/header.html'"></div>
 
 	<div ng-view></div>
 
-	<div ng-include src="'views/footer.html'"></div>
+	<div ng-include src="'views/public/footer.html'"></div>
 	
-
-
-	
-
 	<script src="js/lib/angular/angular.js"></script>
 	<script src="js/lib/angular/angular-route.js"></script>
+	<script src="js/lib/angular/angular-resource.js"></script>
 	<script src="js/app.js"></script>
 	<script src="js/services.js"></script>
 	<script src="js/controllers/main.js"></script>

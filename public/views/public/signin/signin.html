@@ -1,6 +1,6 @@
-<script src="views/login/LoginController.js"></script>
+<script src="views/public/signin/SigninController.js"></script>
 
-<div class="login" ng-controller="LoginCtrl">
+<div class="login" ng-controller="SigninCtrl">
   	<div class="wrap">
 		<div class="col_1_of_login span_1_of_login">
 			<h4 class="title">New Customers</h4>
@@ -14,21 +14,28 @@
 			<div class="login-title">
        			<h4 class="title">Log in</h4>
 				<div id="loginbox" class="loginbox">
-					<form action="" method="post" name="login" id="login-form">
+					<form method="post" name="signinForm" id="login-form" ng-submit="submitSignin()" novalidate>
 						<fieldset class="input">
-					    	<p id="login-form-username">
+							<div class="alert alert-danger" ng-show="loginFailed">
+								</span>{{loginFailedMessage}}</span>
+							</div>
+							<div class="alert alert-success" ng-show="registerCompleted">
+								</span>Register completed. Please, sign in.</span>
+							</div>
+							<!-- TODO: Change this username tags for email tags. Note: Check CSSs. By Dani.-->
+					    	<p id="login-form-username" ng-class="{ 'has-error' : signinForm.email.$invalid && !signinForm.email.$pristine }">
 					      		<label for="modlgn_username">Email</label>
-					      		<input id="modlgn_username" type="text" name="email" class="inputbox" size="18" autocomplete="off" ng-model="customer.email">
+					      		<input id="modlgn_username" type="email" name="email" class="inputbox" size="18" autocomplete="off" ng-model="email" required>
 					    	</p>
 					    	<p id="login-form-password">
 					      		<label for="modlgn_passwd">Password</label>
-					      		<input id="modlgn_passwd" type="password" name="password" class="inputbox" size="18" autocomplete="off" ng-model="customer.password">
+					      		<input id="modlgn_passwd" type="password" name="password" class="inputbox" size="18" autocomplete="off" ng-model="password" ng-minlength="8" ng-maxlength="32" required>
 					    	</p>
 					    	<div class="remember">
 							    <p id="login-form-remember">
 							    	<label for="modlgn_remember"><a href="#">Remember Password</a></label>
 							   	</p>
-							   	<button id="login-submit" class="grey" ng-click="login()">Login</button>
+  								<input id="login-submit" type="submit" name="Submit" class="button" value="Login" ng-disabled="signinForm.$invalid">
 							    <div class="clear"></div>
 							</div>
 						</fieldset>
