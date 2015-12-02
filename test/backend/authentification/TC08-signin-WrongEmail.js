@@ -5,7 +5,7 @@ var assert = require('assert');
 describe("Post email and password to the API", function (){
 	it("authenticate into the system ", function(){
 		var identification = {
-			email : 'johndoe@mail.com',
+			email : 'a@a.a',
 			password : 'password'
 		};
 
@@ -13,13 +13,7 @@ describe("Post email and password to the API", function (){
 			.post("/api/signin")
 			.send(identification)
 			.end(function(err, res){
-				if(err){
-					console.log("Error Signing-in (TC06-singin) -> message: "+err);
-					throw err;
-				}else{
-					res.status.should.be.equal(200);
-				}
-				
+				res.status.should.be.equal(200);	
 			});
 	});
 });

@@ -5,14 +5,14 @@ var assert = require('assert');
 describe("Post a customer to the API", function (){
 	it("create a new entry in the customers collection, should respond 200", function(){
 		var customer = {
-			name : 'Daniel',
-			surname : 'De los Reyes',
-			email : 'dani@email.com',
-			password : 'noessegura',
+			name : 'John',
+			surname : 'Doe',
+			email : 'johndoe2@mail.com',
+			password : 'password',
 			credit_card: '5430599805623360',
 			address : 'Avda. Reina Mercedes, s/n',
 			country : 'Spain',
-			city : 'Sevile',
+			city : 'Seville',
 			phone : '111111111'
 		};
 

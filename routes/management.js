@@ -73,11 +73,11 @@ exports.resetDataset = function (req, res) {
 		}else{
 			console.log('--customers collection removed');
 			console.log('--Populating customers');
-			var customer1Password = crypto.createHash('md5').update('esmuysegura').digest("hex");
+			var customer1Password = crypto.createHash('md5').update('password').digest("hex");
 			var customer1 = new Customer({ 
-				"name": "Pablo", 
-				"surname": "Carrasco",
-				"email": "reder.pablo@gmail.com",
+				"name": "John", 
+				"surname": "Doe",
+				"email": "johndoe@mail.com",
 				"password": customer1Password, 
 				"coordinates": "[37.358716, -5.987814]",
 				"credict_card": "1234567890123456",
@@ -107,11 +107,11 @@ exports.resetDataset = function (req, res) {
 			console.log('--admin collection removed');
 			console.log('--Populating admin');
 
-			var adminPassword = crypto.createHash('md5').update('adminuser').digest("hex");
+			var adminPassword = crypto.createHash('md5').update('password').digest("hex");
 			var newAdmin = new Admin({ 
-				"name": "adminuser", 
+				"name": "admin", 
 				"surname": "i have the power",
-				"email": "adminuser@email.com",
+				"email": "admin@mail.com",
 				"password": adminPassword, 
 
 			});

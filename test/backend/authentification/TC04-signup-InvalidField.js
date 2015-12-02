@@ -5,14 +5,14 @@ var assert = require('assert');
 describe("Post a customer to the API", function (){
 	it("try to create a customer with an invalid value on credit_card, should respond 500", function(){
 		var customer = {
-			name : 'Pablo',
-			surname : 'Camacho',
+			name : 'John',
+			surname : 'Doe',
 			email : 'pablo@email.com',
-			password : 'noessegura',
+			password : 'password',
 			credit_card: '54305998056233',
 			address : 'Avda. Reina Mercedes, s/n',
 			country : 'Spain',
-			city : 'Sevile',
+			city : 'Seville',
 			phone : '111111111'
 		};
 

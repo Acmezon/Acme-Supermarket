@@ -3,16 +3,17 @@ var should = require('should');
 var assert = require('assert');
 
 describe("Post a customer to the API", function (){
-	it("try to create a customer with an missing field (phone), should respond 500", function(){
+	it("try to create a customer with an existing email, should respond 500", function(){
 		var customer = {
-			name : 'Pablo',
-			surname : 'Camacho',
-			email : 'pablo@email.com',
-			password : 'noessegura',
+			name : 'John',
+			surname : 'Doe',
+			email : 'johndoe@gmail.com',
+			password : 'password',
 			credit_card: '5430599805623360',
 			address : 'Avda. Reina Mercedes, s/n',
 			country : 'Spain',
-			city : 'Sevile'
+			city : 'Seville',
+			phone : '111111111'
 		};
 
 		request("http://localhost:3000")
