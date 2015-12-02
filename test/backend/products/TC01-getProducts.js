@@ -3,7 +3,7 @@ var should = require('should');
 var assert = require('assert');
 
 describe("Get products from the API", function (){
-	it("get products from the Products api", function(){
+	it("Get products from the products API", function(){
 
 		request("http://localhost:3000")
 			.get("/api/products")

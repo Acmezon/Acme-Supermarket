@@ -1,32 +1,41 @@
-/*
- * Api for mongodb
- */
+//var crypto = require('crypto');//Necesario para encriptacion por MD5
 
-//MongoDB
-var MongoClient = require('mongodb').MongoClient;
-var assert = require('assert');
-var ObjectId = require('mongodb').ObjectID;
-var url = 'mongodb://localhost:27017/Acme-Supermarket';
+var db_utils = require('./db_utils');
+var Product = require('../models/product');
 
+//Devuelve una lista con todos los productos de la coleccion
 exports.getAllProducts = function (req, res) {
-	//Conexion a mongoDB
-	MongoClient.connect(url, function(err, db) {
-		assert.equal(null, err);
+	console.log('Function-productsApi-getAllProducts');
 
-		//Find de todos los productos
-		var cursor = db.collection('products').find( );
-
-		//Por cada documento encontrado en el Find se mete en documentos
-		var documentos = [];
-		cursor.each(function(err, doc) {
-			assert.equal(err, null);
-			if (doc != null) {
-				documentos.push(doc);
-			} else {
-				db.close();
-				//Transformamos la cola de documentos a JSON
-				res.json(documentos);
-			}
-		});
+	//Find sin condiciones
+	Product.find(function(err,products){
+		//TODO: Comprobar errores correctamente
+		var errors= [];//db_utils.handleErrors(err);
+		if(errors.length > 0){
+			console.log('---ERROR finding AllProduct - message: '+errors);
+			res.status(500).json({success: false, message: errors});
+		}else{
+			res.status(200).json(products);
+		}
 	});
 };
+
+
+//Devuelve un producto de la coleccion
+exports.getProduct = function (req, res) {
+	console.log('Function-productsApi-getProduct');
+	var _code = req.params.code;
+
+	Product.findOne({'code':_code},function(err,product){
+		//TODO: Comprobar errores correctamente
+		var errors= [];//db_utils.handleErrors(err);
+		if(errors){
+			console.log('---ERROR finding Product: '+_code+' message: '+errors);
+			res.status(500).json({success: false, message: errors});
+		}else{
+			//console.log(products);
+			res.status(200).json(product);
+		}
+	});
+};
+
