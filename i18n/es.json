@@ -1,0 +1,42 @@
+{
+	"LanguageNames": {
+		"en": "Inglés",
+		"es": "Español"
+	},
+	"Home": {
+		"title": "Inicio",
+		"FeaturedProducts" : "Productos Destacados",
+		"New" : "Nuevo",
+		"NewProducts" : "Productos Nuevos",
+		"CheckItOut" : "Consíguelo",
+		"NewslettersSignup" : "Suscribirse al <br> Newsletter",
+		"Subscribe" : "Suscribirse"
+	},
+	"Header": {
+		"Account" : "Mi cuenta",
+		"Checkout" : "Ir al carrito",
+		"Signin" : "Iniciar sesión",
+		"Signup" : "Registrarse",
+		"ProductList" : "Productos",
+		"Search" : "Buscar",
+		"NoProducts" : "Sin productos",
+		"Cart" : "Carrito"
+ 	},
+	"Footer": {
+		"AboutUs" : "Sobre nosotros",
+		"DeliveryReturns" : "Envíos y Devoluciones",
+		"TermsConditions" : "Términos y Condiciones",
+		"ContactUs" : "Contacta",
+		"Information" : "Información"
+	},
+	"Products" : {
+		"Products" : "Productos",
+		"SortBy" : "Ordenar por",
+		"Random" : "Aleatoriamente",
+		"Name" : "Nombre",
+		"Price": "Precio",
+		"Show" : "Mostrar",
+		"PerPage" : "por página",
+		"Pages" : "Páginas"
+	}
+}

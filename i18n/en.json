@@ -1,0 +1,42 @@
+{
+	"LanguageNames": {
+		"en": "English",
+		"es": "Spanish"
+	},
+	"Home": {
+		"title": "Home",
+		"FeaturedProducts" : "Featured Products",
+		"New" : "New",
+		"NewProducts" : "Mew Products",
+		"CheckItOut" : "Check It out",
+		"NewslettersSignup" : "Newsletters <br> Signup",
+		"Subscribe" : "Subscribe",
+	},
+	"Header": {
+		"Account" : "Account",
+		"Checkout" : "Checkout",
+		"Signin" : "Sign in",
+		"Signup" : "Sign up",
+		"ProductList" : "Product list",
+		"Search" : "Search",
+		"NoProducts" : "No products",
+		"Cart" : "Cart"
+	},
+	"Footer": {
+		"AboutUs" : "About Us",
+		"DeliveryReturns" : "Delivery & Returns",
+		"TermsConditions" : "Terms & Conditions",
+		"ContactUs" : "Contact Us",
+		"Information" : "Information"
+	},
+	"Products" : {
+		"Products" : "Products",
+		"SortBy" : "Sort By",
+		"Random" : "Random",
+		"Name" : "Name",
+		"Price": "Price",
+		"Show" : "Show",
+		"PerPage" : "per page",
+		"Pages" : "Pages"
+	}
+}
