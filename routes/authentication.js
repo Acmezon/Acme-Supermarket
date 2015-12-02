@@ -7,8 +7,6 @@ var db = require('./db_utils'),
 	cookieParser = require('cookie-parser');
 
 exports.authenticate = function (req, res) {
-
-	//TODO check if is Admin
 	Actor.findOne({
 		email: req.body.email
 	}, function (err, user){
@@ -64,56 +62,6 @@ exports.signup = function (req, res) {
 			}
 		}
 	);
-	/*
-	//Check if the email is already in use
-	Actor.findOne({email: req.body.email}, function(err,actor){
-		var errors=db_utils.handleErrors(err);
-
-		if(errors) {
-			console.log('--Error in findOne actor by email -> errors:'+errors);
-			throw err;
-		} else {
-			if(actor != null){
-				console.log('Email '+req.body.email+' is already in use');
-				res.status(500).json({success: false, message: 'Email already in use'});
-			}
-			else{
-				//console.log('Email '+req.body.email+' is available');
-				var user = new Customer({
-					name : req.body.name,
-					surname : req.body.surname,
-					email : req.body.email,
-					password : req.body.password,
-					credit_card: req.body.credit_card,
-					address : req.body.address,
-					country : req.body.country,
-					city : req.body.city,
-					phone : req.body.phone
-				});
-
-				user.save(function(err) {
-					var errors = [];
-					if(err) {
-						var keys = Object.keys(err.errors);
-						for(key in keys) {
-							key = keys[key];
-							errors.push({
-								key: key,
-								value: err.errors[key].name
-							});
-						}
-					}
-		
-					if(errors.length > 0) {
-						res.status(500).json({success: false, message: errors});
-					} else {
-						res.status(200).json({success: true});
-					}
-				});
-			}
-		}
-	});
-	*/
 };
 
 exports.isAuthenticated = function(req, res) {
