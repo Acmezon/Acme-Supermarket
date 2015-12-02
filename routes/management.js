@@ -2,6 +2,8 @@ var db_utils = require('./db_utils');
 var Customer = require('../models/customer');
 var Product = require('../models/product');
 var Admin = require('../models/admin');
+var Credit_card = require('../models/credit_card');
+var credit_card_api = require('./credit_card_api');
 var crypto = require('crypto');//Necesario para encriptacion por MD5
 var mongoose = require('mongoose');//Para la generacion de ids
 
@@ -38,30 +40,39 @@ exports.resetDataset = function (req, res) {
 
 
 			product1.save(function (err) {
-				var errors = null;//TODO: db_utils.handleErrors(err);
+				var errors = db_utils.handleInsertErrors(err);
 
-				if(errors) {
+				if(errors.lenght>0) {
 					console.log('---ERROR saving Product: '+product1.name+' message: '+errors);
 				} 
 				else{
-					console.log('---Product: '+product1.name);
+					console.log('---new Product: '+product1.name);
 				}
 
 			});
 
 			product2.save(function (err) {
-				var errors = null;//db_utils.handleErrors(err);
+				var errors = db_utils.handleInsertErrors(err);
 
-				if(errors) {
+				if(errors.lenght>0) {
 					console.log('---ERROR saving Product: '+product2.name+' message: '+errors);
 				} 
 				else{
-					console.log('---Product: '+product2.name);
+					console.log('---new Product: '+product2.name);
 				}
 
 			});
 
 
+		}
+	});
+
+	Credit_card.remove({}, function(err) {
+		if(err){
+			console.log('--ERROR credit_cards collection NOT removed');
+			console.error(err);
+		}else{
+			console.log('--credit_cards collection removed');
 		}
 	});
 
@@ -72,15 +83,40 @@ exports.resetDataset = function (req, res) {
 			console.error(err);
 		}else{
 			console.log('--customers collection removed');
-			console.log('--Populating customers');
+			console.log('--Populating customers and credit_cards');
 			var customer1Password = crypto.createHash('md5').update('password').digest("hex");
+
+
+			var credit_card1 = new Credit_card({
+				"holderName": "Pablo Carrasco",
+				"brandName": "VISA",
+				"number": "4556-8129-6993-2217",
+				"expirationMonth": 7,
+				"expirationYear": 2030,
+				"cwCode": 123
+			});
+
+			//Synchronous
+			credit_card_api.newCredit_card(credit_card1, 
+				function (errors) {
+					if(errors.length > 0) {
+						console.log('---ERROR saving Credict_card: '+credit_card1.holderName+' message: '+errors);
+					} else {
+						console.log('---new Credict_card: '+credit_card1.number);
+					}
+				}
+			);
+
+			//console.log('credit_card1._id: '+credit_card1.id);
+			
+
 			var customer1 = new Customer({ 
 				"name": "John", 
 				"surname": "Doe",
 				"email": "johndoe@mail.com",
 				"password": customer1Password, 
 				"coordinates": "[37.358716, -5.987814]",
-				"credict_card": "1234567890123456",
+				"credit_card": credit_card1.id,
 				"address": "Avda. Reina Mercedes, s/n",
 				"country": "Spain",
 				"city": "Sevilla",
@@ -88,12 +124,12 @@ exports.resetDataset = function (req, res) {
 			});
 
 			customer1.save(function (err) {
-				var errors = null; //TODO: db_utils.handleErrors(err);
-		  		if(errors){
+				var errors = db_utils.handleInsertErrors(err);
+		  		if(errors.lenght>0){
 					console.log('---ERROR saving Customer: '+customer1.email+' message: '+errors);
 				}
 				else{
-					console.log('---Customer: '+customer1.email);
+					console.log('---new Customer: '+customer1.email);
 				}
 			});
 		}
@@ -117,8 +153,8 @@ exports.resetDataset = function (req, res) {
 			});
 			
 			newAdmin.save(function (err) {
-				var errors = null; //TODO: db_utils.handleErrors(err);
-		  		if(errors){
+				var errors = db_utils.handleInsertErrors(err);
+		  		if(errors.lenght>0){
 					console.log('---ERROR saving Admin: '+newAdmin.email+' message: '+errors);
 				}
 				else{

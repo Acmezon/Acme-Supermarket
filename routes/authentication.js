@@ -14,8 +14,8 @@ exports.authenticate = function (req, res) {
 			res.json({success: false, message: 'Server error. Please, try again later.'});
 		}
 
-		console.log(user);
 		if(!user){
+			console.log('User email in use :'+user);
 			res.json({success: false, message: 'Login failed. Email not found.'});
 		}else if (user) {
 			var md5Password = crypto.createHash('md5').update(req.body.password).digest("hex");
@@ -27,12 +27,28 @@ exports.authenticate = function (req, res) {
 				});
 
 				console.log(token);
+
+				//Check the type of user
+				var _type = 'customer';
+				if(user._type == 'Admin'){
+					console.log('---'+req.body.email + ' is an Admin');
+					_type = 'admin';
+				}else if(user._type == 'Supplier'){
+					console.log('---'+req.body.email + ' is an Supplier');
+					_type = 'supplier';
+				}else if(user._type == 'Customer'){
+					_type = 'customer';
+				}else{
+					res.json({success: false, message: 'Undefined type of user, contact the support team'});
+				}
+
 				res.cookie('session', {
 					token: token,
-					type: 'customer'
+					type: _type
 				}, {
 					maxAge: 365 * 24 * 60 * 60 * 1000
 				});
+
 				res.json({success: true});
 			}
 		}

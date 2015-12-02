@@ -9,9 +9,7 @@ exports.getAllProducts = function (req, res) {
 
 	//Find sin condiciones
 	Product.find(function(err,products){
-		//TODO: Comprobar errores correctamente
-		var errors= [];//db_utils.handleErrors(err);
-		if(errors.length > 0){
+		if(err){
 			console.log('---ERROR finding AllProduct - message: '+errors);
 			res.status(500).json({success: false, message: errors});
 		}else{
@@ -27,9 +25,7 @@ exports.getProduct = function (req, res) {
 	var _code = req.params.code;
 
 	Product.findOne({'code':_code},function(err,product){
-		//TODO: Comprobar errores correctamente
-		var errors= [];//db_utils.handleErrors(err);
-		if(errors){
+		if(err){
 			console.log('---ERROR finding Product: '+_code+' message: '+errors);
 			res.status(500).json({success: false, message: errors});
 		}else{
