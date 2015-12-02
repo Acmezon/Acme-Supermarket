@@ -3,7 +3,7 @@ var should = require('should');
 var assert = require('assert');
 
 describe("Post email and password to the API", function (){
-	it("authenticate into the system ", function(){
+	it("Authenticate into the system with a wrong email", function(){
 		var identification = {
 			email : 'a@a.a',
 			password : 'password'

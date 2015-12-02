@@ -3,11 +3,11 @@ var should = require('should');
 var assert = require('assert');
 
 describe("Post a customer to the API", function (){
-	it("try to create a customer with an existing email, should respond 500", function(){
+	it("Try to create a customer with an existing email, should respond 500", function(){
 		var customer = {
 			name : 'John',
 			surname : 'Doe',
-			email : 'johndoe@gmail.com',
+			email : 'johndoe@mail.com',
 			password : 'password',
 			credit_card: '5430599805623360',
 			address : 'Avda. Reina Mercedes, s/n',

@@ -1,11 +1,11 @@
-describe('Register a customer with an empty name', function () {
-	it('Shouldnt insert a customer in DB', function (){
+describe('Register a customer', function () {
+	it('Register a customer with an empty name. Shouldnt redirect nor insert customer in DB.', function (){
 		browser.get('http://localhost:3000/signup');
 		
 		// Insert values into form inputs
 		element(by.model('customer.name')).sendKeys('');
 		element(by.model('customer.surname')).sendKeys('Doe');
-		element(by.model('customer.email')).sendKeys('johndoe@mail.com');
+		element(by.model('customer.email')).sendKeys('newmail2@mail.com');
 		element(by.model('customer.password')).sendKeys('00000000');
 		element(by.model('customer.address')).sendKeys('Calle 1 Bloque A Bajo Derecha');
 		element(by.cssContainingText('option', 'Congo')).click();

@@ -1,5 +1,5 @@
-describe('Register a customer with a wrong format email', function () {
-	it('Shouldnt insert a customer in DB', function (){
+describe('Register a customer', function () {
+	it('Register a customer with a wrong format email. Shouldnt redirect nor insert customer in DB.', function (){
 		browser.get('http://localhost:3000/signup');
 		
 		// Insert values into form inputs

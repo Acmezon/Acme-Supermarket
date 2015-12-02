@@ -1,18 +1,19 @@
-çvar request = require('supertest');
+var request = require('supertest');
 var should = require('should');
 var assert = require('assert');
 
 describe("Post a customer to the API", function (){
-	it("try to create a customer with an missing field (phone), should respond 500", function(){
+	it("Create a new entry in the customers collection, should respond 200", function(){
 		var customer = {
 			name : 'John',
 			surname : 'Doe',
-			email : 'johndoe@mail.com',
+			email : 'johndoe2@mail.com',
 			password : 'password',
 			credit_card: '5430599805623360',
 			address : 'Avda. Reina Mercedes, s/n',
 			country : 'Spain',
-			city : 'Seville'
+			city : 'Seville',
+			phone : '111111111'
 		};
 
 		request("http://localhost:3000")
@@ -23,7 +24,7 @@ describe("Post a customer to the API", function (){
 					console.log("Error Signing-up a customer -> message: "+err);
 					throw err;
 				}else{
-					res.status.should.be.equal(500);
+					res.status.should.be.equal(200);
 				}
 				
 			});

@@ -3,9 +3,11 @@ var request = require('supertest');
 exports.config = {
 	seleniumAddress: 'http://localhost:4444/wd/hub',
 	specs: [
-		/*'e2e/**',
-		'backend/**'*/
-		'e2e/products/**'
+		'backend/customers/*',
+		'backend/products/*',
+
+		'e2e/customers/*',
+		'e2e/products/*'
 	],
 	beforeLaunch: function() {
 		request("http://localhost:3000")

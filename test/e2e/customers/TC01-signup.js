@@ -1,11 +1,11 @@
 describe('Register a customer', function () {
-	it('Should insert a customer in DB', function (){
+	it('Register a customer. Should redirect correctly', function (){
 		browser.get('http://localhost:3000/signup');
 		
 		// Insert values into form inputs
 		element(by.model('customer.name')).sendKeys('John');
 		element(by.model('customer.surname')).sendKeys('Doe');
-		element(by.model('customer.email')).sendKeys('johndoe@mail.com');
+		element(by.model('customer.email')).sendKeys('newmail@mail.com');
 		element(by.model('customer.password')).sendKeys('00000000');
 		element(by.model('customer.address')).sendKeys('Calle 1 Bloque A Bajo Derecha');
 		element(by.cssContainingText('option', 'Congo')).click();
