@@ -2,17 +2,21 @@
 
 // Declare app level module which depends on filters, and services
 
-var app = angular.module('acme_supermarket', [
-	'ngRoute',
-	'ngResource',
-	'acme_supermarket.controllers',
-	'acme_supermarket.filters',
-	'acme_supermarket.services',
-	'acme_supermarket.directives'
-	]);
+var app = angular.module('acme_supermarket', 
+			[
+				'ngRoute',
+				'ngResource',
+				'ngCookies',
+				'acme_supermarket.controllers',
+				'acme_supermarket.filters',
+				'acme_supermarket.services',
+				'acme_supermarket.directives',
+				'pascalprecht.translate'
+			]
+	);
 
-app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$httpProvider',
-	function ($routeProvider, $locationProvider, $controllerProvider, $httpProvider) {
+app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$httpProvider', '$translateProvider',
+	function ($routeProvider, $locationProvider, $controllerProvider, $httpProvider, $translateProvider) {
 		app.registerCtrl = $controllerProvider.register;
 
 		var checkLoggedin = function($q, $timeout, $http, $location, $rootScope){
@@ -85,5 +89,36 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 		});
 
 		$locationProvider.html5Mode(true);
+
+		$translateProvider.useCookieStorage();
+		$translateProvider.useUrlLoader('/api/lang');
+		$translateProvider.preferredLanguage('en');
 	}
 ]);
+
+app.directive('localeSelector', 
+	function($translate) {
+		return {
+			restrict: 'A',
+			replace: true,
+			templateUrl: 'views/public/localeselector/locale-selector.html',
+			link: function(scope, elem, attrs) {
+				if($translate.use() == undefined) {
+					scope.locale = $translate.proposedLanguage()
+				} else {
+					scope.locale = $translate.use();
+				}
+
+				scope.setLocale = function() {
+					$translate.use(scope.locale);
+				};
+			}
+		};
+	}
+);
+
+app.filter("htmlSafe", ['$sce', function($sce) {
+    return function(htmlCode){
+        return $sce.trustAsHtml(htmlCode);
+    };
+}]);
