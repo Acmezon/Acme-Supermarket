@@ -5,7 +5,7 @@ var assert = require('assert');
 describe("Post email and password to the API", function (){
 	it("authenticate into the system ", function(){
 		var identification = {
-			email : 'reder.pablo@gemail.com',
+			email : 'reder.pablo@gmail.com',
 			password : 'esmuysegura'
 		};
 

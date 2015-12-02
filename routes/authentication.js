@@ -16,6 +16,7 @@ exports.authenticate = function (req, res) {
 			res.json({success: false, message: 'Server error. Please, try again later.'});
 		}
 
+		console.log(user);
 		if(!user){
 			res.json({success: false, message: 'Login failed. Email not found.'});
 		}else if (user) {
