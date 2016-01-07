@@ -4,7 +4,7 @@ exports.config = {
 	seleniumAddress: 'http://localhost:4444/wd/hub',
 	specs: [
 		//'e2e/**',
-		'backend/customers/*'
+		'e2e/products/TC03-getProduct.js'
 		//'e2e/products/*'
 
 	],
