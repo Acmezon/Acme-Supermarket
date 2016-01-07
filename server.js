@@ -59,6 +59,8 @@ app.get('/api/products', api.Products.getAllProducts);
 
 app.post('/api/signup', api.Authentication.signup);
 app.post('/api/signin', api.Authentication.authenticate);
+app.get('/api/signout', api.Authentication.disconnect);
+app.get('/api/getUserRole', api.Authentication.getUserRole);
 
 app.get('/islogged', api.Authentication.isAuthenticated)
 

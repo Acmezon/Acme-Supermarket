@@ -23,7 +23,6 @@ angular.module('acme_supermarket').registerCtrl('SigninCtrl', ['$scope', '$http'
 		}).then(function success(response) {
 			$rootScope.loginFailed = false;
 			if(response.data.success == false) {
-				console.log(response.data);
 				$scope.loginFailed = true;
 				$scope.loginFailedMessage = response.data.message;
 			} else {

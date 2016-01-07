@@ -16,11 +16,13 @@
 		"Account" : "Mi cuenta",
 		"Checkout" : "Ir al carrito",
 		"Signin" : "Iniciar sesión",
+		"Signout" : "Salir",
 		"Signup" : "Registrarse",
 		"ProductList" : "Productos",
 		"Search" : "Buscar",
 		"NoProducts" : "Sin productos",
-		"Cart" : "Carrito"
+		"Cart" : "Carrito",
+		"AdminOptions" : "Opciones de Administrador"
  	},
 	"Footer": {
 		"AboutUs" : "Sobre nosotros",

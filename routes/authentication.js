@@ -53,7 +53,13 @@ exports.authenticate = function (req, res) {
 			}
 		}
 	});
-}
+};
+
+exports.disconnect = function (req, res) {
+	res.clearCookie('session');
+
+	res.sendStatus(200);
+};
 
 //Sign-in a customer into de system
 exports.signup = function (req, res) {
@@ -106,4 +112,20 @@ exports.isAuthenticated = function(req, res) {
 	} else {
 		res.sendStatus(401);
 	}
+};
+
+exports.getUserRole = function(req, res) {
+	var cookie = req.cookies.session;
+	if (cookie !== undefined) {
+		var type = cookie.type.toLowerCase();
+
+		if (type) {
+			res.status(200).json({role: type});
+		} else {
+			res.status(200).json({role: 'anonymous'});
+		}
+	} else {
+		res.status(200).json({role: 'anonymous'});
+	}
+
 };
