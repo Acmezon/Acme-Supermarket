@@ -4,7 +4,7 @@
 		"es": "Spanish"
 	},
 	"Home": {
-		"title": "Home",
+		"Title": "Home",
 		"FeaturedProducts" : "Featured Products",
 		"New" : "New",
 		"NewProducts" : "Mew Products",
@@ -32,13 +32,18 @@
 		"Information" : "Information"
 	},
 	"Products" : {
+		"Title" : "Products",
 		"Products" : "Products",
+		"Product" : "Product",
 		"SortBy" : "Sort By",
 		"Random" : "Random",
 		"Name" : "Name",
 		"Price": "Price",
 		"Show" : "Show",
 		"PerPage" : "per page",
-		"Pages" : "Pages"
+		"Pages" : "Pages",
+		"OtherRecommendations" : "Other products that you may like",
+		"AddToCart" : "Add to cart",
+		"Comments" : "Customers' reviews"
 	}
 }

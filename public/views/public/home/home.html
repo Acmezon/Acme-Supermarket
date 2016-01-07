@@ -41,12 +41,12 @@
 	<div class="wrap">
 		<div class="section group">
 			<div class="cont span_2_of_3">
-				<h2 class="head">{{ 'Home.FeaturedProducts' | translate }}</h2>
+				<h2 class="head">{{ 'Home.Title' | translate }}</h2>
 				<div class="top-box">
 					<div ng-repeat="product in products">
 
 						<div class="col_1_of_3 span_1_of_3">
-							<a href="single.html">
+							<a href="product/{{product._id}}">
 								<div class="inner_content clearfix">
 									<div class="product_image">
 										<img src="img/template_bootstrap/pic.jpg" alt=""/>

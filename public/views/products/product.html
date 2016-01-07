@@ -6,13 +6,11 @@
   	<div class="main">
      	<div class="wrap">
      		<ul class="breadcrumb breadcrumb__t">
-     			<li><a class="home" href="#">Home</a> / <a href="products">Products</a> / {{product.name}}</li>
+     			<li><a class="home" href="#">{{ 'Home.Title' | translate }}</a> / <a href="products">{{ 'Products.Title' | translate }}</a> / {{product.name}}</li>
      		</ul>
 			<div class="cont span_2_of_3">
 		  		<div class="grid images_3_of_2">
-					<!-- FlexSlider -->
 					<script src="js/lib/imagezoom.js"></script>
-					<!-- //FlexSlider-->
 					<div class="flexslider">
 						<ul class="slides">
 							<li data-thumb="img/template_bootstrap/pic5.jpg">
@@ -26,56 +24,58 @@
 	            </div>
 		        <div class="desc1 span_3_of_2">
 		        	<!-- Rating Stars Box -->
-				  	<div class="rating" data-stars="{{product.rating}}"></div>
+				  	<div class="rating" title="{{product.rating}}" data-stars="{{product.rating}}"></div>
 		        	<h3 class="m_3">{{product.name}}</h3>
 		        	<p class="price">{{product.price}} €</p>
 		            <p class="m_4">{{product.code}}</p>
 		         	<div class="btn_form">
 						<form>
-							<input type="submit" value="buy" title="">
+							<input type="submit" value="{{ 'Products.AddToCart' | translate }}" title="">
 						</form>
 					</div>
 				    <p class="m_text2">{{product.description}}</p>
 			    </div>
 			   	<div class="clear"></div>	
-		    	<div class="clients">
-		    		<h3 class="m_3">10 Other Products in the same category</h3>
-			 		<ul id="flexiselDemo3">
-						<li><img src="img/template_bootstrap/pic5.jpg" /><a href="#">Category</a><p>Rs 600</p></li>
-						<li><img src="img/template_bootstrap/pic5.jpg" /><a href="#">Category</a><p>Rs 850</p></li>
-						<li><img src="img/template_bootstrap/pic5.jpg" /><a href="#">Category</a><p>Rs 900</p></li>
-						<li><img src="img/template_bootstrap/pic5.jpg" /><a href="#">Category</a><p>Rs 550</p></li>
-						<li><img src="img/template_bootstrap/pic5.jpg" /><a href="#">Category</a><p>Rs 750</p></li>
+		    	<div>
+		    		<h3 class="m_3">{{ 'Products.OtherRecommendations' | translate}}</h3>
+		    		<!-- Recommendations carrousel -->
+			 		<ul id="recommendations">
+						<li><img src="img/template_bootstrap/pic1.jpg" /><a href="product/name1">Name 1</a><p>Rs 600</p></li>
+						<li><img src="img/template_bootstrap/pic2.jpg" /><a href="product/name2">Name 2</a><p>Rs 850</p></li>
+						<li><img src="img/template_bootstrap/pic3.jpg" /><a href="product/name3">Name 3</a><p>Rs 900</p></li>
+						<li><img src="img/template_bootstrap/pic4.jpg" /><a href="product/name4">Name 4</a><p>Rs 550</p></li>
+						<li><img src="img/template_bootstrap/pic5.jpg" /><a href="product/name5">Name 5</a><p>Rs 750</p></li>
 			 		</ul>
+			 		<script type="text/javascript" src="js/lib/jquery.flexisel.js"></script>
 					<script type="text/javascript">
-						$(window).load(function() {
-			
-							$("#flexiselDemo3").flexisel({
-								visibleItems: 5,
-								animationSpeed: 1000,
-								autoPlay: false,
-								autoPlaySpeed: 3000,    		
-								pauseOnHover: true,
-								enableResponsiveBreakpoints: true,
-						    	responsiveBreakpoints: { 
-						    		portrait: { 
-						    			changePoint:480,
-						    			visibleItems: 1
-						    		}, 
-						    		landscape: { 
-						    			changePoint:640,
-						    			visibleItems: 2
-						    		},
-						    		tablet: { 
-						    			changePoint:768,
-						    			visibleItems: 3
-						    		}
-						    	}
-						    });
-					    
-						});
+						$("#recommendations").flexisel({
+					        visibleItems: 5,
+					        animationSpeed: 500,
+					        autoPlay: false,
+					        autoPlaySpeed: 3000,            
+					        pauseOnHover: true,
+					        enableResponsiveBreakpoints: true,
+					        responsiveBreakpoints: { 
+					            portrait: { 
+					                changePoint:480,
+					                visibleItems: 1
+					            }, 
+					            landscape: { 
+					                changePoint:640,
+					                visibleItems: 2
+					            },
+					            tablet: { 
+					                changePoint:768,
+					                visibleItems: 3
+					            }
+					        }
+					    });
 					</script>
-					<script type="text/javascript" src="js/lib/jquery.flexisel.js"></script>
+					
+	    		</div>
+	    		<div class="comments">
+	    			<h3 class="m_3">{{ 'Products.Comments' | translate}}</h3>
+	    			<!--TODO-->
 	    		</div>
       		</div>
 		</div>

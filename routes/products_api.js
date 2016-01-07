@@ -36,7 +36,7 @@ exports.getProduct = function (req, res) {
 			console.log('---ERROR finding Product: '+_code+' message: '+errors);
 			res.status(500).json({success: false, message: errors});
 		}else{
-			console.log(product);
+			//console.log(product);
 			res.status(200).json(product);
 		}
 	});

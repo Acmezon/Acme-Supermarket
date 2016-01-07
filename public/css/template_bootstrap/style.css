@@ -1955,7 +1955,7 @@ p.m_text{
 	color:#777;
 	font-size:1.2em;
 	display: block;
-  margin: 7px 0;
+  	margin: 7px 0;
 }
 .nbs-flexisel-item a:hover{
 	color:#000;
