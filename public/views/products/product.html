@@ -9,6 +9,9 @@
      			<li><a class="home" href="#">Home</a> / <a href="products">Products</a> / {{product.name}}</li>
      		</ul>
 			<div class="cont span_2_of_3">
+				<button class="btn btn-default" ng-click="toggleEdition()" ng-hide="isSomethingEditable()" restrict access="admin">
+					{{ 'Product.Edit' | translate }}
+				</button>
 		  		<div class="grid images_3_of_2">
 					<!-- FlexSlider -->
 					<script src="js/lib/imagezoom.js"></script>
@@ -27,15 +30,15 @@
 		        <div class="desc1 span_3_of_2">
 		        	<!-- Rating Stars Box -->
 				  	<div class="rating" data-stars="{{product.rating}}"></div>
-		        	<h3 class="m_3">{{product.name}}</h3>
-		        	<p class="price">{{product.price}} €</p>
+		        	<h3 class="m_3" editable-text="product.name" e-form="textNameForm" onbeforesave="updateProduct('name', $data)">{{product.name}}</h3>
+		        	<p class="price" editable-text="product.price" e-form="textPriceForm" onbeforesave="updateProduct('price', $data)">{{product.price}} €</p>
 		            <p class="m_4">{{product.code}}</p>
 		         	<div class="btn_form">
 						<form>
 							<input type="submit" value="buy" title="">
 						</form>
 					</div>
-				    <p class="m_text2">{{product.description}}</p>
+				    <p class="m_text2" editable-text="product.description" e-form="textDescForm" onbeforesave="updateProduct('description', $data)">{{product.description}}</p>
 			    </div>
 			   	<div class="clear"></div>	
 		    	<div class="clients">

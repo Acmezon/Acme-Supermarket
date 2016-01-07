@@ -40,5 +40,8 @@
 		"Show" : "Mostrar",
 		"PerPage" : "por página",
 		"Pages" : "Páginas"
+	},
+	"Product" : {
+		"Edit" : "Editar"
 	}
 }
