@@ -1,4 +1,6 @@
-<div class="header-top">
+<script src="views/public/MainController.js"></script>
+
+<div class="header-top" ng-controller="MainCtrl">
     <div class="wrap">
         <div class="header-top-left">
             <div class="box">
@@ -8,21 +10,25 @@
         </div>
         <div class="cssmenu">
             <ul>
-                <li class="active">
+                <li class="active" restrict access="isLogged">
                     <a href="login.html">{{ 'Header.Account' | translate }}</a>
-                </li> |
+                </li>
 
-                <li>
+                <li restrict access="isLogged">
                     <a href="checkout.html">{{ 'Header.Checkout' | translate }}</a>
-                </li> |
+                </li>
 
-                <li>
+                <li restrict access="anonymous">
                     <a href="/signin">{{ 'Header.Signin' | translate }}</a>
-                </li> |
+                </li>
 
-                <li>
+                <li restrict access="anonymous">
                     <a href="/signup">{{ 'Header.Signup' | translate }}</a>
                 </li>
+
+                <li restrict access="isLogged">
+                    <a href="#" ng-click="signout()">{{ 'Header.Signout' | translate }}</a>
+                </li>                
             </ul>
         </div>
         <div class="clear"></div>
@@ -36,7 +42,7 @@
                     <img src="img/template_bootstrap/logo.png" alt=""/>
                 </a>
             </div>
-            <div class="menu">
+            <div class="menu" restrict access="anonymous">
                 <ul class="megamenu skyblue">
                     <li class="active grid">
                         <a href="/">{{ 'Home.title' | translate }}</a>
@@ -175,6 +181,29 @@
                                 </div>
                             </div>
                         </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="menu" restrict access="customer">
+                <ul class="megamenu skyblue">
+                    <li class="active grid">
+                        <a href="/">{{ 'Home.title' | translate }}</a>
+                    </li>
+                    <li>
+                        <a class="color4" href="/products">{{ 'Header.ProductList' | translate }}</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="menu" restrict access="admin">
+                <ul class="megamenu skyblue">
+                    <li class="active grid">
+                        <a href="/">{{ 'Home.title' | translate }}</a>
+                    </li>
+                    <li>
+                        <a class="color4" href="/products">{{ 'Header.ProductList' | translate }}</a>
+                    </li>
+                    <li>
+                        <a class="color4" href="#">{{ 'Header.AdminOptions' | translate }}</a>
                     </li>
                 </ul>
             </div>

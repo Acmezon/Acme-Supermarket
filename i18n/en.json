@@ -10,17 +10,19 @@
 		"NewProducts" : "Mew Products",
 		"CheckItOut" : "Check It out",
 		"NewslettersSignup" : "Newsletters <br> Signup",
-		"Subscribe" : "Subscribe",
+		"Subscribe" : "Subscribe"
 	},
 	"Header": {
 		"Account" : "Account",
 		"Checkout" : "Checkout",
 		"Signin" : "Sign in",
+		"Signout" : "Sign out",
 		"Signup" : "Sign up",
 		"ProductList" : "Product list",
 		"Search" : "Search",
 		"NoProducts" : "No products",
-		"Cart" : "Cart"
+		"Cart" : "Cart",
+		"AdminOptions" : "Admin Options"
 	},
 	"Footer": {
 		"AboutUs" : "About Us",

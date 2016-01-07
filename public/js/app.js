@@ -69,6 +69,10 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			templateUrl: 'views/public/signin/signin.html',
 			controller: 'SigninCtrl'
 		}).
+		when('/signout', {
+			templateUrl: 'views/public/signout/signout.html',
+			controller: 'SignoutCtrl'
+		}).
 		when('/signup', {
 			templateUrl: 'views/public/signup/signup.html',
 			controller: 'SignupCtrl'
@@ -95,30 +99,3 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 		$translateProvider.preferredLanguage('en');
 	}
 ]);
-
-app.directive('localeSelector', 
-	function($translate) {
-		return {
-			restrict: 'A',
-			replace: true,
-			templateUrl: 'views/public/localeselector/locale-selector.html',
-			link: function(scope, elem, attrs) {
-				if($translate.use() == undefined) {
-					scope.locale = $translate.proposedLanguage()
-				} else {
-					scope.locale = $translate.use();
-				}
-
-				scope.setLocale = function() {
-					$translate.use(scope.locale);
-				};
-			}
-		};
-	}
-);
-
-app.filter("htmlSafe", ['$sce', function($sce) {
-    return function(htmlCode){
-        return $sce.trustAsHtml(htmlCode);
-    };
-}]);
