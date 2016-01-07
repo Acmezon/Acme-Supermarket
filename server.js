@@ -56,6 +56,7 @@ app.get('/home', routes.index);
 
 // JSON API
 app.get('/api/products', api.Products.getAllProducts);
+app.get('/api/product/:id', api.Products.getProduct);
 
 app.post('/api/signup', api.Authentication.signup);
 app.post('/api/signin', api.Authentication.authenticate);

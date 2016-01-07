@@ -1,7 +1,8 @@
 var db_utils = require('./db_utils'),
 	Customer = require('../models/customer'),
 	Actor = require('../models/actor'),
-	crypto = require('crypto');//Necesario para encriptacion por MD5;
+	crypto = require('crypto'),//Necesario para encriptacion por MD5	
+	db_utils = require('./db_utils');
 
 
 exports.getCustomer = function (req, res) {
@@ -37,6 +38,7 @@ exports.newCustomer = function (customer, callback) {
 	var _city = customer.city;
 	var _phone = customer.phone;
 
+	//TODO Chequear que los campos son correctos
 	
 	var md5Password = crypto.createHash('md5').update(_password).digest("hex");
 

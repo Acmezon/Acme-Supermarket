@@ -88,6 +88,10 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			templateUrl: 'views/products/products.html',
 			controller: 'ProductListCtrl'
 		}).
+		when('/product/:id', {
+			templateUrl: 'views/products/product.html',
+			controller: 'ProductDetailsCtrl'
+		}).
 		otherwise({
 			redirectTo: '/home'
 		});

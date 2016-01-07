@@ -9,7 +9,9 @@ exports.getAllProducts = function (req, res) {
 
 	//Find sin condiciones
 	Product.find(function(err,products){
-		if(err){
+		//TODO: Comprobar errores correctamente
+		var errors= [];//db_utils.handleErrors(err);
+		if(errors.length > 0){
 			console.log('---ERROR finding AllProduct - message: '+errors);
 			res.status(500).json({success: false, message: errors});
 		}else{
@@ -22,14 +24,19 @@ exports.getAllProducts = function (req, res) {
 //Devuelve un producto de la coleccion
 exports.getProduct = function (req, res) {
 	console.log('Function-productsApi-getProduct');
-	var _code = req.params.code;
 
-	Product.findOne({'code':_code},function(err,product){
-		if(err){
+
+	var _code = req.params.id;
+	console.log('GET /api/product/'+_code)
+
+	Product.findById( _code,function(err,product){
+		//TODO: Comprobar errores correctamente
+		var errors= [];//db_utils.handleErrors(err);
+		if(errors.length > 0){
 			console.log('---ERROR finding Product: '+_code+' message: '+errors);
 			res.status(500).json({success: false, message: errors});
 		}else{
-			//console.log(products);
+			console.log(product);
 			res.status(200).json(product);
 		}
 	});
