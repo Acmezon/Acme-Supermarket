@@ -44,6 +44,11 @@
 		"Pages" : "Pages",
 		"OtherRecommendations" : "Other products that you may like",
 		"AddToCart" : "Add to cart",
-		"Comments" : "Customers' reviews"
+		"Comments" : "Customers' reviews",
+		"Edit" : "Edit"
+	},
+
+	"Product" : {
+		"Edit" : "Edit"
 	}
 }

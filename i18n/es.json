@@ -45,5 +45,8 @@
 		"OtherRecommendations" : "Otros productos que pueden gustarte",
 		"AddToCart" : "Añadir al carrito",
 		"Comments" : "Análisis de los usuarios"
+	},
+	"Product" : {
+		"Edit" : "Editar"
 	}
 }

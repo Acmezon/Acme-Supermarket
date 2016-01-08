@@ -7,6 +7,7 @@ var app = angular.module('acme_supermarket',
 				'ngRoute',
 				'ngResource',
 				'ngCookies',
+				'xeditable',
 				'acme_supermarket.controllers',
 				'acme_supermarket.filters',
 				'acme_supermarket.services',
@@ -14,6 +15,10 @@ var app = angular.module('acme_supermarket',
 				'pascalprecht.translate'
 			]
 	);
+
+app.run(function(editableOptions) {
+	editableOptions.theme = 'bs3';
+});
 
 app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$httpProvider', '$translateProvider',
 	function ($routeProvider, $locationProvider, $controllerProvider, $httpProvider, $translateProvider) {

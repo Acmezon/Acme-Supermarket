@@ -1,1 +1,0 @@
-sudo mongoimport --db Acme-Supermarket --collection products --drop --file dataset-products.json
