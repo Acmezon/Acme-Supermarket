@@ -26,6 +26,11 @@ angular.module('acme_supermarket').registerCtrl('ProductDetailsCtrl', ['$scope',
 	}
 
 	$scope.updateProduct = function(field, data) {
-		console.log(data)
+		return $http.post('/api/product/updateProduct',
+			{
+				id: id,
+				field: field,
+				data: data
+			});
 	}
 }]);

@@ -42,3 +42,16 @@ exports.getProduct = function (req, res) {
 	});
 };
 
+exports.updateProduct = function (req, res) {
+	var set = {}
+	set[req.body.field] = req.body.data;
+
+	Product.findByIdAndUpdate(req.body.id, { $set: set}, function (err, product) {
+		if(err){
+			console.log(err);
+			res.status(500).send("Unable to save field, check input.")
+		} else {
+			res.status(200).json({success: true});
+		}
+	});
+};
