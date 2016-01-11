@@ -4,10 +4,10 @@ exports.config = {
 	seleniumAddress: 'http://localhost:4444/wd/hub',
 	specs: [
 		//'e2e/**',
-		'e2e/products/TC03-getProduct.js'
+		'e2e/products/TC04-adminEditProduct.js'
 		//'e2e/products/*'
 
-	],
+	]/*,
 	beforeLaunch: function() {
 		request("http://localhost:3000")
 			.get("/api/resetDataset")
@@ -19,5 +19,5 @@ exports.config = {
 					console.log("Reset Database done, check the console");
 				}
 			});
-	}
+	}*/
 };

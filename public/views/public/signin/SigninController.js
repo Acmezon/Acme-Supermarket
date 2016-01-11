@@ -26,7 +26,7 @@ angular.module('acme_supermarket').registerCtrl('SigninCtrl', ['$scope', '$http'
 				$scope.loginFailed = true;
 				$scope.loginFailedMessage = response.data.message;
 			} else {
-				$window.location.href = '/home';
+				$window.location.reload()
 			}
 		}, function error(response) {
 			$rootScope.loginFailed = false;

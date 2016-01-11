@@ -116,6 +116,7 @@ exports.isAuthenticated = function(req, res) {
 
 exports.getUserRole = function(req, res) {
 	var cookie = req.cookies.session;
+
 	if (cookie !== undefined) {
 		var type = cookie.type.toLowerCase();
 

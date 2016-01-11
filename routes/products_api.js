@@ -2,6 +2,8 @@
 
 var db_utils = require('./db_utils');
 var Product = require('../models/product');
+var multer  = require('multer');
+var fs = require('fs');
 
 //Devuelve una lista con todos los productos de la coleccion
 exports.getAllProducts = function (req, res) {
@@ -54,4 +56,56 @@ exports.updateProduct = function (req, res) {
 			res.status(200).json({success: true});
 		}
 	});
+};
+
+exports.updateProductImage = function (req, res) {
+	var filename = "";
+	var prev_img = "";
+
+	var storage = multer.diskStorage({
+		destination: function (req, file, cb) {
+			cb(null, 'public/img/')
+		},
+		filename: function (req, file, cb) {
+			var originalExtension = file.originalname.split(".")[file.originalname.split(".").length - 1]
+			
+			filename = req.body.p_id + "." + originalExtension;
+
+			cb(null, filename);
+		}
+	});
+	var upload = multer({ storage: storage }).single('file');
+
+	upload(req, res, function (err) {
+		if (err) {
+			res.status(500).send("{{ 'Product.UploadError' | translate }}");
+			return;
+		}
+
+		Product.findOne(req.body.p_id, function (err, product) {
+			if(err) {
+				res.status(500).send("{{ 'Product.UploadError' | translate }}");
+				return;
+			}
+
+			prev_img = product.image;
+		})
+
+		Product.findByIdAndUpdate(req.body.p_id, { $set: { "image" : filename} }, function (err, product) {
+			if(err){
+				console.log(err);
+				
+				fs.unlinkSync('/public/img/' + filename);
+
+				res.status(500).send("{{ 'Product.UploadError' | translate }}");
+			} else {
+				fs.access('/public/img/' + prev_img, fs.F_OK, function(err) {
+					if (!err) {
+						fs.unlinkSync('/public/img/' + prev_img);
+					}
+				});
+				res.status(200).json({success: true});
+			}
+		});
+	})
 };

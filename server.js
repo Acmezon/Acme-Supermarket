@@ -58,6 +58,7 @@ app.get('/home', routes.index);
 app.get('/api/products', api.Products.getAllProducts);
 app.get('/api/product/:id', api.Products.getProduct);
 app.post('/api/product/updateProduct', api.Products.updateProduct);
+app.post('/api/product/updateProductImage', api.Products.updateProductImage);
 
 app.post('/api/signup', api.Authentication.signup);
 app.post('/api/signin', api.Authentication.authenticate);

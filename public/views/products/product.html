@@ -9,7 +9,7 @@
      			<li><a class="home" href="#">{{ 'Home.Title' | translate }}</a> / <a href="products">{{ 'Products.Title' | translate }}</a> / {{product.name}}</li>
      		</ul>
 			<div class="cont span_2_of_3">
-				<button class="btn btn-default" ng-click="toggleEdition()" ng-hide="isSomethingEditable()" restrict access="admin">
+				<button id="btn-edit" class="btn btn-default" ng-click="toggleEdition()" ng-hide="isSomethingEditable()" restrict access="admin">
 					{{ 'Product.Edit' | translate }}
 				</button>
 		  		<div class="grid images_3_of_2">
@@ -18,8 +18,13 @@
 						<ul class="slides">
 							<li data-thumb="img/template_bootstrap/pic5.jpg">
 								<div class="thumb-image">
-									<img src="img/template_bootstrap/pic5.jpg" data-imagezoom="true" class="img-responsive">
+									<img src="img/{{product.image}}" data-imagezoom="true" class="img-responsive">
 								</div>
+								<form action="/api/product/updateProductImage" method="post" enctype="multipart/form-data" id="upload-img-form" class="dropzone" restrict access="admin">
+									<div class="fallback">
+										<input type="file" />
+									</div>
+								</form>
 							</li>
 						</ul>
 						<div class="clearfix"></div>
