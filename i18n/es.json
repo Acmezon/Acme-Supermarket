@@ -47,6 +47,7 @@
 		"Comments" : "Análisis de los usuarios"
 	},
 	"Product" : {
-		"Edit" : "Editar"
+		"Edit" : "Editar",
+		"Upload" : "Arratra una imagen aquí para cambiarla"
 	}
 }

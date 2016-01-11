@@ -49,6 +49,7 @@
 	},
 
 	"Product" : {
-		"Edit" : "Edit"
+		"Edit" : "Edit",
+		"Upload" : "Drop an image here to change the current one"
 	}
 }
