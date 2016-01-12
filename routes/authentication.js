@@ -10,6 +10,7 @@ exports.authenticate = function (req, res) {
 	Actor.findOne({
 		email: req.body.email
 	}, function (err, user){
+		console.log(user);
 		if (err) {
 			res.json({success: false, message: 'Server error. Please, try again later.'});
 		}
@@ -22,11 +23,19 @@ exports.authenticate = function (req, res) {
 			if(user.password != md5Password) {
 				res.json({success: false, message: 'Login failed. Wrong password.'})
 			} else {
-				var token = jwt.sign(user, req.app.get('superSecret'), {
+
+
+				var token = jwt.sign(
+					{
+						email: user.email, 
+                    	password: user.password
+                    },
+                    req.app.get('superSecret'), 
+                    {
 					expiresIn: 365 * 24 * 60 * 60 //1 year
 				});
 
-				console.log(token);
+				console.log(token)
 
 				//Check the type of user
 				var _type = 'customer';
