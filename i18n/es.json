@@ -48,6 +48,7 @@
 	},
 	"Product" : {
 		"Edit" : "Editar",
-		"Upload" : "Arratra una imagen aquí para cambiarla"
+		"Upload" : "Arratra una imagen aquí para cambiarla",
+		"RatingError" : "Error al guardar la puntuación, recarge la página e inténtelo de nuevo"
 	}
 }

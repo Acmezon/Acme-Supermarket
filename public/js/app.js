@@ -12,7 +12,9 @@ var app = angular.module('acme_supermarket',
 				'acme_supermarket.filters',
 				'acme_supermarket.services',
 				'acme_supermarket.directives',
-				'pascalprecht.translate'
+				'pascalprecht.translate',
+				'ui.bootstrap',
+				'ngToast'
 			]
 	);
 
@@ -20,9 +22,14 @@ app.run(function(editableOptions) {
 	editableOptions.theme = 'bs3';
 });
 
-app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$httpProvider', '$translateProvider',
-	function ($routeProvider, $locationProvider, $controllerProvider, $httpProvider, $translateProvider) {
+app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$httpProvider', '$translateProvider', 'ngToastProvider',
+	function ($routeProvider, $locationProvider, $controllerProvider, $httpProvider, $translateProvider, ngToast) {
 		app.registerCtrl = $controllerProvider.register;
+
+		ngToast.configure({
+			horizontalPosition: 'center',
+			animation: 'fade'
+		})
 
 		var checkLoggedin = function($q, $timeout, $http, $location, $rootScope){
 			// Initialize a new promise

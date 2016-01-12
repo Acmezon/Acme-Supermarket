@@ -3,10 +3,8 @@ var request = require('supertest');
 exports.config = {
 	seleniumAddress: 'http://localhost:4444/wd/hub',
 	specs: [
-		//'e2e/**',
-		//'e2e/products/TC04-adminEditProduct.js',
-		'backend/products/TC02-editProduct.js'
-		//'e2e/products/*'
+		//'e2e/products/TC05-rateProduct.js',
+		'backend/products/TC03-rateProduct.js'
 
 	]/*,
 	beforeLaunch: function() {
