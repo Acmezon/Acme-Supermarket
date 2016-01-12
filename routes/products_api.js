@@ -109,3 +109,13 @@ exports.updateProductImage = function (req, res) {
 		});
 	})
 };
+
+exports.updateProductRating = function (req, res) {
+	Product.findByIdAndUpdate(req.body.id, { $set: { "rating" : req.body.rating} }, function (err, product) {
+		if(err){
+			res.sendStatus(500);
+		} else {
+			res.status(200).json({success: true});
+		}
+	});
+};

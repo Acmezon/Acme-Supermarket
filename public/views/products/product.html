@@ -1,7 +1,9 @@
+
 <script src="views/products/ProductDetailsController.js"></script>
 
 <link rel="stylesheet" href="css/rating-star.css">
 
+<toast></toast>
 <div class="mens">    
   	<div class="main">
      	<div class="wrap">
@@ -32,7 +34,8 @@
 	            </div>
 		        <div class="desc1 span_3_of_2">
 		        	<!-- Rating Stars Box -->
-				  	<div class="rating" data-stars="{{product.rating}}"></div>
+		        	<uib-rating ng-model="rate" class="rating" max="max" ng-click="rateProduct()"></uib-rating>
+				  	<!--<div class="rating" data-stars="{{product.rating}}"></div>-->
 		        	<h3 class="m_3" editable-text="product.name" e-form="textNameForm" onbeforesave="updateProduct('name', $data)">{{product.name}}</h3>
 		        	<p class="price" editable-text="product.price" e-form="textPriceForm" onbeforesave="updateProduct('price', $data)">{{product.price}} €</p>
 		            <p class="m_4">{{product.code}}</p>

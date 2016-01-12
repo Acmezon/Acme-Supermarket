@@ -50,6 +50,7 @@
 
 	"Product" : {
 		"Edit" : "Edit",
-		"Upload" : "Drop an image here to change the current one"
+		"Upload" : "Drop an image here to change the current one",
+		"RatingError" : "Error while saving your rating. Please reload the page and try again"
 	}
 }
