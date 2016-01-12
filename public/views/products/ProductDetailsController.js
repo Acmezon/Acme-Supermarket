@@ -8,7 +8,8 @@ angular.module('acme_supermarket').registerCtrl('ProductDetailsCtrl', ['$scope',
 
 	$(document).on('click', function (event) {
 		if (!$(event.target).closest('form#upload-img-form').length && 
-			!$(event.target).closest('#btn-edit').length) {
+			!$(event.target).closest('#btn-edit').length &&
+			!$(event.target).closest('input.dz-hidden-input').length) {
 			$("form#upload-img-form").hide();
 		}
 	});
@@ -18,14 +19,7 @@ angular.module('acme_supermarket').registerCtrl('ProductDetailsCtrl', ['$scope',
 		paramName: "file",
 	}
 
-	$http({
-		method: 'GET',
-		url: '/api/product/'+id
-	}).
-	then(function success(response) {
-		$scope.product = response.data;
-	}, function error(response) {
-	});
+	retrieveProduct(id);
 
 	$scope.toggleEdition = function() {
 		$scope.textNameForm.$show();
@@ -74,5 +68,16 @@ angular.module('acme_supermarket').registerCtrl('ProductDetailsCtrl', ['$scope',
 				field: field,
 				data: data
 			});
+	}
+
+	function retrieveProduct (p_id) {
+		$http({
+			method: 'GET',
+			url: '/api/product/'+p_id
+		}).
+		then(function success(response) {
+			$scope.product = response.data;
+		}, function error(response) {
+		});
 	}
 }]);

@@ -90,12 +90,22 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			}
 		}).
 		when('/products', {
-			templateUrl: 'views/products/products.html',
+			templateUrl: 'views/public/products/products.html',
 			controller: 'ProductListCtrl'
 		}).
 		when('/product/:id', {
 			templateUrl: 'views/products/product.html',
-			controller: 'ProductDetailsCtrl'
+			controller: 'ProductDetailsCtrl',
+			resolve: {
+				loggedin: checkLoggedin
+			}
+		}).
+		when('/shoppingcart', {
+			templateUrl: 'views/shoppingcart/shoppingcart.html',
+			controller: 'ShoppingCartCtrl',
+			resolve: {
+				loggedin: checkLoggedin
+			}
 		}).
 		otherwise({
 			redirectTo: '/home'
