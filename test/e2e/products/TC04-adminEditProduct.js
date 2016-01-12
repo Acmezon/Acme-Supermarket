@@ -1,4 +1,13 @@
 describe('Edit product page', function () {
+	
+	it('shouldn\'t show the edit button', function (){
+		browser.get('http://localhost:3000/home');
+
+		element(by.repeater('product in products').row(0)).$('a').click()
+
+		expect(element(by.id('btn-edit')).isPresent()).toBe(false);
+	});
+
 	it('should edit a product as an admin', function (){
 		browser.get('http://localhost:3000/signin');
 
@@ -7,12 +16,11 @@ describe('Edit product page', function () {
 
 		element(by.css('.button')).click();
 
-		//Ir a la pagina inicial, clicar sobre el primer producto
+		browser.get('http://localhost:3000/home');
 
+		element(by.repeater('product in products').row(0)).$('a').click()
 
-		//
+		expect(element(by.id('btn-edit')).isPresent()).toBe(true);
 
-		
-		element(by.css('.btn .btn-default')).click();
 	});
 });
