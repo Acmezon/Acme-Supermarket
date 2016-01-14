@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('acme_supermarket').registerCtrl('SignupCtrl', ['$scope', '$http', '$window', '$rootScope', function ($scope, $http, $window, $rootScope) {
+angular.module('acme_supermarket').registerCtrl('SignupCtrl', ['$scope', '$http', '$window', '$rootScope', 'ngToast', '$translate', function ($scope, $http, $window, $rootScope, ngToast, $translate) {
 	
 	// Function invoked by login submit
 	$scope.submitSignUp = function() {
@@ -29,5 +29,35 @@ angular.module('acme_supermarket').registerCtrl('SignupCtrl', ['$scope', '$http'
 	$scope.setValid = function (field) {
 		$scope.signupForm[field].$setValidity("invalid", true);
 	}
+
+	$scope.getCoordinates = function () {
+		$scope.signupForm.coordinates.$setValidity("invalid", true);
+		if (navigator.geolocation) {
+			navigator.geolocation.getCurrentPosition(function(position){
+				$scope.$apply(function(){
+					$scope.customer.coordinates = position.coords.latitude + ";" + position.coords.longitude;
+				});
+			}, function (error) {
+				if(error.PERMISSION_DENIED) {
+					$translate(['Signup.Geoerror']).then(function (translation) {
+						ngToast.create({
+							className: 'danger',
+							content: translation['Signup.Geoerror'],
+							timeout: 10000
+						});
+					});
+				}
+			});
+		} else {
+			$translate(['Signup.Geoerror']).then(function (translation) {
+				ngToast.create({
+					className: 'danger',
+					content: translation['Signup.Geoerror'],
+					timeout: 10000
+				});
+			});
+		}
+	}
+
 
 }]);

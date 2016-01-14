@@ -76,6 +76,7 @@ exports.signup = function (req, res) {
 		name : req.body.name,
 		surname : req.body.surname,
 		email : req.body.email,
+		coordinates: req.body.coordinates,
 		password : req.body.password,
 		credit_card: req.body.credit_card,
 		address : req.body.address,
@@ -87,6 +88,7 @@ exports.signup = function (req, res) {
 	customers_api.newCustomer(customer, 
 		function (errors) {
 			if(errors.length > 0) {
+				console.log(errors);
 				res.status(500).json({success: false, message: errors});
 			} else {
 				res.status(200).json({success: true});
@@ -122,6 +124,40 @@ exports.isAuthenticated = function(req, res) {
 		res.sendStatus(401);
 	}
 };
+
+
+exports.getPrincipal = function(req, res) {
+	var cookie = req.cookies.session;
+
+	if (cookie !== undefined) {
+		var token = cookie.token;
+
+		// decode token
+		if (token) {
+
+			// verifies secret and checks exp
+			jwt.verify(token, req.app.get('superSecret'), function(err, decoded) {
+				if (err) {
+					res.status(200).send({
+						u_id: "-1"
+					})
+				} else {
+					console.log(decoded);
+					res.status(200).json({u_id: true});
+				}
+			});
+
+		} else {
+			res.status(200).send({
+				u_id: "-1"
+			})
+		}
+	} else {
+		res.status(200).send({
+			u_id: "-1"
+		})
+	}
+}
 
 exports.getUserRole = function(req, res) {
 	var cookie = req.cookies.session;

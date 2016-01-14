@@ -31,6 +31,19 @@
 		"ContactUs" : "Contact Us",
 		"Information" : "Information"
 	},
+	"Signup" : {
+		"CreateAccount" : "Create an account",
+		"Name" : "Name",
+		"Surname" : "Surname",
+		"Email" : "Email",
+		"Password" : "Password",
+		"Coordinates" : "Your current position",
+		"GetCoordinates" : "Get your position",
+		"Address" : "Address",
+		"City" : "City",
+		"Phone" : "Phone",
+		"Geoerror" : "We couldn't get your coordinates. Please make sure your navigator is up to date and you are not blocking our web from getting your coordinates."
+	},
 	"Products" : {
 		"Title" : "Products",
 		"Products" : "Products",

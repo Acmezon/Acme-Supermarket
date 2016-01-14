@@ -55,7 +55,6 @@ exports.newCustomer = function (customer, callback) {
 		phone: _phone
 	});
 
-
 	newCustomer.save(function (err) {
 		callback(db_utils.handleInsertErrors(err));
 	});
