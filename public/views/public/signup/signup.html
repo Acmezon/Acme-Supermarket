@@ -2,31 +2,34 @@
 
 
 <div class="register_account">
-  	<div class="wrap">
-      	<h4 class="title">Create an Account</h4>
-	   	<form method="post" name="signupForm" id="submit-form" ng-submit="submitSignUp()" ng-controller="SignupCtrl" novalidate>
-		 	<div class="col_1_of_2 span_1_of_2">
-   			 	<div>
-   			 		<input name="name" type="text" value="Name" placeholder="Name" ng-model="customer.name" ng-blur="setValid('name')" ng-class="{'has-error': signupForm.name.$dirty && (signupForm.name.$error.required || signupForm.name.$error.invalid)}" required>
-   			 	</div>
-    			<div>
-    				<input name="surname" type="text" value="Surname" placeholder="Surname" ng-model="customer.surname" ng-blur="setValid('surname')" ng-class="{'has-error': signupForm.surname.$dirty && (signupForm.surname.$error.required || signupForm.surname.$error.invalid)}" required>
-    			</div>
-    			<div>
-    				<input name="email" type="email" value="E-Mail" placeholder="Email" ng-model="customer.email" autocomplete="off" ng-blur="setValid('email')" ng-class="{'has-error': signupForm.email.$dirty && (signupForm.email.$error.required || signupForm.email.$error.invalid || signupForm.email.$error.email)}" required>
-    			</div>
-    			<div>
-    				<input name="password" type="password" placeholder="Password" autocomplete="off" ng-model="customer.password" ng-minlength="8" ng-maxlength="32" ng-blur="setValid('password')" ng-class="{'has-error': signupForm.password.$dirty && (signupForm.password.$error.required || signupForm.password.$error.invalid || signupForm.password.$error.minlength || signupForm.password.$error.maxlength)}" required>
-    			</div>
-    	 	</div>
-    	  	<div class="col_1_of_2 span_1_of_2">	
-    			<div>
-    				<input name="address" type="text" value="Address" ng-model="customer.address" placeholder="Address" ng-blur="setValid('address')" ng-class="{'has-error': signupForm.address.$dirty && (signupForm.address.$error.required || signupForm.address.$error.invalid)}" required>
-    			</div>
-    			<div>
-    				<select id="country" name="country" value="Select a country" ng-model="customer.country" class="frm-field required" ng-change="validateCountry()">
-			            <option value="" disabled>Select a Country</option>         
-			            <option value="Afganistan">Afghanistan</option>
+	<div class="wrap">
+		<h4 class="title">{{ 'Signup.CreateAccount' | translate }}</h4>
+		<form method="post" name="signupForm" id="submit-form" ng-submit="submitSignUp()" ng-controller="SignupCtrl" novalidate>
+			<div class="col_1_of_2 span_1_of_2 signupcol">
+				<div>
+					<input name="name" type="text"  placeholder="{{ 'Signup.Name' | translate }}*" ng-model="customer.name" ng-blur="setValid('name')" ng-class="{'has-error': signupForm.name.$dirty && (signupForm.name.$error.required || signupForm.name.$error.invalid)}" required>
+				</div>
+				<div>
+					<input name="surname" type="text"  placeholder="{{ 'Signup.Surname' | translate }}*" ng-model="customer.surname" ng-blur="setValid('surname')" ng-class="{'has-error': signupForm.surname.$dirty && (signupForm.surname.$error.required || signupForm.surname.$error.invalid)}" required>
+				</div>
+				<div>
+					<input name="email" type="email" placeholder="{{ 'Signup.Email' | translate }}*" ng-model="customer.email" autocomplete="off" ng-blur="setValid('email')" ng-class="{'has-error': signupForm.email.$dirty && (signupForm.email.$error.required || signupForm.email.$error.invalid || signupForm.email.$error.email)}" required>
+				</div>
+				<div>
+					<input name="password" type="password" placeholder="{{ 'Signup.Password' | translate }}*" autocomplete="off" ng-model="customer.password" ng-minlength="8" ng-maxlength="32" ng-blur="setValid('password')" ng-class="{'has-error': signupForm.password.$dirty && (signupForm.password.$error.required || signupForm.password.$error.invalid || signupForm.password.$error.minlength || signupForm.password.$error.maxlength)}" required>
+				</div>
+				<div>
+					<input name="coordinates" type="text" ng-model="customer.coordinates" placeholder="{{ 'Signup.Coordinates' | translate }}*" class="coordinates-input" readonly="true" ng-class="{'has-error': signupForm.coordinates.$error.invalid}" required> <button id="coord-btn" type="button" class="btn btn-default" ng-click="getCoordinates()">{{ 'Signup.GetCoordinates' | translate }}</button>
+				</div>
+			</div>
+			<div class="col_1_of_2 span_1_of_2 signupcol">	
+				<div>
+					<input name="address" type="text"  ng-model="customer.address" placeholder="{{ 'Signup.Address' | translate }}*" ng-blur="setValid('address')" ng-class="{'has-error': signupForm.address.$dirty && (signupForm.address.$error.required || signupForm.address.$error.invalid)}" required>
+				</div>
+				<div>
+					<select id="country" name="country" ng-model="customer.country" class="frm-field required" ng-change="validateCountry()">
+						<option value="" disabled>Select a Country</option>         
+						<option value="Afganistan">Afghanistan</option>
 						<option value="Albania">Albania</option>
 						<option value="Algeria">Algeria</option>
 						<option value="American Samoa">American Samoa</option>
@@ -273,18 +276,18 @@
 						<option value="Zaire">Zaire</option>
 						<option value="Zambia">Zambia</option>
 						<option value="Zimbabwe">Zimbabwe</option>
-         			</select>
-         		</div>		        
-          	<div>
-          		<input name="city" type="text" value="City" ng-model="customer.city" placeholder="City" ng-blur="setValid('city')" ng-class="{'has-error': signupForm.city.$dirty && (signupForm.city.$error.required || signupForm.city.$error.invalid)}" required>
-          	</div>
-           	<div>
-          	</div>
-          	<input class="phone" name="phone" type="text" value="Phone number" ng-model="customer.phone" placeholder="Phone" ng-minlength="9" ng-maxlength="15" ng-blur="setValid('phone')" ng-pattern="/^\d*$/" ng-class="{'has-error': signupForm.phone.$dirty && (signupForm.phone.$error.required || signupForm.phone.$error.invalid) || signupForm.phone.$error.minlength || signupForm.phone.$error.maxlength || signupForm.phone.$error.pattern}" required>
-          	</div>
-      		<button id="signup-submit" type="submit" name="submit" class="grey" ng-disabled="signupForm.$invalid">Submit</button>
-    	<p class="terms">By clicking 'Create Account' you agree to the <a href="/terms">Terms &amp; Conditions</a>.</p>
-    	<div class="clear"></div>
-    	</form>
+					</select>
+				</div>
+				<div>
+					<input name="city" type="text" ng-model="customer.city" placeholder="{{ 'Signup.City' | translate }}*" ng-blur="setValid('city')" ng-class="{'has-error': signupForm.city.$dirty && (signupForm.city.$error.required || signupForm.city.$error.invalid)}" required>
+				</div>
+				<div>
+					<input class="phone" name="phone" type="text" ng-model="customer.phone" placeholder="{{ 'Signup.Phone' | translate }}*" ng-minlength="9" ng-maxlength="15" ng-blur="setValid('phone')" ng-pattern="/^\d*$/" ng-class="{'has-error': signupForm.phone.$dirty && (signupForm.phone.$error.required || signupForm.phone.$error.invalid) || signupForm.phone.$error.minlength || signupForm.phone.$error.maxlength || signupForm.phone.$error.pattern}" required>
+				</div>
+			</div>
+			<button id="signup-submit" type="submit" name="submit" class="grey" ng-disabled="signupForm.$invalid">Submit</button>
+		<p class="terms">By clicking 'Create Account' you agree to the <a href="/terms">Terms &amp; Conditions</a>.</p>
+		<div class="clear"></div>
+		</form>
 	</div>
 </div>

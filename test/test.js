@@ -1,10 +1,18 @@
 var request = require('supertest');
 
 exports.config = {
+	capabilities: {
+		browserName: "chrome",
+		chromeOptions: {
+			prefs: {
+				"profile.default_content_setting_values.geolocation": 1,
+			}
+		}
+	},
 	seleniumAddress: 'http://localhost:4444/wd/hub',
 	specs: [
-		//'e2e/products/TC05-rateProduct.js',
-		'backend/products/TC03-rateProduct.js'
+		'e2e/customers/TC01-signup.js',
+		//'backend/products/TC03-rateProduct.js'
 
 	]/*,
 	beforeLaunch: function() {

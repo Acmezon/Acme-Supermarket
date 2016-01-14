@@ -96,7 +96,6 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast) {
 		}).then(function success(response) {},
 				function error(response) {
 					$translate(['Product.RatingError']).then(function (translation) {
-						console.log("Eerror");
 						ngToast.create({
 							className: 'danger',
 							content: translation['Product.RatingError']

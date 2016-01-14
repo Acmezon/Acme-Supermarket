@@ -1,3 +1,18 @@
 h3.m_3{
 	width: 175px;
 }
+
+form div input.coordinates-input {
+	width: 69%;
+}
+
+div.signupcol {
+	height: 270px;
+}
+
+button#coord-btn {
+	width: 22%;
+    overflow:hidden; 
+    white-space:nowrap; 
+    text-overflow: ellipsis;
+}

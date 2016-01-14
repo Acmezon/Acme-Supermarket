@@ -31,6 +31,19 @@
 		"ContactUs" : "Contacta",
 		"Information" : "Información"
 	},
+	"Signup" : {
+		"CreateAccount" : "Crear tu cuenta",
+		"Name" : "Nombre",
+		"Surname" : "Apellidos",
+		"Email" : "Email",
+		"Password" : "Contraseña",
+		"Coordinates" : "Tu posición actual",
+		"GetCoordinates" : "Obtener coordenadas",
+		"Address" : "Dirección",
+		"City" : "Ciudad",
+		"Phone" : "Teléfono",
+		"Geoerror" : "No se han podido obtener tus coordenadas, asegúrate de que tu navegador permite obtener coordenadas y de que no las estás bloqueando."
+	},
 	"Products" : {
 		"Title" : "Productos",
 		"Products" : "Productos",
