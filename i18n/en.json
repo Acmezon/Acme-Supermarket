@@ -3,6 +3,9 @@
 		"en": "English",
 		"es": "Spanish"
 	},
+	"Global" : {
+		"Submit" : "Submit"
+	},
 	"Home": {
 		"Title": "Home",
 		"FeaturedProducts" : "Featured Products",
@@ -42,7 +45,26 @@
 		"Address" : "Address",
 		"City" : "City",
 		"Phone" : "Phone",
-		"Geoerror" : "We couldn't get your coordinates. Please make sure your navigator is up to date and you are not blocking our web from getting your coordinates."
+		"Geoerror" : "We couldn't get your coordinates. Please make sure your navigator is up to date and you are not blocking our web from getting your coordinates.",
+		"Complete" : "Register completed. Now you can sign in."
+	},
+	"Signin" : {
+		"Signin" : "Sign in",
+		"NeedLogin" : "You need to sign in.",
+		"NewCustomer" : "New customer",
+		"Email" : "Email",
+		"Password" : "Password",
+		"Remember" : "Remember me"
+	},
+	"Profile" : {
+		"PersonalInfo" : "Profile data",
+		"BillingInfo" : "Billing",
+		"UpdateCoords" : "Update coordinates",
+		"Update" : "Update information",
+		"ChangePass" : "Change password",
+		"OldPass" : "Current password",
+		"NewPass" : "New password",
+		"NewPassConf" : "Repeat new password"
 	},
 	"Products" : {
 		"Title" : "Products",

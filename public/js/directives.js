@@ -67,3 +67,14 @@ directives.directive('restrict', function(authService){
 		}
 	}
 });
+
+directives.directive('showtab', function() {
+	return {
+		link: function(scope, element, attrs) {
+			element.click(function (event) {
+				event.preventDefault();
+				$(element).tab('show');
+			});
+		}
+	};
+});

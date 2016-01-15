@@ -10,14 +10,14 @@ exports.getCustomer = function (req, res) {
 	console.log('Function-productsApi-getCustumer -- _email:'+_email);
 
 
-	Customer.findOne({email:_email}, function(err,custumer){
+	Customer.findOne({email:_email}, function(err,customer){
 		if(err){
 			//console.log('--Costumer not found');
 			console.error(err);
 			throw err;
 		}
 		else{
-			res.json(custumer);
+			res.json(customer);
 			res.sendStatus(200);
 		}
 	});

@@ -44,14 +44,11 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 				// Not Authenticated
 				else {
 					$rootScope.loginFailed = true;
-					$rootScope.loginFailedMessage = 'You need to log in.';
-					//$timeout(function(){deferred.reject();}, 0);
 					deferred.reject();
 					$location.url('/signin');
 				}
 			}, function error(response) {
 				$rootScope.loginFailed = true;
-				$rootScope.loginFailedMessage = 'You need to log in.';
 				deferred.reject();
 				$location.url('/signin');
 			});
@@ -89,9 +86,9 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			templateUrl: 'views/public/signup/signup.html',
 			controller: 'SignupCtrl'
 		}).
-		when('/customer/products', {
-			templateUrl: 'views/customer/protected/protected.html',
-			controller: 'ProtectedCtrl',
+		when('/myprofile', {
+			templateUrl: 'views/user/profile/profile.html',
+			controller: 'ProfileCtrl',
 			resolve: {
 				loggedin: checkLoggedin
 			}

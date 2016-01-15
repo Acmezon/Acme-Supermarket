@@ -1,0 +1,62 @@
+<script src="views/user/profile/ProfileController.js"></script>
+
+<div class="mens">
+	<div class="main">
+		<div class="wrap">
+			<ul class="nav nav-tabs">
+				<li class="active"><a showtab="" href="#personal">{{ 'Profile.PersonalInfo' | translate }}</a></li>
+				<li><a showtab="" href="#billing">{{ 'Profile.BillingInfo' | translate }}</a></li>
+			</ul>
+			<div class="tab-content">
+				<div id="personal" class="tab-pane fade in active">
+					<div class="row">
+						<div class="col-md-6">
+							<h3>{{ 'Profile.PersonalInfo' | translate }}</h3>
+							<div>
+								<p class="editable-p" editable-text="user.name" onbeforesave="updateUser('name', $data)">{{user.name}}</p>
+							</div>
+							<div>
+								<p class="editable-p" editable-text="user.surname" onbeforesave="updateUser('surname', $data)">{{user.surname}}</p>
+							</div>
+							<p>{{user.email}}</p>
+							<p><button type="button" class="btn btn-default" ng-click="updateCoordinates()" ng-show="user._type == 'Customer'">{{ 'Profile.UpdateCoords' | translate }}</button></p>
+							<div>
+								<p class="editable-p" editable-textarea="user.address" ng-show="user._type == 'Customer'" onbeforesave="updateUser('address', $data)">{{user.address}}</p>
+							</div>
+							<div>
+								<p class="editable-p" editable-select="user.country" ng-show="user._type == 'Customer'" e-ng-options="c.value as c.text for c in countries" onbeforesave="updateUser('country', $data)">{{user.country}}</p>
+							</div>
+							<div>
+								<p class="editable-p" editable-text="user.city" ng-show="user._type == 'Customer'" onbeforesave="updateUser('city', $data)">{{user.city}}</p>
+							</div>
+							<div>
+								<p class="editable-p" editable-text="user.phone" ng-show="user._type == 'Customer'" onbeforesave="updateUser('phone', $data)">{{user.phone}}</p>
+							</div>
+						</div>
+						<div class="col-md-6">
+							<h3>{{ 'Profile.ChangePass' | translate }}</h3>
+							<form method="post" name="changePasswordForm" id="pass-form" ng-submit="changePassword()">
+								<p>
+									<label>{{ 'Profile.OldPass' | translate }}</label>
+									<input type="password" name="oldPassword" class="form-control" autocomplete="off" ng-model="user.oldPassword" ng-minlength="8" ng-maxlength="32" ng-blur="setValid('oldPassword')" ng-class="{'has-error': changePasswordForm.oldPassword.$dirty && (changePasswordForm.oldPassword.$error.required || changePasswordForm.oldPassword.$error.invalid || changePasswordForm.oldPassword.$error.minlength || changePasswordForm.oldPassword.$error.maxlength)}" required/>
+								</p>
+								<p>
+									<label>{{ 'Profile.NewPass' | translate }}</label>
+									<input type="password" name="newPassword" class="form-control" autocomplete="off" ng-model="user.newPassword" ng-minlength="8" ng-maxlength="32" ng-blur="setValid('newPassword')" ng-class="{'has-error': changePasswordForm.newPassword.$dirty && (changePasswordForm.newPassword.$error.required || changePasswordForm.newPassword.$error.invalid || changePasswordForm.newPassword.$error.minlength || changePasswordForm.newPassword.$error.maxlength)}" required/>
+								</p>
+								<p>
+									<label>{{ 'Profile.NewPassConf' | translate }}</label>
+									<input type="password" name="repeatPassword" class="form-control"  autocomplete="off" ng-model="user.repeatPassword" ng-minlength="8" ng-maxlength="32" ng-blur="setValid('repeatPassword')" ng-class="{'has-error': changePasswordForm.repeatPassword.$dirty && (changePasswordForm.repeatPassword.$error.required || changePasswordForm.repeatPassword.$error.invalid || changePasswordForm.repeatPassword.$error.minlength || changePasswordForm.repeatPassword.$error.maxlength)}" required/>
+								</p>
+								<p><input type="submit" class="btn btn-warning" value="{{ 'Global.Submit' | translate }}"></p>
+							</form>
+						</div>
+					</div>
+				</div>
+				<div id="billing" class="tab-pane fade">
+					Billing PERRA!
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

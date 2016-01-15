@@ -59,13 +59,16 @@ app.get('/api/products', api.Products.getAllProducts);
 app.get('/api/product/:id', api.Products.getProduct);
 app.post('/api/product/updateProduct', api.Products.updateProduct);
 app.post('/api/product/updateProductImage', api.Products.updateProductImage);
-app.post('/api/product/updateProductRating', api.Products.updateProductRating)
+app.post('/api/product/updateProductRating', api.Products.updateProductRating);
 
 app.post('/api/signup', api.Authentication.signup);
 app.post('/api/signin', api.Authentication.authenticate);
 app.get('/api/signout', api.Authentication.disconnect);
 app.get('/api/getUserRole', api.Authentication.getUserRole);
 app.get('/api/getPrincipal', api.Authentication.getPrincipal);
+
+app.get('/api/myprofile', api.User.getMyProfile)
+app.post('/api/user/updateUser', api.User.updateUser)
 
 app.get('/islogged', api.Authentication.isAuthenticated)
 

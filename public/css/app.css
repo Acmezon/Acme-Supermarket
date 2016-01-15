@@ -16,3 +16,15 @@ button#coord-btn {
     white-space:nowrap; 
     text-overflow: ellipsis;
 }
+
+.tab-content {
+	padding: 20px;
+    border: solid;
+    border-width: 1px;
+    border-color: rgb(221, 221, 221);
+    border-top: none;
+}
+
+p.editable-p {
+    display: inline-block;
+}
