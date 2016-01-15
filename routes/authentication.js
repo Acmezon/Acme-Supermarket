@@ -66,7 +66,7 @@ exports.authenticate = function (req, res) {
 
 exports.disconnect = function (req, res) {
 	res.clearCookie('session');
-
+	res.clearCookie('shoppingcart')
 	res.sendStatus(200);
 };
 

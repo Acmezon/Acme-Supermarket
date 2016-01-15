@@ -19,6 +19,12 @@ describe('Get the shopping cart', function () {
 		cartbtn.click();
 		cartbtn.click();
 
+		// Test cookie
+		browser.manage().getCookie('shoppingcart').then(function(cookieValue) {
+			var error = !cookieValue || (cookieValue && cookieValue.value==="{}")
+			expect(error).toEqual(false);
+		});
+
 		// Test table
 		browser.get('http://localhost:3000/shoppingcart');
 		expect(element.all(by.repeater('product in shoppingcart')).count()).toEqual(1);
