@@ -40,7 +40,7 @@
 		            <p class="m_4">{{product.code}}</p>
 		         	<div class="btn_form">
 						<form>
-							<input type="submit" ng-click="addToCart(product._id)" value="{{ 'Products.AddToCart' | translate }}" title="">
+							<input id="cart-btn" type="submit" ng-click="addToCart(product._id)" value="{{ 'Products.AddToCart' | translate }}" title="">
 						</form>
 					</div>
 				    <p class="m_text2" editable-textarea="product.description" e-form="textDescForm" onbeforesave="updateProduct('description', $data)">{{product.description}}</p>
