@@ -1028,8 +1028,11 @@ fieldset.input input[type="submit"]:hover, .button1 input[type="submit"]:hover{
 }
 /*--register-form--*/
 table {
-	border-collapse: collapse;
+	border-collapse: separate;
 	border-spacing: 0;
+}
+table thead tr th{
+	font-weight:bold;
 }
 .register_account{
 	border-top:1px solid #ddd;

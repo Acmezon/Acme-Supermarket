@@ -22,7 +22,8 @@
 		"Search" : "Buscar",
 		"NoProducts" : "Sin productos",
 		"Cart" : "Carrito",
-		"AdminOptions" : "Opciones de Administrador"
+		"AdminOptions" : "Opciones de Administrador",
+		"GoShopping" : "Ir de compras"
  	},
 	"Footer": {
 		"AboutUs" : "Sobre nosotros",
@@ -63,5 +64,29 @@
 		"Edit" : "Editar",
 		"Upload" : "Arratra una imagen aquí para cambiarla",
 		"RatingError" : "Error al guardar la puntuación, recarge la página e inténtelo de nuevo"
+	},
+	"ShoppingCart": {
+		"Title" : "Carrito de la compra",
+		"Empty" : {
+			"Title" : "Vacío",
+			"Description1" : "No tienes ítems en el carrito de la compra.",
+			"Click" : "Haz clic ",
+			"Here" : "aquí",
+			"Description2" : " para continuar con la compra."
+		},
+		"Products" : "Productos",
+		"Product" : {
+			"Product" : "Producto",
+			"Name" : "Nombre de producto",
+			"Code" : "Código de producto",
+			"Description" : "Descripción",
+			"Price" : "Precio unitario",
+			"Image" : "Imagen",
+			"Quantity" : "Cantidad",
+			"Total" : "Total"
+		},
+		"Remove" : "Borrar",
+		"Return" : "Volver",
+		"Continue" : "Continuar"
 	}
 }

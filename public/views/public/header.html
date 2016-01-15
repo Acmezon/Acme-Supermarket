@@ -34,7 +34,7 @@
         <div class="clear"></div>
     </div>
 </div>
-<div class="header-bottom">
+<div class="header-bottom" ng-controller="MainCtrl">
     <div class="wrap">
         <div class="header-bottom-left">
             <div class="logo">
@@ -218,14 +218,14 @@
                 <ul class="icon1 sub-icon1 profile_img">
                     <li>
                         <a class="active-icon c2" href="/shoppingcart"></a>
-                        <ul class="sub-icon1 list">
+                        <ul class="sub-icon1 list" ng-if="productsInCart()==0">
                             <li>
                                 <h3>{{ 'Header.NoProducts' | translate }}</h3>
-                                <a href=""></a>
+                                <a></a>
                             </li>
                             <li>
-                                <p>Lorem ipsum dolor sit amet, consectetuer  
-                                    <a href="">adipiscing elit, sed diam</a>
+                                <p>{{'ShoppingCart.Empty.Description1' | translate}}  
+                                    <a href="/products">{{'Header.GoShopping' | translate}}</a>
                                 </p>
                             </li>
                         </ul>
@@ -233,7 +233,7 @@
                 </ul>
                 <ul class="last">
                     <li>
-                        <a href="#">{{ 'Header.Cart' | translate}}(0)</a>
+                        <a href="/shoppingcart">{{ 'Header.Cart' | translate}} ({{productsInCart()}})</a>
                     </li>
                 </ul>
             </div>

@@ -22,7 +22,8 @@
 		"Search" : "Search",
 		"NoProducts" : "No products",
 		"Cart" : "Cart",
-		"AdminOptions" : "Admin Options"
+		"AdminOptions" : "Admin Options",
+		"GoShopping" : "Go shopping"
 	},
 	"Footer": {
 		"AboutUs" : "About Us",
@@ -60,10 +61,33 @@
 		"Comments" : "Customers' reviews",
 		"Edit" : "Edit"
 	},
-
 	"Product" : {
 		"Edit" : "Edit",
 		"Upload" : "Drop an image here to change the current one",
 		"RatingError" : "Error while saving your rating. Please reload the page and try again"
+	},
+	"ShoppingCart": {
+		"Title" : "Shopping cart",
+		"Empty" : {
+			"Title" : "Empty",
+			"Description1" : "You have no items in your shopping cart.",
+			"Click" : "Click ",
+			"Here" : "here",
+			"Description2" : " to continue shopping"
+		},
+		"Products" : "Products",
+		"Product" : {
+			"Product" : "Product",
+			"Name" : "Product name",
+			"Code" : "Product code",
+			"Description" : "Description",
+			"Price" : "Unit price",
+			"Image" : "Image",
+			"Quantity" : "Quantity",
+			"Total" : "Total"
+		},
+		"Remove" : "Remove",
+		"Return" : "Return",
+		"Continue" : "Continue"
 	}
 }

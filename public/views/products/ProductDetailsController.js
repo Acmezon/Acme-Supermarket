@@ -1,7 +1,7 @@
 'use strict'
 
-angular.module('acme_supermarket').registerCtrl('ProductDetailsCtrl', ['$scope', '$http', '$routeParams', '$translate', '$window', 'ngToast', 
-function ($scope, $http, $routeParams, $translate, $window, ngToast) {
+angular.module('acme_supermarket').registerCtrl('ProductDetailsCtrl', ['$scope', '$http', '$routeParams', '$translate', '$window', 'ngToast', '$cookies', '$cookieStore', 
+function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $cookieStore) {
 	var id = $routeParams.id;
 
 	$http({
@@ -103,4 +103,26 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast) {
 					});
 				});
 	};
+
+	$scope.addToCart = function (id) {
+		var cookie = $cookies.get("shoppingcart");
+		var new_cookie = {};
+		if (!cookie) {
+			new_cookie[id] = 1;
+		} else {
+			cookie = JSON.parse(cookie);
+			new_cookie = cookie;
+			if ($.isEmptyObject(cookie)) {
+				new_cookie[id] = 1;
+				$cookieStore.put("shoppingcart", new_cookie);
+			} else {
+				if (new_cookie[id]) {
+					new_cookie[id] = cookie[id] + 1;
+				} else {
+					new_cookie[id] = 1;
+				}
+			}
+		}
+		$cookieStore.put("shoppingcart", new_cookie);
+	}
 }]);

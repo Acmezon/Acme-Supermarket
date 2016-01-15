@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('acme_supermarket').registerCtrl('MainCtrl', ['$scope', '$http', '$window', '$rootScope', function ($scope, $http, $window, $rootScope) {
+angular.module('acme_supermarket').registerCtrl('MainCtrl', ['$scope', '$http', '$window', '$rootScope', '$cookies', function ($scope, $http, $window, $rootScope, $cookies) {
 	
 	// Function invoked by login submit
 	$scope.signout = function() {
@@ -10,6 +10,22 @@ angular.module('acme_supermarket').registerCtrl('MainCtrl', ['$scope', '$http', 
 		}, function error(response) {
 			console.log(response);
 		});
+	}
+
+	$scope.productsInCart = function() {
+		var r = 0;
+		var cookie = $cookies.get("shoppingcart");
+		if (cookie) {
+			cookie = JSON.parse(cookie);
+			if (!$.isEmptyObject(cookie)) {
+				for (var id in cookie) {
+					if (cookie.hasOwnProperty(id)) {
+						r += cookie[id];
+					}
+				}
+			}
+		}
+		return r;
 	}
 
 }]);
