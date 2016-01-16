@@ -39,7 +39,7 @@ exports.getMyProfile = function (req, res) {
 								country : customer.country,
 								city : customer.city,
 								phone: customer.phone,
-								credit_card: customer.credit_card
+								credit_card: customer.credit_card_id
 							});
 						}
 					});
