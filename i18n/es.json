@@ -64,7 +64,16 @@
 		"ChangePass" : "Cambiar contraseña",
 		"OldPass" : "Contraseña actual",
 		"NewPass" : "Nueva contraseña",
-		"NewPassConf" : "Repita la nueva contraseña"
+		"NewPassConf" : "Repita la nueva contraseña",
+		"PwdMatch" : "Las contraseñas no coinciden",
+		"PwdError" : "Contraseña incorrecta",
+		"ServerPwdErr" : "Error al actualizar tu contraseña, inténtalo de nuevo más tarde",
+		"PwdOk" : "Contraseña actualizada correctamente",
+		"UpdateCC" : "Actualizar tarjeta de crédito",
+		"CreditCard" : "Número de tarjeta",
+		"InvalidCC" : "Número de tarjeta inválido",
+		"CCOk" : "Tarjeta actualizada correctamente",
+		"ServerCCErr" : "Error al actualizar tu tarjeta, inténtalo de nuevo más tarde"
 	},
 	"Products" : {
 		"Title" : "Productos",

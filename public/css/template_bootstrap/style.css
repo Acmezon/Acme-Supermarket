@@ -1041,7 +1041,7 @@ table {
 
 /* Edited by Daniel de los Reyes */
 
-.register_account form input, .register_account form select{
+.account_form form input, .account_form form select{
 	font-size:0.95em;
 	color:#777;
 	padding: 8px;
@@ -1052,41 +1052,41 @@ table {
 	border:none;
 }
 
-.register_account form input:not(.has-error), .register_account form select:not(.has-error){
+.account_form form input:not(.has-error), .account_form form select:not(.has-error){
 	box-shadow:0 0 2px #aaa;
 	-webkit-box-shadow:0 0 2px #aaa;
 	-moz-box-shadow:0 0 2px #aaa;
 	-o-box-shadow:0 0 2px #aaa;
 }
 
-.register_account form input.has-error, .register_account form select.has-error {
+.account_form form input.has-error, .account_form form select.has-error {
 	box-shadow:0 0 5px #a00;
 	-webkit-box-shadow:0 0 5px #a00;
 	-moz-box-shadow:0 0 5px #a00;
 	-o-box-shadow:0 0 5px #a00;
 }
 
-.register_account form input:not(.has-error):hover, .register_account form select:not(.has-error):hover{
+.account_form form input:not(.has-error):hover, .account_form form select:not(.has-error):hover{
 	box-shadow:0 0 4px #aaa;
 	-webkit-box-shadow:0 0 4px #aaa;
 	-moz-box-shadow:0 0 4px #aaa;
 	-o-box-shadow:0 0 4px #aaa;
 }
 
-.register_account form input.has-error:hover, .register_account form select.has-error:hover {
+.account_form form input.has-error:hover, .account_form form select.has-error:hover {
 	box-shadow:0 0 7px #a00;
 	-webkit-box-shadow:0 0 7px #a00;
 	-moz-box-shadow:0 0 7px #a00;
 	-o-box-shadow:0 0 7px #a00;
 }
 
-.register_account form input[type="text"].code {
+.account_form form input[type="text"].code {
 	width: 15%;
 }
-.register_account form input[type="text"].number {
+.account_form form input[type="text"].number {
 	width: 69.8%;
 }
-.register_account form input[type="email"], .register_account form select {
+.account_form form input[type="email"], .account_form form select {
 	font-size:0.95em;
 	color:#777;
 	padding: 8px;
@@ -1100,40 +1100,40 @@ table {
 	-moz-box-shadow:0 0 2px #aaa;
 	-o-box-shadow:0 0 2px #aaa;
 }
-.register_account form input[type=email]:not(.has-error){
+.account_form form input[type=email]:not(.has-error){
 	box-shadow:0 0 2px #aaa;
 	-webkit-box-shadow:0 0 2px #aaa;
 	-moz-box-shadow:0 0 2px #aaa;
 	-o-box-shadow:0 0 2px #aaa;
 }
 
-.register_account form input[type=email].has-error{
+.account_form form input[type=email].has-error{
 	box-shadow:0 0 5px #a00;
 	-webkit-box-shadow:0 0 5px #a00;
 	-moz-box-shadow:0 0 5px #a00;
 	-o-box-shadow:0 0 5px #a00;
 }
 
-.register_account form input[type=email]:not(.has-error):hover{
+.account_form form input[type=email]:not(.has-error):hover{
 	box-shadow:0 0 4px #aaa;
 	-webkit-box-shadow:0 0 4px #aaa;
 	-moz-box-shadow:0 0 4px #aaa;
 	-o-box-shadow:0 0 4px #aaa;
 }
 
-.register_account form input[type=email].has-error:hover{
+.account_form form input[type=email].has-error:hover{
 	box-shadow:0 0 7px #a00;
 	-webkit-box-shadow:0 0 7px #a00;
 	-moz-box-shadow:0 0 7px #a00;
 	-o-box-shadow:0 0 7px #a00;
 }
-.register_account form input[type="email"].code {
+.account_form form input[type="email"].code {
 	width: 15%;
 }
-.register_account form input[type="email"].number {
+.account_form form input[type="email"].number {
 	width: 69.8%;
 }
-.register_account form input[type="password"], .register_account form select {
+.account_form form input[type="password"], .account_form form select {
 	font-size:0.95em;
 	color:#777;
 	padding: 8px;
@@ -1147,37 +1147,37 @@ table {
 	-moz-box-shadow:0 0 2px #aaa;
 	-o-box-shadow:0 0 2px #aaa;
 }
-.register_account form input[type=password]:not(.has-error){
+.account_form form input[type=password]:not(.has-error){
 	box-shadow:0 0 2px #aaa;
 	-webkit-box-shadow:0 0 2px #aaa;
 	-moz-box-shadow:0 0 2px #aaa;
 	-o-box-shadow:0 0 2px #aaa;
 }
 
-.register_account form input[type=password].has-error{
+.account_form form input[type=password].has-error{
 	box-shadow:0 0 5px #a00;
 	-webkit-box-shadow:0 0 5px #a00;
 	-moz-box-shadow:0 0 5px #a00;
 	-o-box-shadow:0 0 5px #a00;
 }
 
-.register_account form input[type=password]:not(.has-error):hover{
+.account_form form input[type=password]:not(.has-error):hover{
 	box-shadow:0 0 4px #aaa;
 	-webkit-box-shadow:0 0 4px #aaa;
 	-moz-box-shadow:0 0 4px #aaa;
 	-o-box-shadow:0 0 4px #aaa;
 }
 
-.register_account form input[type=password].has-error:hover{
+.account_form form input[type=password].has-error:hover{
 	box-shadow:0 0 7px #a00;
 	-webkit-box-shadow:0 0 7px #a00;
 	-moz-box-shadow:0 0 7px #a00;
 	-o-box-shadow:0 0 7px #a00;
 }
-.register_account form input[type="password"].code {
+.account_form form input[type="password"].code {
 	width: 15%;
 }
-.register_account form input[type="password"].number {
+.account_form form input[type="password"].number {
 	width: 69.8%;
 }
 p.terms a, p.note a {

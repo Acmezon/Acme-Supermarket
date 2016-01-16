@@ -1,7 +1,7 @@
 'use strict'
 
-angular.module('acme_supermarket').registerCtrl('ProfileCtrl', ['$scope', '$http', '$translate', 
-function ($scope, $http, $translate) {
+angular.module('acme_supermarket').registerCtrl('ProfileCtrl', ['$scope', '$http', '$translate', 'ngToast',
+function ($scope, $http, $translate, ngToast) {
 	$http.get('/api/myprofile').then(function success(response){
 		$scope.user = response.data;
 	},
@@ -22,13 +22,68 @@ function ($scope, $http, $translate) {
 	}
 
 	$scope.changePassword = function(){
-		$http.post('/api/user/changePassword').
+		$scope.wrongPwd = false;
+		$http.post('/api/user/changePassword',
+			{
+				id: $scope.user.id,
+				oldPass: $scope.user.oldPassword,
+				newPass: $scope.user.newPassword
+			}).
 		then(function success(response) {
-
+			$scope.user.oldPassword = "";
+			$scope.user.newPassword = "";
+			$scope.user.repeatPassword = "";
+			$scope.changePasswordForm.$setPristine();
+			$translate(['Profile.PwdOk']).then(function (translation) {
+				ngToast.create({
+					className: 'success',
+					content: translation['Profile.PwdOk']
+				});
+			});
 		}, function error(response) {
-
+			switch(response.status) {
+				case 403:
+					$scope.wrongPwd = true;
+					break;
+				case 503:
+					$translate(['Profile.ServerPwdErr']).then(function (translation) {
+						ngToast.create({
+							className: 'danger',
+							content: translation['Profile.ServerPwdErr']
+						});
+					});
+					break;
+			}
 		});
 	}
+
+	$scope.updateCC = function(){
+		$scope.wrongPwd = false;
+		$http.post('/api/customer/updateCC',
+			{
+				id: $scope.user.id,
+				cc : $scope.user.new_credit_card
+			}).
+		then(function success(response) {
+			$scope.showCCForm = false;
+			$scope.user.credit_card = $scope.user.new_credit_card;
+			$scope.user.new_credit_card = "";
+			$scope.updateCCForm.$setPristine();
+			$translate(['Profile.CCOk']).then(function (translation) {
+				ngToast.create({
+					className: 'success',
+					content: translation['Profile.CCOk']
+				});
+			});
+		}, function error(response) {
+				$translate(['Profile.ServerCCErr']).then(function (translation) {
+					ngToast.create({
+						className: 'danger',
+						content: translation['Profile.ServerCCErr']
+					});
+				});
+		});
+	};
 
 	$scope.countries = [
 		{ value: 'Afganistan', text: 'Afghanistan'},

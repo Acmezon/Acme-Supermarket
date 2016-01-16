@@ -7,6 +7,7 @@ var app = angular.module('acme_supermarket',
 				'ngRoute',
 				'ngResource',
 				'ngCookies',
+				'ngAnimate',
 				'xeditable',
 				'acme_supermarket.controllers',
 				'acme_supermarket.filters',
@@ -14,7 +15,8 @@ var app = angular.module('acme_supermarket',
 				'acme_supermarket.directives',
 				'pascalprecht.translate',
 				'ui.bootstrap',
-				'ngToast'
+				'ngToast',
+				'credit-cards'
 			]
 	);
 

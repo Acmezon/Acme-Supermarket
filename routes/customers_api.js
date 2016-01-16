@@ -61,3 +61,14 @@ exports.newCustomer = function (customer, callback) {
 
 	return;
 };
+
+exports.updateCC = function(req, res){
+	Customer.findByIdAndUpdate(req.body.id, { $set: { credit_card : req.body.cc }}, function (err, product) {
+		if(err){
+			console.log(err);
+			res.sendStatus(503);
+		} else {
+			res.sendStatus(200);
+		}
+	});
+};

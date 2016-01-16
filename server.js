@@ -67,8 +67,11 @@ app.get('/api/signout', api.Authentication.disconnect);
 app.get('/api/getUserRole', api.Authentication.getUserRole);
 app.get('/api/getPrincipal', api.Authentication.getPrincipal);
 
-app.get('/api/myprofile', api.User.getMyProfile)
-app.post('/api/user/updateUser', api.User.updateUser)
+app.get('/api/myprofile', api.User.getMyProfile);
+app.post('/api/user/updateUser', api.User.updateUser);
+app.post('/api/user/changePassword', api.User.changePassword);
+
+app.post('/api/customer/updateCC', api.Customer.updateCC);
 
 app.get('/islogged', api.Authentication.isAuthenticated)
 
