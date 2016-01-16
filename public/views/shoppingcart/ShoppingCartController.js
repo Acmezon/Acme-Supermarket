@@ -120,4 +120,20 @@ angular.module('acme_supermarket').registerCtrl('ShoppingCartCtrl', ['$scope', '
 	$scope.return = function() {
 		$window.history.back();
 	}
+
+	$scope.totalPrice = function(shoppingcart) {
+		var r = 0;
+		var quantity;
+		var cookie = $cookies.get("shoppingcart");
+		if (cookie) {
+			cookie = JSON.parse(cookie);
+			if (!$.isEmptyObject(cookie)) {
+				for (var i = 0; i < shoppingcart.length; i++) {
+					quantity = cookie[shoppingcart[i]._id];
+					r += quantity * shoppingcart[i].price;
+				}
+			}
+		}
+		return r;
+	}
 }]);

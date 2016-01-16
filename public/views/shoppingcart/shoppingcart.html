@@ -35,14 +35,14 @@
 					</td>
 					<td style="width:10%">{{product.price | number:2}}</td>
 					<td style="width:10%">{{product.quantity * product.price | number:2}}</td>
-			  	</tr>			    
+			  	</tr>		    
 			</tbody>
 			<tfoot>
-				<tr>
-					<th></th>
-					<td></td>
-				</tr>
-			</tfoot>
+		    	<tr>
+			      <th id="total" colspan="6">{{'ShoppingCart.Product.Total' | translate}} :</th>
+			      <td>{{totalPrice(shoppingcart) | number:2}}</td>
+		    	</tr>
+		   	</tfoot>
 		</table>
 		<div class="row" style="margin-bottom: 2%">
 			<div class="col-lg-6">
