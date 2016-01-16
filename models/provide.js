@@ -5,7 +5,6 @@ var Schema = mongoose.Schema;
 
 var provideSchema = mongoose.Schema({
 	price: {type: Number, required:true, min:0, get: getPrice, set:setPrice},
-	isEnabled : {type: Boolean, required:true, default: true}
 	product_id : {type: mongoose.Schema.Types.ObjectId, ref:'productSchema'},
 	supplier_id : {type: mongoose.Schema.Types.ObjectId, ref:'supplierSchema'}
 });
