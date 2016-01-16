@@ -15,3 +15,12 @@ filters.filter("htmlSafe", ['$sce', function($sce) {
 		return $sce.trustAsHtml(htmlCode);
 	};
 }]);
+
+filters.filter('startFrom', function() {
+    return function(input, start) {
+    	if (input) {
+    		start = +start; //parse to int
+        	return input.slice(start);
+    	}
+    }
+});

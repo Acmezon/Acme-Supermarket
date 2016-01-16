@@ -40,3 +40,8 @@ button#coord-btn {
 	width: 100%;
 	margin: 0 auto;
 }
+
+.v-middle {
+	width: 5%;
+	height: 5%;
+}
