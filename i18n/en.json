@@ -84,13 +84,17 @@
 		"Random" : "Random",
 		"Name" : "Name",
 		"Price": "Price",
+		"Rating": "Rating",
 		"Show" : "Show",
 		"PerPage" : "per page",
-		"Pages" : "Pages",
+		"Page" : "Page",
 		"OtherRecommendations" : "Other products that you may like",
 		"AddToCart" : "Add to cart",
 		"Comments" : "Customers' reviews",
-		"Edit" : "Edit"
+		"Edit" : "Edit",
+		"Previous" : "Previous",
+		"Next" : "Next",
+		"Empty" : "No products with these features"
 	},
 	"Product" : {
 		"Edit" : "Edit",

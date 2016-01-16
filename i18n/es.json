@@ -84,12 +84,17 @@
 		"Random" : "Aleatoriamente",
 		"Name" : "Nombre",
 		"Price": "Precio",
+		"Rating": "Valoración",
 		"Show" : "Mostrar",
 		"PerPage" : "por página",
-		"Pages" : "Páginas",
+		"Page" : "Página",
 		"OtherRecommendations" : "Otros productos que pueden gustarte",
 		"AddToCart" : "Añadir al carrito",
-		"Comments" : "Análisis de los usuarios"
+		"Comments" : "Análisis de los usuarios",
+		"Edit" : "Edit",
+		"Previous" : "Anterior",
+		"Next" : "Siguiente",
+		"Empty" : "No hay productos con estas características"
 	},
 	"Product" : {
 		"Edit" : "Editar",
