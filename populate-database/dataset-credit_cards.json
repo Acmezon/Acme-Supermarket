@@ -1,0 +1,1 @@
+{ "_id" : ObjectId("000000000000000000000001"), "holderName" : "Nombre Apellido", "number" : "4556-8129-6993-2217", "expirationMonth" : 7, "expirationYear" : 2030, "cvcCode" : 123}

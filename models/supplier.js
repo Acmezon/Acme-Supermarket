@@ -4,7 +4,6 @@ var mongoose = require('mongoose'),
 	Actor = require('./actor');
 
 var supplierSchema = Actor.schema.extend({
-	address: {type: String, required: true},
 	coordinates: {
 		type: String, 
 		required: true,  
@@ -14,6 +13,7 @@ var supplierSchema = Actor.schema.extend({
 			}
 		}
 	},
+	address: {type: String, required: true},
 	reputation: {type:Number,min:0,max:5, required: true}
 });
 
