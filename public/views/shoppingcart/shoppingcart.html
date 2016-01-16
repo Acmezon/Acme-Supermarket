@@ -1,0 +1,56 @@
+<script src="views/shoppingcart/ShoppingCartController.js"></script>
+<link rel="stylesheet" href="css/shopping-cart-quantity.css"/>
+
+<div class="wrap">
+	<h2 class="head">{{'ShoppingCart.Title' | translate}}</h2>
+	<div ng-if="hasEmptyCart()">
+		<h4 class="title">{{'ShoppingCart.Empty.Title' | translate}}</h4>
+		<p class="cart">{{'ShoppingCart.Empty.Description1' | translate}}<br>{{'ShoppingCart.Empty.Click' | translate}}<a href="/products">{{'ShoppingCart.Empty.Here' | translate}}</a>{{'ShoppingCart.Empty.Description2' | translate}}</p>
+	</div>
+	<div ng-if="!hasEmptyCart()">
+		<table class="table table-bordered table-hover">
+		  	<thead>
+			  	<tr>
+					<th>{{'ShoppingCart.Remove' | translate}}</th>
+					<th>{{'ShoppingCart.Product.Image' | translate}}</th>
+					<th>{{'ShoppingCart.Product.Name' | translate}}</th>
+					<th>{{'ShoppingCart.Product.Code' | translate}}</th>
+					<th>{{'ShoppingCart.Product.Quantity' | translate}}</th>
+					<th>{{'ShoppingCart.Product.Price' | translate}} (€)</th>
+					<th>{{'ShoppingCart.Product.Total' | translate}} (€)</th>
+			  	</tr>
+			</thead>
+			<tbody>
+			  	<tr ng-repeat="product in shoppingcart">
+					<td style="width:5%"><span ng-click="remove(product._id)" class="glyphicon glyphicon-remove-sign"></span></td>
+					<td style="width:10%"><a href="/product/{{product._id}}"><img class="img-responsive img-thumbnail" src="img/template_bootstrap/pic5.jpg"/></a></td>
+					<td>{{product.name}}</td>
+					<td>{{product.code}}</td>
+					<td style="width:10%">
+						<div class="display: table; margin: 0 auto;">
+							<span class="input-number-decrement" ng-click="substract(product);">–</span>
+							<input ng-model="product.quantity" pattern="\d*" class="input-number" type="text" value="{{product.quantity}}" maxlength="3" min="1" max="999" step="1" disabled/>
+							<span class="input-number-increment" ng-click="add(product)">+</span>
+						</div>
+					</td>
+					<td style="width:10%">{{product.price | number:2}}</td>
+					<td style="width:10%">{{product.quantity * product.price | number:2}}</td>
+			  	</tr>		    
+			</tbody>
+			<tfoot>
+		    	<tr>
+			      <th id="total" colspan="6">{{'ShoppingCart.Product.Total' | translate}} :</th>
+			      <td>{{totalPrice(shoppingcart) | number:2}}</td>
+		    	</tr>
+		   	</tfoot>
+		</table>
+		<div class="row" style="margin-bottom: 2%">
+			<div class="col-lg-6">
+				<button type="button" class="btn btn-info btn-arrow-left" ng-click="return()">{{'ShoppingCart.Return' | translate}}</button>
+			</div>
+			<div class="col-lg-6">
+				<a href="TODO"><button type="button" class="btn btn-primary btn-arrow-right">{{'ShoppingCart.Continue' | translate}}</button></a>
+			</div>
+		</div>
+	</div>
+</div>

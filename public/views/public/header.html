@@ -1,38 +1,40 @@
-<div class="header-top">
+<script src="views/public/MainController.js"></script>
+
+<div class="header-top" ng-controller="MainCtrl">
     <div class="wrap">
         <div class="header-top-left">
             <div class="box">
-                <select tabindex="4" class="dropdown">
-                    <option value="" class="label" value="">Language :</option>
-                    <option value="1">English</option>
-                    <option value="2">Spanish</option>
-                </select>
+                <div locale-selector></div>
             </div>
             <div class="clear"></div>
         </div>
         <div class="cssmenu">
             <ul>
-                <li class="active">
-                    <a href="login.html">Account</a>
-                </li> |
-
-                <li>
-                    <a href="checkout.html">Checkout</a>
-                </li> |
-
-                <li>
-                    <a href="/signin">Log In</a>
-                </li> |
-
-                <li>
-                    <a href="/signup">Sign Up</a>
+                <li class="active" restrict access="isLogged">
+                    <a href="/myprofile">{{ 'Header.Account' | translate }}</a>
                 </li>
+
+                <li restrict access="isLogged">
+                    <a href="/shoppingcart">{{ 'Header.Checkout' | translate }}</a>
+                </li>
+
+                <li restrict access="anonymous">
+                    <a href="/signin">{{ 'Header.Signin' | translate }}</a>
+                </li>
+
+                <li restrict access="anonymous">
+                    <a href="/signup">{{ 'Header.Signup' | translate }}</a>
+                </li>
+
+                <li restrict access="isLogged">
+                    <a href="#" ng-click="signout()">{{ 'Header.Signout' | translate }}</a>
+                </li>                
             </ul>
         </div>
         <div class="clear"></div>
     </div>
 </div>
-<div class="header-bottom">
+<div class="header-bottom" ng-controller="MainCtrl">
     <div class="wrap">
         <div class="header-bottom-left">
             <div class="logo">
@@ -40,13 +42,13 @@
                     <img src="img/template_bootstrap/logo.png" alt=""/>
                 </a>
             </div>
-            <div class="menu">
+            <div class="menu" restrict access="anonymous">
                 <ul class="megamenu skyblue">
                     <li class="active grid">
-                        <a href="/">Home</a>
+                        <a href="/">{{ 'Home.Title' | translate }}</a>
                     </li>
                     <li>
-                        <a class="color4" href="/products">Product list</a>
+                        <a class="color4" href="/products">{{ 'Header.ProductList' | translate }}</a>
                     </li>
                     <li>
                         <a class="color4" href="#">women</a>
@@ -182,25 +184,48 @@
                     </li>
                 </ul>
             </div>
+            <div class="menu" restrict access="customer">
+                <ul class="megamenu skyblue">
+                    <li class="active grid">
+                        <a href="/">{{ 'Home.Title' | translate }}</a>
+                    </li>
+                    <li>
+                        <a class="color4" href="/products">{{ 'Header.ProductList' | translate }}</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="menu" restrict access="admin">
+                <ul class="megamenu skyblue">
+                    <li class="active grid">
+                        <a href="/">{{ 'Home.Title' | translate }}</a>
+                    </li>
+                    <li>
+                        <a class="color4" href="/products">{{ 'Header.ProductList' | translate }}</a>
+                    </li>
+                    <li>
+                        <a class="color4" href="#">{{ 'Header.AdminOptions' | translate }}</a>
+                    </li>
+                </ul>
+            </div>
         </div>
         <div class="header-bottom-right">
             <div class="search">
-                <input type="text" name="s" class="textbox" value="Search" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Search';}">
+                <input type="text" name="s" class="textbox" placeholder="{{ 'Header.Search' | translate }}" >
                 <input type="submit" value="Subscribe" id="submit" name="submit">
                 <div id="response"></div>
             </div>
             <div class="tag-list">
                 <ul class="icon1 sub-icon1 profile_img">
                     <li>
-                        <a class="active-icon c2" href="#"></a>
-                        <ul class="sub-icon1 list">
+                        <a class="active-icon c2" href="/shoppingcart"></a>
+                        <ul class="sub-icon1 list" ng-if="productsInCart()==0">
                             <li>
-                                <h3>No Products</h3>
-                                <a href=""></a>
+                                <h3>{{ 'Header.NoProducts' | translate }}</h3>
+                                <a></a>
                             </li>
                             <li>
-                                <p>Lorem ipsum dolor sit amet, consectetuer  
-                                    <a href="">adipiscing elit, sed diam</a>
+                                <p>{{'ShoppingCart.Empty.Description1' | translate}}  
+                                    <a href="/products">{{'Header.GoShopping' | translate}}</a>
                                 </p>
                             </li>
                         </ul>
@@ -208,7 +233,7 @@
                 </ul>
                 <ul class="last">
                     <li>
-                        <a href="#">Cart(0)</a>
+                        <a href="/shoppingcart">{{ 'Header.Cart' | translate}} (<span id="products-cart">{{productsInCart()}}</span>)</a>
                     </li>
                 </ul>
             </div>

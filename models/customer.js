@@ -4,8 +4,16 @@ var mongoose = require('mongoose'),
 	Actor = require('./actor');
 
 var customerSchema = Actor.schema.extend({
-	coordinates: String, //TODO validator [number,number]
-	credit_card: {type: String, validate: validators.isCreditCard()},
+	coordinates: {
+		type: String, 
+		required: true,  
+		validate: {
+			validator: function(v) {
+				return /^(\-?\d+(\.\d+)?);(\-?\d+(\.\d+)?)$/.test(v);
+			}
+		}
+	},
+	credit_card: mongoose.Schema.Types.ObjectId,
 	address: {type: String, required: true},
 	country: {type: String, required: true},
 	city: {type: String, required: true},

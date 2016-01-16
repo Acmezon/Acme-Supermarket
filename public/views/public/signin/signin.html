@@ -3,39 +3,39 @@
 <div class="login" ng-controller="SigninCtrl">
   	<div class="wrap">
 		<div class="col_1_of_login span_1_of_login">
-			<h4 class="title">New Customers</h4>
+			<h4 class="title">{{ 'Signin.NewCustomer' | translate }}</h4>
 			<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan</p>
 			<div class="button1">
-				<a href="signup"><input type="submit" name="Submit" value="Create an Account"></a>
+				<a href="signup"><input type="submit" name="Submit" value="{{ 'Signup.CreateAccount' | translate }}"></a>
 			</div>
 			<div class="clear"></div>
 		</div>
 		<div class="col_1_of_login span_1_of_login">
 			<div class="login-title">
-       			<h4 class="title">Log in</h4>
+       			<h4 class="title">{{ 'Signin.Signin' | translate }}</h4>
 				<div id="loginbox" class="loginbox">
 					<form method="post" name="signinForm" id="login-form" ng-submit="submitSignin()" novalidate>
 						<fieldset class="input">
 							<div class="alert alert-danger" ng-show="loginFailed">
-								</span>{{loginFailedMessage}}</span>
+								</span>{{ 'Signin.NeedLogin' | translate }}</span>
 							</div>
 							<div class="alert alert-success" ng-show="registerCompleted">
-								</span>Register completed. Please, sign in.</span>
+								</span>{{ 'Signup.Complete' | translate }}</span>
 							</div>
 							<!-- TODO: Change this username tags for email tags. Note: Check CSSs. By Dani.-->
 					    	<p id="login-form-username" ng-class="{ 'has-error' : signinForm.email.$invalid && !signinForm.email.$pristine }">
-					      		<label for="modlgn_username">Email</label>
+					      		<label for="modlgn_username">{{ 'Signin.Email' | translate }}</label>
 					      		<input id="modlgn_username" type="email" name="email" class="inputbox" size="18" autocomplete="off" ng-model="email" required>
 					    	</p>
 					    	<p id="login-form-password">
-					      		<label for="modlgn_passwd">Password</label>
+					      		<label for="modlgn_passwd">{{ 'Signin.Password' | translate }}</label>
 					      		<input id="modlgn_passwd" type="password" name="password" class="inputbox" size="18" autocomplete="off" ng-model="password" ng-minlength="8" ng-maxlength="32" required>
 					    	</p>
 					    	<div class="remember">
 							    <p id="login-form-remember">
-							    	<label for="modlgn_remember"><a href="#">Remember Password</a></label>
+							    	<label for="modlgn_remember"><a href="#">{{ 'Signin.Remember' | translate }}</a></label>
 							   	</p>
-  								<input id="login-submit" type="submit" name="Submit" class="button" value="Login" ng-disabled="signinForm.$invalid">
+  								<input id="login-submit" type="submit" name="Submit" class="button" value="{{ 'Signin.Signin' | translate }}" ng-disabled="signinForm.$invalid">
 							    <div class="clear"></div>
 							</div>
 						</fieldset>

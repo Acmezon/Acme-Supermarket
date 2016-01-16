@@ -1,0 +1,59 @@
+h3.m_3{
+	width: 175px;
+}
+
+form div input.coordinates-input {
+	width: 69%;
+}
+
+div.signupcol {
+	height: 270px;
+}
+
+button#coord-btn {
+	width: 22%;
+    overflow:hidden; 
+    white-space:nowrap; 
+    text-overflow: ellipsis;
+}
+
+.tab-content {
+	padding: 20px;
+    border: solid;
+    border-width: 1px;
+    border-color: rgb(221, 221, 221);
+    border-top: none;
+}
+
+p.editable-p {
+    display: inline-block;
+}
+
+/* Remove button in shopping cart */
+
+.glyphicon-remove-sign {
+	color: #ED5565;
+	cursor: pointer;
+	font-size: 2em;
+}
+
+.glyphicon-remove-sign:hover {
+	color: #DA4453;
+}
+
+/* Return/Continue buttons in shopping cart */
+
+.row > .col-lg-6 > button{
+	width: 100%;
+	margin: 0 auto;
+}
+
+.row > .col-lg-6 > a > button{
+	width: 100%;
+	margin: 0 auto;
+}
+
+.v-middle {
+	width: 5%;
+	height: 5%;
+}

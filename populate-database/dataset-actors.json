@@ -1,0 +1,2 @@
+{"_type" : "Admin", "name" : "admin", "surname" : "admin", "email" : "admin@mail.com", "password" : "200ceb26807d6bf99fd6f4f0d1ca54d4" } //Password: administrator
+{ "_type" : "Customer", "name" : "customer", "surname" : "customer", "email" : "customer@mail.com", "password" : "91ec1f9324753048c0096d036a694f86", "coordinates" : "[37.358716, -5.987814]", "address" : "Avda. Reina Mercedes, s/n", "country" : "Spain", "city" : "Sevilla", "phone" : "999999999"} //Password: customer

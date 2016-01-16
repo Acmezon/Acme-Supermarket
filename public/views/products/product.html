@@ -1,0 +1,95 @@
+
+<script src="views/products/ProductDetailsController.js"></script>
+
+<link rel="stylesheet" href="css/rating-star.css">
+
+<div class="mens" ng-controller="ProductDetailsCtrl">    
+	<div class="main">
+		<div class="wrap">
+			<ul class="breadcrumb breadcrumb__t">
+				<li><a class="home" href="#">{{ 'Home.Title' | translate }}</a> / <a href="products">{{ 'Products.Title' | translate }}</a> / {{product.name}}</li>
+			</ul>
+			<div class="cont span_2_of_3">
+				<button id="btn-edit" class="btn btn-default" ng-click="toggleEdition()" ng-hide="isSomethingEditable()" restrict access="admin">
+					{{ 'Product.Edit' | translate }}
+				</button>
+				<div class="grid images_3_of_2">
+					<script src="js/lib/imagezoom.js"></script>
+					<div class="flexslider">
+						<ul class="slides">
+							<li data-thumb="img/template_bootstrap/pic5.jpg">
+								<div class="thumb-image">
+									<img src="img/{{product.image}}" data-imagezoom="true" class="img-responsive">
+								</div>
+								<form action="/api/product/updateProductImage" method="post" enctype="multipart/form-data" id="upload-img-form" class="dropzone" restrict access="admin">
+									<div class="fallback">
+										<input type="file" />
+									</div>
+								</form>
+							</li>
+						</ul>
+						<div class="clearfix"></div>
+					</div>		
+				</div>
+				<div class="desc1 span_3_of_2">
+					<!-- Rating Stars Box -->
+					<uib-rating ng-model="rate" class="rating" max="max" ng-click="rateProduct()"></uib-rating>
+					<!--<div class="rating" data-stars="{{product.rating}}"></div>-->
+					<h3 class="m_3" editable-text="product.name" e-form="textNameForm" onbeforesave="updateProduct('name', $data)">{{product.name}}</h3>
+					<p class="price" editable-text="product.price" e-form="textPriceForm" onbeforesave="updateProduct('price', $data)">{{product.price}} €</p>
+					<p class="m_4">{{product.code}}</p>
+					<div class="btn_form">
+						<form>
+							<input id="cart-btn" type="submit" ng-click="addToCart(product._id)" value="{{ 'Products.AddToCart' | translate }}" title="">
+						</form>
+					</div>
+					<p class="m_text2" editable-textarea="product.description" e-form="textDescForm" onbeforesave="updateProduct('description', $data)">{{product.description}}</p>
+				</div>
+				<div class="clear"></div>	
+				<div>
+					<h3 class="m_3">{{ 'Products.OtherRecommendations' | translate}}</h3>
+					<!-- Recommendations carrousel -->
+					<ul id="recommendations">
+						<li><img src="img/template_bootstrap/pic1.jpg" /><a href="product/name1">Name 1</a><p>Rs 600</p></li>
+						<li><img src="img/template_bootstrap/pic2.jpg" /><a href="product/name2">Name 2</a><p>Rs 850</p></li>
+						<li><img src="img/template_bootstrap/pic3.jpg" /><a href="product/name3">Name 3</a><p>Rs 900</p></li>
+						<li><img src="img/template_bootstrap/pic4.jpg" /><a href="product/name4">Name 4</a><p>Rs 550</p></li>
+						<li><img src="img/template_bootstrap/pic5.jpg" /><a href="product/name5">Name 5</a><p>Rs 750</p></li>
+					</ul>
+					<script type="text/javascript" src="js/lib/jquery.flexisel.js"></script>
+					<script type="text/javascript">
+						$("#recommendations").flexisel({
+							visibleItems: 5,
+							animationSpeed: 500,
+							autoPlay: false,
+							autoPlaySpeed: 3000,            
+							pauseOnHover: true,
+							enableResponsiveBreakpoints: true,
+							responsiveBreakpoints: { 
+								portrait: { 
+									changePoint:480,
+									visibleItems: 1
+								}, 
+								landscape: { 
+									changePoint:640,
+									visibleItems: 2
+								},
+								tablet: { 
+									changePoint:768,
+									visibleItems: 3
+								}
+							}
+						});
+					</script>
+					
+				</div>
+				<div class="comments">
+					<h3 class="m_3">{{ 'Products.Comments' | translate}}</h3>
+					<!--TODO-->
+				</div>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+</div>

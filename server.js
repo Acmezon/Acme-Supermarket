@@ -56,13 +56,29 @@ app.get('/home', routes.index);
 
 // JSON API
 app.get('/api/products', api.Products.getAllProducts);
+app.get('/api/product/:id', api.Products.getProduct);
+app.post('/api/product/updateProduct', api.Products.updateProduct);
+app.post('/api/product/updateProductImage', api.Products.updateProductImage);
+app.post('/api/product/updateProductRating', api.Products.updateProductRating);
 
 app.post('/api/signup', api.Authentication.signup);
 app.post('/api/signin', api.Authentication.authenticate);
+app.get('/api/signout', api.Authentication.disconnect);
+app.get('/api/getUserRole', api.Authentication.getUserRole);
+app.get('/api/getPrincipal', api.Authentication.getPrincipal);
+
+app.get('/api/myprofile', api.User.getMyProfile);
+app.get('/api/mycreditcard', api.User.getMyCreditCard);
+app.post('/api/user/updateUser', api.User.updateUser);
+app.post('/api/user/changePassword', api.User.changePassword);
+
+app.post('/api/customer/updateCC', api.Customer.updateCC);
 
 app.get('/islogged', api.Authentication.isAuthenticated)
 
 app.get('/api/resetDataset', api.Management.resetDataset);
+
+app.get('/api/lang', api.i18n.getLanguageFile)
 
 // redirect all others to the index (HTML5 history) Use in production only
 app.get('*', routes.index);

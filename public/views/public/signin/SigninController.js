@@ -3,11 +3,8 @@
 angular.module('acme_supermarket').registerCtrl('SigninCtrl', ['$scope', '$http', '$window', '$rootScope', function ($scope, $http, $window, $rootScope) {
 
 	$scope.loginFailed = false;
-	$scope.loginFailedMessage = "";
-
 	if($rootScope.loginFailed){
 		$scope.loginFailed = true;
-		$scope.loginFailedMessage = $rootScope.loginFailedMessage;
 	}
 
 	if($rootScope.registerCompleted) {
@@ -23,9 +20,7 @@ angular.module('acme_supermarket').registerCtrl('SigninCtrl', ['$scope', '$http'
 		}).then(function success(response) {
 			$rootScope.loginFailed = false;
 			if(response.data.success == false) {
-				console.log(response.data);
 				$scope.loginFailed = true;
-				$scope.loginFailedMessage = response.data.message;
 			} else {
 				$window.location.href = '/home';
 			}

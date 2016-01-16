@@ -1,0 +1,10 @@
+.rating {
+  position: relative;
+  color: gold;
+  float: right;
+  font-language-override: normal;
+  height: 1.2em;
+  display: inline-block;
+  font-size: 40px;
+  font-family: sans-serif;
+}
