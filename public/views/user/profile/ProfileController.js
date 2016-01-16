@@ -2,10 +2,13 @@
 
 angular.module('acme_supermarket').registerCtrl('ProfileCtrl', ['$scope', '$http', '$translate', 'ngToast',
 function ($scope, $http, $translate, ngToast) {
-	$http.get('/api/myprofile').then(function success(response){
-		$scope.user = response.data;
+	$http.get('/api/myprofile').then(function success(customer){
+		$scope.user = customer.data;
+		$http.get('/api/mycreditcard').then(function success(cc){
+			$scope.credit_card = cc.data;
+		}, function error(cc) {});
 	},
-	function error(response) { });
+	function error(customer) { });
 
 	$scope.showEdition = function (){
 		$scope.testForm.$show();
@@ -61,13 +64,14 @@ function ($scope, $http, $translate, ngToast) {
 		$scope.wrongPwd = false;
 		$http.post('/api/customer/updateCC',
 			{
-				id: $scope.user.id,
-				cc : $scope.user.new_credit_card
+				customer_id : $scope.user.id,
+				id_cc : $scope.user.credit_card,
+				cc : $scope.new_credit_card
 			}).
 		then(function success(response) {
 			$scope.showCCForm = false;
-			$scope.user.credit_card = $scope.user.new_credit_card;
-			$scope.user.new_credit_card = "";
+			$scope.credit_card = $scope.new_credit_card;
+			$scope.new_credit_card = "";
 			$scope.updateCCForm.$setPristine();
 			$translate(['Profile.CCOk']).then(function (translation) {
 				ngToast.create({

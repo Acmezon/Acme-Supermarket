@@ -71,10 +71,18 @@
 		"ServerPwdErr" : "Error al actualizar tu contraseña, inténtalo de nuevo más tarde",
 		"PwdOk" : "Contraseña actualizada correctamente",
 		"UpdateCC" : "Actualizar tarjeta de crédito",
-		"CreditCard" : "Número de tarjeta",
 		"InvalidCC" : "Número de tarjeta inválido",
+		"InvalidExpMonth" : "Mes de caducidad no válido",
+		"InvalidExpYear" : "Año de caducidad no válido",
+		"InvalidCVC" : "Código CVC no válido",
 		"CCOk" : "Tarjeta actualizada correctamente",
-		"ServerCCErr" : "Error al actualizar tu tarjeta, inténtalo de nuevo más tarde"
+		"ServerCCErr" : "Error al actualizar tu tarjeta, inténtalo de nuevo más tarde",
+		"HolderName" : "Titular",
+		"CreditCard" : "Número de tarjeta",
+		"ExpMonth" : "Mes de caducidad",
+		"ExpYear" : "Año de caducidad",
+		"CVC" : "CVC",
+		"CCData" : "Datos de tarjeta de crédito"
 	},
 	"Products" : {
 		"Title" : "Productos",

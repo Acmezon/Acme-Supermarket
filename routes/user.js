@@ -1,5 +1,6 @@
 var jwt = require('jsonwebtoken'),
 	Customer = require('../models/customer'),
+	CreditCard = require('../models/credit_card')
 	Actor = require('../models/actor'),
 	crypto = require('crypto');
 
@@ -40,6 +41,60 @@ exports.getMyProfile = function (req, res) {
 								phone: customer.phone,
 								credit_card: customer.credit_card
 							});
+						}
+					});
+				}
+			});
+
+		} else {
+			res.status(404).send({
+				success: false
+			});
+		}
+	} else {
+		res.status(404).send({
+			success: false
+		});
+	}
+};
+
+exports.getMyCreditCard = function (req, res) {
+	var cookie = req.cookies.session;
+
+	if (cookie !== undefined) {
+		var token = cookie.token;
+
+		// decode token
+		if (token) {
+
+			// verifies secret and checks exp
+			jwt.verify(token, req.app.get('superSecret'), function(err, decoded) {
+				if (err) {
+					res.status(404).send({
+						success: false
+					});
+				} else {
+					var email = decoded.email;
+
+					Customer.findOne({email: email}, function(err, customer){
+						if(err){
+							res.status(404).send({
+								success: false
+							});							
+						}
+						else{
+							if(customer.credit_card) {
+								CreditCard.findOne({_id: customer.credit_card},
+									function(err, credit_card){
+										if(err) {
+											res.status(404).send({
+												success: false
+											})
+										} else {
+											res.status(200).json(credit_card);
+										}
+								})
+							}
 						}
 					});
 				}

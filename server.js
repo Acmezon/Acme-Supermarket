@@ -68,6 +68,7 @@ app.get('/api/getUserRole', api.Authentication.getUserRole);
 app.get('/api/getPrincipal', api.Authentication.getPrincipal);
 
 app.get('/api/myprofile', api.User.getMyProfile);
+app.get('/api/mycreditcard', api.User.getMyCreditCard);
 app.post('/api/user/updateUser', api.User.updateUser);
 app.post('/api/user/changePassword', api.User.changePassword);
 

@@ -4,25 +4,19 @@ var mongoose = require('mongoose'),
 
 var creditCardSchema = new mongoose.Schema({
 	holderName: {type: String, required:true},
-	brandName: {type: String, required:true},
 	number: {type: String, required:true, validate: {
 		validator: function(v) {
-			return /^4\d{3}-?\d{4}-?\d{4}-?\d{4}$/.test(v) || /^5[1-5]\d{2}-?\d{4}-?\d{4}-?\d{4}$/.test(v);
-		},
-		message: '{VALUE} is not a valid phone number!'
+			return /^(?:4[0-9]{12}(?:[0-9]{3})?)$/.test(v) ||
+				/^5[1-5][0-9]{14}$/.test(v) || 
+				/^3[47][0-9]{13}$/.test(v) || 
+				/^3(?:0[0-5]|[68][0-9])[0-9]{11}$/.test(v) || 
+				/^6(?:011|5[0-9]{2})[0-9]{12}$/.test(v) || 
+				/^(?:2131|1800|35\d{3})\d{11})$/.test(v);
+		}
     }},
 	expirationMonth: {type:Number,min:1, max:12, required: true},
 	expirationYear: {type:Number,min:2000, max:3000, required: true},
-	cwCode: {type:Number,min:100, max:999, required: true}
+	cvcCode: {type:Number,min:100, max:9999, required: true}
 });
-
-/*
-//Visa -> 16 digitos, pueden contener guiones "-"  cadaa 4 digitos o no
- /^4\d{3}-?\d{4}-?\d{4}-?\d{4}$/
-
-//MasterCard
- /^5[1-5]\d{2}-?\d{4}-?\d{4}-?\d{4}$/
-*/
-
 
 module.exports = mongoose.model('Credit_card', creditCardSchema);

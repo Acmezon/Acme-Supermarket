@@ -27,14 +27,40 @@
 						<p class="editable-p" editable-text="user.phone" ng-show="user._type == 'Customer'" onbeforesave="updateUser('phone', $data)">{{user.phone}}</p>
 					</div>
 					<div ng-show="user._type == 'Customer'" >
-						<div class="editable-p" ng-show="user.credit_card">{{ 'Profile.CreditCard' | translate }}: {{user.credit_card}}</div>
+						<h3>{{ 'Profile.CCData' | translate }}</h3>
+						<div ng-show="credit_card">
+							<div class="editable-p">{{ 'Profile.HolderName' | translate }}: {{credit_card.holderName}}</div>
+							<div class="editable-p">{{ 'Profile.CreditCard' | translate }}: {{credit_card.number}}</div>
+							<div class="editable-p">{{ 'Profile.ExpMonth' | translate }}: {{credit_card.expirationMonth}}</div>
+							<div class="editable-p">{{ 'Profile.ExpYear' | translate }}: {{credit_card.expirationYear}}</div>
+							<div class="editable-p">{{ 'Profile.CVC' | translate }}: {{credit_card.cvcCode}}</div>
+						</div>
 						<button type="button" class="btn btn-default" ng-click="showCCForm = !showCCForm">{{ 'Profile.UpdateCC' | translate }}</button>
 						
 						<form method="post" name="updateCCForm" id="pass-form" ng-submit="updateCC()" ng-show="showCCForm" novalidate>
+							<label for="holder_name">{{ 'Profile.HolderName' | translate }}</label>
+							<input name="holder_name" class="form-control" ng-model="new_credit_card.holderName" required/>
 							<label for="credit_card">{{ 'Profile.CreditCard' | translate }}</label>
-							<input name="credit_card" class="form-control" ng-model="user.new_credit_card" cc-number required/>
-							<div class="alert alert-danger" ng-show="updateCCForm.credit_card.$viewValue.length >= 16 && updateCCForm.credit_card.$dirty && !updateCCForm.credit_card.$valid">
+							<input name="credit_card" class="form-control" ng-model="new_credit_card.number" cc-number required/>
+							<div class="alert alert-danger" ng-show="updateCCForm.credit_card.$viewValue.length >= 14 && updateCCForm.credit_card.$dirty && !updateCCForm.credit_card.$valid">
 								{{ 'Profile.InvalidCC' | translate }}
+							</div>
+							<div cc-exp>
+								<label for="exp_month">{{ 'Profile.ExpMonth' | translate }}</label>
+								<input name="exp_month" class="form-control" ng-model="new_credit_card.expirationMonth" cc-exp-month required/>
+								<div class="alert alert-danger" ng-show="updateCCForm.exp_month.$dirty && !updateCCForm.exp_month.$valid">
+									{{ 'Profile.InvalidExpMonth' | translate }}
+								</div>
+								<label for="exp_year">{{ 'Profile.ExpYear' | translate }}</label>
+								<input name="exp_year" class="form-control" ng-model="new_credit_card.expirationYear" cc-exp-year required/>
+								<div class="alert alert-danger" ng-show="updateCCForm.exp_year.$dirty && !updateCCForm.exp_year.$valid">
+									{{ 'Profile.InvalidExpYear' | translate }}
+								</div>
+							</div>
+							<label for="cvc">{{ 'Profile.CVC' | translate }}</label>
+							<input name="cvc" class="form-control" ng-model="new_credit_card.cvcCode" cc-cvc cc-type="credit_card.$ccType" required/>
+							<div class="alert alert-danger" ng-show="updateCCForm.cvc.$dirty && !updateCCForm.cvc.$valid">
+								{{ 'Profile.InvalidCVC' | translate }}
 							</div>
 							<p><button type="submit" class="btn btn-warning" ng-disabled="updateCCForm.$invalid">{{ 'Global.Submit' | translate }}</button></p>
 						</form>

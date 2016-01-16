@@ -71,10 +71,18 @@
 		"ServerPwdErr" : "Error updating password, try again later",
 		"PwdOk" : "Password changed successfuly",
 		"UpdateCC" : "Update credit card",
-		"CreditCard" : "Credit card number",
 		"InvalidCC" : "Invalid credit card number",
+		"InvalidExpMonth" : "Invalid expiration month",
+		"InvalidExpYear" : "Invalid expiration year",
+		"InvalidCVC" : "Invalid CVV code",
 		"CCOk" : "Credit card updated successfuly",
-		"ServerCCErr" : "Error updating credit card, try again later"
+		"ServerCCErr" : "Error updating credit card, try again later",
+		"HolderName" : "Holder name",
+		"CreditCard" : "Credit card number",
+		"ExpMonth" : "Expiration month",
+		"ExpYear" : "Expiration year",
+		"CVC" : "CVV",
+		"CCData" : "Credit Card data"
 	},
 	"Products" : {
 		"Title" : "Products",

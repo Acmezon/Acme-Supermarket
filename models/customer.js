@@ -13,7 +13,7 @@ var customerSchema = Actor.schema.extend({
 			}
 		}
 	},
-	credit_card: String,
+	credit_card: mongoose.Schema.Types.ObjectId,
 	address: {type: String, required: true},
 	country: {type: String, required: true},
 	city: {type: String, required: true},
