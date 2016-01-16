@@ -142,8 +142,7 @@ exports.getPrincipal = function(req, res) {
 						u_id: "-1"
 					})
 				} else {
-					console.log(decoded);
-					res.status(200).json({u_id: true});
+					res.status(200).json({u_id: decoded.email});
 				}
 			});
 

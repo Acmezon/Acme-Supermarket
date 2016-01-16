@@ -3,6 +3,9 @@
 		"en": "Inglés",
 		"es": "Español"
 	},
+	"Global" : {
+		"Submit" : "Enviar"
+	},
 	"Home": {
 		"Title": "Inicio",
 		"FeaturedProducts" : "Productos Destacados",
@@ -43,7 +46,35 @@
 		"Address" : "Dirección",
 		"City" : "Ciudad",
 		"Phone" : "Teléfono",
-		"Geoerror" : "No se han podido obtener tus coordenadas, asegúrate de que tu navegador permite obtener coordenadas y de que no las estás bloqueando."
+		"Geoerror" : "No se han podido obtener tus coordenadas, asegúrate de que tu navegador permite obtener coordenadas y de que no las estás bloqueando.",
+		"Complete" : "Register completed. Now you can sign in."
+	},
+	"Signin" : {
+		"Signin" : "Entrar",
+		"NeedLogin" : "Necesitas estar identificado.",
+		"NewCustomer" : "Nuevo cliente",
+		"Email" : "Email",
+		"Password" : "Contraseña",
+		"Remember" : "Recuérdame"
+	},
+	"Profile" : {
+		"PersonalInfo" : "Datos del perfil",
+		"BillingInfo" : "Facturación",
+		"UpdateCoords" : "Actualizar Coordenadas",
+		"Update" : "Actualizar información",
+		"ChangePass" : "Cambiar contraseña",
+		"OldPass" : "Contraseña actual",
+		"NewPass" : "Nueva contraseña",
+		"NewPassConf" : "Repita la nueva contraseña",
+		"PwdMatch" : "Las contraseñas no coinciden",
+		"PwdError" : "Contraseña incorrecta",
+		"ServerPwdErr" : "Error al actualizar tu contraseña, inténtalo de nuevo más tarde",
+		"PwdOk" : "Contraseña actualizada correctamente",
+		"UpdateCC" : "Actualizar tarjeta de crédito",
+		"CreditCard" : "Número de tarjeta",
+		"InvalidCC" : "Número de tarjeta inválido",
+		"CCOk" : "Tarjeta actualizada correctamente",
+		"ServerCCErr" : "Error al actualizar tu tarjeta, inténtalo de nuevo más tarde"
 	},
 	"Products" : {
 		"Title" : "Productos",

@@ -10,14 +10,14 @@ exports.getCustomer = function (req, res) {
 	console.log('Function-productsApi-getCustumer -- _email:'+_email);
 
 
-	Customer.findOne({email:_email}, function(err,custumer){
+	Customer.findOne({email:_email}, function(err,customer){
 		if(err){
 			//console.log('--Costumer not found');
 			console.error(err);
 			throw err;
 		}
 		else{
-			res.json(custumer);
+			res.json(customer);
 			res.sendStatus(200);
 		}
 	});
@@ -60,4 +60,15 @@ exports.newCustomer = function (customer, callback) {
 	});
 
 	return;
+};
+
+exports.updateCC = function(req, res){
+	Customer.findByIdAndUpdate(req.body.id, { $set: { credit_card : req.body.cc }}, function (err, product) {
+		if(err){
+			console.log(err);
+			res.sendStatus(503);
+		} else {
+			res.sendStatus(200);
+		}
+	});
 };
