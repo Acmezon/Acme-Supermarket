@@ -1,6 +1,7 @@
 var Customer = require('./customers_api'),
 	User = require('./user'),
 	Products = require('./products_api'),
+	Supplier = require('./supplier_api')
 	Provides = require('./provides_api'),
 	Rates = require('./rates_api'),
 	Authentication = require('./authentication'),
@@ -11,6 +12,7 @@ var Customer = require('./customers_api'),
 exports.Customer = Customer;
 exports.User = User;
 exports.Products = Products;
+exports.Supplier = Supplier;
 exports.Provides = Provides;
 exports.Rates = Rates;
 exports.Authentication = Authentication;
