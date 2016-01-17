@@ -63,6 +63,8 @@ app.post('/api/product/updateProductRating', api.Products.updateProductRating);
 
 app.get('/api/providesByProductId/:id', api.Provides.getProvidesByProductId);
 
+app.get('/api/supplierName/:id', api.Supplier.getSupplierName);
+
 app.get('/api/averageRatingByProductId/:id', api.Rates.getAverageRatingByProductId);
 
 app.post('/api/signup', api.Authentication.signup);

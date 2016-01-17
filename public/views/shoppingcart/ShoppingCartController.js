@@ -8,18 +8,58 @@ angular.module('acme_supermarket').registerCtrl('ShoppingCartCtrl', ['$scope', '
 		cookie = JSON.parse(cookie);
 		if (!$.isEmptyObject(cookie)) {
 			Object.keys(cookie).forEach(function(id) {
+
+
 				$http({
 					method: 'GET',
-					url: '/api/product/' + id
+					url: '/api/provide/' + id
 				}).
-				then(function success(response) {
-					var product = response.data;
-					product['quantity'] = cookie[id];
-					$scope.shoppingcart.push(product);
-				}, function error(response) {
-				});
-			});
+				then(function success(response1) {
+					var row = response1.data;
 
+					// Get the quantity from cookie
+					row.quantity = cookie[id];
+
+					// Get the product of provide
+					$http({
+						method: 'GET',
+						url: '/api/product/' + provide.product_id
+					}).
+					then(function success(response2) {
+						// Copy fields
+						var product = response2.data;
+						Object.keys(product).forEach(function (field) {
+							if (field != "_id") {
+								row[field] = product[field];
+							}
+						});
+
+						// Get the supplier of provide
+						$http({
+							method: 'GET',
+							url: '/api/supplierName/' + provide.supplier_id
+						}).
+						then(function success(response3) {
+							// Copy fields
+							row.supplier = response3.data;
+
+							// FINISH QUERYING
+							// PUSH INTO SHOPPING CART
+							$scope.shoppingcart.push(row)
+						}, function error(response3) {
+						});
+
+
+					}, function error(response2) {
+					});
+
+					
+				}, function error(response1) {
+				});
+
+
+
+			});
 		}
 	}
 
