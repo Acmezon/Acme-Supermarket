@@ -93,6 +93,11 @@
 		"Name" : "Name",
 		"Price": "Price",
 		"Rating": "Rating",
+		"Supplier": {
+			"Name" : "Name",
+			"Reputation" : "Reputation",
+			"Empty" : "Product not available"
+		},
 		"Show" : "Show",
 		"PerPage" : "per page",
 		"Page" : "Page",
@@ -127,6 +132,7 @@
 			"Price" : "Unit price",
 			"Image" : "Image",
 			"Quantity" : "Quantity",
+			"Supplier": "Supplier",
 			"Total" : "Total"
 		},
 		"Remove" : "Remove",

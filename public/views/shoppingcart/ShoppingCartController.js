@@ -16,14 +16,13 @@ angular.module('acme_supermarket').registerCtrl('ShoppingCartCtrl', ['$scope', '
 				}).
 				then(function success(response1) {
 					var row = response1.data;
-
 					// Get the quantity from cookie
 					row.quantity = cookie[id];
 
 					// Get the product of provide
 					$http({
 						method: 'GET',
-						url: '/api/product/' + provide.product_id
+						url: '/api/product/' + row.product_id
 					}).
 					then(function success(response2) {
 						// Copy fields
@@ -37,7 +36,7 @@ angular.module('acme_supermarket').registerCtrl('ShoppingCartCtrl', ['$scope', '
 						// Get the supplier of provide
 						$http({
 							method: 'GET',
-							url: '/api/supplierName/' + provide.supplier_id
+							url: '/api/supplierName/' + row.supplier_id
 						}).
 						then(function success(response3) {
 							// Copy fields
@@ -60,6 +59,8 @@ angular.module('acme_supermarket').registerCtrl('ShoppingCartCtrl', ['$scope', '
 
 
 			});
+
+			
 		}
 	}
 

@@ -31,7 +31,6 @@ angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$
 			});
 		});
 
-		console.log($scope.products)
 	}, function error(response1) {
 	});
 

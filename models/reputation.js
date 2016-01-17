@@ -6,7 +6,7 @@ var Supplier = require('./supplier'),
 
 
 var reputationSchema = mongoose.Schema({
-	reputation: {type:Number,min:0,max:5, required: true},
+	value: {type:Number,min:0,max:5, required: true},
 	supplier_id: {type: mongoose.Schema.Types.ObjectId, ref:'Supplier'},
 	customer_id: {type: mongoose.Schema.Types.ObjectId, ref:'Customer'}
 });

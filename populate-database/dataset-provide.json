@@ -1,4 +1,4 @@
-{"_id": ObjectId("000000000000000000000001"), "price" : 0.12, "product_id": ObjectId("000000000000000000000001"), "supplier_id" : ObjectId("000000000000000000000003") }
+{"_id": ObjectId("000000000000000000000001"), "price" : 0.79, "product_id": ObjectId("000000000000000000000001"), "supplier_id" : ObjectId("000000000000000000000003") }
 {"_id": ObjectId("000000000000000000000002"), "price" : 0.7, "product_id": ObjectId("000000000000000000000002"), "supplier_id" : ObjectId("000000000000000000000003") }
 {"_id": ObjectId("000000000000000000000003"), "price" : 1, "product_id": ObjectId("000000000000000000000003"), "supplier_id" : ObjectId("000000000000000000000003") }
 {"_id": ObjectId("000000000000000000000004"), "price" : 0.3, "product_id": ObjectId("000000000000000000000004"), "supplier_id" : ObjectId("000000000000000000000003") }
@@ -11,7 +11,7 @@
 {"_id": ObjectId("000000000000000000000011"), "price" : 10.36, "product_id": ObjectId("000000000000000000000011"), "supplier_id" : ObjectId("000000000000000000000003") }
 {"_id": ObjectId("000000000000000000000012"), "price" : 1.84, "product_id": ObjectId("000000000000000000000012"), "supplier_id" : ObjectId("000000000000000000000003") }
 
-{"_id": ObjectId("000000000000000000000013"), "price" : 0.79, "product_id": ObjectId("000000000000000000000001"), "supplier_id" : ObjectId("000000000000000000000004") }
+{"_id": ObjectId("000000000000000000000013"), "price" : 0.12, "product_id": ObjectId("000000000000000000000001"), "supplier_id" : ObjectId("000000000000000000000004") }
 {"_id": ObjectId("000000000000000000000014"), "price" : 0.71, "product_id": ObjectId("000000000000000000000002"), "supplier_id" : ObjectId("000000000000000000000004") }
 {"_id": ObjectId("000000000000000000000015"), "price" : 1.2, "product_id": ObjectId("000000000000000000000003"), "supplier_id" : ObjectId("000000000000000000000004") }
 {"_id": ObjectId("000000000000000000000016"), "price" : 0.1, "product_id": ObjectId("000000000000000000000004"), "supplier_id" : ObjectId("000000000000000000000004") }

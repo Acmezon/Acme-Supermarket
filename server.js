@@ -61,9 +61,12 @@ app.post('/api/product/updateProduct', api.Products.updateProduct);
 app.post('/api/product/updateProductImage', api.Products.updateProductImage);
 app.post('/api/product/updateProductRating', api.Products.updateProductRating);
 
+app.get('/api/provide/:id', api.Provides.getProvide)
 app.get('/api/providesByProductId/:id', api.Provides.getProvidesByProductId);
 
 app.get('/api/supplierName/:id', api.Supplier.getSupplierName);
+
+app.get('/api/averageReputationBySupplierId/:id', api.Reputation.getAverageReputationBySupplierId)
 
 app.get('/api/averageRatingByProductId/:id', api.Rates.getAverageRatingByProductId);
 

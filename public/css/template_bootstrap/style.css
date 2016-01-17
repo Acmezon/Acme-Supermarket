@@ -2036,9 +2036,6 @@ ul.seller li{
 	float: left;
 	margin:-1% 0 1% 2.6%;
 }
-.btn_form{
-	padding:4% 0;
-}
 .btn_form form input[type="submit"] {
 	font-family: 'Exo 2', sans-serif;
 	cursor: pointer;
@@ -2046,7 +2043,7 @@ ul.seller li{
 	outline: none;
 	display: inline-block;
 	font-size: 1em;
-	padding: 10px 34px;
+	padding: 10px 20px;
 	background:#4CB1CA;
 	color: #FFF;
 	text-transform: uppercase;

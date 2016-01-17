@@ -18,10 +18,9 @@ exports.getAverageRatingByProductId = function(req, res) {
 			//console.log(rates);
 			var total = 0;
 			for(var i = 0; i < rates.length; i++) {
-			    total += rates[i].rate;
+			    total += rates[i].value;
 			}
 			var rating = total / rates.length;
-			console.log(rating)
 			res.status(200).json(rating);
 		}
 	});

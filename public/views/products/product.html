@@ -3,7 +3,7 @@
 
 <link rel="stylesheet" href="css/rating-star.css">
 
-<div class="mens" ng-controller="ProductDetailsCtrl">    
+<div class="mens">    
 	<div class="main">
 		<div class="wrap">
 			<ul class="breadcrumb breadcrumb__t">
@@ -36,14 +36,47 @@
 					<uib-rating ng-model="rate" class="rating" max="max" ng-click="rateProduct()"></uib-rating>
 					<!--<div class="rating" data-stars="{{product.rating}}"></div>-->
 					<h3 class="m_3" editable-text="product.name" e-form="textNameForm" onbeforesave="updateProduct('name', $data)">{{product.name}}</h3>
-					<p class="price" editable-text="product.price" e-form="textPriceForm" onbeforesave="updateProduct('price', $data)">{{product.price}} €</p>
+					<p class="price" editable-text="product.price" e-form="textPriceForm" onbeforesave="updateProduct('price', $data)">{{product.minPrice}} - {{product.maxPrice}} €</p>
 					<p class="m_4">{{product.code}}</p>
-					<div class="btn_form">
-						<form>
-							<input id="cart-btn" type="submit" ng-click="addToCart(product._id)" value="{{ 'Products.AddToCart' | translate }}" title="">
-						</form>
-					</div>
 					<p class="m_text2" editable-textarea="product.description" e-form="textDescForm" onbeforesave="updateProduct('description', $data)">{{product.description}}</p>
+					<p class="m_3" ng-show="out_suppliers.length===0">{{'Products.Supplier.Empty' | translate}}</p>
+					<table class="table table-responsive table-bordered table-hover" ng-show="out_suppliers.length>0">
+						<thead>
+							<th>{{'Products.Supplier.Name' | translate}}</th>
+							<th>{{'Products.Supplier.Reputation' | translate}}</th>
+							<th>{{'Products.Price' | translate}}</th>
+						</thead>
+						<tbody>
+							<tr ng-repeat="provide in out_suppliers">
+								<td>{{provide.supplierName}}</td>
+								<td title="{{provide.reputation}}" style="width:17%">
+									<label ng-show="provide.reputation">
+										<span class="glyphicon glyphicon-star"></span>
+									</label>
+									<label ng-show="provide.reputation >= 2">
+										<span class="glyphicon glyphicon-star"></span>
+									</label>
+									<label ng-show="provide.reputation >= 3" >
+										<span class="glyphicon glyphicon-star"></span>
+									</label>
+									<label ng-show="provide.reputation >= 4">
+										<span class="glyphicon glyphicon-star"></span>
+									</label>
+									<label ng-show="provide.reputation === 5">
+										<span class="glyphicon glyphicon-star"></span>
+									</label>
+								</td>
+								<td>{{provide.price | number:2}} €</td>
+								<td style="width:10%">
+									<div class="btn_form">
+										<form class="btn_form">
+											<input id="cart-btn" type="submit" ng-click="addToCart(provide._id)" value="{{ 'Products.AddToCart' | translate }}" title="">
+										</form>
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 				<div class="clear"></div>	
 				<div>

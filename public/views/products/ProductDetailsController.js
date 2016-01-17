@@ -11,8 +11,60 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 	then(function success(response) {
 		$scope.product = response.data;
 		$scope.rate = response.data.rating
+
+		$scope.out_suppliers = [];
+
+		// Get provides from product
+		$http({
+			method: 'GET',
+			url: '/api/providesByProductId/' + $scope.product._id
+		}).
+		then (function success (response2) {
+			var provides = response2.data;
+
+			var minMax = minMaxPrices(provides);
+			$scope.product.minPrice = minMax[0];
+			$scope.product.maxPrice = minMax[1]; 
+
+			provides.forEach(function(provide) {
+
+				// Get supplier of each provide
+				$http({
+					method: 'GET',
+					url: '/api/supplierName/' + provide.supplier_id
+				}).
+				then (function success (response3) {
+					var supplierName = response3.data;
+					provide.supplierName = supplierName;
+				}, function error (response3){
+				});
+
+				// Get average reputation of supplier
+				$http({
+					method: 'GET',
+					url: '/api/averageReputationBySupplierId/' + provide.supplier_id
+				}).
+				then (function success (response3) {
+					var avgreputation = response3.data;
+					provide.reputation = avgreputation;
+				}, function error(response3) {
+				});
+
+			});
+
+			// FINISH PROCESS
+			// PUT INTO OUTPUT VARIABLE
+			$scope.out_suppliers = provides;
+			console.log($scope.out_suppliers)
+
+		}, function error (response2) {
+		});
+
+
 	}, function error(response) {
 	});
+
+
 
 	//Hides Dropzone
 	$("form#upload-img-form").hide();
@@ -104,25 +156,38 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 				});
 	};
 
-	$scope.addToCart = function (id) {
+	$scope.addToCart = function (provide_id) {
+		console.log(provide_id)
 		var cookie = $cookies.get("shoppingcart");
 		var new_cookie = {};
 		if (!cookie) {
-			new_cookie[id] = 1;
+			new_cookie[provide_id] = 1;
 		} else {
 			cookie = JSON.parse(cookie);
 			new_cookie = cookie;
 			if ($.isEmptyObject(cookie)) {
-				new_cookie[id] = 1;
+				new_cookie[provide_id] = 1;
 				$cookieStore.put("shoppingcart", new_cookie);
 			} else {
-				if (new_cookie[id]) {
-					new_cookie[id] = cookie[id] + 1;
+				if (new_cookie[provide_id]) {
+					new_cookie[provide_id] = cookie[provide_id] + 1;
 				} else {
-					new_cookie[id] = 1;
+					new_cookie[provide_id] = 1;
 				}
 			}
 		}
-		$cookieStore.put("shoppingcart", new_cookie);
+		$cookieStore.put("shoppingcart", new_cookie);e)
+	}
+
+	var minMaxPrices = function (provides) {
+		var lowest = Number.POSITIVE_INFINITY;
+		var highest = Number.NEGATIVE_INFINITY;
+		var tmp;
+		for (var i = provides.length - 1; i >= 0; i--) {
+		    tmp = provides[i].price;
+		    if (tmp < lowest) lowest = tmp;
+		    if (tmp > highest) highest = tmp;
+		}
+		return [lowest, highest];
 	}
 }]);
