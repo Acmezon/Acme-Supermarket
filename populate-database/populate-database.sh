@@ -10,7 +10,7 @@ sudo mongoimport --db Acme-Supermarket --collection belongs_to --drop --file dat
 
 sudo mongoimport --db Acme-Supermarket --collection provide --drop --file dataset-provide.json
 
-sudo mongoimport --db Acme-Supermarket --collection purchases --drop --file dataset-purchase.json --jsonArray
+sudo mongoimport --db Acme-Supermarket --collection purchases --drop --file dataset-purchase.json
 
 sudo mongoimport --db Acme-Supermarket --collection purchase_lines --drop --file dataset-purchase_line.json
 
