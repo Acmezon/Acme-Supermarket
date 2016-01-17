@@ -4,6 +4,8 @@ var db_utils = require('./db_utils');
 var Product = require('../models/product');
 var multer  = require('multer');
 var fs = require('fs');
+var Authentication = require('./authentication'),
+	Rate = require('../models/rate');
 
 //Devuelve una lista con todos los productos de la coleccion
 exports.getAllProducts = function (req, res) {
@@ -111,11 +113,5 @@ exports.updateProductImage = function (req, res) {
 };
 
 exports.updateProductRating = function (req, res) {
-	Product.findByIdAndUpdate(req.body.id, { $set: { "rating" : req.body.rating} }, function (err, product) {
-		if(err){
-			res.sendStatus(500);
-		} else {
-			res.status(200).json({success: true});
-		}
-	});
+	//TODO: Buscar en los "rate" si hay alguno del usuario actual al producto en cuestión. Si lo hay, actualizarlo, si no, crear uno nuevo.
 };
