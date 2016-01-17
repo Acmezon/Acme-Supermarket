@@ -43,7 +43,7 @@
 			<div class="cont span_2_of_3">
 				<h2 class="head">{{ 'Home.Title' | translate }}</h2>
 				<div class="top-box">
-					<div ng-repeat="product in products">
+					<div ng-repeat="product in products | limitTo:9">
 
 						<div class="col_1_of_3 span_1_of_3">
 							<a href="product/{{product._id}}">
@@ -58,7 +58,7 @@
 										<div class="cart-left">
 											<p class="title">{{product.name}}</p>
 											<div class="price1">
-												<span class="actual">${{product.price}}</span>
+												<span class="actual">{{product.minPrice}} - {{product.maxPrice}} €</span>
 											</div>
 										</div>
 										<div class="cart-right"></div>
