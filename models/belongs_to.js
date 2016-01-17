@@ -6,7 +6,7 @@ var Product = require('./product'),
 var productSchema = mongoose.Schema({
 	product_id : {type: mongoose.Schema.Types.ObjectId, ref:'Product'},
 	category_id : {type: mongoose.Schema.Types.ObjectId, ref:'Category'}
-});
+}, {collection: 'belongs_to'});
 
 
 module.exports = mongoose.model('Product', productSchema);
