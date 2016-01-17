@@ -6,8 +6,7 @@ var Schema = mongoose.Schema;
 var productSchema = mongoose.Schema({
 	name: String,
 	description: {type: String, required: true},
-	code: {type: String, required: true, unique:true},
-	rating: {type:Number,min:0,max:5, required: true},
+	code: {type: String, required: true, unique:true}
 	image: String
 });
 

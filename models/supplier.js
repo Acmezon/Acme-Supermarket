@@ -13,8 +13,7 @@ var supplierSchema = Actor.schema.extend({
 			}
 		}
 	},
-	address: {type: String, required: true},
-	reputation: {type:Number,min:0,max:5, required: true}
+	address: {type: String, required: true}
 });
 
 module.exports = mongoose.model('Supplier', supplierSchema);
