@@ -127,35 +127,9 @@ exports.isAuthenticated = function(req, res) {
 
 
 exports.getPrincipal = function(req, res) {
-	var cookie = req.cookies.session;
-
-	if (cookie !== undefined) {
-		var token = cookie.token;
-
-		// decode token
-		if (token) {
-
-			// verifies secret and checks exp
-			jwt.verify(token, req.app.get('superSecret'), function(err, decoded) {
-				if (err) {
-					res.status(200).send({
-						u_id: "-1"
-					})
-				} else {
-					res.status(200).json({u_id: decoded.email});
-				}
-			});
-
-		} else {
-			res.status(200).send({
-				u_id: "-1"
-			})
-		}
-	} else {
-		res.status(200).send({
-			u_id: "-1"
-		})
-	}
+	currentUser(req.cookies.session, req.app.get('superSecret'), function (principal_email) {
+		res.status(200).send({ email: principal_email});
+	});
 }
 
 exports.getUserRole = function(req, res) {
@@ -174,3 +148,27 @@ exports.getUserRole = function(req, res) {
 	}
 
 };
+
+exports.currentUser = function(cookie, superSecret, callback) {
+	if (cookie !== undefined) {
+		var token = cookie.token;
+
+		// decode token
+		if (token) {
+
+			// verifies secret and checks exp
+			jwt.verify(token, superSecret, function(err, decoded) {
+				if (err) {
+					callback(-1);
+				} else {
+					callback(decoded.email);
+				}
+			});
+
+		} else {
+			callback(-1);
+		}
+	} else {
+		callback(-1);
+	}
+}

@@ -1,7 +1,7 @@
 'use strict'
 
-angular.module('acme_supermarket').registerCtrl('ProductDetailsCtrl', ['$scope', '$http', '$routeParams', '$translate', '$window', 'ngToast', '$cookies', '$cookieStore', 
-function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $cookieStore) {
+angular.module('acme_supermarket').registerCtrl('ProductDetailsCtrl', ['$scope', '$http', '$routeParams', '$translate', '$window', 'ngToast', '$cookies', '$cookieStore', '$location' , '$rootScope', 
+function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $cookieStore, $location, $rootScope) {
 	var id = $routeParams.id;
 
 	$http({
@@ -64,7 +64,19 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 	}, function error(response) {
 	});
 
+	$scope.userHasPurchased = false;
 
+	$http.post('/api/product/userHasPurchased', {
+		product: id
+	}).then(
+		function success(response) {
+			$scope.userHasPurchased = response.data.hasPurchased;
+			console.log(response)
+		}, function error(response) {
+			console.log(response)
+			$scope.userHasPurchased = false;
+		}
+	);
 
 	//Hides Dropzone
 	$("form#upload-img-form").hide();
@@ -147,12 +159,28 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 			rating: $scope.rate
 		}).then(function success(response) {},
 				function error(response) {
-					$translate(['Product.RatingError']).then(function (translation) {
-						ngToast.create({
-							className: 'danger',
-							content: translation['Product.RatingError']
-						});
-					});
+					switch(response.status) {
+						case 403:
+							$rootScope.loginFailed = true;
+							$location.url('/signin');
+							break;
+						case 401:
+							$translate(['Product.RatingPurchaseError']).then(function (translation) {
+								ngToast.create({
+									className: 'warning',
+									content: translation['Product.RatingPurchaseError']
+								});
+							});
+							break;
+						default:
+							$translate(['Product.RatingError']).then(function (translation) {
+								ngToast.create({
+									className: 'danger',
+									content: translation['Product.RatingError']
+								});
+							});
+							break;
+					}
 				});
 	};
 

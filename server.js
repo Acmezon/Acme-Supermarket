@@ -60,6 +60,13 @@ app.get('/api/product/:id', api.Products.getProduct);
 app.post('/api/product/updateProduct', api.Products.updateProduct);
 app.post('/api/product/updateProductImage', api.Products.updateProductImage);
 app.post('/api/product/updateProductRating', api.Products.updateProductRating);
+app.post('/api/product/userHasPurchased', api.Products.userHasPurchased);
+
+app.get('/api/providesByProductId/:id', api.Provides.getProvidesByProductId);
+
+app.get('/api/supplierName/:id', api.Supplier.getSupplierName);
+
+app.get('/api/averageRatingByProductId/:id', api.Rates.getAverageRatingByProductId);
 
 app.get('/api/provide/:id', api.Provides.getProvide)
 app.get('/api/providesByProductId/:id', api.Provides.getProvidesByProductId);
