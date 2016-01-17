@@ -1,0 +1,5 @@
+{"_id": ObjectId("000000000000000000000001"), "deliveryDate" : { "$date" : 1485961200 }, "paymentDate": { "$date" : 1453029600 }, "customer_id" : ObjectId("000000000000000000000002") }
+{"_id": ObjectId("000000000000000000000002"), "deliveryDate" : { "$date" : 1485961200 }, "paymentDate": { "$date" : 1453029600 }, "customer_id" : ObjectId("000000000000000000000002") }
+
+{"_id": ObjectId("000000000000000000000003"), "deliveryDate" : { "$date" : 1485961200 }, "paymentDate": { "$date" : 1453029600 }, "customer_id" : ObjectId("000000000000000000000005") }
+{"_id": ObjectId("000000000000000000000004"), "deliveryDate" : { "$date" : 1485961200 }, "paymentDate": { "$date" : 1453029600 }, "customer_id" : ObjectId("000000000000000000000005") }

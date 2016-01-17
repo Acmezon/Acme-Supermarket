@@ -1,0 +1,25 @@
+{"_id": ObjectId("000000000000000000000001"), "price" : 6100, "product_id": ObjectId("000000000000000000000001"), "supplier_id" : ObjectId("000000000000000000000003") }
+{"_id": ObjectId("000000000000000000000002"), "price" : 6200, "product_id": ObjectId("000000000000000000000002"), "supplier_id" : ObjectId("000000000000000000000003") }
+{"_id": ObjectId("000000000000000000000003"), "price" : 6300, "product_id": ObjectId("000000000000000000000003"), "supplier_id" : ObjectId("000000000000000000000003") }
+{"_id": ObjectId("000000000000000000000004"), "price" : 6400, "product_id": ObjectId("000000000000000000000004"), "supplier_id" : ObjectId("000000000000000000000003") }
+{"_id": ObjectId("000000000000000000000005"), "price" : 6500, "product_id": ObjectId("000000000000000000000005"), "supplier_id" : ObjectId("000000000000000000000003") }
+{"_id": ObjectId("000000000000000000000006"), "price" : 6600, "product_id": ObjectId("000000000000000000000006"), "supplier_id" : ObjectId("000000000000000000000003") }
+{"_id": ObjectId("000000000000000000000007"), "price" : 6700, "product_id": ObjectId("000000000000000000000007"), "supplier_id" : ObjectId("000000000000000000000003") }
+{"_id": ObjectId("000000000000000000000008"), "price" : 6800, "product_id": ObjectId("000000000000000000000008"), "supplier_id" : ObjectId("000000000000000000000003") }
+{"_id": ObjectId("000000000000000000000009"), "price" : 6900, "product_id": ObjectId("000000000000000000000009"), "supplier_id" : ObjectId("000000000000000000000003") }
+{"_id": ObjectId("000000000000000000000010"), "price" : 7000, "product_id": ObjectId("000000000000000000000010"), "supplier_id" : ObjectId("000000000000000000000003") }
+{"_id": ObjectId("000000000000000000000011"), "price" : 7100, "product_id": ObjectId("000000000000000000000011"), "supplier_id" : ObjectId("000000000000000000000003") }
+{"_id": ObjectId("000000000000000000000012"), "price" : 7200, "product_id": ObjectId("000000000000000000000012"), "supplier_id" : ObjectId("000000000000000000000003") }
+
+{"_id": ObjectId("000000000000000000000013"), "price" : 7100, "product_id": ObjectId("000000000000000000000001"), "supplier_id" : ObjectId("000000000000000000000004") }
+{"_id": ObjectId("000000000000000000000014"), "price" : 7200, "product_id": ObjectId("000000000000000000000002"), "supplier_id" : ObjectId("000000000000000000000004") }
+{"_id": ObjectId("000000000000000000000015"), "price" : 7300, "product_id": ObjectId("000000000000000000000003"), "supplier_id" : ObjectId("000000000000000000000004") }
+{"_id": ObjectId("000000000000000000000016"), "price" : 7400, "product_id": ObjectId("000000000000000000000004"), "supplier_id" : ObjectId("000000000000000000000004") }
+{"_id": ObjectId("000000000000000000000017"), "price" : 7500, "product_id": ObjectId("000000000000000000000005"), "supplier_id" : ObjectId("000000000000000000000004") }
+{"_id": ObjectId("000000000000000000000018"), "price" : 7600, "product_id": ObjectId("000000000000000000000006"), "supplier_id" : ObjectId("000000000000000000000004") }
+{"_id": ObjectId("000000000000000000000019"), "price" : 7700, "product_id": ObjectId("000000000000000000000007"), "supplier_id" : ObjectId("000000000000000000000004") }
+{"_id": ObjectId("000000000000000000000020"), "price" : 7800, "product_id": ObjectId("000000000000000000000008"), "supplier_id" : ObjectId("000000000000000000000004") }
+{"_id": ObjectId("000000000000000000000021"), "price" : 7900, "product_id": ObjectId("000000000000000000000009"), "supplier_id" : ObjectId("000000000000000000000004") }
+{"_id": ObjectId("000000000000000000000022"), "price" : 8000, "product_id": ObjectId("000000000000000000000010"), "supplier_id" : ObjectId("000000000000000000000004") }
+{"_id": ObjectId("000000000000000000000023"), "price" : 8100, "product_id": ObjectId("000000000000000000000011"), "supplier_id" : ObjectId("000000000000000000000004") }
+{"_id": ObjectId("000000000000000000000024"), "price" : 8200, "product_id": ObjectId("000000000000000000000012"), "supplier_id" : ObjectId("000000000000000000000004") }
