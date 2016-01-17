@@ -61,6 +61,10 @@ app.post('/api/product/updateProduct', api.Products.updateProduct);
 app.post('/api/product/updateProductImage', api.Products.updateProductImage);
 app.post('/api/product/updateProductRating', api.Products.updateProductRating);
 
+app.get('/api/providesByProductId/:id', api.Provides.getProvidesByProductId);
+
+app.get('/api/averageRatingByProductId/:id', api.Rates.getAverageRatingByProductId);
+
 app.post('/api/signup', api.Authentication.signup);
 app.post('/api/signin', api.Authentication.authenticate);
 app.get('/api/signout', api.Authentication.disconnect);

@@ -1,14 +1,52 @@
 'use strict'
 
 angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$http', function ($scope, $http) {
+	
 	$http({
 		method: 'GET',
 		url: '/api/products'
 	}).
-	then(function success(response) {
-		$scope.products = response.data;
-	}, function error(response) {
+	then(function success(response1) {
+		$scope.products = response1.data;
+		$scope.products.forEach(function(product) {
+    		$http({
+				method: 'GET',
+				url: '/api/providesByProductId/' + product._id
+			}).
+			then(function success(response2) {
+				var provides = response2.data;
+				var minMax = minMaxPrices(provides);
+				product.minPrice = minMax[0];
+				product.maxPrice = minMax[1]; 
+			}, function error (response2) {
+			});
+
+			$http({
+				method: 'GET',
+				url: '/api/averageRatingByProductId/' + product._id
+			}).
+			then(function success(response2) {
+				product.rating = response2.data;
+			}, function error (response2) {
+			});
+		});
+
+		console.log($scope.products)
+	}, function error(response1) {
 	});
+
+	var minMaxPrices = function (provides) {
+		var lowest = Number.POSITIVE_INFINITY;
+		var highest = Number.NEGATIVE_INFINITY;
+		var tmp;
+		for (var i = provides.length - 1; i >= 0; i--) {
+		    tmp = provides[i].price;
+		    if (tmp < lowest) lowest = tmp;
+		    if (tmp > highest) highest = tmp;
+		}
+		return [lowest, highest];
+	}
+
 
 	// Orderings
 
@@ -67,59 +105,63 @@ angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$
    	$scope.priceFilter = function(products, type) {
     	var type = parseInt(type);
    		var r = [];
+   		// Check products response received
     	if (type>=0 && type<=9 && products) {
-    		for (var i = 0; i<products.length; i++) {
-    			switch(type) {
-	    			case 0:
-	    				r.push(products[i]);
-	    				break;
-	    			case 1:
-	    				if (products[i].price >= 0 && products[i].price <1) {
-	    					r.push(products[i]);
-	    				}
-	    				break;
-	    			case 2:
-	    				if (products[i].price >= 1 && products[i].price <5) {
-	    					r.push(products[i]);
-	    				}
-	    				break;
-	    			case 3:
-	    				if (products[i].price >= 5 && products[i].price <10) {
-	    					r.push(products[i]);
-	    				}
-	    				break;
-	    			case 4:
-	    				if (products[i].price >= 10 && products[i].price <20) {
-	    					r.push(products[i]);
-	    				}	
-	    				break;
-	    			case 5:
-	    				if (products[i].price >= 20 && products[i].price <50) {
-	    					r.push(products[i]);
-	    				}
-	    				break;
-	    			case 6:
-	    				if (products[i].price >= 50 && products[i].price <100) {
-	    					r.push(products[i]);
-	    				}
-	    				break;
-	    			case 7:
-	    				if (products[i].price >= 100 && products[i].price <200) {
-	    					r.push(products[i]);
-	    				}
-	    				break;
-	    			case 8:
-	    				if (products[i].price >= 200 && products[i].price <500) {
-	    					r.push(products[i]);
-	    				}
-	    				break;
-	    			case 9:
-	    				if (products[i].price >= 500) {
-	    					r.push(products[i]);
-	    				}
-	    				break;
+    		// Check provides response received
+    		if (products[0].minPrice && products[0].maxPrice) {
+	    		for (var i = 0; i<products.length; i++) {
+	    			switch(type) {
+		    			case 0:
+		    				r.push(products[i]);
+		    				break;
+		    			case 1:
+		    				if (products[i].minPrice >= 0 && products[i].maxPrice <1) {
+		    					r.push(products[i]);
+		    				}
+		    				break;
+		    			case 2:
+		    				if (products[i].minPrice >= 1 && products[i].maxPrice <5) {
+		    					r.push(products[i]);
+		    				}
+		    				break;
+		    			case 3:
+		    				if (products[i].minPrice >= 5 && products[i].maxPrice <10) {
+		    					r.push(products[i]);
+		    				}
+		    				break;
+		    			case 4:
+		    				if (products[i].minPrice >= 10 && products[i].maxPrice <20) {
+		    					r.push(products[i]);
+		    				}	
+		    				break;
+		    			case 5:
+		    				if (products[i].minPrice >= 20 && products[i].maxPrice <50) {
+		    					r.push(products[i]);
+		    				}
+		    				break;
+		    			case 6:
+		    				if (products[i].minPrice >= 50 && products[i].maxPrice <100) {
+		    					r.push(products[i]);
+		    				}
+		    				break;
+		    			case 7:
+		    				if (products[i].minPrice >= 100 && products[i].maxPrice <200) {
+		    					r.push(products[i]);
+		    				}
+		    				break;
+		    			case 8:
+		    				if (products[i].minPrice >= 200 && products[i].maxPrice <500) {
+		    					r.push(products[i]);
+		    				}
+		    				break;
+		    			case 9:
+		    				if (products[i].minPrice >= 500) {
+		    					r.push(products[i]);
+		    				}
+		    				break;
+		    		}
 	    		}
-    		}
+	    	}
     	}
     	return r;
     }
