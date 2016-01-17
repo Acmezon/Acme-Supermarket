@@ -127,8 +127,9 @@ exports.isAuthenticated = function(req, res) {
 
 
 exports.getPrincipal = function(req, res) {
-	var uid = currentUser();
-	res.status(200).send({ u_id: uid});
+	currentUser(req.cookies.session, req.app.get('superSecret'), function (principal_email) {
+		res.status(200).send({ email: principal_email});
+	});
 }
 
 exports.getUserRole = function(req, res) {
@@ -148,9 +149,7 @@ exports.getUserRole = function(req, res) {
 
 };
 
-exports.currentUser = function() {
-	var cookie = req.cookies.session;
-
+exports.currentUser = function(cookie, superSecret, callback) {
 	if (cookie !== undefined) {
 		var token = cookie.token;
 
@@ -158,18 +157,18 @@ exports.currentUser = function() {
 		if (token) {
 
 			// verifies secret and checks exp
-			jwt.verify(token, req.app.get('superSecret'), function(err, decoded) {
+			jwt.verify(token, superSecret, function(err, decoded) {
 				if (err) {
-					return -1;
+					callback(-1);
 				} else {
-					return email;
+					callback(decoded.email);
 				}
 			});
 
 		} else {
-			return -1;
+			callback(-1);
 		}
 	} else {
-		return -1;
+		callback(-1);
 	}
 }

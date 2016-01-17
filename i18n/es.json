@@ -102,7 +102,8 @@
 		"Edit" : "Edit",
 		"Previous" : "Anterior",
 		"Next" : "Siguiente",
-		"Empty" : "No hay productos con estas características"
+		"Empty" : "No hay productos con estas características",
+		"RatingPurchaseError" : "No puedes valorar un producto si no lo has comprado previamente"
 	},
 	"Product" : {
 		"Edit" : "Editar",

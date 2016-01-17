@@ -26,3 +26,11 @@ exports.getAverageRatingByProductId = function(req, res) {
 		}
 	});
 }
+
+exports.newRate = function (rate, callback) {
+	rate.save(function (err) {
+		callback(err);
+	});
+
+	return;
+}
