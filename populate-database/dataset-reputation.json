@@ -1,5 +1,5 @@
-{"rate": 3, "supplier_id" : ObjectId("000000000000000000000003"), "customer_id" : ObjectId("000000000000000000000002"), "purchase_id" : ObjectId("000000000000000000000001") }
-{"rate": 4, "supplier_id" : ObjectId("000000000000000000000004"), "customer_id" : ObjectId("000000000000000000000002"), "purchase_id" : ObjectId("000000000000000000000002") }
+{"rate": 3, "supplier_id" : ObjectId("000000000000000000000003"), "customer_id" : ObjectId("000000000000000000000002") }
+{"rate": 4, "supplier_id" : ObjectId("000000000000000000000004"), "customer_id" : ObjectId("000000000000000000000002") }
 
-{"rate": 5, "supplier_id" : ObjectId("000000000000000000000003"), "customer_id" : ObjectId("000000000000000000000005"), "purchase_id" : ObjectId("000000000000000000000003") }
-{"rate": 2, "supplier_id" : ObjectId("000000000000000000000004"), "customer_id" : ObjectId("000000000000000000000005"), "purchase_id" : ObjectId("000000000000000000000004") }
+{"rate": 5, "supplier_id" : ObjectId("000000000000000000000003"), "customer_id" : ObjectId("000000000000000000000005") }
+{"rate": 2, "supplier_id" : ObjectId("000000000000000000000004"), "customer_id" : ObjectId("000000000000000000000005") }
