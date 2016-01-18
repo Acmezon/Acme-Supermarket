@@ -138,5 +138,45 @@
 		"Remove" : "Remove",
 		"Return" : "Return",
 		"Continue" : "Checkout"
+	},
+	"Customers": {
+		"Title" : "Customers management",
+		"General" : "General",
+		"Empty" : {
+			"Title" : "Empty database",
+			"Description" : "No customers registered at the moment."
+		},
+		"Actor": {
+			"Id" : "ID",
+			"Name" : "Name",
+			"Surname" : "Surname",
+			"Email" : "Email",
+			"Password" : "Password"
+		},
+		"Customer" : {
+			"Address" : "Address",
+			"Country" : "Country",
+			"City" : "City",
+			"Phone" : "Phone",
+			"Coordinates" : "Coordinates"
+		},
+		"CreditCard" : {
+			"Id" : "ID",
+			"Title" : "Credit card",
+			"HolderName" : "holder name",
+			"Number" : "Number",
+			"Expiration" : "Expiration",
+			"CvcCode" : "CVC"
+		},
+		"Profile" : "Profile",
+		"Manage" : "Manage",
+		"Remove" : "Remove",
+		"More" : "More info",
+		"Close" : "Close",
+		"Delete": {
+			"Question" : "Are you sure you want to remove this customer",
+			"Yes" : "Sí",
+			"No"  :"no"
+		}
 	}
 }

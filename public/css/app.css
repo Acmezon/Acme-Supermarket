@@ -30,6 +30,9 @@ p.editable-p {
 .glyphicon-remove-sign {
 	color: #ED5565;
 	cursor: pointer;
+}
+
+.remove-provide {
 	font-size: 2em;
 }
 

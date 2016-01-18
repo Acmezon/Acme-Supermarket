@@ -138,5 +138,45 @@
 		"Remove" : "Borrar",
 		"Return" : "Volver",
 		"Continue" : "Comprar"
+	},
+	"Customers": {
+		"Title" : "Administración de clientes",
+		"General" : "General",
+		"Empty" : {
+			"Title" : "Vacío",
+			"Description" : "No hay clientes registrados en este momento."
+		},
+		"Actor": {
+			"Id" : "ID",
+			"Name" : "Nombre",
+			"Surname" : "Apellidos",
+			"Email" : "Email",
+			"Password" : "Contraseña"
+		},
+		"Customer" : {
+			"Address" : "Dirección",
+			"Country" : "Pais",
+			"City" : "Ciudad",
+			"Phone" : "Teléfono",
+			"Coordinates" : "Coordenadas"
+		},
+		"CreditCard" : {
+			"Id" : "ID",
+			"Title" : "Tarjeta de crédito",
+			"HolderName" : "Propietario",
+			"Number" : "Número",
+			"Expiration" : "Expiración",
+			"CvcCode" : "CVC"
+		},
+		"Profile" : "Perfil",
+		"Manage" : "Administrar",
+		"Remove" : "Eliminar",
+		"More" : "Mas información",
+		"Close" : "Cerrar",
+		"Delete": {
+			"Question" : "¿Seguro que quieres borrar a este usuario?",
+			"Yes" : "Sí",
+			"No"  :"No"
+		}
 	}
 }
