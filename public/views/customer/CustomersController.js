@@ -28,7 +28,6 @@ angular.module('acme_supermarket').registerCtrl('CustomersCtrl', ['$scope', '$ht
 		
 		$scope.tableParams = new ngTableParams({}, {dataset:$scope.$data});
 		$scope.copy = angular.copy($scope.$data);
-		console.log($scope.$data)
 		
 	}, function error(response) {
 	});

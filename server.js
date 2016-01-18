@@ -91,7 +91,7 @@ app.get('/islogged', api.Authentication.isAuthenticated);
 
 app.get('/api/resetDataset', api.Management.resetDataset);
 
-app.get('/api/lang', api.i18n.getLanguageFile);
+app.get('/api/lang', api.i18n.getLanguageFile)
 
 // redirect all others to the index (HTML5 history) Use in production only
 app.get('*', routes.index);

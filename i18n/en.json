@@ -142,6 +142,10 @@
 	"Customers": {
 		"Title" : "Customers management",
 		"General" : "General",
+		"Filled" : {
+			"Description1" : "",
+			"Description2" : " customers in the system."
+		},
 		"Empty" : {
 			"Title" : "Empty database",
 			"Description" : "No customers registered at the moment."

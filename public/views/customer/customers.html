@@ -11,6 +11,7 @@
 		<p>{{'Customers.Empty.Description' | translate}}</p>
 	</div>
 	<div ng-if="$data.length>0">
+		<p>{{'Customers.Filled.Description1' | translate}}<span>{{$data.length}}</span>{{'Customers.Filled.Description2' | translate}}</p>
 		<div ng-repeat="customer in $data">
 			<div class="modal fade" id="delete-{{customer._id}}" role="dialog">
 				<div class="modal-dialog modal-sm">

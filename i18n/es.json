@@ -142,6 +142,10 @@
 	"Customers": {
 		"Title" : "Administración de clientes",
 		"General" : "General",
+		"Filled" : {
+			"Description1" : "Hay ",
+			"Description2" : " clientes en el sistema.",
+		},
 		"Empty" : {
 			"Title" : "Vacío",
 			"Description" : "No hay clientes registrados en este momento."

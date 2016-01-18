@@ -78,7 +78,7 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 		}).
 		when('/signin', {
 			templateUrl: 'views/public/signin/signin.html',
-			controller: 'SigninCtrl',
+			controller: 'SigninCtrl'
 		}).
 		when('/signout', {
 			templateUrl: 'views/public/signout/signout.html',
