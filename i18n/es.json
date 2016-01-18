@@ -144,7 +144,7 @@
 		"General" : "General",
 		"Filled" : {
 			"Description1" : "Hay ",
-			"Description2" : " clientes en el sistema.",
+			"Description2" : " clientes en el sistema."
 		},
 		"Empty" : {
 			"Title" : "Vacío",

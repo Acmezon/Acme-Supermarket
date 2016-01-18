@@ -8,10 +8,11 @@ describe('Management view the customers of the system', function () {
 		element(by.css('.button')).click();
 		
 		browser.get('http://localhost:3000/customers');
-		var product = element.all(by.css('.product')).first();
-		product.click();
 
-		expect(element(by.css('.m_3')).getText()).toEqual('SUNGLASES')
+		element(by.id('customers-length')).getText().then (function (text) {
+			var number_customers = parseInt(text);
+			expect(number_customers).toEqual(2);
+		});
 
 	});
 });
