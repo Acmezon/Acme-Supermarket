@@ -11,6 +11,20 @@ exports.newCreditCard = function (credit_card, callback) {
 	return;
 };
 
+exports.getCreditCard = function(req, res) {
+	var id = req.params.id;
+	console.log('Function-credit_cardApi-getCreditCard  --_id:' + id);
+
+	CreditCard.findById(id, function(err, creditCard) {
+		if(err){
+			res.status(500).json({success: false, message: err});
+		}
+		else{
+			res.status(200).json(creditCard);
+		}
+	});
+}
+
 exports.updateCreditCard = function (credit_card_id, credit_card, callback) {
 	CreditCard.findByIdAndUpdate(credit_card_id, { $set: {
 		holderName: credit_card.holderName,

@@ -1,0 +1,236 @@
+<script src="views/customer/CustomersController.js"></script>
+
+<div class="wrap">
+	<h2 class="head">{{'Customers.Title' | translate}} 
+		<button type="button" class="btn" ng-click="refresh()">
+			<span class="glyphicon glyphicon-refresh"></span>
+		</button>
+	</h2> 
+	<div ng-if="$data.length===0">
+		<h4 class="title">{{'Customers.Empty.Title' | translate}}</h4>
+		<p>{{'Customers.Empty.Description' | translate}}</p>
+	</div>
+	<div ng-if="$data.length>0" style="z-index:100000; position:relative">
+		<p>{{'Customers.Filled.Description1' | translate}}<span id="customers-length">{{$data.length}}</span>{{'Customers.Filled.Description2' | translate}}</p>
+		<div ng-repeat="customer in $data">
+			<div class="modal fade" id="delete-{{customer._id}}" role="dialog" >
+				<div class="modal-dialog modal-sm">
+				<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+	  						<button type="button" class="close" data-dismiss="modal">&times;</button>
+	  						<h4 class="modal-title">{{'Customers.Delete.Question' | translate}}</h4>
+						</div>
+						<div class="modal-body">
+							<table class="table">
+	  							<tr>
+	  								<td>{{'Customers.Actor.Id' | translate}}</td>
+	  								<td>{{customer._id}}</td>
+	  							</tr>
+	  							<tr>
+	  								<td>{{'Customers.Actor.Name' | translate}}</td>
+	  								<td>{{customer.name}}</td>
+	  							</tr>
+	  							<tr>
+	  								<td>{{'Customers.Actor.Surname' | translate}}</td>
+	  								<td>{{customer.surname}}</td>
+	  							</tr>
+	  							<tr>
+	  								<td>{{'Customers.Actor.Email' | translate}}</td>
+	  								<td><a href="mailto:{{customer.email}}">{{customer.email}}</a></td>
+	  							</tr>
+	  						</table>
+	  						<button type="button" class="btn btn-primary btn-confirm-customers" data-toggle="button" ng-click="delete(customer)">
+								{{'Customers.Delete.Yes' |translate}}
+							</button>
+	  						<button type="button" class="btn btn-danger" data-toggle="button" data-dismiss="modal">
+								{{'Customers.Delete.No' |translate}}
+							</button>
+			       		</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">{{'Customers.Close' | translate}}</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Modal -->
+			<div class="modal fade" id="info-{{customer._id}}" role="dialog">
+				<div class="modal-dialog">
+				<!-- Modal content-->
+						<div class="modal-content">
+						<div class="modal-header">
+	  						<button type="button" class="close" data-dismiss="modal">&times;</button>
+	  						<h4 class="modal-title">{{'Customers.More' | translate}}</h4>
+						</div>
+						<div class="modal-body table-responsive">
+	  						<table class="table table-hover">
+	  							<thead>
+		  							<tr>
+		  								<th colspan="2" style="font-weight:bold">
+		  									{{'Customers.General' | translate}}
+		  								</th>
+		  							</tr>
+	  							</thead>
+	  							<tbody>
+		  							<tr>
+		  								<td>{{'Customers.Actor.Id' | translate}}</td>
+		  								<td>{{customer._id}}</td>
+		  							</tr>
+		  							<tr>
+		  								<td>{{'Customers.Actor.Name' | translate}}</td>
+		  								<td>{{customer.name}}</td>
+		  							</tr>
+		  							<tr>
+		  								<td>{{'Customers.Actor.Surname' | translate}}</td>
+		  								<td>{{customer.surname}}</td>
+		  							</tr>
+		  							<tr>
+		  								<td>{{'Customers.Actor.Email' | translate}}</td>
+		  								<td><a href="mailto:{{customer.email}}">{{customer.email}}</a></td>
+		  							</tr>
+		  							<tr>
+		  								<td>{{'Customers.Customer.Coordinates' | translate}}</td>
+		  								<td>{{customer.coordinates}}</td>
+		  							</tr>
+		  							<tr>
+		  								<td>{{'Customers.Customer.Address' | translate}}</td>
+		  								<td>{{customer.address}}</td>
+		  							</tr>
+		  							<tr>
+		  								<td>{{'Customers.Customer.Country' | translate}}</td>
+		  								<td>{{customer.country}}</td>
+		  							</tr>
+		  							<tr>
+		  								<td>{{'Customers.Customer.City' | translate}}</td>
+		  								<td>{{customer.city}}</td>
+		  							</tr>
+		  							<tr>
+		  								<td>{{'Customers.Customer.Phone' | translate}}</td>
+		  								<td>{{customer.phone}}</td>
+		  							</tr>
+	  							</tbody>
+	  							<thead>
+		  							<tr>
+		  								<th colspan="2" style="font-weight:bold">
+		  									{{'Customers.CreditCard.Title' | translate}}
+		  								</th>
+		  							</tr>
+		  						</thead>
+		  						<tbody>
+		  							<tr>
+		  								<td>{{'Customers.CreditCard.Id' | translate}}</td>
+		  								<td>{{customer.creditcard._id}}</td>
+		  							</tr>
+		  							<tr>
+		  								<td>{{'Customers.CreditCard.HolderName' | translate}}</td>
+		  								<td>{{customer.creditcard.holderName}}</td>
+		  							</tr>
+		  							<tr>
+		  								<td>{{'Customers.CreditCard.Number' | translate}}</td>
+		  								<td>{{customer.creditcard.number}}</td>
+		  							</tr>
+		  							<tr>
+		  								<td>{{'Customers.CreditCard.Expiration' | translate}}</td>
+		  								<td>{{customer.creditcard.expirationMonth}} / {{customer.creditcard.expirationYear}}</td>
+		  							</tr>
+		  							<tr>
+		  								<td>{{'Customers.CreditCard.CvcCode' | translate}}</td>
+		  								<td>{{customer.creditcard.cvcCode}}</td>
+		  							</tr>
+	  							</tbody>
+	  						</table>
+			       		</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">{{'Customers.Close' | translate}}</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<table ng-table="tableParams" class="table" show-filter="true">
+			<tr ng-repeat="customer in $data" ng-form="customerForm" demo-tracked-table-row="customer">
+				<td data-title="'Customers.Profile' | translate">
+					<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#info-{{customer._id}}">
+						<span class="glyphicon glyphicon-info-sign"></span>
+					</button>
+				</td>
+				<td data-title="'Customers.Actor.Name' | translate" filter="{name: 'text'}" sortable="'name'" ng-switch="customer.isEditing" ng-class="name.$dirty ? 'bg-warning' : ''" ng-form="name" demo-tracked-table-cell>
+					<span ng-switch-default class="editable-text customer-name">
+						{{customer.name}}
+					</span>
+	            	<div class="controls" ng-class="name.$invalid && name.$dirty ? 'has-error' : ''" ng-switch-when="true">
+	              		<input type="text" name="name" ng-model="customer.name" class="editable-input form-control input-sm" required />
+	            	</div>
+				</td>
+				<td data-title="'Customers.Actor.Surname' | translate" filter="{surname: 'text'}" sortable="'surname'" ng-switch="customer.isEditing" ng-class="surname.$dirty ? 'bg-warning' : ''" ng-form="surname" demo-tracked-table-cell>
+					<span ng-switch-default class="editable-text customer-surname">
+						{{customer.surname}}
+					</span>
+            		<div class="controls" ng-class="surname.$invalid && surname.$dirty ? 'has-error' : ''" ng-switch-when="true">
+              			<input type="text" name="surname" ng-model="customer.surname" class="editable-input form-control input-sm" required/>
+            		</div>
+				</td>
+				<td data-title="'Customers.Actor.Email' | translate" filter="{email: 'text'}" sortable="'email'" ng-switch="customer.isEditing" ng-class="email.$dirty ? 'bg-warning' : ''" ng-form="email" demo-tracked-table-cell>
+					<span ng-switch-default class="editable-text customer-email">
+						{{customer.email}}
+					</span>
+            		<div class="controls" ng-class="email.$invalid && email.$dirty ? 'has-error' : ''" ng-switch-when="true">
+              			<input type="email" name="email" ng-model="customer.email" class="editable-input form-control input-sm" required/>
+            		</div>
+				</td>
+				<td data-title="'Customers.Customer.Address' | translate" filter="{address: 'text'}" sortable="'address'" ng-switch="customer.isEditing" ng-class="address.$dirty ? 'bg-warning' : ''" ng-form="address" demo-tracked-table-cell>
+					<span ng-switch-default class="editable-text customer-address">
+						{{customer.address}}
+					</span>
+            		<div class="controls" ng-class="address.$invalid && address.$dirty ? 'has-error' : ''" ng-switch-when="true">
+              			<input type="text" name="address" ng-model="customer.address" class="editable-input form-control input-sm" required/>
+            		</div>
+				</td>
+				<td data-title="'Customers.Customer.Country' | translate" filter="{country: 'text'}" sortable="'country'" ng-switch="customer.isEditing" ng-class="country.$dirty ? 'bg-warning' : ''" ng-form="country" demo-tracked-table-cell>
+					<span ng-switch-default class="editable-text customer-country">
+						{{customer.country}}
+					</span>
+            		<div class="controls" ng-class="country.$invalid && country.$dirty ? 'has-error' : ''" ng-switch-when="true">
+              			<input type="text" name="country" ng-model="customer.country" class="editable-input form-control input-sm" required/>
+            		</div>
+				</td>
+				<td data-title="'Customers.Customer.City' | translate" filter="{city: 'text'}" sortable="'city'" ng-switch="customer.isEditing" ng-class="city.$dirty ? 'bg-warning' : ''" ng-form="city" demo-tracked-table-cell>
+					<span ng-switch-default class="editable-text customer-city">
+						{{customer.city}}
+					</span>
+            		<div class="controls" ng-class="city.$invalid && city.$dirty ? 'has-error' : ''" ng-switch-when="true">
+              			<input type="text" name="city" ng-model="customer.city" class="editable-input form-control input-sm" required/>
+            		</div>
+				</td>
+				<td data-title="'Customers.Customer.Phone' | translate" filter="{phone: 'text'}" sortable="'phone'" ng-switch="customer.isEditing" ng-class="phone.$dirty ? 'bg-warning' : ''" ng-form="phone" demo-tracked-table-cell>
+					<span ng-switch-default class="editable-text customer-phone">
+						{{customer.phone}}
+					</span>
+            		<div class="controls" ng-class="phone.$invalid && phone.$dirty ? 'has-error' : ''" ng-switch-when="true">
+              			<input type="text" name="phone" ng-model="customer.phone" class="editable-input form-control input-sm" ng-minlength="9" ng-maxlength="15" required/>
+            		</div>
+				</td>
+				<td data-title="'Customers.Remove' | translate" style="width:6%">
+					<button class="btn btn-primary btn-sm btn-save-customers" ng-click="save(customer, customerForm)" ng-if="customer.isEditing" ng-disabled="customerForm.$pristine || customerForm.$invalid">
+						<span class="glyphicon glyphicon-ok"></span>
+					</button>
+
+		            <button class="btn btn-default btn-sm btn-cancel-customers" ng-click="cancel(customer, customerForm)" ng-if="customer.isEditing">
+		            	<span class="glyphicon glyphicon-remove"></span>
+		            </button>
+
+		            <button class="btn btn-default btn-sm btn-edit-customers" ng-click="edit(customer, customerForm)" ng-if="!customer.isEditing">
+		            	<span class="glyphicon glyphicon-pencil"></span>
+		            </button>
+
+		            <button class="btn btn-danger btn-sm btn-delete-customers" ng-if="!customer.isEditing" data-toggle="modal" data-target="#delete-{{customer._id}}">
+		            	<span class="glyphicon glyphicon-trash"></span>
+		            </button>
+				</td>
+			</tr>
+		</table>	    
+	</div>
+	<div class="clear" style="margin-bottom: 1%"></div>
+</div>

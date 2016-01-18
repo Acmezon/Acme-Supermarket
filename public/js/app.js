@@ -16,7 +16,8 @@ var app = angular.module('acme_supermarket',
 				'pascalprecht.translate',
 				'ui.bootstrap',
 				'ngToast',
-				'credit-cards'
+				'credit-cards',
+				'ngTable'
 			]
 	);
 
@@ -54,7 +55,6 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 				deferred.reject();
 				$location.url('/signin');
 			});
-
 			return deferred.promise;
 		};
 
@@ -109,6 +109,13 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 		when('/shoppingcart', {
 			templateUrl: 'views/shoppingcart/shoppingcart.html',
 			controller: 'ShoppingCartCtrl',
+			resolve: {
+				loggedin: checkLoggedin
+			}
+		}).
+		when('/customers', {
+			templateUrl: 'views/customer/customers.html',
+			controller: 'CustomersCtrl',
 			resolve: {
 				loggedin: checkLoggedin
 			}

@@ -204,7 +204,7 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 				}
 			}
 		}
-		$cookieStore.put("shoppingcart", new_cookie);e)
+		$cookieStore.put("shoppingcart", new_cookie);
 	}
 
 	var minMaxPrices = function (provides) {

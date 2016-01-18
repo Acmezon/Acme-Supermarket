@@ -9,24 +9,38 @@ var db_utils = require('./db_utils'),
 
 exports.getCustomer = function (req, res) {
 	var _email = req.params.email;
-	console.log('Function-productsApi-getCustumer -- _email:'+_email);
+	console.log('Function-customersApi-getCustomer -- _email:'+_email);
 
 
 	Customer.findOne({email:_email}, function(err,customer){
 		if(err){
-			//console.log('--Costumer not found');
-			console.error(err);
-			throw err;
+			res.status(500).json({success: false, message: err});
 		}
 		else{
-			res.json(customer);
-			res.sendStatus(200);
+			res.status(200).json(customer);
+		}
+	});
+};
+
+// Devuelve todos los clientes (sin contraseña)
+exports.getCustomers = function (req, res) {
+	console.log('Function-productsApi-getCustomers');
+
+	//Find sin condiciones
+	Customer.find({_type: 'Customer'}, function(err,customers){
+		if (err) {
+			res.status(500).json({success: false, message: err});
+		} else {
+			for (var i = 0; i < customers.length; i++) {
+				customers[i].password = "";
+			}
+			res.status(200).json(customers);
 		}
 	});
 };
 
 exports.newCustomer = function (customer, callback) {
-	console.log('Function-productsApi-newCustomer');
+	console.log('Function-customersApi-newCustomer');
 
 	//Guardar la entrada de datos en variables
 	var _name = customer.name;
@@ -64,6 +78,10 @@ exports.newCustomer = function (customer, callback) {
 };
 
 exports.updateCC = function(req, res){
+	console.log('Function-customersApi-updateCC');
+
+
+
 	var cc = new CreditCard({
 		holderName : req.body.cc.holderName,
 		number : req.body.cc.number,
@@ -99,4 +117,43 @@ exports.updateCC = function(req, res){
 			}
 		);
 	}
+};
+
+// Updates a customer with ID from the system
+exports.updateCustomer = function (req, res) {
+	console.log('Function-customersApi-updateCustomer  --_id:' + req.body._id);
+
+	Customer.update({_id: req.body._id}, 
+		{$set: 
+			{name: req.body.name,
+			surname: req.body.surname,
+			email: req.body.email,
+			address: req.body.address,
+			country: req.body.country,
+			city: req.body.city,
+			phone: req.body.phone}
+		}, 
+		function(error, result) {
+      		if (error) {
+      			res.status(500).json({success: false, message: error});
+      		} else {
+      			res.status(200).json({success: true});
+      		}
+    	});
+
+};
+
+// Remove a customer with ID from the system
+exports.deleteCustomer = function(req, res) {
+	var id= req.body.id;
+	console.log('Function-customersApi-deleteCustomer -- id:'+id);
+
+	Customer.remove({ _id: id }, function(err) {
+    if (!err) {
+            res.status(200).json({success: true});
+    }
+    else {
+            res.status(500).json({success: false, message: err});
+    }
+});
 };

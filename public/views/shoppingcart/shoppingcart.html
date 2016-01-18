@@ -23,7 +23,7 @@
 			</thead>
 			<tbody>
 			  	<tr ng-repeat="product in shoppingcart">
-					<td style="width:5%"><span ng-click="remove(product._id)" class="glyphicon glyphicon-remove-sign"></span></td>
+					<td style="width:5%"><span ng-click="remove(product._id)" class="remove-provide glyphicon glyphicon-remove-sign"></span></td>
 					<td style="width:10%"><a href="/product/{{product._id}}"><img class="img-responsive img-thumbnail" src="img/template_bootstrap/pic5.jpg"/></a></td>
 					<td>{{product.name}}</td>
 					<td>{{product.supplier}}</td>

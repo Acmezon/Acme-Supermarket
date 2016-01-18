@@ -68,12 +68,12 @@ app.get('/api/supplierName/:id', api.Supplier.getSupplierName);
 
 app.get('/api/averageRatingByProductId/:id', api.Rates.getAverageRatingByProductId);
 
-app.get('/api/provide/:id', api.Provides.getProvide)
+app.get('/api/provide/:id', api.Provides.getProvide);
 app.get('/api/providesByProductId/:id', api.Provides.getProvidesByProductId);
 
 app.get('/api/supplierName/:id', api.Supplier.getSupplierName);
 
-app.get('/api/averageReputationBySupplierId/:id', api.Reputation.getAverageReputationBySupplierId)
+app.get('/api/averageReputationBySupplierId/:id', api.Reputation.getAverageReputationBySupplierId);
 
 app.get('/api/averageRatingByProductId/:id', api.Rates.getAverageRatingByProductId);
 
@@ -85,16 +85,20 @@ app.get('/api/getPrincipal', api.Authentication.getPrincipal);
 
 app.get('/api/myprofile', api.User.getMyProfile);
 app.get('/api/mycreditcard', api.User.getMyCreditCard);
+app.get('/api/creditcard/:id', api.CreditCard.getCreditCard);
 app.post('/api/user/updateUser', api.User.updateUser);
 app.post('/api/user/changePassword', api.User.changePassword);
 
+app.get('/api/customers', api.Customer.getCustomers);
 app.post('/api/customer/updateCC', api.Customer.updateCC);
+app.post('/api/customer', api.Customer.updateCustomer);
+app.delete('/api/customer/:id', api.Customer.deleteCustomer);
 
-app.get('/islogged', api.Authentication.isAuthenticated)
+app.get('/islogged', api.Authentication.isAuthenticated);
 
 app.get('/api/resetDataset', api.Management.resetDataset);
 
-app.get('/api/lang', api.i18n.getLanguageFile)
+app.get('/api/lang', api.i18n.getLanguageFile);
 
 // redirect all others to the index (HTML5 history) Use in production only
 app.get('*', routes.index);
