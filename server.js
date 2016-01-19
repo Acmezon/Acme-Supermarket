@@ -54,7 +54,12 @@ api.db_utils.connect();
 app.get('/', routes.index);
 app.get('/home', routes.index);
 
-// JSON API
+
+
+
+/* JSON API */
+
+// Products
 app.get('/api/products', api.Products.getAllProducts);
 app.get('/api/product/:id', api.Products.getProduct);
 app.post('/api/product/updateProduct', api.Products.updateProduct);
@@ -62,47 +67,54 @@ app.post('/api/product/updateProductImage', api.Products.updateProductImage);
 app.post('/api/product/updateProductRating', api.Products.updateProductRating);
 app.post('/api/product/userHasPurchased', api.Products.userHasPurchased);
 
-app.get('/api/providesByProductId/:id', api.Provides.getProvidesByProductId);
-
-app.get('/api/supplierName/:id', api.Supplier.getSupplierName);
-
+// Rates
 app.get('/api/averageRatingByProductId/:id', api.Rates.getAverageRatingByProductId);
 
+// Provides
 app.get('/api/provide/:id', api.Provides.getProvide);
 app.get('/api/providesByProductId/:id', api.Provides.getProvidesByProductId);
 
+// Suppliers
 app.get('/api/supplier/issupplier/:id', api.Supplier.isSupplier)
 app.get('/api/supplierName/:id', api.Supplier.getSupplierName);
 
+// Reputations
 app.get('/api/averageReputationBySupplierId/:id', api.Reputation.getAverageReputationBySupplierId);
 
-app.get('/api/averageRatingByProductId/:id', api.Rates.getAverageRatingByProductId);
-
+// Authentication
 app.post('/api/signup', api.Authentication.signup);
 app.post('/api/signin', api.Authentication.authenticate);
 app.get('/api/signout', api.Authentication.disconnect);
 app.get('/api/getUserRole', api.Authentication.getUserRole);
-app.get('/api/getPrincipal', api.Authentication.getPrincipal);
+app.get('/islogged', api.Authentication.isAuthenticated);
 
+// Users
 app.get('/api/myprofile', api.User.getMyProfile);
-app.get('/api/mycreditcard', api.User.getMyCreditCard);
-app.get('/api/creditcard/:id', api.CreditCard.getCreditCard);
 app.post('/api/user/updateUser', api.User.updateUser);
 app.post('/api/user/changePassword', api.User.changePassword);
 
+// Customers
 app.get('/api/customers', api.Customer.getCustomers);
 app.get('/api/customer/iscustomer/:email', api.Customer.isCustomer);
 app.post('/api/customer/updateCC', api.Customer.updateCC);
 app.post('/api/customer', api.Customer.updateCustomer);
 app.delete('/api/customer/:id', api.Customer.deleteCustomer);
+app.get('/api/mycreditcard', api.Customer.getMyCreditCard);
 
+// Admins
 app.get('/api/admin/isadmin/:id', api.Admin.isAdmin);
 
-app.get('/islogged', api.Authentication.isAuthenticated);
+// Credit cards
+app.get('/api/creditcard/:id', api.CreditCard.getCreditCard);
 
+// Management
 app.get('/api/resetDataset', api.Management.resetDataset);
 
+// i18n
 app.get('/api/lang', api.i18n.getLanguageFile);
+
+
+
 
 // redirect all others to the index (HTML5 history) Use in production only
 app.get('*', routes.index);

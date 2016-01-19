@@ -4,9 +4,12 @@ var db = require('./db_utils'),
 	jwt = require('jsonwebtoken'),
 	customers_api = require('./customers_api'),
 	crypto = require('crypto'),
-	cookieParser = require('cookie-parser');
+	cookieParser = require('cookie-parser'),
+	ActorService = require('./services/service_actors');
 
+// Authenticate in the system
 exports.authenticate = function (req, res) {
+	console.log('Function-authenticationApi-authenticating -- email:'+req.body.email);
 
 	Actor.findOne({
 		email: req.body.email
@@ -17,7 +20,6 @@ exports.authenticate = function (req, res) {
 		}
 
 		if(!user){
-			console.log('User email in use :'+user);
 			res.json({success: false, message: 'Login failed. Email not found.'});
 		}else if (user) {
 			var md5Password = crypto.createHash('md5').update(req.body.password).digest("hex");
@@ -36,22 +38,6 @@ exports.authenticate = function (req, res) {
 					expiresIn: 365 * 24 * 60 * 60 //1 year
 				});
 
-				console.log(token)
-
-				//Check the type of user
-				var _type = 'customer';
-				if(user._type == 'Admin'){
-					console.log('---'+req.body.email + ' is an Admin');
-					_type = 'admin';
-				}else if(user._type == 'Supplier'){
-					console.log('---'+req.body.email + ' is a Supplier');
-					_type = 'supplier';
-				}else if(user._type == 'Customer'){
-					_type = 'customer';
-				}else{
-					res.json({success: false, message: 'Undefined type of user, contact the support team'});
-				}
-
 				res.cookie('session', {
 					token: token
 				}, {
@@ -64,14 +50,18 @@ exports.authenticate = function (req, res) {
 	});
 };
 
+// Clears out the session cookies
 exports.disconnect = function (req, res) {
+	console.log('Function-authenticationApi-disconnecting');
 	res.clearCookie('session');
 	res.clearCookie('shoppingcart')
 	res.sendStatus(200);
 };
 
-//Sign-in a customer into de system
+// Register a customer into the system
 exports.signup = function (req, res) {
+	console.log('Function-authenticationApi-signingup -- email:' + req.body.name);
+
 	var customer = {
 		name : req.body.name,
 		surname : req.body.surname,
@@ -97,22 +87,23 @@ exports.signup = function (req, res) {
 	);
 };
 
+// Checks if principal is authenticated: Session cookie valid
 exports.isAuthenticated = function(req, res) {
+	console.log('Function-authenticationApi-isAuthenticated');
+
 	var cookie = req.cookies.session;
 
 	if (cookie !== undefined) {
 		var token = cookie.token;
-
 		// decode token
 		if (token) {
-
 			// verifies secret and checks exp
 			jwt.verify(token, req.app.get('superSecret'), function(err, decoded) {
 				if (err) {
 					res.sendStatus(401);
 				} else {
 					// if everything is good, save to request for use in other routes
-					req.decoded = decoded;
+					//req.decoded = decoded;
 					res.json({success: true});
 				}
 			});
@@ -125,66 +116,11 @@ exports.isAuthenticated = function(req, res) {
 	}
 };
 
-
-exports.getPrincipal = function(req, res) {
-	currentUser(req.cookies.session, req.app.get('superSecret'), function (principal_email) {
-		res.status(200).send({ email: principal_email});
-	});
-}
-
+// Returns role of principal
 exports.getUserRole = function(req, res) {
 	var cookie = req.cookies.session;
-	if (cookie !== undefined) {
-		var token = cookie.token;
-		// decode token
-		if (token) {
-			// verifies secret and checks exp
-			jwt.verify(token, req.app.get('superSecret'), function(err, decoded) {
-				if (err) {
-					res.status(404).send({
-						success: false
-					});
-				} else {
-					Actor.findOne({
-						email: decoded.email
-					}, function (err, user){
-						if (err) {
-							res.status(200).json({role: 'anonymous'});
-						} else {
-							var type = user._type.toLowerCase();
-								if (type) {
-								res.status(200).json({role: type});
-							} else {
-								res.status(200).json({role: 'anonymous'});
-							}
-						}
-					});
-				}
-			});
-		}
-	}
+	var jwtKey = req.app.get('superSecret');
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
+		res.status(200).send(role);
+	});
 };
-
-exports.currentUser = function(cookie, superSecret, callback) {
-	if (cookie !== undefined) {
-		var token = cookie.token;
-
-		// decode token
-		if (token) {
-
-			// verifies secret and checks exp
-			jwt.verify(token, superSecret, function(err, decoded) {
-				if (err) {
-					callback(-1);
-				} else {
-					callback(decoded.email);
-				}
-			});
-
-		} else {
-			callback(-1);
-		}
-	} else {
-		callback(-1);
-	}
-}

@@ -1,4 +1,5 @@
-var jwt = require('jsonwebtoken');
+var Actor = require('../../models/actor'),
+	jwt = require('jsonwebtoken');
 
 exports.getUserRole = function (cookie, jwtKey, callback) {
 	if (cookie !== undefined) {
@@ -28,6 +29,30 @@ exports.getUserRole = function (cookie, jwtKey, callback) {
 				}
 			});
 		}
+	}
+}
+
+exports.getPrincipal = function(cookie, jwtKey, callback) {
+	if (cookie !== undefined) {
+		var token = cookie.token;
+
+		// decode token
+		if (token) {
+
+			// verifies secret and checks exp
+			jwt.verify(token, superSecret, function(err, decoded) {
+				if (err) {
+					callback(-1);
+				} else {
+					callback(decoded.email);
+				}
+			});
+
+		} else {
+			callback(-1);
+		}
+	} else {
+		callback(-1);
 	}
 }
 

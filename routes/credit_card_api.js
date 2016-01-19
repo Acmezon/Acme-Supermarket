@@ -25,12 +25,11 @@ exports.getCreditCard = function(req, res) {
 		if (role=='customer' || role=='admin') {
 			// Check principal is owner or administrator
 			CustomerService.checkOwnerOrAdmin(cookie, jwtKey, id, function (response) {
-				console.log(response)
 				if (response) {
 					// Get credit card
 					CreditCard.findById(id, function(err, creditCard) {
 						if(err){
-							res.status(500).json({success: false, message: err});
+							res.status(500).json({success: false, message: err.errors});
 						}
 						else{
 							res.status(200).json(creditCard);

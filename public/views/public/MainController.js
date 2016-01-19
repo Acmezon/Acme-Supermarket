@@ -12,6 +12,15 @@ angular.module('acme_supermarket').registerCtrl('MainCtrl', ['$scope', '$http', 
 		});
 	}
 
+	$scope.isAuthenticated = function() {
+		$http.get('/islogged')
+			.then(function success(response) {
+				return response.data;
+			}, function error(response) {
+				console.log(response);
+		});
+	}
+
 	$scope.productsInCart = function() {
 		var r = 0;
 		var cookie = $cookies.get("shoppingcart");

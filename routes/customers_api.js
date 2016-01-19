@@ -5,7 +5,8 @@ var Customer = require('../models/customer'),
 	ActorService = require('./services/service_actors'),
 	CustomerService = require('./services/service_customers'),
 	crypto = require('crypto'),//Necesario para encriptacion por MD5	
-	db_utils = require('./db_utils');
+	db_utils = require('./db_utils'),
+	jwt = require('jsonwebtoken');
 
 
 exports.getCustomer = function (req, res) {
@@ -239,4 +240,80 @@ exports.deleteCustomer = function(req, res) {
 			res.status(401).json({success: false, message: 'Doesnt have permission'});
 		}
 	});
+};
+
+exports.getMyCreditCard = function (req, res) {
+	console.log('Function-usersApi-getMyCreditCard');
+
+	var cookie = req.cookies.session;
+
+	if (cookie !== undefined) {
+		var token = cookie.token;
+
+		// decode token
+		if (token) {
+
+			// verifies secret and checks exp
+			jwt.verify(token, req.app.get('superSecret'), function(err, decoded) {
+				if (err) {
+					res.status(404).send({
+						success: false
+					});
+				} else {
+					var email = decoded.email;
+					var password = decoded.password;
+
+					Customer.findOne({email: email}, function(err, customer){
+						if(err){
+							res.status(404).send({
+								success: false
+							});							
+						} else{
+							// Check password correct
+							if (password != customer.password) {
+								res.status(401).send({
+									success: false
+								});
+							} else {
+								// Check is customer
+								ActorService.getUserRole(req.cookies.session, req.app.get('superSecret'), function (role) {
+									if (role=='customer') {
+										// Posible that credit card is null
+										if(customer.credit_card) {
+											CreditCard.findOne({_id: customer.credit_card},
+												function(err, credit_card){
+													if(err) {
+														res.status(404).send({
+															success: false
+														})
+													} else {
+														res.status(200).json(credit_card);
+													}
+											})
+										} else {
+											// empty credit card
+											res.status(200).json({});
+										}
+									} else {
+										res.status(401).send({
+											success: false
+										});
+									}
+								});
+							}
+						}
+					});
+				}
+			});
+
+		} else {
+			res.status(404).send({
+				success: false
+			});
+		}
+	} else {
+		res.status(404).send({
+			success: false
+		});
+	}
 };
