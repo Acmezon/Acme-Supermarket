@@ -2,7 +2,8 @@ var Admin = require('../models/admin'),
 	db_utils = require('./db_utils'),
 	ActorService = require('./services/service_actors.js');
 
-// Devuelve si el usuario es un administrador
+// Returns true if user:id is administrator
+// Can only be used by same admin
 exports.isAdmin = function(req, res) {
 	var _id = req.params.id;
 	console.log('Function-adminsApi-isAdmin -- _id:'+_id);
@@ -13,7 +14,7 @@ exports.isAdmin = function(req, res) {
 			// Check is admin
 			Admin.findById(_id, function(err,user){
 				if(err){
-					res.status(500).json({success: false, message: err});
+					res.status(500).json({success: false, message: err.errors});
 				}
 				else{
 					if (user._type == 'Admin') {
@@ -24,7 +25,7 @@ exports.isAdmin = function(req, res) {
 				}
 			});
 		} else {
-			res.status(401).json({message : 'Doesnt have permissions'});
+			res.status(404).json({message : 'Doesnt have permissions'});
 		}
 	});
 };
