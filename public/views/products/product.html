@@ -73,10 +73,10 @@
 									</label>
 								</td>
 								<td>{{provide.price | number:2}} €</td>
-								<td style="width:10%">
-									<div class="btn_form">
+								<td style="width:10%" class="add-cart-btn-column">
+									<div class="btn_form" >
 										<form class="btn_form">
-											<input id="cart-btn" type="submit" ng-click="addToCart(provide._id)" value="{{ 'Products.AddToCart' | translate }}" title="">
+											<input id="cart-btn" type="submit" ng-click="addToCart(provide._id)" value="{{ 'Products.AddToCart' | translate }}" title="" />
 										</form>
 									</div>
 								</td>
@@ -121,10 +121,6 @@
 						});
 					</script>
 					
-				</div>
-				<div class="comments">
-					<h3 class="m_3">{{ 'Products.Comments' | translate}}</h3>
-					<!--TODO-->
 				</div>
 			</div>
 		</div>

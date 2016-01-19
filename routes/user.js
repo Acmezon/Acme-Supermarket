@@ -5,6 +5,7 @@ var jwt = require('jsonwebtoken'),
 	Actor = require('../models/actor'),
 	crypto = require('crypto');
 
+// Get an actor object of principal
 exports.getMyProfile = function (req, res) {
 	console.log('Function-usersApi-getMyProfile');
 	var cookie = req.cookies.session;
@@ -47,6 +48,7 @@ exports.getMyProfile = function (req, res) {
 											name : actor.name,
 											surname : actor.surname,
 											email : actor.email,
+											coordinates : actor.coordinates,
 											address : actor.address,
 											country : actor.country,
 											city : actor.city,
@@ -64,14 +66,24 @@ exports.getMyProfile = function (req, res) {
 												email : actor.email
 											});
 										} else {
-											res.status(401).send({
-												success: false
-											});
+											if (role=='supplier') {
+												res.status(200).json({
+													_type : actor._type,
+													id: actor._id,
+													name : actor.name,
+													surname : actor.surname,
+													email : actor.email,
+													coordinates : actor.coordinates,
+													address : actor.address
+												});
+											} else {
+												res.status(401).send({
+													success: false
+												});
+											}
 										}
 									}
 								});
-								
-								
 							}
 						}
 					});
@@ -90,23 +102,44 @@ exports.getMyProfile = function (req, res) {
 	}
 };
 
+// Updates an user passed by id
 exports.updateUser = function (req, res) {
 	console.log('Function-usersApi-updateUser  --id:'+req.body.id);
 
 	var set = {}
 	set[req.body.field] = req.body.data;
 
-	Customer.findByIdAndUpdate(req.body.id, { $set: set}, function (err, response) {
-		if(err){
-			console.log(err);
-			res.status(500).send("Unable to save field, check input.")
+	var cookie = req.cookies.session;
+	var jwtKey = req.app.get('superSecret');
+
+	// Check authenticated
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
+		if (role=='customer' || role=='supplier' || role=='admin') {
+			ActorService.checkPrincipal(cookie, jwtKey, req.body.id, function (isPrincipal) {
+				if ( (role=='customer' && isPrincipal) || (role=='supplier' && isPrincipal) || (role=='admin')) {
+					Actor.findByIdAndUpdate(req.body.id, { $set: set}, function (err, response) {
+						if(err){
+							res.status(500).send("Unable to save field, check input.")
+						} else {
+							res.status(200).json({success: true});
+						}
+					});
+				} else {
+					res.status(401).json({success: false, message: "Doesn't have permission"});
+				}
+			});
 		} else {
-			res.status(200).json({success: true});
+			res.status(401).json({success: false, message: "Doesn't have permission"});
 		}
 	});
+	ActorService.checkPrincipal()
+
+
+	
+	
 };
 
-
+// Change password
 exports.changePassword = function (req, res) {
 	console.log('Function-usersApi-changePassword  --id:'+req.body.id);
 

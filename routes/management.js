@@ -8,10 +8,9 @@ var crypto = require('crypto');//Necesario para encriptacion por MD5
 var mongoose = require('mongoose');//Para la generacion de ids
 
 
-//Restaura la base de datos de productos al estado del dataset
+// Restore Mongo DB to development state
 exports.resetDataset = function (req, res) {
 	console.log('Function-management-resetDataset');
-
 
 	Product.remove({}, function(err) {
 		if(err){
@@ -165,7 +164,5 @@ exports.resetDataset = function (req, res) {
 	});
 
 	res.json("Done, check the console");
-
-	
 };
 

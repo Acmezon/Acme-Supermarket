@@ -1,5 +1,3 @@
-//var crypto = require('crypto');//Necesario para encriptacion por MD5
-
 var db_utils = require('./db_utils');
 var Product = require('../models/product');
 var multer  = require('multer');
@@ -14,17 +12,14 @@ var Authentication = require('./authentication'),
 	ActorService = require('./services/service_actors'),
 	CustomerService = require('./services/service_customers');
 
-//Devuelve una lista con todos los productos de la coleccion
+// Returns all objects of the system
 exports.getAllProducts = function (req, res) {
 	console.log('Function-productsApi-getAllProducts');
 
-	//Find sin condiciones
+	// Find no conditions
 	Product.find(function(err,products){
-		//TODO: Comprobar errores correctamente
-		var errors= [];//db_utils.handleErrors(err);
-		if(errors.length > 0){
-			console.log('---ERROR finding AllProduct - message: '+errors);
-			res.status(500).json({success: false, message: errors});
+		if(err){
+			res.status(500).json({success: false, message: err.errors});
 		}else{
 			res.status(200).json(products);
 		}
@@ -32,7 +27,7 @@ exports.getAllProducts = function (req, res) {
 };
 
 
-//Devuelve un producto de la coleccion
+// Returns a product object identified by ID
 exports.getProduct = function (req, res) {
 	var _code = req.params.id;
 	console.log('Function-productsApi-getProduct  --_id:'+_code);
@@ -44,15 +39,15 @@ exports.getProduct = function (req, res) {
 		if (role=='customer' || role=='admin' || role=='supplier') {
 			Product.findById( _code,function(err,product){
 				if(err){
-					console.log('---ERROR finding Product: '+_code+' message: '+err);
-					res.status(500).json({success: false, message: err});
+					console.log('---ERROR finding Product: '+_code);
+					res.status(500).json({success: false, message: err.errors});
 				}else{
 					//console.log(product);
 					res.status(200).json(product);
 				}
 			});
 		} else {
-			res.status(401).json({success: false, message: 'Doesnt have permission'});
+			res.status(401).json({success: false, message: "Not authenticated"});
 		}
 	});	
 };
@@ -77,11 +72,12 @@ exports.updateProduct = function (req, res) {
 				}
 			});
 		} else {
-			res.status(401).json({success: false, message: 'Doesnt have permission'});
+			res.status(403).json({success: false, message: "Doesnt have permission"});
 		}
 	});
 };
 
+// Updates a product with a new image
 exports.updateProductImage = function (req, res) {
 	var filename = "";
 	var prev_img = "";
@@ -140,23 +136,24 @@ exports.updateProductImage = function (req, res) {
 				});
 			});
 		} else {
-			res.status(401).json({success: false, message: 'Doesnt have permission'});
+			res.status(403).json({success: false, message: "Doesnt have permission"});
 		}
 	});
 
 	
 };
 
+// Update a product with a new/edited rating
 exports.updateProductRating = function (req, res) {
 	Authentication.currentUser(req.cookies.session, req.app.get('superSecret'), function (user) {
 		if(user == -1) {
-			res.status(403).json({success: false, message: 'Doesnt have permission'});
+			res.status(403).json({success: false, message: "Doesnt have permission"});
 			return;
 		} else {
 			Actor.findOne({ email : user}, function (err, actor) {
 				var u_id = actor._id;
 
-				checkPurchasing(u_id, req.body.id, function (response) {
+				CustomerService.checkPurchasing(u_id, req.body.id, function (response) {
 					if(!response) {
 						res.sendStatus(401)
 						return;
@@ -201,13 +198,14 @@ exports.updateProductRating = function (req, res) {
 	});
 };
 
+// Returns true if current customer has purchased a product req.body.product
 exports.userHasPurchased = function (req, res) {
-	Authentication.currentUser(req.cookies.session, req.app.get('superSecret'), function (user) {
-		if(user == -1) {
-			res.status(403).json({success: false, message: 'Doesnt have permission'});
+	ActorService.getPrincipal(req.cookies.session, req.app.get('superSecret'), function (pair) {
+		if(pair==-1) {
+			res.status(403).json({success: false, message: "Doesn't have permission"});
 			return;
 		} else {
-			Customer.findOne({ email : user}, function (err, customer) {
+			Customer.findOne({ email : pair[0]}, function (err, customer) {
 				if(err) {
 					res.sendStatus(503);
 					return;

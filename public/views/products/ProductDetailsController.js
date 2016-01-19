@@ -4,6 +4,8 @@ angular.module('acme_supermarket').registerCtrl('ProductDetailsCtrl', ['$scope',
 function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $cookieStore, $location, $rootScope) {
 	var id = $routeParams.id;
 
+	
+
 	$http({
 		method: 'GET',
 		url: '/api/product/' + id
@@ -47,6 +49,19 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 				then (function success (response3) {
 					var avgreputation = response3.data;
 					provide.reputation = avgreputation;
+
+					// Disables the add cart button fot not customers
+					$http({
+						method: 'GET',
+						url: '/api/getUserRole'
+					}).
+					then(function success(response4) {
+						if(response.data!='customer') {
+							var buttons = $('.add-cart-btn-column');
+							buttons.remove();
+						}
+					}, function error(response4) {
+					});
 				}, function error(response3) {
 				});
 
@@ -55,7 +70,6 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 			// FINISH PROCESS
 			// PUT INTO OUTPUT VARIABLE
 			$scope.out_suppliers = provides;
-			console.log($scope.out_suppliers)
 
 		}, function error (response2) {
 		});
@@ -71,7 +85,6 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 	}).then(
 		function success(response) {
 			$scope.userHasPurchased = response.data.hasPurchased;
-			console.log(response)
 		}, function error(response) {
 			console.log(response)
 			$scope.userHasPurchased = false;
@@ -185,7 +198,6 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 	};
 
 	$scope.addToCart = function (provide_id) {
-		console.log(provide_id)
 		var cookie = $cookies.get("shoppingcart");
 		var new_cookie = {};
 		if (!cookie) {

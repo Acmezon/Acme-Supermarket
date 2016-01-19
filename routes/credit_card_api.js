@@ -13,6 +13,7 @@ exports.newCreditCard = function (credit_card, callback) {
 	return;
 };
 
+// Returns a credit card object by id
 exports.getCreditCard = function(req, res) {
 	var id = req.params.id;
 	console.log('Function-credit_cardApi-getCreditCard  --_id:' + id);
@@ -36,15 +37,16 @@ exports.getCreditCard = function(req, res) {
 						}
 					});
 				} else {
-					res.status(401).json({success: false, message: 'Doesnt have permission'});
+					res.status(403).json({success: false, message : "Doesn't have permissions"});
 				}
 			});
 		} else {
-			res.status(401).json({success: false, message: 'Doesnt have permission'});
+			res.status(403).json({success: false, message : "Doesn't have permissions"});
 		}
 	});
 };
 
+// Updates a credit card identified by id
 exports.updateCreditCard = function (credit_card_id, credit_card, callback) {
 
 	// Update credit card
