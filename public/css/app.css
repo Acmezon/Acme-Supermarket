@@ -56,3 +56,8 @@ p.editable-p {
 	width: 5%;
 	height: 5%;
 }
+
+.mens-toolbar>.col-sm-4>button {
+	margin: 2% 5% 2% 5%; 
+	text-align: center;
+}

@@ -26,39 +26,7 @@ exports.getSupplierName = function (req, res) {
 			});
 
 		} else {
-			res.status(401).json({success: false, message: 'Doesnt have permission'});
-		}
-	});
-
-	
-};
-
-//Devuelve si el usuario es un supplier
-exports.isSupplier = function(req, res) {
-	var _id = req.params.id;
-	console.log('Function-supplierApi-isSupplier -- _id:'+_id);
-
-	var cookie = req.cookies.session;
-	var jwt = req.app.get('superSecret');
-	// Check is supplier or admin
-	ActorService.getUserRole(cookie, jwt, function (role) {
-		if (role=='admin' || role=='supplier') {
-
-			Supplier.findbyId( _id, function(err,user){
-				if(err){
-					res.status(500).json({success: false, message: err});
-				}
-				else{
-					if (user._type.toLowerCase() == 'supplier') {
-						res.status(200).json(true);
-					} else {
-						res.status(200).json(false);
-					}			
-				}
-			});
-
-		} else {
-			res.status(401).json({success: false, message: 'Doesnt have permission'});
+			res.status(401).json({success: false, message: "Doesnt have permission"});
 		}
 	});
 

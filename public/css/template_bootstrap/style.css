@@ -1263,34 +1263,6 @@ p.cart a:hover{
 	border-radius: 2px;
 	background-color: white;
 }
-.mens-toolbar .pager {
-	padding: 3px 8px;
-	float: right;
-	margin: 0;
-	width:28%;
-}
-.pager .limiter {
-	float: right;
-	color:#777;
-	font-size:0.85em;
-}
-.pager .limiter label {
-	vertical-align: middle;
-}
-.pager .limiter select {
-	padding: 3%;
-	margin: 0 0 1px;
-	vertical-align: middle;
-	border-radius: 2px;
-	background-color: white;
-}
-.pager .pages {
-	margin: 0 30px 0 0;
-	float: right;
-}
-.pager .pages ol {
-	display: inline;
-}
 h3.page{
 	float:left;
 }

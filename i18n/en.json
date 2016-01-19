@@ -108,7 +108,8 @@
 		"Previous" : "Previous",
 		"Next" : "Next",
 		"Empty" : "No products with these features",
-		"RatingPurchaseError" : "You can not rate a product without purchasing it"
+		"RatingPurchaseError" : "You can not rate a product without purchasing it",
+		"ClearFilters" : "Clear filters"
 	},
 	"Product" : {
 		"Edit" : "Edit",

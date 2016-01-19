@@ -8,43 +8,7 @@ var Customer = require('../models/customer'),
 	db_utils = require('./db_utils'),
 	jwt = require('jsonwebtoken');
 
-
-exports.getCustomer = function (req, res) {
-	var _email = req.params.email;
-	console.log('Function-customersApi-getCustomer -- _email:'+_email);
-	
-
-	Customer.findOne({email:_email}, function(err,customer){
-		if(err){
-			res.status(500).json({success: false, message: err});
-		}
-		else{
-			res.status(200).json(customer);
-		}
-	});
-};
-
-// Devuelve si el usuario es customer
-exports.isCustomer = function(req, res) {
-	var _id = req.params.id;
-	console.log('Function-customersApi-isCustomer -- _id:'+_id);
-
-
-	Customer.findbyId( _id, function(err,user){
-		if(err){
-			res.status(500).json({success: false, message: err});
-		}
-		else{
-			if (user._type == 'Customer') {
-				res.status(200).json(true);
-			} else {
-				res.status(200).json(false);
-			}			
-		}
-	});
-};
-
-// Devuelve todos los clientes (sin contraseña)
+// Returns all customers of the system (W/O PASSWORDS)
 exports.getCustomers = function (req, res) {
 	console.log('Function-productsApi-getCustomers');
 
@@ -53,10 +17,10 @@ exports.getCustomers = function (req, res) {
 	// Check principal is an admin
 	ActorService.getUserRole(cookie, jwtKey, function (role) {
 		if (role=='admin') {
-			//Find sin condiciones
+			// Find no conditions
 			Customer.find({_type: 'Customer'}, function(err,customers){
 				if (err) {
-					res.status(500).json({success: false, message: err});
+					res.status(500).json({success: false, message: err.errors});
 				} else {
 					for (var i = 0; i < customers.length; i++) {
 						customers[i].password = "";
@@ -65,15 +29,16 @@ exports.getCustomers = function (req, res) {
 				}
 			});
 		} else {
-			res.status(401).json({success: false, message: 'Doesnt have permission'});
+			res.status(403).json({success: false, message: "Doesnt have permission"});
 		}
 	});
 };
 
+// Save a new customer
 exports.newCustomer = function (customer, callback) {
 	console.log('Function-customersApi-newCustomer');
 
-	//Guardar la entrada de datos en variables
+	// Save the input in vars
 	var _name = customer.name;
 	var _surname = customer.surname;
 	var _email = customer.email;
@@ -84,34 +49,39 @@ exports.newCustomer = function (customer, callback) {
 	var _city = customer.city;
 	var _phone = customer.phone;
 
-	//TODO Chequear que los campos son correctos
-	
-	var md5Password = crypto.createHash('md5').update(_password).digest("hex");
+	// Server validation
+	var pass = CustomerService.checkFieldsCorrect(_name, _surname, _email, _password, _coordinates, _address, _country, _city, _phone);
 
-	var newCustomer = new Customer({
-		name: _name,
-		surname: _surname,
-		email: _email,
-		password: md5Password,
-		coordinates: _coordinates,
-		credit_card: "",
-		address: _address,
-		country: _country,
-		city: _city,
-		phone: _phone
-	});
+	if (pass) {
+		var md5Password = crypto.createHash('md5').update(_password).digest("hex");
 
-	newCustomer.save(function (err) {
-		callback(db_utils.handleInsertErrors(err));
-	});
+		var newCustomer = new Customer({
+			name: _name,
+			surname: _surname,
+			email: _email,
+			password: md5Password,
+			coordinates: _coordinates,
+			credit_card: "",
+			address: _address,
+			country: _country,
+			city: _city,
+			phone: _phone
+		});
 
-	return;
+		newCustomer.save(function (err) {
+			callback(db_utils.handleInsertErrors(err));
+		});
+
+		return;
+	} else {
+		callback('ValidationError on Server')
+		return;
+	}
 };
 
+// Update/Save a credit card. Check id_cc
 exports.updateCC = function(req, res){
 	console.log('Function-customersApi-updateCC');
-
-
 
 	var cc = new CreditCard({
 		holderName : req.body.cc.holderName,
@@ -121,7 +91,7 @@ exports.updateCC = function(req, res){
 		cvcCode: req.body.cc.cvcCode,
 	});
 
-
+	// If id not set, Save
 	if(!req.body.id_cc){
 		credit_card_api.newCreditCard(cc, 
 			function (errors) {
@@ -139,6 +109,8 @@ exports.updateCC = function(req, res){
 			}
 		);
 	} else {
+		// Update
+
 		var jwtKey = req.app.get('superSecret');
 		var cookie = req.cookies.session;
 
@@ -158,11 +130,11 @@ exports.updateCC = function(req, res){
 							}
 						);
 					} else {
-						res.status(401).json({success: false, message: 'Doesnt have permission'});
+						res.status(403).json({success: false, message: "Doesnt have permission"});
 					}
 				});
 			} else {
-				res.status(401).json({success: false, message: 'Doesnt have permission'});
+				res.status(403).json({success: false, message: "Doesnt have permission"});
 			}
 		});
 	}
@@ -193,17 +165,17 @@ exports.updateCustomer = function (req, res) {
 						}, 
 						function(error, result) {
 				      		if (error) {
-				      			res.status(500).json({success: false, message: error});
+				      			res.status(500).json({success: false, message: error.errors});
 				      		} else {
 				      			res.status(200).json({success: true});
 				      		}
 				    	});
 				} else {
-					res.status(401).json({success: false, message: 'Doesnt have permission'});
+					res.status(403).json({success: false, message: "Doesnt have permission"});
 				}
 			});
 		} else {
-			res.status(401).json({success: false, message: 'Doesnt have permission'});
+			res.status(403).json({success: false, message: "Doesnt have permission"});
 		}
 	});
 };
@@ -212,8 +184,6 @@ exports.updateCustomer = function (req, res) {
 exports.deleteCustomer = function(req, res) {
 	var id= req.body.id;
 	console.log('Function-customersApi-deleteCustomer -- id:'+id);
-
-
 
 	var jwtKey = req.app.get('superSecret');
 	var cookie = req.cookies.session;
@@ -229,19 +199,20 @@ exports.deleteCustomer = function(req, res) {
 					    	res.status(200).json({success: true});
 					    }
 					    else {
-							res.status(500).json({success: false, message: err});
+							res.status(500).json({success: false, message: err.errors});
 					    }
 					});
 				} else {
-					res.status(401).json({success: false, message: 'Doesnt have permission'});
+					res.status(403).json({success: false, message: "Doesnt have permission"});
 				}
 			});
 		} else {
-			res.status(401).json({success: false, message: 'Doesnt have permission'});
+			res.status(403).json({success: false, message: "Doesnt have permission"});
 		}
 	});
 };
 
+// Returns a credit card object of customer principal
 exports.getMyCreditCard = function (req, res) {
 	console.log('Function-usersApi-getMyCreditCard');
 
@@ -271,9 +242,7 @@ exports.getMyCreditCard = function (req, res) {
 						} else{
 							// Check password correct
 							if (password != customer.password) {
-								res.status(401).send({
-									success: false
-								});
+								res.status(401).json({success: false, message: "Not authenticated"});
 							} else {
 								// Check is customer
 								ActorService.getUserRole(req.cookies.session, req.app.get('superSecret'), function (role) {
@@ -295,9 +264,7 @@ exports.getMyCreditCard = function (req, res) {
 											res.status(200).json({});
 										}
 									} else {
-										res.status(401).send({
-											success: false
-										});
+										res.status(403).json({success: false, message: "Doesnt have permission"});
 									}
 								});
 							}
@@ -307,13 +274,9 @@ exports.getMyCreditCard = function (req, res) {
 			});
 
 		} else {
-			res.status(404).send({
-				success: false
-			});
+			res.status(401).json({success: false, message: "Not authenticated"});
 		}
 	} else {
-		res.status(404).send({
-			success: false
-		});
+		res.status(401).json({success: false, message: "Not authenticated"});
 	}
 };

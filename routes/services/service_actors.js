@@ -1,6 +1,7 @@
 var Actor = require('../../models/actor'),
 	jwt = require('jsonwebtoken');
 
+// Returns a String with the role of principal (admin, customer, supplier, anonymous)
 exports.getUserRole = function (cookie, jwtKey, callback) {
 	if (cookie !== undefined) {
 		var token = cookie.token;
@@ -19,7 +20,6 @@ exports.getUserRole = function (cookie, jwtKey, callback) {
 						} else {
 							var type = user._type.toLowerCase();
 							if (type) {
-								console.log(type)
 								callback(type);
 							} else {
 								callback('anonymous');
@@ -36,6 +36,7 @@ exports.getUserRole = function (cookie, jwtKey, callback) {
 	}
 }
 
+// Returns email and password of principal [email, password]
 exports.getPrincipal = function(cookie, jwtKey, callback) {
 	if (cookie !== undefined) {
 		var token = cookie.token;
@@ -44,11 +45,11 @@ exports.getPrincipal = function(cookie, jwtKey, callback) {
 		if (token) {
 
 			// verifies secret and checks exp
-			jwt.verify(token, superSecret, function(err, decoded) {
+			jwt.verify(token, jwtKey, function(err, decoded) {
 				if (err) {
 					callback(-1);
 				} else {
-					callback(decoded.email);
+					callback([decoded.email, decoded.password]);
 				}
 			});
 
@@ -60,14 +61,15 @@ exports.getPrincipal = function(cookie, jwtKey, callback) {
 	}
 }
 
-exports.checkPrincipal = function (cookie, jwtKey, callback) {
+// Returns true if principal is same as user_id passed
+exports.checkPrincipal = function (cookie, jwtKey, user_id, callback) {
 	if (cookie !== undefined) {
 		var token = cookie.token;
 		// decode token
 		if (token) {
 
 			// verifies secret and checks exp
-			jwt.verify(token, req.app.get('superSecret'), function(err, decoded) {
+			jwt.verify(token, jwtKey, function(err, decoded) {
 				if (err) {
 					callback(false);
 				} else {
@@ -77,7 +79,7 @@ exports.checkPrincipal = function (cookie, jwtKey, callback) {
 						if (err) {
 							callback(false);
 						} else {
-							if (decoded.email==user.email && decoded.password==user.password && req.params.id==user._id) {
+							if (decoded.email==user.email && decoded.password==user.password && user_id==user._id) {
 								callback(true);
 							} else {
 								callback(false);

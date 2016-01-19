@@ -2,11 +2,15 @@
 
 angular.module('acme_supermarket').registerCtrl('ProfileCtrl', ['$scope', '$http', '$translate', 'ngToast',
 function ($scope, $http, $translate, ngToast) {
+
+
 	$http.get('/api/myprofile').then(function success(customer){
 		$scope.user = customer.data;
-		$http.get('/api/mycreditcard').then(function success(cc){
-			$scope.credit_card = cc.data;
-		}, function error(cc) {});
+		if ($scope.user._type.toLowerCase()=='customer') {
+			$http.get('/api/mycreditcard').then(function success(cc){
+				$scope.credit_card = cc.data;
+			}, function error(cc) {});
+		}
 	},
 	function error(customer) { });
 

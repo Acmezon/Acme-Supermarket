@@ -75,7 +75,6 @@ app.get('/api/provide/:id', api.Provides.getProvide);
 app.get('/api/providesByProductId/:id', api.Provides.getProvidesByProductId);
 
 // Suppliers
-app.get('/api/supplier/issupplier/:id', api.Supplier.isSupplier)
 app.get('/api/supplierName/:id', api.Supplier.getSupplierName);
 
 // Reputations
@@ -95,14 +94,12 @@ app.post('/api/user/changePassword', api.User.changePassword);
 
 // Customers
 app.get('/api/customers', api.Customer.getCustomers);
-app.get('/api/customer/iscustomer/:email', api.Customer.isCustomer);
 app.post('/api/customer/updateCC', api.Customer.updateCC);
 app.post('/api/customer', api.Customer.updateCustomer);
 app.delete('/api/customer/:id', api.Customer.deleteCustomer);
 app.get('/api/mycreditcard', api.Customer.getMyCreditCard);
 
 // Admins
-app.get('/api/admin/isadmin/:id', api.Admin.isAdmin);
 
 // Credit cards
 app.get('/api/creditcard/:id', api.CreditCard.getCreditCard);
@@ -112,7 +109,6 @@ app.get('/api/resetDataset', api.Management.resetDataset);
 
 // i18n
 app.get('/api/lang', api.i18n.getLanguageFile);
-
 
 
 
