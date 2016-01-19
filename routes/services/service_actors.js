@@ -6,7 +6,6 @@ exports.getUserRole = function (cookie, jwtKey, callback) {
 		var token = cookie.token;
 		// decode token
 		if (token) {
-
 			// verifies secret and checks exp
 			jwt.verify(token, jwtKey, function(err, decoded) {
 				if (err) {
@@ -20,6 +19,7 @@ exports.getUserRole = function (cookie, jwtKey, callback) {
 						} else {
 							var type = user._type.toLowerCase();
 							if (type) {
+								console.log(type)
 								callback(type);
 							} else {
 								callback('anonymous');
@@ -28,7 +28,11 @@ exports.getUserRole = function (cookie, jwtKey, callback) {
 					});
 				}
 			});
+		} else {
+			callback('anonymous');
 		}
+	} else {
+		callback('anonymous');
 	}
 }
 

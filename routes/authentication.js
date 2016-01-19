@@ -118,6 +118,7 @@ exports.isAuthenticated = function(req, res) {
 
 // Returns role of principal
 exports.getUserRole = function(req, res) {
+	console.log('Function-authenticationApi-getUserRole');
 	var cookie = req.cookies.session;
 	var jwtKey = req.app.get('superSecret');
 	ActorService.getUserRole(cookie, jwtKey, function (role) {
