@@ -1,4 +1,5 @@
 var jwt = require('jsonwebtoken'),
+	ActorService = require('./services/service_actors'),
 	Customer = require('../models/customer'),
 	CreditCard = require('../models/credit_card')
 	Actor = require('../models/actor'),
@@ -21,26 +22,43 @@ exports.getMyProfile = function (req, res) {
 					});
 				} else {
 					var email = decoded.email;
+					var password = decoded.password;
 
 					Customer.findOne({email: email}, function(err, customer){
 						if(err){
 							res.status(404).send({
 								success: false
-							});							
+							});
 						}
 						else{
-							res.status(200).json({
-								_type : customer._type,
-								id: customer._id,
-								name : customer.name,
-								surname : customer.surname,
-								email : customer.email,
-								address : customer.address,
-								country : customer.country,
-								city : customer.city,
-								phone: customer.phone,
-								credit_card: customer.credit_card_id
-							});
+							if (password != customer.password) {
+								res.status(401).send({
+									success: false
+								});
+							} else {
+								ActorService.getUserRole(req.cookies.session, req.app.get('superSecret'), function (role) {
+									if (role == 'customer') {
+										res.status(200).json({
+											_type : customer._type,
+											id: customer._id,
+											name : customer.name,
+											surname : customer.surname,
+											email : customer.email,
+											address : customer.address,
+											country : customer.country,
+											city : customer.city,
+											phone: customer.phone,
+											credit_card: customer.credit_card_id
+										});
+									} else {
+										res.status(401).send({
+											success: false
+										});
+									}
+								});
+								
+								
+							}
 						}
 					});
 				}

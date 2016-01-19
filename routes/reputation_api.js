@@ -1,7 +1,5 @@
 var db_utils = require('./db_utils');
 var Reputation = require('../models/reputation');
-var multer  = require('multer');
-var fs = require('fs');
 
 //Devuelve la reputacion media para un supplier
 exports.getAverageReputationBySupplierId = function (req, res) {

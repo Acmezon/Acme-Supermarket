@@ -7,6 +7,7 @@ var db = require('./db_utils'),
 	cookieParser = require('cookie-parser');
 
 exports.authenticate = function (req, res) {
+
 	Actor.findOne({
 		email: req.body.email
 	}, function (err, user){
@@ -43,7 +44,7 @@ exports.authenticate = function (req, res) {
 					console.log('---'+req.body.email + ' is an Admin');
 					_type = 'admin';
 				}else if(user._type == 'Supplier'){
-					console.log('---'+req.body.email + ' is an Supplier');
+					console.log('---'+req.body.email + ' is a Supplier');
 					_type = 'supplier';
 				}else if(user._type == 'Customer'){
 					_type = 'customer';
@@ -52,8 +53,7 @@ exports.authenticate = function (req, res) {
 				}
 
 				res.cookie('session', {
-					token: token,
-					type: _type
+					token: token
 				}, {
 					maxAge: 365 * 24 * 60 * 60 * 1000
 				});
@@ -134,19 +134,35 @@ exports.getPrincipal = function(req, res) {
 
 exports.getUserRole = function(req, res) {
 	var cookie = req.cookies.session;
-
 	if (cookie !== undefined) {
-		var type = cookie.type.toLowerCase();
-
-		if (type) {
-			res.status(200).json({role: type});
-		} else {
-			res.status(200).json({role: 'anonymous'});
+		var token = cookie.token;
+		// decode token
+		if (token) {
+			// verifies secret and checks exp
+			jwt.verify(token, req.app.get('superSecret'), function(err, decoded) {
+				if (err) {
+					res.status(404).send({
+						success: false
+					});
+				} else {
+					Actor.findOne({
+						email: decoded.email
+					}, function (err, user){
+						if (err) {
+							res.status(200).json({role: 'anonymous'});
+						} else {
+							var type = user._type.toLowerCase();
+								if (type) {
+								res.status(200).json({role: type});
+							} else {
+								res.status(200).json({role: 'anonymous'});
+							}
+						}
+					});
+				}
+			});
 		}
-	} else {
-		res.status(200).json({role: 'anonymous'});
 	}
-
 };
 
 exports.currentUser = function(cookie, superSecret, callback) {

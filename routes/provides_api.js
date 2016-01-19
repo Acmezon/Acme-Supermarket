@@ -1,7 +1,5 @@
 var db_utils = require('./db_utils');
 var Provide = require('../models/provide');
-var multer  = require('multer');
-var fs = require('fs');
 
 // Devuelve una lista de Provides que tienen un producto con id
 exports.getProvidesByProductId = function(req, res) {
@@ -19,7 +17,7 @@ exports.getProvidesByProductId = function(req, res) {
 			res.status(200).json(provides);
 		}
 	});
-}
+};
 
 // Devuelve un provide de la colección
 exports.getProvide = function(req, res) {
@@ -37,4 +35,4 @@ exports.getProvide = function(req, res) {
 			res.status(200).json(provide);
 		}
 	});
-}
+};
