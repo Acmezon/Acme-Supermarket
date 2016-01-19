@@ -1,4 +1,5 @@
 var Customer = require('./customers_api'),
+	Admin = require('./admins_api'),
 	User = require('./user'),
 	CreditCard = require('./credit_card_api'),
 	Products = require('./products_api'),
@@ -12,6 +13,7 @@ var Customer = require('./customers_api'),
 	i18n = require('./i18n');
 
 exports.Customer = Customer;
+exports.Admin = Admin;
 exports.User = User;
 exports.CreditCard = CreditCard;
 exports.Products = Products;

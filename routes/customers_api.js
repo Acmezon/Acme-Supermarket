@@ -1,8 +1,9 @@
-var db_utils = require('./db_utils'),
-	Customer = require('../models/customer'),
+var Customer = require('../models/customer'),
 	credit_card_api = require('./credit_card_api')
 	CreditCard = require('../models/credit_card'),
 	Actor = require('../models/actor'),
+	ActorService = require('./services/service_actors'),
+	CustomerService = require('./services/service_customers'),
 	crypto = require('crypto'),//Necesario para encriptacion por MD5	
 	db_utils = require('./db_utils');
 
@@ -10,7 +11,7 @@ var db_utils = require('./db_utils'),
 exports.getCustomer = function (req, res) {
 	var _email = req.params.email;
 	console.log('Function-customersApi-getCustomer -- _email:'+_email);
-
+	
 
 	Customer.findOne({email:_email}, function(err,customer){
 		if(err){
@@ -22,19 +23,48 @@ exports.getCustomer = function (req, res) {
 	});
 };
 
+// Devuelve si el usuario es customer
+exports.isCustomer = function(req, res) {
+	var _id = req.params.id;
+	console.log('Function-customersApi-isCustomer -- _id:'+_id);
+
+
+	Customer.findbyId( _id, function(err,user){
+		if(err){
+			res.status(500).json({success: false, message: err});
+		}
+		else{
+			if (user._type == 'Customer') {
+				res.status(200).json(true);
+			} else {
+				res.status(200).json(false);
+			}			
+		}
+	});
+};
+
 // Devuelve todos los clientes (sin contraseña)
 exports.getCustomers = function (req, res) {
 	console.log('Function-productsApi-getCustomers');
 
-	//Find sin condiciones
-	Customer.find({_type: 'Customer'}, function(err,customers){
-		if (err) {
-			res.status(500).json({success: false, message: err});
+	var cookie = req.cookies.session;
+	var jwtKey = req.app.get('superSecret');
+	// Check principal is an admin
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
+		if (role=='admin') {
+			//Find sin condiciones
+			Customer.find({_type: 'Customer'}, function(err,customers){
+				if (err) {
+					res.status(500).json({success: false, message: err});
+				} else {
+					for (var i = 0; i < customers.length; i++) {
+						customers[i].password = "";
+					}
+					res.status(200).json(customers);
+				}
+			});
 		} else {
-			for (var i = 0; i < customers.length; i++) {
-				customers[i].password = "";
-			}
-			res.status(200).json(customers);
+			res.status(401).json({success: false, message: 'Doesnt have permission'});
 		}
 	});
 };
@@ -90,6 +120,7 @@ exports.updateCC = function(req, res){
 		cvcCode: req.body.cc.cvcCode,
 	});
 
+
 	if(!req.body.id_cc){
 		credit_card_api.newCreditCard(cc, 
 			function (errors) {
@@ -107,15 +138,32 @@ exports.updateCC = function(req, res){
 			}
 		);
 	} else {
-		credit_card_api.updateCreditCard(req.body.id_cc, cc, 
-			function (errors) {
-				if(errors.length > 0) {
-					res.status(500).json({success: false, message: errors});
-				} else {
-					res.status(200).json({success: true});
-				}
+		var jwtKey = req.app.get('superSecret');
+		var cookie = req.cookies.session;
+
+		// Check principal is customer or administrator
+		ActorService.getUserRole(cookie, jwtKey, function (role) {
+			if (role=='customer' || role=='admin') {
+				// Check principal is owner or administrator
+				CustomerService.checkOwnerOrAdmin(cookie, jwtKey, req.body.id_cc, function (response) {
+					if (response) {
+						credit_card_api.updateCreditCard(req.body.id_cc, cc, 
+							function (errors) {
+								if(errors.length > 0) {
+									res.status(500).json({success: false, message: errors});
+								} else {
+									res.status(200).json({success: true});
+								}
+							}
+						);
+					} else {
+						res.status(401).json({success: false, message: 'Doesnt have permission'});
+					}
+				});
+			} else {
+				res.status(401).json({success: false, message: 'Doesnt have permission'});
 			}
-		);
+		});
 	}
 };
 
@@ -123,24 +171,40 @@ exports.updateCC = function(req, res){
 exports.updateCustomer = function (req, res) {
 	console.log('Function-customersApi-updateCustomer  --_id:' + req.body._id);
 
-	Customer.update({_id: req.body._id}, 
-		{$set: 
-			{name: req.body.name,
-			surname: req.body.surname,
-			email: req.body.email,
-			address: req.body.address,
-			country: req.body.country,
-			city: req.body.city,
-			phone: req.body.phone}
-		}, 
-		function(error, result) {
-      		if (error) {
-      			res.status(500).json({success: false, message: error});
-      		} else {
-      			res.status(200).json({success: true});
-      		}
-    	});
+	var jwtKey = req.app.get('superSecret');
+	var cookie = req.cookies.session;
 
+	// Check principal is customer or administrator
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
+		if (role=='customer' || role=='admin') {
+			// Check principal is customer or administrator
+			CustomerService.checkPrincipalOrAdmin(cookie, jwtKey, req.body._id, function (response) {
+				if (response) {
+					Customer.update({_id: req.body._id}, 
+						{$set: 
+							{name: req.body.name,
+							surname: req.body.surname,
+							email: req.body.email,
+							address: req.body.address,
+							country: req.body.country,
+							city: req.body.city,
+							phone: req.body.phone}
+						}, 
+						function(error, result) {
+				      		if (error) {
+				      			res.status(500).json({success: false, message: error});
+				      		} else {
+				      			res.status(200).json({success: true});
+				      		}
+				    	});
+				} else {
+					res.status(401).json({success: false, message: 'Doesnt have permission'});
+				}
+			});
+		} else {
+			res.status(401).json({success: false, message: 'Doesnt have permission'});
+		}
+	});
 };
 
 // Remove a customer with ID from the system
@@ -148,12 +212,31 @@ exports.deleteCustomer = function(req, res) {
 	var id= req.body.id;
 	console.log('Function-customersApi-deleteCustomer -- id:'+id);
 
-	Customer.remove({ _id: id }, function(err) {
-    if (!err) {
-            res.status(200).json({success: true});
-    }
-    else {
-            res.status(500).json({success: false, message: err});
-    }
-});
+
+
+	var jwtKey = req.app.get('superSecret');
+	var cookie = req.cookies.session;
+
+	// Check principal is customer or administrator
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
+		if (role=='customer' || role=='admin') {
+			// Check principal is customer or administrator
+			CustomerService.checkPrincipalOrAdmin(cookie, jwtKey, req.body._id, function (response) {
+				if (response) {
+					Customer.remove({ _id: id }, function(err) {
+					    if (!err) {
+					    	res.status(200).json({success: true});
+					    }
+					    else {
+							res.status(500).json({success: false, message: err});
+					    }
+					});
+				} else {
+					res.status(401).json({success: false, message: 'Doesnt have permission'});
+				}
+			});
+		} else {
+			res.status(401).json({success: false, message: 'Doesnt have permission'});
+		}
+	});
 };

@@ -4,9 +4,9 @@
 
 //MongoDB
 //Declaracion de la base de datos
-var mongoose = require('mongoose');
-var extend = require('mongoose-schema-extend');//Necesario para la herencia
-var config = require('../config')
+var mongoose = require('mongoose'),
+	extend = require('mongoose-schema-extend'),//Necesario para la herencia
+	config = require('../config');
 
 exports.connect = function () {
 	mongoose.connect(config.database);
@@ -19,8 +19,6 @@ exports.connect = function () {
 
 	return db;
 };
-
-
 
 exports.disconnect = function () {
 	mongoose.disconnect();

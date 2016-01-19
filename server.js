@@ -71,6 +71,7 @@ app.get('/api/averageRatingByProductId/:id', api.Rates.getAverageRatingByProduct
 app.get('/api/provide/:id', api.Provides.getProvide);
 app.get('/api/providesByProductId/:id', api.Provides.getProvidesByProductId);
 
+app.get('/api/supplier/issupplier/:id', api.Supplier.isSupplier)
 app.get('/api/supplierName/:id', api.Supplier.getSupplierName);
 
 app.get('/api/averageReputationBySupplierId/:id', api.Reputation.getAverageReputationBySupplierId);
@@ -90,9 +91,12 @@ app.post('/api/user/updateUser', api.User.updateUser);
 app.post('/api/user/changePassword', api.User.changePassword);
 
 app.get('/api/customers', api.Customer.getCustomers);
+app.get('/api/customer/iscustomer/:email', api.Customer.isCustomer);
 app.post('/api/customer/updateCC', api.Customer.updateCC);
 app.post('/api/customer', api.Customer.updateCustomer);
 app.delete('/api/customer/:id', api.Customer.deleteCustomer);
+
+app.get('/api/admin/isadmin/:id', api.Admin.isAdmin);
 
 app.get('/islogged', api.Authentication.isAuthenticated);
 
