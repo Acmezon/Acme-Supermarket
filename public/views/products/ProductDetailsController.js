@@ -71,9 +71,7 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 	}).then(
 		function success(response) {
 			$scope.userHasPurchased = response.data.hasPurchased;
-			console.log(response)
 		}, function error(response) {
-			console.log(response)
 			$scope.userHasPurchased = false;
 		}
 	);
