@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+var Schema = mongoose.Schema,
+	autoIncrement = require('mongoose-auto-increment');
 
 
 
@@ -10,5 +11,6 @@ var productSchema = mongoose.Schema({
 	image: String
 });
 
+productSchema.plugin(autoIncrement.plugin, 'Product');
 
 module.exports = mongoose.model('Product', productSchema);

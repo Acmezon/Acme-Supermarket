@@ -1,9 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var Supplier = require('./supplier'),
-	Customer = require('./customer');
-
-
+	Customer = require('./customer'),
+	autoIncrement = require('mongoose-auto-increment');
 
 var reputationSchema = mongoose.Schema({
 	value: {type:Number,min:0,max:5, required: true},
@@ -11,5 +10,6 @@ var reputationSchema = mongoose.Schema({
 	customer_id: {type: mongoose.Schema.Types.ObjectId, ref:'Customer'}
 });
 
+reputationSchema.plugin(autoIncrement.plugin, 'Reputation');
 
 module.exports = mongoose.model('Reputation', reputationSchema);

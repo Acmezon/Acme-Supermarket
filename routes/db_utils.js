@@ -6,7 +6,8 @@
 //Declaracion de la base de datos
 var mongoose = require('mongoose'),
 	extend = require('mongoose-schema-extend'),//Necesario para la herencia
-	config = require('../config');
+	config = require('../config'),
+	autoIncrement = require('mongoose-auto-increment');;
 
 exports.connect = function () {
 	mongoose.connect(config.database);
@@ -16,6 +17,8 @@ exports.connect = function () {
 	db.once('open', function (callback) {
 	  console.log('Mongoose connection to Acme-Supermarket database successfull');
 	});
+
+	autoIncrement.initialize(db);
 
 	return db;
 };

@@ -3,15 +3,17 @@
 * Module dependencies
 */
 
+
+
 var express = require('express'),
 		bodyParser = require('body-parser'),
 		methodOverride = require('method-override'),
 		errorhandler = require('errorhandler'),
 		morgan = require('morgan'),
 		routes = require('./routes/routes'),
-		api = require('./routes/api'),
 		http = require('http'),
 		path = require('path'),
+		db_utils = require('./routes/db_utils');
 		config = require('./config'),
 		cookieParser = require('cookie-parser');
 
@@ -45,7 +47,9 @@ if (env === 'production') {
 }
 
 //Database connection
-api.db_utils.connect();
+db_utils.connect();
+
+var api = require('./routes/api');
 
 /**
  * Routes

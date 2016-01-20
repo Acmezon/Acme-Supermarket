@@ -1,5 +1,6 @@
 var mongoose = require('mongoose'),
-	validators = require('mongoose-validators');
+	validators = require('mongoose-validators'),
+	autoIncrement = require('mongoose-auto-increment');
 
 
 var creditCardSchema = new mongoose.Schema({
@@ -18,5 +19,7 @@ var creditCardSchema = new mongoose.Schema({
 	expirationYear: {type:Number,min:2000, max:3000, required: true},
 	cvcCode: {type:Number,min:100, max:9999, required: true}
 });
+
+creditCardSchema.plugin(autoIncrement.plugin, 'Credit_card');
 
 module.exports = mongoose.model('Credit_card', creditCardSchema);

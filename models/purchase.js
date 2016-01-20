@@ -1,8 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var Customer = require('./customer');
-
-
+var Customer = require('./customer'),
+	autoIncrement = require('mongoose-auto-increment');
 
 var purchaseSchema = mongoose.Schema({
 	deliveryDate: {type: Date, required:true},
@@ -10,5 +9,6 @@ var purchaseSchema = mongoose.Schema({
 	customer_id: {type: mongoose.Schema.Types.ObjectId, ref:'Customer'}
 });
 
+purchaseSchema.plugin(autoIncrement.plugin, 'Purchase');
 
 module.exports = mongoose.model('Purchase', purchaseSchema);
