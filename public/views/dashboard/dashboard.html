@@ -1,0 +1,54 @@
+<script src="views/dashboard/DashboardController.js"></script>
+
+<div class="wrap dashboard">
+	<div class="head">
+		<h3 class="head">{{ 'Dashboard.SocialMedia.Service' | translate }}</h3>
+		<div class="row row-centered">
+			<div class="col-lg-3 col-md-6 col-centered">
+				<div class="panel panel-no-pointer" ng-class="{'panel-green' : socialMediaServiceRunning, 'panel-red' : !socialMediaServiceRunning}">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-xs-3">
+								<i class="fa fa-tasks fa-5x"></i>
+							</div>
+							<div class="col-xs-9 text-right">
+								<div class="huge" ng-show="socialMediaServiceRunning">{{ 'Dashboard.SocialMedia.Running' | translate }}</div>
+								<div class="huge" ng-show="!socialMediaServiceRunning">{{ 'Dashboard.SocialMedia.Stopped' | translate }}</div>
+								<div>{{ 'Dashboard.ServiceStatus' | translate }}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-6 col-centered" ng-click="startSocialMediaService()">
+				<div class="panel" ng-class="{'panel-green' : !socialMediaServiceRunning, 'panel-green-disabled' : socialMediaServiceRunning}">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-xs-3">
+								<i class="fa fa-play fa-5x"></i>
+							</div>
+							<div class="col-xs-9 text-right">
+								<div class="huge">{{ 'Dashboard.SocialMedia.StartService' | translate }}</div>
+								<div>{{ 'Dashboard.Service' | translate }}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-3 col-md-6 col-centered" ng-click="stopSocialMediaService()">
+				<div class="panel" ng-class="{'panel-red' : socialMediaServiceRunning, 'panel-red-disabled' : !socialMediaServiceRunning}">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-xs-3">
+								<i class="fa fa-stop fa-5x"></i>
+							</div>
+							<div class="col-xs-9 text-right">
+								<div class="huge">{{ 'Dashboard.SocialMedia.StopService' | translate }}</div>
+								<div>{{ 'Dashboard.Service' | translate }}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+</div>

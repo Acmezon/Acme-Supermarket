@@ -9,10 +9,7 @@ function ($scope, $http, $translate, ngToast) {
 		if ($scope.user._type.toLowerCase()=='customer') {
 			$http.get('/api/mycreditcard').then(function success(cc){
 				$scope.credit_card = cc.data;
-				console.log(cc);
-			}, function error(cc) {
-				console.log(cc);
-			});
+			}, function error(cc) {});
 		}
 	},
 	function error(customer) { });

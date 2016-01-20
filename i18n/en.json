@@ -41,7 +41,7 @@
 		"Search" : "Search",
 		"NoProducts" : "No products",
 		"Cart" : "Cart",
-		"AdminOptions" : "Admin Options",
+		"Dashboard" : "Dashboard",
 		"GoShopping" : "Go shopping"
 	},
 	"Footer": {
@@ -199,6 +199,21 @@
 			"Question" : "Are you sure you want to remove this customer",
 			"Yes" : "Sí",
 			"No"  :"no"
+		}
+	},
+	"Dashboard" : {
+		"Service" : "Service",
+		"ServiceStatus" : "Service status",
+		"SocialMedia" : {
+			"Running" : "Running",
+			"Stopped" : "Stopped",
+			"StartService" : "Start",
+			"StopService" : "Stop",
+			"Service" : "Social media presence analysis",
+			"Started" : "Social media presence analysis started successfuly",
+			"StartError" : "The social media presence analysis could not start. Try again later",
+			"Stopping" : "The social media presence analysis is being stopped. It could take a few seconds",
+			"StopError" : "The social media presence analysis is not able to stop. Try again later"
 		}
 	}
 }

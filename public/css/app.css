@@ -8,21 +8,21 @@ div.signupcol {
 
 button#coord-btn {
 	width: 22%;
-    overflow:hidden; 
-    white-space:nowrap; 
-    text-overflow: ellipsis;
+	overflow:hidden; 
+	white-space:nowrap; 
+	text-overflow: ellipsis;
 }
 
 .tab-content {
 	padding: 20px;
-    border: solid;
-    border-width: 1px;
-    border-color: rgb(221, 221, 221);
-    border-top: none;
+	border: solid;
+	border-width: 1px;
+	border-color: rgb(221, 221, 221);
+	border-top: none;
 }
 
 p.editable-p {
-    display: inline-block;
+	display: inline-block;
 }
 
 /* Remove button in shopping cart */
@@ -102,4 +102,93 @@ p.editable-p {
 
 .error-503 {
 	color: #4db3ca;
+}
+
+
+/*Dashboard*/
+.huge {
+	font-size: 40px;
+}
+.panel-green {
+	border-color: #5cb85c;;
+}
+.panel-green .panel-heading {
+	border-color: #5cb85c;
+	color: white;
+	background-color: #5cb85c;
+}
+.panel-green a {
+	color: #5cb85c;
+}
+.panel-green a:hover {
+	color: #3d8b3d;
+}
+
+.panel-green-disabled {
+	border-color: rgba(92, 184, 92, 0.75);
+	cursor: not-allowed;
+}
+
+.panel-green-disabled .panel-heading {
+	border-color: rgba(92, 184, 92, 0.75);
+	color: white;
+	background-color: rgba(92, 184, 92, 0.75);
+}
+.panel-green-disabled a {
+	color: rgba(92, 184, 92, 0.75);
+}
+.panel-green-disabled a:hover {
+	color: rgba(92, 184, 92, 0.75);
+}
+
+.panel-red {
+	border-color: #d9534f;
+}
+.panel-red .panel-heading {
+	border-color: #d9534f;
+	color: white;
+	background-color: #d9534f;
+}
+.panel-red a {
+	color: #d9534f;
+}
+.panel-red a:hover {
+	color: #b52b27;
+}
+
+.panel-red-disabled {
+	border-color: rgba(217, 83, 79, 0.75);
+	cursor: not-allowed;
+}
+.panel-red-disabled .panel-heading {
+	border-color: rgba(217, 83, 79, 0.75);
+	color: white;
+	background-color: rgba(217, 83, 79, 0.75);
+}
+.panel-red-disabled a {
+	color: rgba(217, 83, 79, 0.75);
+}
+.panel-red-disabled a:hover {
+	color: rgba(217, 83, 79, 0.75);
+}
+
+.dashboard .panel-green, .dashboard .panel-red {
+	cursor: pointer
+}
+
+.dashboard .panel-no-pointer {
+	cursor: default;
+}
+
+/*Bootstrap columns centered*/
+.row-centered {
+	text-align:center;
+}
+.col-centered {
+	display:inline-block;
+	float:none;
+	/* reset the text-align */
+	text-align:left;
+	/* inline-block space fix */
+	margin-right:-4px;
 }
