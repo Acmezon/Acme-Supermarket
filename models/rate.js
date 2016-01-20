@@ -6,8 +6,8 @@ var Product = require('./product'),
 
 var rateSchema = mongoose.Schema({
 	value: {type:Number,min:0,max:5, required: true},
-	product_id: {type: mongoose.Schema.Types.ObjectId, ref:'Product'},
-	customer_id: {type: mongoose.Schema.Types.ObjectId, ref:'Customer'}
+	product_id: {type: Number, ref:'Product'},
+	customer_id: {type: Number, ref:'Customer'}
 });
 
 rateSchema.plugin(autoIncrement.plugin, 'Rate');

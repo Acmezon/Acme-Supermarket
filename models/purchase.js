@@ -6,7 +6,7 @@ var Customer = require('./customer'),
 var purchaseSchema = mongoose.Schema({
 	deliveryDate: {type: Date, required:true},
 	paymentDate: {type: Date, required:true},
-	customer_id: {type: mongoose.Schema.Types.ObjectId, ref:'Customer'}
+	customer_id: {type: Number, ref:'Customer'}
 });
 
 purchaseSchema.plugin(autoIncrement.plugin, 'Purchase');

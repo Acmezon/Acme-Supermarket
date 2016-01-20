@@ -6,8 +6,8 @@ var Product = require('./product'),
 
 var provideSchema = mongoose.Schema({
 	price: {type: Number, required:true, min:0},
-	product_id : {type: mongoose.Schema.Types.ObjectId, ref:'Product'},
-	supplier_id : {type: mongoose.Schema.Types.ObjectId, ref:'Supplier'}
+	product_id : {type: Number, ref:'Product'},
+	supplier_id : {type: Number, ref:'Supplier'}
 }, {collection: 'provide'});
 
 provideSchema.plugin(autoIncrement.plugin, 'Provide');

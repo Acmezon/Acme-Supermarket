@@ -6,8 +6,8 @@ var Supplier = require('./supplier'),
 
 var reputationSchema = mongoose.Schema({
 	value: {type:Number,min:0,max:5, required: true},
-	supplier_id: {type: mongoose.Schema.Types.ObjectId, ref:'Supplier'},
-	customer_id: {type: mongoose.Schema.Types.ObjectId, ref:'Customer'}
+	supplier_id: {type: Number, ref:'Supplier'},
+	customer_id: {type: Number, ref:'Customer'}
 });
 
 reputationSchema.plugin(autoIncrement.plugin, 'Reputation');
