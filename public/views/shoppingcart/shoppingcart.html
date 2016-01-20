@@ -2,6 +2,10 @@
 <link rel="stylesheet" href="css/shopping-cart-quantity.css"/>
 
 <div class="wrap">
+	<ul class="breadcrumb breadcrumb__t">
+		<li><a class="home" href="/">{{ 'Home.Title' | translate }}</a> / <a class="home" href="/">{{ 'Products.Title' | translate }}</a> / {{'ShoppingCart.Title' | translate}}</li>
+	</ul>
+
 	<h2 class="head">{{'ShoppingCart.Title' | translate}}</h2>
 	<div ng-if="hasEmptyCart()">
 		<h4 class="title">{{'ShoppingCart.Empty.Title' | translate}}</h4>

@@ -209,3 +209,12 @@ p.editable-p {
 	line-height: 200%;
 	margin-bottom: 2%;
 }
+
+.product-block {
+	font-size: 1.5em;
+	text-align: center;
+}
+
+.product:hover{
+	text-decoration:none;
+}

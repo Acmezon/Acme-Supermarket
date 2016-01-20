@@ -3,6 +3,10 @@
 <div class="mens" ng-controller="ProductListCtrl">    
   	<div class="main">
      	<div class="wrap">
+     		<ul class="breadcrumb breadcrumb__t">
+				<li><a class="home" href="/">{{ 'Home.Title' | translate }}</a> / {{ 'Products.Title' | translate }}</li>
+			</ul>
+
 			<div class="cont span_2_of_3">
 			  	<h2 class="head">{{ 'Products.Products' | translate }}</h2>
 			  	<div class="mens-toolbar">
@@ -52,7 +56,7 @@
 									<div class="product_image">
 										<img ng-src="{{product.image}}" alt=""/>
 									</div>
-		                    		<div class="price">
+		                    		<div class="product-block">
 							   			<div class="cart-left">
 											<p class="title">
 												{{product.name}}
@@ -80,7 +84,7 @@
 	                     		<div class="sale-box">
 	                     			<span class="on_sale title_shop">{{ 'Home.New' | translate }}</span>
 	                     		</div>	
-	                    		<div class="price">
+	                    		<div class="product-block">
 						   			<div class="cart-left">
 										<p class="title">Lorem Ipsum simply</p>
 										<div class="price1">
