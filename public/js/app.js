@@ -198,6 +198,14 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 				admin: checkAdmin
 			}
 		}).
+		when('/dashboard', {
+			templateUrl: 'views/admin/dashboard.html',
+			controller: 'DashboardCtrl',
+			resolve: {
+				loggedin: checkLoggedin,
+				admin: checkAdmin
+			}
+		}).
 		otherwise({
 			redirectTo: '/home'
 		});

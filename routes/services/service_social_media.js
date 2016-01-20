@@ -2,7 +2,7 @@ var exec = require('child_process').exec, child;
 var fs = require('fs');
 
 exports.runProcess = function (){
-	child = exec('/usr/bin/java -jar ../social_media_jar/twitter-scrapper',
+	child = exec('/opt/spark/bin/spark-submit --class TwitterScrapper ../social_media_jar/twitter-scrapper',
 	function (error, stdout, stderr){
 		console.log("Creado");
 		if(error !== null){
