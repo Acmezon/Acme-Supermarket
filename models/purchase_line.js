@@ -6,8 +6,8 @@ var Purchase = require('./purchase'),
 
 var purchaseLineSchema = mongoose.Schema({
 	quantity: {type: Number, required:true, min:1, max:999},
-	purchase_id: {type: mongoose.Schema.Types.ObjectId, ref:'Purchase'},
-	provide_id: {type: mongoose.Schema.Types.ObjectId, ref:'Provide'}
+	purchase_id: {type: Number, ref:'Purchase'},
+	provide_id: {type: Number, ref:'Provide'}
 }, {collection: 'purchase_lines'});
 
 purchaseLineSchema.plugin(autoIncrement.plugin, 'PurchaseLine');
