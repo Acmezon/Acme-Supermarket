@@ -1,9 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var Product = require('./product'),
-	Customer = require('./customer');
-
-
+	Customer = require('./customer'),
+	autoIncrement = require('mongoose-auto-increment');
 
 var rateSchema = mongoose.Schema({
 	value: {type:Number,min:0,max:5, required: true},
@@ -11,5 +10,6 @@ var rateSchema = mongoose.Schema({
 	customer_id: {type: mongoose.Schema.Types.ObjectId, ref:'Customer'}
 });
 
+rateSchema.plugin(autoIncrement.plugin, 'Rate');
 
 module.exports = mongoose.model('Rate', rateSchema);
