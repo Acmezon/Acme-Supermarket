@@ -23,7 +23,9 @@ window.onload = function()
 	if (window.seconds != 0)
 	{
 		$('#seconds').html(window.seconds);
-		window.seconds--;
+		if(window.location.pathname=='/401') {
+			window.seconds--;
+		}
 		setTimeout(window.onload, 1000);
 	}
 	else
