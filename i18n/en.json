@@ -6,6 +6,22 @@
 	"Global" : {
 		"Submit" : "Submit"
 	},
+	"Errors": {
+		"401" : {
+			"Description1" : "The resource you've requested requires user authentication.",
+			"Description2" : "Either you have not supplied the necessary credentials or the credentials do not authorize you for access.",
+			"Description3" : "You will be redirected to login page in ",
+			"Description4" : "If you are not automatically taken there, please click on the following link:",
+			"Link" : "Sign in"
+		},
+		"403" : {
+			"Description1" : "Forbidden access to service.",
+			"Description2" : "Does not meet the appropriate permissions"
+		},
+		"404" : "Resource not found",
+		"500" : "Internal server error",
+		"503" : "Service unavailable"
+	},
 	"Home": {
 		"Title": "Home",
 		"FeaturedProducts" : "Featured Products",

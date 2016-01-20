@@ -6,6 +6,22 @@
 	"Global" : {
 		"Submit" : "Enviar"
 	},
+	"Errors": {
+		"401" : {
+			"Description1" : "El recurso que has solicitado requiere de autenticación de usuario.",
+			"Description2" : "No has aportado los credenciales necesarios o has aportado unos credenciales que no te autorizan al acceso.",
+			"Description3" : "Serás devuelto a la página de acceso en ",
+			"Description4" : "Si no se redirige automáticamente, pulsa el siguiente enlace:",
+			"Link" : "Acceso"
+		},
+		"403" : {
+			"Description1" : "Acceso a servicio prohibido.",
+			"Description2" : "No reune los permisos adecuados."
+		},
+		"404" : "Recurso no encontrado.",
+		"500" : "Error interno del sistema",
+		"503" : "Servicio no disponible"
+	},
 	"Home": {
 		"Title": "Inicio",
 		"FeaturedProducts" : "Productos Destacados",

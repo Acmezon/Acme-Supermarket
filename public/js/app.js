@@ -140,14 +140,37 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 					return response;
 				},
 				responseError: function(response) {
-					if (response.status === 401)
-					$location.url('/signin');
+					switch (response.status) {
+						case 401:
+							$location.url('/401');
+							break;
+						case 403:
+							$location.url('/403');
+							break;
+						case 404:
+							$location.url('/404');
+							break;
+						case 500:
+							$location.url('/500');
+							break;
+						case 503:
+							$location.url('/503');
+							break;
+						default:
+							$location.url('/401');
+							break;
+					}
+					
 					return $q.reject(response);
 				}
 			};
 		});
 
 		$routeProvider.
+		when('/', {
+			templateUrl: 'views/public/home/home.html',
+			controller: 'HomeCtrl'
+		}).
 		when('/home', {
 			templateUrl: 'views/public/home/home.html',
 			controller: 'HomeCtrl'
@@ -198,8 +221,23 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 				admin: checkAdmin
 			}
 		}).
+		when('/401', {
+			templateUrl: 'views/public/errors/401.html'
+		}).
+		when('/403', {
+			templateUrl: 'views/public/errors/403.html'
+		}).
+		when('/404', {
+			templateUrl: 'views/public/errors/404.html'
+		}).
+		when('/500', {
+			templateUrl: 'views/public/errors/500.html'
+		}).
+		when('/503', {
+			templateUrl: 'views/public/errors/503.html'
+		}).
 		otherwise({
-			redirectTo: '/home'
+			redirectTo: '/404'
 		});
 
 		$locationProvider.html5Mode(true);

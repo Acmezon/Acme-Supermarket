@@ -61,3 +61,45 @@ p.editable-p {
 	margin: 2% 5% 2% 5%; 
 	text-align: center;
 }
+
+.error-page-label {
+	text-align: center;
+	color: #777;
+	font-size: 2em;
+	text-transform: uppercase;
+}
+
+.error-page-label-min {
+	text-align: center;
+	color: #777;
+	font-size: 1.3em;
+	text-transform: uppercase;
+}
+
+.error-page-label-lowercase {
+	text-align: center;
+	color: #777;
+	font-size: 1.3em;
+}
+
+.error-page-title{
+	text-align: center;
+	font-size: 15em;
+	text-transform: uppercase;
+}
+
+.error-page-title span {
+	font-size: 0.7em;
+}
+
+.error-403 {
+	color: #ca654d;
+}
+
+.error-500 {
+	color: #4d74ca;
+}
+
+.error-503 {
+	color: #4db3ca;
+}
