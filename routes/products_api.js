@@ -19,7 +19,7 @@ exports.getAllProducts = function (req, res) {
 	// Find no conditions
 	Product.find(function(err,products){
 		if(err){
-			res.status(500).json({success: false, message: err.errors});
+			res.status(500).json({success: false, message: err});
 		}else{
 			res.status(200).json(products);
 		}
@@ -40,7 +40,7 @@ exports.getProduct = function (req, res) {
 			Product.findById( _code,function(err,product){
 				if(err){
 					console.log('---ERROR finding Product: '+_code);
-					res.status(500).json({success: false, message: err.errors});
+					res.status(500).json({success: false, message: err});
 				}else{
 					//console.log(product);
 					res.status(200).json(product);

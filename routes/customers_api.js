@@ -20,7 +20,7 @@ exports.getCustomers = function (req, res) {
 			// Find no conditions
 			Customer.find({_type: 'Customer'}, function(err,customers){
 				if (err) {
-					res.status(500).json({success: false, message: err.errors});
+					res.status(500).json({success: false, message: err});
 				} else {
 					for (var i = 0; i < customers.length; i++) {
 						customers[i].password = "";
@@ -199,7 +199,7 @@ exports.deleteCustomer = function(req, res) {
 					    	res.status(200).json({success: true});
 					    }
 					    else {
-							res.status(500).json({success: false, message: err.errors});
+							res.status(500).json({success: false, message: err});
 					    }
 					});
 				} else {

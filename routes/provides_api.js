@@ -9,8 +9,8 @@ exports.getProvidesByProductId = function(req, res) {
 
 	Provide.find({product_id: _code},function(err,provides){
 		if(err){
-			console.log('---ERROR finding Provides with  product_id: '+_code+' message: '+err.errors);
-			res.status(500).json({success: false, message: err.errors});
+			console.log('---ERROR finding Provides with  product_id: '+_code+' message: '+err);
+			res.status(500).json({success: false, message: err});
 		}else{
 			//console.log(provides);
 			res.status(200).json(provides);
@@ -30,8 +30,8 @@ exports.getProvide = function(req, res) {
 		if (role=='admin' || role=='customer' || role=='supplier') {
 			Provide.findById( _code,function(err,provide){
 				if(err){
-					console.log('---ERROR finding Provide: '+_code+' message: '+err.errors);
-					res.status(500).json({success: false, message: err.errors});
+					console.log('---ERROR finding Provide: '+_code+' message: '+err);
+					res.status(500).json({success: false, message: err});
 				}else{
 					//console.log(provide);
 					res.status(200).json(provide);

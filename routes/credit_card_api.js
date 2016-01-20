@@ -30,7 +30,7 @@ exports.getCreditCard = function(req, res) {
 					// Get credit card
 					CreditCard.findById(id, function(err, creditCard) {
 						if(err){
-							res.status(500).json({success: false, message: err.errors});
+							res.status(500).json({success: false, message: err});
 						}
 						else{
 							res.status(200).json(creditCard);
