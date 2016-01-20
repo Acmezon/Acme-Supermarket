@@ -223,6 +223,26 @@ text-transform: uppercase;
 	border-style: solid;
 	background: #fff;
 }
+.sky-form .checkbox span .glyphicon-check {
+	position: absolute;
+	top: 5px;
+	left: 0;
+	display: block;
+	width: 13px;
+	height: 13px;
+	outline: none;
+	background: #fff;
+}
+.sky-form .checkbox span .glyphicon-unchecked {
+	position: absolute;
+	top: 5px;
+	left: 0;
+	display: block;
+	width: 13px;
+	height: 13px;
+	outline: none;
+	background: #fff;
+}
 .sky-form .radio i {
 	border-radius: 50%;
 }

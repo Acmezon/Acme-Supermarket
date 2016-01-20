@@ -58,6 +58,82 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			return deferred.promise;
 		};
 
+		var checkCustomer = function ($q, $location, $http, $rootScope){
+			// Initialize a new promise
+			var deferred = $q.defer();
+
+			$http.get('/api/getUserRole').then(function success(response) {
+				var role = response.data;
+
+				if (role=='customer') {
+					deferred.resolve();
+
+				} else {
+					// A not customer shouldn't enter in the url
+					$rootScope.loginFailed = true;
+					deferred.reject();
+					$location.url('/signin');
+				}
+			}, function error(response){
+				$rootScope.loginFailed = true;
+				deferred.reject();
+				$location.url('/signin');
+			});
+			return deferred.promise;
+		};
+
+		var checkAdmin = function ($q, $location, $http, $rootScope){
+			// Initialize a new promise
+			var deferred = $q.defer();
+
+			$http.get('/api/getUserRole').then(function success(response) {
+				var role = response.data;
+				console.log(role)
+
+				if (role=='admin') {
+					deferred.resolve();
+
+				} else {
+					// A not customer shouldn't enter in the url
+					$rootScope.loginFailed = true;
+					deferred.reject();
+					$location.url('/signin');
+				}
+			}, function error(response){
+				$rootScope.loginFailed = true;
+				deferred.reject();
+				$location.url('/signin');
+			});
+
+			return deferred.promise;
+		};
+
+		var checkSupplier = function ($q, $location, $http, $rootScope){
+			// Initialize a new promise
+			var deferred = $q.defer();
+
+			$http.get('/api/getUserRole').then(function success(response) {
+				var role = response.data;
+				console.log(role)
+				
+				if (role=='supplier') {
+					deferred.resolve();
+
+				} else {
+					// A not customer shouldn't enter in the url
+					$rootScope.loginFailed = true;
+					deferred.reject();
+					$location.url('/signin');
+				}
+			}, function error(response){
+				$rootScope.loginFailed = true;
+				deferred.reject();
+				$location.url('/signin');
+			});
+
+			return deferred.promise;
+		};
+
 		$httpProvider.interceptors.push(function($q, $location) {
 			return {
 				response: function(response) {
@@ -110,14 +186,16 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			templateUrl: 'views/shoppingcart/shoppingcart.html',
 			controller: 'ShoppingCartCtrl',
 			resolve: {
-				loggedin: checkLoggedin
+				loggedin: checkLoggedin,
+				customer: checkCustomer
 			}
 		}).
 		when('/customers', {
 			templateUrl: 'views/customer/customers.html',
 			controller: 'CustomersCtrl',
 			resolve: {
-				loggedin: checkLoggedin
+				loggedin: checkLoggedin,
+				admin: checkAdmin
 			}
 		}).
 		otherwise({

@@ -1,5 +1,3 @@
-//var crypto = require('crypto');//Necesario para encriptacion por MD5
-
 var db_utils = require('./db_utils');
 var Product = require('../models/product');
 var multer  = require('multer');
@@ -10,19 +8,18 @@ var Authentication = require('./authentication'),
 	Customer = require('../models/customer'),
 	Provide = require('../models/provide'),
 	PurchaseLine = require('../models/purchase_line'),
-	Purchase = require('../models/purchase');
+	Purchase = require('../models/purchase'),
+	ActorService = require('./services/service_actors'),
+	CustomerService = require('./services/service_customers');
 
-//Devuelve una lista con todos los productos de la coleccion
+// Returns all objects of the system
 exports.getAllProducts = function (req, res) {
 	console.log('Function-productsApi-getAllProducts');
 
-	//Find sin condiciones
+	// Find no conditions
 	Product.find(function(err,products){
-		//TODO: Comprobar errores correctamente
-		var errors= [];//db_utils.handleErrors(err);
-		if(errors.length > 0){
-			console.log('---ERROR finding AllProduct - message: '+errors);
-			res.status(500).json({success: false, message: errors});
+		if(err){
+			res.status(500).json({success: false, message: err.errors});
 		}else{
 			res.status(200).json(products);
 		}
@@ -30,103 +27,133 @@ exports.getAllProducts = function (req, res) {
 };
 
 
-//Devuelve un producto de la coleccion
+// Returns a product object identified by ID
 exports.getProduct = function (req, res) {
-	console.log('Function-productsApi-getProduct');
-
-
 	var _code = req.params.id;
-	console.log('GET /api/product/'+_code)
+	console.log('Function-productsApi-getProduct  --_id:'+_code);
 
-	Product.findById( _code,function(err,product){
-		//TODO: Comprobar errores correctamente
-		var errors= [];//db_utils.handleErrors(err);
-		if(errors.length > 0){
-			console.log('---ERROR finding Product: '+_code+' message: '+errors);
-			res.status(500).json({success: false, message: errors});
-		}else{
-			//console.log(product);
-			res.status(200).json(product);
+	var jwtKey = req.app.get('superSecret');
+	var cookie = req.cookies.session;
+	// Check authenticated
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
+		if (role=='customer' || role=='admin' || role=='supplier') {
+			Product.findById( _code,function(err,product){
+				if(err){
+					console.log('---ERROR finding Product: '+_code);
+					res.status(500).json({success: false, message: err.errors});
+				}else{
+					//console.log(product);
+					res.status(200).json(product);
+				}
+			});
+		} else {
+			res.status(401).json({success: false, message: "Not authenticated"});
 		}
-	});
+	});	
 };
 
+// Updates a product
 exports.updateProduct = function (req, res) {
+	console.log('Function-productsApi-updateProduct  --_id:'+req.body.id);
 	var set = {}
 	set[req.body.field] = req.body.data;
 
-	Product.findByIdAndUpdate(req.body.id, { $set: set}, function (err, product) {
-		if(err){
-			console.log(err);
-			res.status(500).send("Unable to save field, check input.")
+	var jwtKey = req.app.get('superSecret');
+	var cookie = req.cookies.session;
+	// Check is admin
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
+		if (role=='admin') {
+			Product.findByIdAndUpdate(req.body.id, { $set: set}, function (err, product) {
+				if(err){
+					console.log(err);
+					res.status(500).send("Unable to save field, check input.")
+				} else {
+					res.status(200).json({success: true});
+				}
+			});
 		} else {
-			res.status(200).json({success: true});
+			res.status(403).json({success: false, message: "Doesnt have permission"});
 		}
 	});
 };
 
+// Updates a product with a new image
 exports.updateProductImage = function (req, res) {
 	var filename = "";
 	var prev_img = "";
 
-	var storage = multer.diskStorage({
-		destination: function (req, file, cb) {
-			cb(null, 'public/img/')
-		},
-		filename: function (req, file, cb) {
-			var originalExtension = file.originalname.split(".")[file.originalname.split(".").length - 1]
-			
-			filename = req.body.p_id + "." + originalExtension;
+	var jwtKey = req.app.get('superSecret');
+	var cookie = req.cookies.session;
+	// Check is admin
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
+		if (role=='admin') {
+			// Start upload process
 
-			cb(null, filename);
-		}
-	});
-	var upload = multer({ storage: storage }).single('file');
+			var storage = multer.diskStorage({
+				destination: function (req, file, cb) {
+					cb(null, 'public/img/')
+				},
+				filename: function (req, file, cb) {
+					var originalExtension = file.originalname.split(".")[file.originalname.split(".").length - 1]
+					
+					filename = req.body.p_id + "." + originalExtension;
 
-	upload(req, res, function (err) {
-		if (err) {
-			res.status(500).send("{{ 'Product.UploadError' | translate }}");
-			return;
-		}
+					cb(null, filename);
+				}
+			});
+			var upload = multer({ storage: storage }).single('file');
 
-		Product.findOne(req.body.p_id, function (err, product) {
-			if(err) {
-				res.status(500).send("{{ 'Product.UploadError' | translate }}");
-				return;
-			}
+			upload(req, res, function (err) {
+				if (err) {
+					res.status(500).send("{{ 'Product.UploadError' | translate }}");
+					return;
+				}
 
-			prev_img = product.image;
-		})
+				Product.findOne(req.body.p_id, function (err, product) {
+					if(err) {
+						res.status(500).send("{{ 'Product.UploadError' | translate }}");
+						return;
+					}
 
-		Product.findByIdAndUpdate(req.body.p_id, { $set: { "image" : filename} }, function (err, product) {
-			if(err){
-				console.log(err);
-				
-				fs.unlinkSync('/public/img/' + filename);
+					prev_img = product.image;
+				})
 
-				res.status(500).send("{{ 'Product.UploadError' | translate }}");
-			} else {
-				fs.access('/public/img/' + prev_img, fs.F_OK, function(err) {
-					if (!err) {
-						fs.unlinkSync('/public/img/' + prev_img);
+				Product.findByIdAndUpdate(req.body.p_id, { $set: { "image" : filename} }, function (err, product) {
+					if(err){
+						console.log(err);
+						
+						fs.unlinkSync('/public/img/' + filename);
+
+						res.status(500).send("{{ 'Product.UploadError' | translate }}");
+					} else {
+						fs.access('/public/img/' + prev_img, fs.F_OK, function(err) {
+							if (!err) {
+								fs.unlinkSync('/public/img/' + prev_img);
+							}
+						});
+						res.status(200).json({success: true});
 					}
 				});
-				res.status(200).json({success: true});
-			}
-		});
-	})
+			});
+		} else {
+			res.status(403).json({success: false, message: "Doesnt have permission"});
+		}
+	});
+
+	
 };
 
+// Update a product with a new/edited rating
 exports.updateProductRating = function (req, res) {
 	Authentication.currentUser(req.cookies.session, req.app.get('superSecret'), function (user) {
 		if(user == -1) {
-			res.sendStatus(403);
+			res.status(403).json({success: false, message: "Doesnt have permission"});
 			return;
 		} else {
 			Actor.findOne({ email : user}, function (err, actor) {
 				var u_id = actor._id;
 
-				checkPurchasing(u_id, req.body.id, function (response) {
+				CustomerService.checkPurchasing(u_id, req.body.id, function (response) {
 					if(!response) {
 						res.sendStatus(401)
 						return;
@@ -171,18 +198,19 @@ exports.updateProductRating = function (req, res) {
 	});
 };
 
+// Returns true if current customer has purchased a product req.body.product
 exports.userHasPurchased = function (req, res) {
-	Authentication.currentUser(req.cookies.session, req.app.get('superSecret'), function (user) {
-		if(user == -1) {
-			res.sendStatus(403);
+	ActorService.getPrincipal(req.cookies.session, req.app.get('superSecret'), function (pair) {
+		if(pair==-1) {
+			res.status(403).json({success: false, message: "Doesn't have permission"});
 			return;
 		} else {
-			Customer.findOne({ email : user}, function (err, customer) {
+			Customer.findOne({ email : pair[0]}, function (err, customer) {
 				if(err) {
 					res.sendStatus(503);
 					return;
 				} else {
-					checkPurchasing(customer._id, req.body.product, function (response){
+					CustomerService.checkPurchasing(customer._id, req.body.product, function (response){
 						res.status(200).json({ hasPurchased : response });
 					});
 					return;
@@ -191,51 +219,3 @@ exports.userHasPurchased = function (req, res) {
 		}
 	});
 };
-
-
-var checkPurchasing = function (user_id, product_id, callback) {
-	Provide.find({ product_id : product_id }, function (err, provides) {
-		if (err || provides.length == 0) {
-			callback(false);
-			return;
-		}
-
-		var provide_ids = [];
-
-		for(var i = 0; i < provides.length; i++) {
-			provide_ids.push(provides[i]._id);
-		}
-
-		PurchaseLine.find({ 'provide_id' : { $in: provide_ids } }, function (err, lines) {
-			if(err || lines.length == 0) {
-				callback(false);
-				return;
-			}
-
-			var purchase_ids = [];
-
-			for (var i = 0; i < lines.length; i++) {
-				if(purchase_ids.indexOf(lines[i].purchase_id < 0))
-					purchase_ids.push(lines[i].purchase_id);
-			}
-
-			Purchase.find({ '_id' : { $in : purchase_ids } }, function (err, purchases) {
-				if(err || purchases.length == 0) {
-					callback(false);
-					return;
-				}
-
-				for(var i = 0; i < purchases.length; i++) {
-					if ( String(purchases[i].customer_id) == String(user_id)) {
-						callback(true);
-						return;
-					}
-				}
-				callback(false);
-				return;
-			});
-		});
-	});
-}
-
-exports.checkPurchasing = checkPurchasing;

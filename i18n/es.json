@@ -108,7 +108,8 @@
 		"Previous" : "Anterior",
 		"Next" : "Siguiente",
 		"Empty" : "No hay productos con estas características",
-		"RatingPurchaseError" : "No puedes valorar un producto si no lo has comprado previamente"
+		"RatingPurchaseError" : "No puedes valorar un producto si no lo has comprado previamente",
+		"ClearFilters" : "Limpiar filtros"
 	},
 	"Product" : {
 		"Edit" : "Editar",
