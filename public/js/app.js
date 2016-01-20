@@ -88,7 +88,6 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 
 			$http.get('/api/getUserRole').then(function success(response) {
 				var role = response.data;
-				console.log(role)
 
 				if (role=='admin') {
 					deferred.resolve();
@@ -114,7 +113,6 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 
 			$http.get('/api/getUserRole').then(function success(response) {
 				var role = response.data;
-				console.log(role)
 				
 				if (role=='supplier') {
 					deferred.resolve();
@@ -199,7 +197,7 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			}
 		}).
 		when('/dashboard', {
-			templateUrl: 'views/admin/dashboard.html',
+			templateUrl: 'views/dashboard/dashboard.html',
 			controller: 'DashboardCtrl',
 			resolve: {
 				loggedin: checkLoggedin,

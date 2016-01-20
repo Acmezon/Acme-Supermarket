@@ -1,50 +1,71 @@
 var exec = require('child_process').exec, child;
 var fs = require('fs');
 
+//Inicia el proceso de escucha en twitter y guarda su ID
 exports.runProcess = function (){
-	child = exec('/opt/spark/bin/spark-submit --class TwitterScrapper ../social_media_jar/twitter-scrapper',
+	child = exec('/opt/spark/bin/spark-submit --class TwitterScrapper jars/socialMediaAnalysis.jar & echo $! > tmp/pid.txt',
 	function (error, stdout, stderr){
-		console.log("Creado");
 		if(error !== null){
 		  console.log('exec error: ' + error);
+		  return false;
 		}
 	});
 
-	fs.writeFile("../tmp/pid.json", JSON.stringify({ "pid" : child.pid }), 
-	function (err) {
-		if(err) {
-			console.log(err);
-			return false;	
-		}
-
-		return true;
-	});
+	return fs.existsSync('tmp/pid.txt');
 }
 
+//Para el proceso de escucha en twitter cogiendo la ID previamente guardada
 exports.stopProcess = function() {
 	var pid = getPID();
 
 	try {
-		return process.kill(pid);
+		console.log(pid);
+		var killed = process.kill(pid, 'SIGTERM');
+		console.log(killed);
+		return killed;
 	} catch (e) {
+		console.log(e);
 		return false;
 	}
 }
 
+//Devuelve si el servicio de escucha en twitter está activo
 exports.isProcessAlive = function () {
-	var pid = getPID();
+	var pid = "";
 
 	try {
-		return process.kill(pid, 0)
+		var pid = getPID();
 	} catch (e) {
-		return e.code === 'EPERM'
+		return false;
 	}
+
+	var alive = false;
+
+	try {
+		alive = process.kill(pid, 0);
+	} catch (e) {
+		alive = e.code === 'EPERM'
+	}
+
+	if(!alive) {
+		removePID();
+	}
+
+	return alive;
 }
 
+//Coge la ID del proceso de escucha en twitter del archivo
 function getPID() {
-	var json = JSON.parse(fs.readFileSync('../tmp/pid.json"').toString());
-
-	var pid = json['pid'];
+	var pid = parseInt(fs.readFileSync('tmp/pid.txt').toString());
 
 	return pid;
+}
+
+//Elimina el archivo con el PID del proceso para evitar solapamientos de PID antiguos
+function removePID(pid) {
+	try {
+		fs.unlinkSync("tmp/pid.txt");
+	} catch(e) { }
+
+	return true;
 }
