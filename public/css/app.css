@@ -103,3 +103,21 @@ p.editable-p {
 .error-503 {
 	color: #4db3ca;
 }
+
+.heading {
+	color: #777;
+	text-transform: uppercase;
+	font-size: 2em;
+}
+
+.heading2 {
+	color: #777;
+	text-transform: uppercase;
+	font-size: 1.6em;
+}
+
+.legal>div>.panel>.panel-body>p {
+	text-align: justify;
+	line-height: 200%;
+	margin-bottom: 2%;
+}

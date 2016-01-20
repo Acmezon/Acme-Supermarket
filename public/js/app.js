@@ -175,6 +175,18 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			templateUrl: 'views/public/home/home.html',
 			controller: 'HomeCtrl'
 		}).
+		when('/contact', {
+			templateUrl: 'views/public/home/contact.html',
+		}).
+		when('/termsandconditions', {
+			templateUrl: 'views/public/home/termsandconditions.html',
+		}).
+		when('/cookies', {
+			templateUrl: 'views/public/home/cookies.html',
+		}).
+		when('/about', {
+			templateUrl: 'views/public/home/about.html',
+		}).
 		when('/signin', {
 			templateUrl: 'views/public/signin/signin.html',
 			controller: 'SigninCtrl'
