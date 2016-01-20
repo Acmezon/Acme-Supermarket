@@ -104,7 +104,6 @@ p.editable-p {
 	color: #4db3ca;
 }
 
-
 /*Dashboard*/
 .huge {
 	font-size: 40px;
@@ -191,4 +190,22 @@ p.editable-p {
 	text-align:left;
 	/* inline-block space fix */
 	margin-right:-4px;
+}
+
+.heading {
+	color: #777;
+	text-transform: uppercase;
+	font-size: 2em;
+}
+
+.heading2 {
+	color: #777;
+	text-transform: uppercase;
+	font-size: 1.6em;
+}
+
+.legal>div>.panel>.panel-body>p {
+	text-align: justify;
+	line-height: 200%;
+	margin-bottom: 2%;
 }

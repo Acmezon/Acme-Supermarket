@@ -46,10 +46,118 @@
 	},
 	"Footer": {
 		"AboutUs" : "About Us",
-		"DeliveryReturns" : "Delivery & Returns",
+		"Cookies" : "Cookies",
 		"TermsConditions" : "Terms & Conditions",
 		"ContactUs" : "Contact Us",
-		"Information" : "Information"
+		"Information" : "Information",
+		"Banner" : {
+			"Shipping" : "Fast shipping directly to you",
+			"Contact" : "Easy contact with suppliers"
+		}
+	},
+	"Legal" : {
+		"Contact" : {
+			"Title" : "Contact us"
+		},
+		"Terms" : {
+			"Title" : "Terms and Conditions",
+			"Section1" : {
+				"Title" : "The acceptance by Users",
+				"Body1" : "Acme-Supermarket reserves the right to require each user, accept and comply with its terms as necessary precondition for the access and use of services and / or content provided by the Site.",
+				"Body2" : "When a user has used accediere the Site and any services and / or existing content, will assume knowledge of this text, which has expressed its full acceptance with respect to each and every one of the provisions in it.",
+				"Body3" : "If You don't accept, is in disagreement, or incurred in breach of the provisions laid down by the Acme-Supermarket in these Terms, you will not have authorization to use the services and contents that exist or may exist on the site and must retire Site immediately and refrain from re-enter the same."
+			},
+			"Section2" : {
+				"Title" : "Legal ability of users",
+				"Body" : "You may only access and use the services and / or contents of Acme-Supermarket, who under the laws in your place of residence may validly give its consent to the conclusion of contracts. Who under the law do not have such ability to access or validly bound by the terms and conditions hereof shall inexcusably obtain prior authorization from their legal representatives, who will be responsible for all acts performed by unable to charge."
+			},
+			"Section3" : {
+				"Title" : "User Registration",
+				"Body1" : "To use the services provided in Acme-Supermarket is required down prior registration. This register will aim to establish the identity and contact information of the user.",
+				"Body2" : "Whenever for the registration of a user will be required information, it must be reliable, and own an affidavit. Where the information provided does not comply with the actual circumstances of the person who provides such user incurso be considered in breach of these Terms and Conditions, being responsible for all damages, arising for Acme-Supermarket or third parties as a result of such lack of truthfulness or accuracy.",
+				"Body3" : "You have, once registered, a user name and password that will allow personalized, confidential and secure access to your personal account on the Site. Services subject to registration are designed for personal use by the requesting user, so the user name and password for access granted by Acme-Supermarket only be used for this, their use is forbidden by someone other than the same person. The registered user will assume the obligation of custody of your username and password and must immediately inform Acme-Supermarket when they should have lost their status of confidentiality and / or when they are put to use by a third party."			
+			},
+			"Section4" : {
+				"Title" : "Notifications and communications",
+				"Body1" : "For the purpose that users can make contact with Acme-Supermarket be considered valid communications to : contact@acmesupermarket.com",
+				"Body2" : "Notifications and communications sent by Acme-Supermarket to email box arising as e-mail user or sender are considered effective and fully valid. Also they are considered effective communications that consist of advertisements and inserts messages on the site, or sent during the provision of a service, whose purpose is to inform users about specific circumstances."
+			},
+			"Section5" : {
+				"Title" : "LINKS to Acme-Supermarket",
+				"Body1" : "Establishing any link, hyperlink or link, a different website Between Acme-Supermarket and any of this page Last lonely may be made with the express authorization of Acme-Supermarket.",
+				"Body2" : "In any case Acme-Supermarket be liable for the contents or existing demonstrations websites from which hyperlinks are set to Acme-Supermarket site. Where there is a link between a web page and the site does not imply that Acme-Supermarket is aware of it, or Acme-Supermarket keep any relationship with the owners of the website where the link is established.",
+				"Body3" : "Acme-Supermarket reserves the right to request the removal or elimination of any link from a different website to the Site, at any time, without cause and without prior notice necessary. The head of the web page from which the link is effected shall within 48 hours. counted from Acme-Supermarket order to proceed with the removal or elimination."
+			},
+			"Section6" : {
+				"Title" : "LINKS from Acme-Supermarket",
+				"Body1" : "Hyperlinks or links to third-party websites provided by Acme-Supermarket, are intended to improve user navigation experience by Acme-Supermarket site, by providing access channels to other sites.",
+				"Body2" : "In none of the cases stated above Acme-Supermarket control, endorse or guarantee the security, quality, legality, reliability and appropriateness of the services and content which is accessed through a hipervículo. The inclusion of any link does not mean that Acme-Supermarket is in any way related to the site to which the link leads, and to support this agreement, facilitate or collaborate in the activities at the site are developed. The responsibility for the services or content on linked sites rests solely with the owners of such sites. Acme-Supermarket Under no circumstances shall be liable for the irregularities, illegalities or violations on these sites are registered, not responding in this sense for the damages that may experience the users or third parties from the content published there. Access to and use of web pages linked from Acme-Supermarket site is the sole responsibility of the user, who must take all necessary precautions according to the type of service or content you access."
+			},
+			"Section7" : {
+				"Title" : "Service Closure",
+				"Body" : "Acme-Supermarket may temporarily suspend or permanently disable a user account, after notifying the same, and the need for invoking cause, proceeding in this case the removal of all information related to the account."
+			},
+			"Section8" : {
+				"Title" : "Governing Law and Jurisdiction",
+				"Body" : "For all legal effects in relation to the services and content provided or can be provided on the Site Shall apply the laws in force in Spain, and will be competent ordinary courts having jurisdiction in the city of Seville."
+			}
+		},
+		"Cookies" : {
+			"Title" : "About cookies",
+			"Description" : "Acme-Supermarket does not use third-party cookies",
+			"Cookie1" : {
+				"Name" : "NG_TRANSLATE_LANG_KEY",
+				"Description" : "Cookie that stores the language in which the user chooses the application view. Its content is a character string identifying the language (e.g. 'en' or 'es')."
+			},
+			"Cookie2" : {
+				"Name" : "session",
+				"Description" : "Cookie generated by the server to manage application sessions."
+			},
+			"Cookie3" : {
+				"Name" : "shoppingcart",
+				"Description" : "Cookie that manages the content of the web shopping cart. Its content identifies the product and the quantity of each."
+			}
+		},
+		"About" : {
+			"Title" : "About us",
+			"Context" : {
+				"Title" : "Context",
+				"Description1" : "Acme-Supermarket is a web application developed by",
+				"Description2" : "and",
+				"Description3" : ", working on the project for the course ",
+				"Description4" : "Information Systems",
+				"Description5" : ", from ",
+				"Description6" : "Master in Computer Engineering",
+				"Description7" : ", belonging to the University of Seville."
+			},
+			"Contact" : "Contact",
+			"Members" : {
+				"Title"  :"Developers",
+				"Daniel" : "Daniel de los Reyes is a developer with high skills for front-end designing and client-side applications.",
+				"Alejandro" : "Alejandro Sánchez is a developer with a high capacity to analyse problems and find good solutions."
+			},
+			"Goals" : {
+				"Title" :"Goals",
+				"Goal1" : "Acme-Supermarket is a web shop that helps businesses to get visibility and easy tools to set out.",
+				"Goal2" : "Acme-Supermarket also provides services to the consumer:",
+				"Goal3" : {
+					"Title" : "Recommendation of purchases",
+					"Description" : "Based on statistics of the system, purchases and social media"
+				},
+				"Goal4" : {
+					"Title" : "Easy price comparison",
+					"Description" : "Easy and visual method of comparing the prices offered by the suppliers"
+				},
+				"Goal5" : {
+					"Title" : "Rating system",
+					"Description" : "Can't decide wich is better? Our accessible rating system can help you decide wich product or supplier you prefer"
+				},
+				"Goal6" : {
+					"Title" : "Fast search",
+					"Description" : "Search, filter, order by multiple methods: Rating, Price, Name, Category... And all without heavy loading screens"
+				}
+			}
+		}
 	},
 	"Signup" : {
 		"CreateAccount" : "Create an account",
