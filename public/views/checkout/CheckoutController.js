@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('acme_supermarket').registerCtrl('CheckoutCtrl', ['$scope', '$http', '$cookies', function ($scope, $http, $cookies) {
+angular.module('acme_supermarket').registerCtrl('CheckoutCtrl', ['$scope', '$http', '$cookies', '$window', function ($scope, $http, $cookies, $window) {
 	
 	var cookie = $cookies.get("shoppingcart");
 	$scope.shoppingcart = [];
@@ -63,12 +63,11 @@ angular.module('acme_supermarket').registerCtrl('CheckoutCtrl', ['$scope', '$htt
 	}).
 	then(function success(response) {
 		$scope.creditcard = response.data;
-		$scope.typecc = typeOfCreditCard(response.data.number)
-        if (!$.isEmptyObject($scope.creditcard)) {
-        	var number = hideCreditCard(response.data.number);
+	    if ($scope.creditcard) {
+	        $scope.typecc = typeOfCreditCard(response.data.number)
+	        var number = hideCreditCard(response.data.number);
 			$scope.creditcard.number = number;
-        }
-		
+	    }	
 	}, function error(response) {
 	});
 
@@ -84,23 +83,27 @@ angular.module('acme_supermarket').registerCtrl('CheckoutCtrl', ['$scope', '$htt
 
 	// PURCHASE BUTTON
 
-	$scope.purchase = function() {
-		if (billingMethod) {
-			var cookie = $cookies.get("shoppingcart");
-			// First cookie checks
-			if (cookie) {
-				cookie = JSON.parse(cookie);
-				if (!$.isEmptyObject(cookie)) {
-					// Purchase
-					$http({
-						method: 'GET',
-						url: '/api/purchase',
-					}).
-					then(function success(response) {
-						console.log(response)
-					}, function error(response) {
-						console.log(response)
-					});
+	$scope.purchase = function(billingmethod) {
+		if (billingmethod==1 || billingmethod==2 || billingmethod==3) {
+			if ($scope.creditcard) {
+				var cookie = $cookies.get("shoppingcart");
+				// First cookie checks
+				if (cookie) {
+					cookie = JSON.parse(cookie);
+					if (!$.isEmptyObject(cookie)) {
+						// Purchase
+						$http({
+							method: 'GET',
+							url: '/api/purchase/process/' + billingmethod
+						}).
+						then(function success(response) {
+							var purchase = response.data;
+							var cookie = $cookies.remove("shoppingcart");
+							$window.location.href = '/checkout/success/' + purchase._id;
+						}, function error(response) {
+							$window.location.href = '/checkout/error';
+						});
+					}
 				}
 			}
 		}

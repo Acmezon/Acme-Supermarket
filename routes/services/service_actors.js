@@ -18,9 +18,13 @@ exports.getUserRole = function (cookie, jwtKey, callback) {
 						if (err) {
 							callback('anonymous');
 						} else {
-							var type = user._type.toLowerCase();
-							if (type) {
-								callback(type);
+							if (user) {
+								var type = user._type.toLowerCase();
+								if (type) {
+									callback(type);
+								} else {
+									callback('anonymous');
+								}
 							} else {
 								callback('anonymous');
 							}

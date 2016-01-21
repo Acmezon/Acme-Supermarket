@@ -361,7 +361,6 @@ ul.last li a:hover{
 .cont{
 	display: block;
 	float:left;
-	margin: 1% 0 1% 0;
 }
 .rsidebar{
 	display: block;
@@ -1795,7 +1794,6 @@ span.color7{
 }
 ul.breadcrumb{
 	padding: 8px 15px;
-	margin: 0 0 18px !important;
 	list-style: none;
 	background-color:#f7f7f7;
 	font-size:0.85em;

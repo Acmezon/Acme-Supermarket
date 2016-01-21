@@ -9,11 +9,13 @@ function ($scope, $http, $translate, ngToast) {
 	$http.get('/api/myprofile').then(function success(customer){
 		$scope.user = customer.data;
 		if ($scope.user._type.toLowerCase()=='customer') {
-			$http.get('/api/mycreditcard').then(function success(cc){
-				var number = hideCreditCard(cc.data.number);
-				$scope.credit_card = cc.data;
-				$scope.credit_card.number = number;
-			}, function error(cc) {});
+			$http.get('/api/mycreditcard').then(function success(response){
+				$scope.creditcard = response.data;
+			    if ($scope.creditcard) {
+			        var number = hideCreditCard(response.data.number);
+					$scope.creditcard.number = number;
+			    }
+			}, function error(response) {});
 		}
 	},
 	function error(customer) { });
@@ -99,6 +101,7 @@ function ($scope, $http, $translate, ngToast) {
 					content: translation['Profile.CCOk']
 				});
 			});
+			$scope.ccEditing = false;
 		}, function error(response) {
 				$translate(['Profile.ServerCCErr']).then(function (translation) {
 					ngToast.create({

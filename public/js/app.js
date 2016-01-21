@@ -155,7 +155,7 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 							$location.url('/503');
 							break;
 						default:
-							$location.url('/401');
+							$location.url('/403');
 							break;
 					}
 					
@@ -242,6 +242,22 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 		when('/checkout', {
 			templateUrl: 'views/checkout/checkout.html',
 			controller: 'CheckoutCtrl',
+			resolve: {
+				loggedin: checkLoggedin,
+				admin: checkCustomer
+			}
+		}).
+		when('/checkout/success/:id', {
+			templateUrl: 'views/checkout/confirm.html',
+			controller: 'CheckoutConfirmCtrl',
+			resolve: {
+				loggedin: checkLoggedin,
+				admin: checkCustomer
+			}
+		}).
+		when('/checkout/error', {
+			templateUrl: 'views/checkout/confirm.html',
+			controller: 'CheckoutConfirmCtrl',
 			resolve: {
 				loggedin: checkLoggedin,
 				admin: checkCustomer

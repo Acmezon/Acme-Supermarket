@@ -263,7 +263,7 @@ exports.getMyCreditCard = function (req, res) {
 											})
 										} else {
 											// empty credit card
-											res.status(200).json({});
+											res.status(200).json(null);
 										}
 									} else {
 										res.status(403).json({success: false, message: "Doesnt have permission"});

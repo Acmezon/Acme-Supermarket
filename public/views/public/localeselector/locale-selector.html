@@ -1,4 +1,12 @@
 <div class="btn-group" role="group">
-	<button type="button" class="btn btn-default" ng-click="locale='en'; setLocale()" ng-class="{'active': locale=='en', 'btn-primary': locale=='en'}"> <span class="lang-sm lang-lbl" lang="en"></span> </button>
-	<button type="button" class="btn btn-default" ng-click="locale='es'; setLocale()" ng-class="{'active': locale=='es', 'btn-primary': locale=='es'}"> <span class="lang-sm lang-lbl" lang="es"> </button>
+	<button type="button" class="btn btn-default" ng-click="locale='en'; setLocale()" ng-class="{'active': locale=='en', 'btn-primary': locale=='en'}">
+		<span class="lang-sm lang-lbl" lang="en">
+			{{'LanguageNames.en' | translate}}
+		</span>
+	</button>
+	<button type="button" class="btn btn-default" ng-click="locale='es'; setLocale()" ng-class="{'active': locale=='es', 'btn-primary': locale=='es'}">
+		<span class="lang-sm lang-lbl" lang="es">
+			{{'LanguageNames.es' | translate}}
+		</span>
+	</button>
 </div>

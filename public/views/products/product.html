@@ -73,7 +73,7 @@
 									</label>
 								</td>
 								<td>{{provide.price | number:2}} €</td>
-								<td style="width:10%" class="add-cart-btn-column">
+								<td style="width:10%" ng-if="role=='customer'">
 									<div class="btn_form" >
 										<form class="btn_form">
 											<input id="cart-btn" type="submit" ng-click="addToCart(provide._id)" value="{{ 'Products.AddToCart' | translate }}" title="" />

@@ -79,7 +79,12 @@ app.get('/api/provide/:id', api.Provides.getProvide);
 app.get('/api/providesByProductId/:id', api.Provides.getProvidesByProductId);
 
 // Purchases
-app.get('/api/purchase', api.Purchases.purchase);
+app.get('/api/purchase/:id', api.Purchases.getPurchase);
+app.get('/api/purchase/process/:billingMethod', api.Purchases.purchase);
+app.get('/api/purchases/bycustomer/:id', api.Purchases.getPurchasesByCustomerId);
+
+// Purchase lines
+app.get('/api/purchaselines/bypurchase/:id', api.PurchaseLines.getPurchaseLinesByPurchaseId);
 
 // Suppliers
 app.get('/api/supplierName/:id', api.Supplier.getSupplierName);

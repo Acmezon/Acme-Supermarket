@@ -369,6 +369,18 @@
 			"Country" : "Pais",
 			"City" : "Ciudad",
 			"Phone" : "Teléfono de contacto"
-		}
+		},
+		"Days" : {
+			"Title" : "Seleccione tiempo de envío",
+			"Days" : "días"
+		},
+		"Success" : "Transacción completada",
+		"Error" : "Error",
+		"ErrorDescription" : "Ha habido un error con el proceso de compra. Por favor, inténtelo más tardes, hemos recuperado su carrito de la compra.",
+		"Purchase" : {
+			"PaymentDate" : "Fecha de pago",
+			"DeliveryDate" : "Fecha de entrega"
+		},
+		"Thanks" : "¡Gracias por comprar!"
 	}
 }

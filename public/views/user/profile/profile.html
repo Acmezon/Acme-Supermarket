@@ -72,27 +72,27 @@
 					</div>
 					<div id="ccdata" ng-show="user._type=='Customer' && selectedTab==2" class="tab-content">
 						<h3 class="heading2">{{ 'Profile.CCData' | translate }}</h3>
-						<div ng-show="credit_card && !ccEditing">
+						<div ng-show="creditcard && !ccEditing">
 							<table class="table table-responsive table-hover">
 								<tr>
 									<th>{{ 'Profile.HolderName' | translate }}</th>
-									<td>{{credit_card.holderName}}</td>
+									<td>{{creditcard.holderName}}</td>
 								</tr>
 								<tr>
 									<th>{{'Profile.CreditCard' | translate }}</th>
-									<td>{{credit_card.number}}</td>
+									<td>{{creditcard.number}}</td>
 								</tr>
 								<tr>
 									<th>{{ 'Profile.ExpMonth' | translate }}</th>
-									<td>{{credit_card.expirationMonth}}</td>
+									<td>{{creditcard.expirationMonth}}</td>
 								</tr>
 								<tr>
 									<th>{{ 'Profile.ExpYear' | translate }}</th>
-									<td>{{credit_card.expirationYear}}</td>
+									<td>{{creditcard.expirationYear}}</td>
 								</tr>
 								<tr>
 									<th>{{ 'Profile.CVC' | translate }}</th>
-									<td>{{credit_card.cvcCode}}</td>
+									<td>{{creditcard.cvcCode}}</td>
 								</tr>
 							</table>
 						</div>

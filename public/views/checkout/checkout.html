@@ -4,7 +4,7 @@
 	<ul class="breadcrumb breadcrumb__t">
 		<li><a class="home" href="/">{{ 'Home.Title' | translate }}</a> / <a class="home" href="/products">{{ 'Products.Title' | translate }}</a> / <a class="home" href="/shoppingcart">{{ 'ShoppingCart.Title' | translate }}</a> / {{ 'Checkout.Title' | translate }}</li>
 	</ul>
-	<h2 class="head">{{'Checkout.Title' | translate}}</h2>
+	<h2 class="head">{{'Checkout.Title' | translate}} <button id="btn-print" style="float:right" class="btn btn-lg" onclick="window.print()"><span class="glyphicon glyphicon-print"></span></button></h2>
 	<div ng-if="hasEmptyCart()">
 		<h4 class="title">{{'Checkout.Empty.Title' | translate}}</h4>
 		<p class="cart">{{'Checkout.Empty.Description1' | translate}}<br>{{'Checkout.Empty.Click' | translate}}<a href="/products">{{'Checkout.Empty.Here' | translate}}</a>{{'Checkout.Empty.Description2' | translate}}</p>
@@ -105,20 +105,20 @@
 		<div class="row">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					{{'Checkout.CreditCard.Empty.Title' | translate}}
+					{{'Checkout.Days.Title' | translate}}
 				</div>
 				<div class="list-group">
 					<a href="#" class="list-group-item" ng-class="{active: billingMethod==1}" ng-click="billingMethod=1">
    						<h4 class="list-group-item-heading">Acme-Supermarket Premium</h4>
-    					<p class="list-group-item-text">3 - 5 días</p>
+    					<p class="list-group-item-text">5 {{'Checkout.Days.Days' | translate}}</p>
   					</a>
   					<a href="#" class="list-group-item" ng-class="{active: billingMethod==2}" ng-click="billingMethod=2">
    						<h4 class="list-group-item-heading">Acme-Supermarket Express</h4>
-    					<p class="list-group-item-text">5 - 10 días</p>
+    					<p class="list-group-item-text">15 {{'Checkout.Days.Days' | translate}}</p>
   					</a>
   					<a href="#" class="list-group-item" ng-class="{active: billingMethod==3}" ng-click="billingMethod=3">
    						<h4 class="list-group-item-heading">Acme-Supermarket Basic</h4>
-    					<p class="list-group-item-text">15 - 30 días</p>
+    					<p class="list-group-item-text">30 {{'Checkout.Days.Days' | translate}}</p>
   					</a>
 				</div>
 			</div>
@@ -129,7 +129,7 @@
 				<a href="/shoppingcart"><button type="button" class="btn btn-info btn-arrow-left">{{'Checkout.Return' | translate}}</button></a>
 			</div>
 			<div class="col-lg-6">
-				<button type="button" class="btn btn-primary btn-arrow-right" ng-disabled="!billingMethod" ng-click="purchase()"><span class="glyphicon glyphicon-credit-card"></span> {{'Checkout.Continue' | translate}}</button>
+				<button type="button" class="btn btn-primary btn-arrow-right" ng-disabled="!billingMethod || !creditcard" ng-click="purchase(billingMethod)"><span class="glyphicon glyphicon-credit-card"></span> {{'Checkout.Continue' | translate}}</button>
 			</div>
 		</div>
 	</div>

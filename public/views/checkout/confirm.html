@@ -1,0 +1,41 @@
+<script src="views/checkout/CheckoutConfirmController.js"></script>
+
+<div class="wrap">
+	<ul class="breadcrumb breadcrumb__t">
+		<li><a class="home" href="/">{{ 'Home.Title' | translate }}</a> / <a class="home" href="/products">{{ 'Products.Title' | translate }}</a> / <a class="home" href="/shoppingcart">{{ 'ShoppingCart.Title' | translate }}</a> / {{ 'Checkout.Title' | translate }} / {{ 'Checkout.'+state | translate }}</li>
+	</ul>
+
+	<h2 class="head">{{ 'Checkout.'+state | translate }} <button id="btn-print" ng-if="success"style="float:right" class="btn btn-lg" onclick="window.print()"><span class="glyphicon glyphicon-print"></span></button></h2>
+
+	<div ng-if="success">
+		<div>
+			<h3 class="heading2"></h3>
+			<div class="row">
+				<div class="col-md-4">
+					<h4>{{'Checkout.Thanks' | translate}}</h4>
+					<table class="table table-bordered">
+						<tr>
+							<th style="width:30%">{{'Checkout.Purchase.PaymentDate' | translate}}</th>
+							<td>{{purchase.paymentDate | date:'dd/MM/yyyy HH:mm:ss Z' }}</td>
+					  	</tr>
+						<tr>
+							<th>{{'Checkout.Purchase.DeliveryDate' | translate}}</th>
+							<td>{{purchase.deliveryDate | date:'dd/MM/yyyy' }}</td>
+					  	</tr>
+					</table>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-3 col-lg-offset-5">
+					<a href="/"><button type="button" class="btn btn-primary btn-arrow-right">{{'ShoppingCart.Continue' | translate}}</button></a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div ng-if="!success">
+		<p class="error-purchase"><span class="glyphicon glyphicon-exclamation-sign"></span></p>
+		<p style="text-align:center">{{'Checkout.ErrorDescription' | translate}}</p>
+	</div>
+	<div style="margin-bottom: 1%"class="clear"></div>
+
+</div>

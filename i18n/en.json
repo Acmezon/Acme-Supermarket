@@ -370,6 +370,18 @@
 			"Country" : "Country",
 			"City" : "City",
 			"Phone" : "Contact phone"
-		}
+		},
+		"Days" : {
+			"Title" : "Select billing time",
+			"Days" : "days"
+		},
+		"Success" : "Transaction complete",
+		"Error" : "Error",
+		"ErrorDescription" : "There has been an error with your purchase. Please try again later, we have restored your shopping cart.",
+		"Purchase" : {
+			"PaymentDate" : "Payment date",
+			"DeliveryDate" : "Delivery date"
+		},
+		"Thanks" : "Thanks for purchasing!"
 	}
 }
