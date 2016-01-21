@@ -48,9 +48,7 @@ body{
 	float:left;
 }
 .box{
-	float:left;
-	width:20.5%;
-	margin-right:10.6%;
+	margin-top:0.5%;
 }
 .box1{
 	float:left;
@@ -1497,7 +1495,6 @@ ul.dc_pagination li a:hover{
 	font-weight: 200;
 	background:none;
 	padding: 8px 0px 8px;
-	color:  #fff;
 	-webkit-user-select: none;
 	-moz-user-select: none;
 	user-select: none;

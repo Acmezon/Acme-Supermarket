@@ -78,6 +78,9 @@ app.get('/api/averageRatingByProductId/:id', api.Rates.getAverageRatingByProduct
 app.get('/api/provide/:id', api.Provides.getProvide);
 app.get('/api/providesByProductId/:id', api.Provides.getProvidesByProductId);
 
+// Purchases
+app.get('/api/purchase', api.Purchases.purchase);
+
 // Suppliers
 app.get('/api/supplierName/:id', api.Supplier.getSupplierName);
 

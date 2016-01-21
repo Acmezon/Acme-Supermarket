@@ -3,16 +3,32 @@
 angular.module('acme_supermarket').registerCtrl('ProfileCtrl', ['$scope', '$http', '$translate', 'ngToast',
 function ($scope, $http, $translate, ngToast) {
 
+	$scope.selectedTab = 1;
+	$scope.ccEditing = false;
 
 	$http.get('/api/myprofile').then(function success(customer){
 		$scope.user = customer.data;
 		if ($scope.user._type.toLowerCase()=='customer') {
 			$http.get('/api/mycreditcard').then(function success(cc){
+				var number = hideCreditCard(cc.data.number);
 				$scope.credit_card = cc.data;
+				$scope.credit_card.number = number;
 			}, function error(cc) {});
 		}
 	},
 	function error(customer) { });
+
+	var hideCreditCard = function(number) {
+		for (var i = 0; i < number.length - 4; i++) {
+			number = setCharAt(number, i, '*')
+		}
+		return number
+	}
+
+	var setCharAt = function(str,index,chr) {
+    	if(index > str.length-1) return str;
+    	return str.substr(0,index) + chr + str.substr(index+1);
+	}
 
 	$scope.showEdition = function (){
 		$scope.testForm.$show();

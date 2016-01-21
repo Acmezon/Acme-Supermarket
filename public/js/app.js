@@ -239,6 +239,14 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 				admin: checkAdmin
 			}
 		}).
+		when('/checkout', {
+			templateUrl: 'views/checkout/checkout.html',
+			controller: 'CheckoutCtrl',
+			resolve: {
+				loggedin: checkLoggedin,
+				admin: checkCustomer
+			}
+		}).
 		when('/401', {
 			templateUrl: 'views/public/errors/401.html'
 		}).

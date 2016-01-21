@@ -1,4 +1,5 @@
 var Actor = require('../../models/actor'),
+	Customer = require('../../models/customer'),
 	Provide = require('../../models/provide'),
 	Purchase = require('../../models/purchase'),
 	PurchaseLine = require('../../models/purchase_line'),
@@ -24,6 +25,33 @@ exports.checkPrincipalOrAdmin = function(cookie, jwtKey, customer_id, callback) 
 						} else {
 							var role = actor._type.toLowerCase();
 							callback( (role=='admin') || (role=='customer' && actor._id==customer_id) );
+						}
+					});
+				}
+			});
+		}
+	}
+}
+
+// Returns a customer object for the principal
+exports.getPrincipalCustomer = function(cookie, jwtKey, callback) {
+	if (cookie !== undefined) {
+		var token = cookie.token;
+		// decode token
+		if (token) {
+			// verifies secret and checks exp
+			jwt.verify(token, jwtKey, function(err, decoded) {
+				if (err) {
+					callback(null);
+				} else {
+					Customer.findOne({
+						email: decoded.email,
+						_type: 'Customer'
+					}, function (err, customer){
+						if (err) {
+							callback(null);
+						} else {
+							callback(customer);
 						}
 					});
 				}

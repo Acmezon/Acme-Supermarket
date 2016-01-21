@@ -61,7 +61,7 @@ exports.newCustomer = function (customer, callback) {
 			email: _email,
 			password: md5Password,
 			coordinates: _coordinates,
-			credit_card: "",
+			credit_card_id: "",
 			address: _address,
 			country: _country,
 			city: _city,
@@ -90,7 +90,6 @@ exports.updateCC = function(req, res){
 		expirationYear: req.body.cc.expirationYear,
 		cvcCode: req.body.cc.cvcCode,
 	});
-
 	// If id not set, Save
 	if(!req.body.id_cc){
 		credit_card_api.newCreditCard(cc, 
@@ -102,9 +101,11 @@ exports.updateCC = function(req, res){
 						if(err) {
 							CreditCard.find(cc._id).remove().exec();
 							res.sendStatus(503);
+						} else {
+							res.status(200).json({success: true});
 						}
 					});
-					res.status(200).json({success: true});
+					
 				}
 			}
 		);
@@ -120,6 +121,7 @@ exports.updateCC = function(req, res){
 				// Check principal is owner or administrator
 				CustomerService.checkOwnerOrAdmin(cookie, jwtKey, req.body.id_cc, function (response) {
 					if (response) {
+
 						credit_card_api.updateCreditCard(req.body.id_cc, cc, 
 							function (errors) {
 								if(errors.length > 0) {
@@ -248,8 +250,8 @@ exports.getMyCreditCard = function (req, res) {
 								ActorService.getUserRole(req.cookies.session, req.app.get('superSecret'), function (role) {
 									if (role=='customer') {
 										// Posible that credit card is null
-										if(customer.credit_card) {
-											CreditCard.findOne({_id: customer.credit_card},
+										if(customer.credit_card_id) {
+											CreditCard.findOne({_id: customer.credit_card_id},
 												function(err, credit_card){
 													if(err) {
 														res.status(404).send({

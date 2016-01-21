@@ -68,7 +68,7 @@ exports.signup = function (req, res) {
 		email : req.body.email,
 		coordinates: req.body.coordinates,
 		password : req.body.password,
-		credit_card: req.body.credit_card,
+		credit_card_id: req.body.credit_card_id,
 		address : req.body.address,
 		country : req.body.country,
 		city : req.body.city,

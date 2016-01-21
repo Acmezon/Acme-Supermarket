@@ -155,7 +155,7 @@
 				"Goal6" : {
 					"Title" : "Búsqueda rápida",
 					"Description" : "Busca, filtra y ordena por múltiples métodods: Valoración media, precio, nombre, categoría...Y todo ello sin largas pantallas de carga"
-				},
+				}
 			}
 		}
 	},
@@ -206,7 +206,8 @@
 		"ExpMonth" : "Mes de caducidad",
 		"ExpYear" : "Año de caducidad",
 		"CVC" : "CVC",
-		"CCData" : "Datos de tarjeta de crédito"
+		"CCData" : "Datos de tarjeta de crédito",
+		"Cancel" : "Cancelar"
 	},
 	"Products" : {
 		"Title" : "Productos",
@@ -263,7 +264,7 @@
 		},
 		"Remove" : "Borrar",
 		"Return" : "Volver",
-		"Continue" : "Comprar"
+		"Continue" : "Continuar"
 	},
 	"Customers": {
 		"Title" : "Administración de clientes",
@@ -310,6 +311,7 @@
 		}
 	},
 	"Dashboard" : {
+		"Title" : "Dashboard",
 		"Service" : "Servicio",
 		"ServiceStatus" : "Estado del servicio",
 		"SocialMedia" : {
@@ -322,6 +324,51 @@
 			"StartError" : "El anlálisis de presencia en redes sociales no se pudo iniciar. Inténtelo de nuevo más tarde",
 			"Stopping" : "El anlálisis de presencia en redes sociales se está deteniendo. Puede tardar unos segundos",
 			"StopError" : "El anlálisis de presencia en redes sociales no ha podido ser detenido. Inténtelo de nuevo más tarde"
+		}
+	},
+	"Checkout" : {
+		"Title" : "Compra",
+		"Products" : "Productos",
+		"Product" : {
+			"Product" : "Producto",
+			"Name" : "Nombre de producto",
+			"Description" : "Descripción",
+			"Image" : "Imagen",
+			"Code" : "Código",
+			"Price" : "Precio unitario",
+			"Supplier" : "Proveedor",
+			"Quantity" : "Cantidad",
+			"Total" : "Total"
+		},
+		"Return" : "Volver",
+		"Continue" : "Comprar",
+		"Empty" : {
+			"Title" : "Vacío",
+			"Description1" : "No tienes ítems en el carrito de la compra.",
+			"Click" : "Haz clic ",
+			"Here" : "aquí",
+			"Description2" : " para continuar con la compra."
+		},
+		"CreditCard" : {
+			"Title" : "Tarjeta de crédito",
+			"Empty" : {
+				"Title" : "Ninguna tarjeta de crédito registrada",
+				"Description1" : "Por favor ",
+				"Link" : "registre una tarjeta de crédito",
+				"Description2" : " para proceder con la compra."
+			},
+			"Type" : "Tipo",
+			"HolderName" : "Propietario",
+			"Number" : "Número",
+			"Expiration" : "Expiración",
+			"CvcCode" : "CVC"
+		},
+		"Address" : {
+			"Title" : "Dirección de envío",
+			"Address" : "Calle",
+			"Country" : "Pais",
+			"City" : "Ciudad",
+			"Phone" : "Teléfono de contacto"
 		}
 	}
 }

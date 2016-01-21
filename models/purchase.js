@@ -5,7 +5,7 @@ var Customer = require('./customer'),
 
 var purchaseSchema = mongoose.Schema({
 	deliveryDate: {type: Date, required:true},
-	paymentDate: {type: Date, required:true},
+	paymentDate: {type: Date, required:true, default: Date.now},
 	customer_id: {type: Number, ref:'Customer'}
 });
 

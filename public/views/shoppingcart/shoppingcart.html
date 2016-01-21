@@ -3,7 +3,7 @@
 
 <div class="wrap">
 	<ul class="breadcrumb breadcrumb__t">
-		<li><a class="home" href="/">{{ 'Home.Title' | translate }}</a> / <a class="home" href="/">{{ 'Products.Title' | translate }}</a> / {{'ShoppingCart.Title' | translate}}</li>
+		<li><a class="home" href="/">{{ 'Home.Title' | translate }}</a> / <a class="home" href="/products">{{ 'Products.Title' | translate }}</a> / {{'ShoppingCart.Title' | translate}}</li>
 	</ul>
 
 	<h2 class="head">{{'ShoppingCart.Title' | translate}}</h2>
@@ -55,7 +55,7 @@
 				<button type="button" class="btn btn-info btn-arrow-left" ng-click="return()">{{'ShoppingCart.Return' | translate}}</button>
 			</div>
 			<div class="col-lg-6">
-				<a><button type="button" class="btn btn-primary btn-arrow-right">{{'ShoppingCart.Continue' | translate}}</button></a>
+				<a href="/checkout"><button type="button" class="btn btn-primary btn-arrow-right">{{'ShoppingCart.Continue' | translate}}</button></a>
 			</div>
 		</div>
 	</div>

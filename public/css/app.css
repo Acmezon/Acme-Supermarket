@@ -13,14 +13,6 @@ button#coord-btn {
 	text-overflow: ellipsis;
 }
 
-.tab-content {
-	padding: 20px;
-	border: solid;
-	border-width: 1px;
-	border-color: rgb(221, 221, 221);
-	border-top: none;
-}
-
 p.editable-p {
 	display: inline-block;
 }
@@ -217,4 +209,12 @@ p.editable-p {
 
 .product:hover{
 	text-decoration:none;
+}
+
+th {
+	font-weight: bold;
+}
+
+.modal-backdrop {
+  z-index: -1;
 }

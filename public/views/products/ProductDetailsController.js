@@ -56,7 +56,7 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 						url: '/api/getUserRole'
 					}).
 					then(function success(response4) {
-						if(response.data!='customer') {
+						if(response4.data!='customer') {
 							var buttons = $('.add-cart-btn-column');
 							buttons.remove();
 						}
