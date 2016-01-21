@@ -211,9 +211,9 @@ function loadSuppliers(callback) {
 }
 
 function loadPurchases(callback) {
-	var customers = Customer.find({}, function (err, customers) {
-		async.each(customers, function (customer, callback) {
-			console.log("Customer");
+	var customers = Actor.find({ "_type" : "Customer"}, function (err, customers) {
+		
+		async.each(customers, function (customer, callback1) {
 			var max_products = 300;
 			var min_products = 200;
 
@@ -228,17 +228,15 @@ function loadPurchases(callback) {
 					rand_products.push(rand_product);
 				}
 
-				console.log("Products: " + rand_products.length);
-
-				async.each(rand_products, function (prd, callback) {
-					buyProduct(prd, customer.id, function () {
-						callback();
-					});
+				async.each(rand_products, function (prd, callback2) {
+					buyProduct(prd, customer.id, callback2);
 
 				}, function (err) {
 					if(err) console.log("--ERR: Error purchasing producs: " + err);
 
 					console.log("--DO: Purchased products for customer");
+
+					callback1();
 				});
 			});
 		}, function (err) {
@@ -254,7 +252,6 @@ function loadPurchases(callback) {
 function buyProduct(product, customer_id ,callback) {
 	loadProvides(product, 
 	function (provide) {
-		console.log("Buying product");
 		var deliveryDate = new Date();
  		deliveryDate.setDate(deliveryDate.getDate() + 15);
 
@@ -351,7 +348,7 @@ function loadProvides(product, callback) {
 
 			var rand_suppliers = [];
 
-			Supplier.find({}, function (err, suppliers) {
+			Actor.find({"_type" : "Supplier"}, function (err, suppliers) {
 				for (var i = 0; i < nr_suppliers; i++) {
 					var rand_supplier = suppliers[Math.floor(Math.random() * suppliers.length)];
 
@@ -367,7 +364,7 @@ function loadProvides(product, callback) {
 
 					provide.save(function (err) {
 						if(err) console.log("--ERR: Error saving provide: " + err);
-
+						
 						callback2();
 					})
 
@@ -375,6 +372,7 @@ function loadProvides(product, callback) {
 					var supplier = rand_suppliers[Math.floor(Math.random() * rand_suppliers.length)];
 
 					Provide.findOne({ "product_id" : product.id, "supplier_id" : supplier.id }, function (err, provide) {
+						if(err) console.log("--ERR: Error finding provide: " + err);
 						callback(provide);
 					});
 				});
