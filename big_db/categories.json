@@ -1,0 +1,65 @@
+{ "categories" : [
+	{
+		"name" : "Alimentación, bebida y tabaco"
+	},
+	{
+		"name" : "Arte y ocio"
+	},
+	{
+		"name" : "Bebés y niños pequeños"
+	},
+	{
+		"name" : "Bricolaje"
+	},
+	{
+		"name" : "Casa y jardín"
+	},
+	{
+		"name" : "Cámaras y ópticas"
+	},
+	{
+		"name" : "Economía e industria"
+	},
+	{
+		"name" : "Electrónica"
+	},
+	{
+		"name" : "Elementos religiosos y ceremoniales"
+	},
+	{
+		"name" : "Equipamiento deportivo"
+	},
+	{
+		"name" : "Juegos y juguetes"
+	},
+	{
+		"name" : "Maletas y bolsos de viaje"
+	},
+	{
+		"name" : "Material de oficina"
+	},
+	{
+		"name" : "Mobiliario"
+	},
+	{
+		"name" : "Multimedia"
+	},
+	{
+		"name" : "Productos para adultos"
+	},
+	{
+		"name" : "Productos para mascotas y animales"
+	},
+	{
+		"name" : "Ropa y accesorios"
+	},
+	{
+		"name" : "Salud y belleza"
+	},
+	{
+		"name" : "Software"
+	},
+	{
+		"name" : "Vehículos y recambios"
+	}
+]}

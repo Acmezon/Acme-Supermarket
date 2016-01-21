@@ -110,6 +110,7 @@ app.get('/api/creditcard/:id', api.CreditCard.getCreditCard);
 
 // Management
 app.get('/api/resetDataset', api.Management.resetDataset);
+app.get('/api/loadBigDataset', api.Management.loadBigDataset);
 
 // i18n
 app.get('/api/lang', api.i18n.getLanguageFile);

@@ -13,10 +13,388 @@ var db_utils = require('./db_utils'),
 	Rate = require('../models/rate'),
 	Reputation = require('../models/reputation'),
 	crypto = require('crypto');//Necesario para encriptacion por MD,
-	mongoose = require('mongoose');//Para la generacion de ids
+	mongoose = require('mongoose'),
+	fs = require('fs'),
+	async = require('async'),
+	generator = require('creditcard-generator');
 
+
+function random(max, min) {
+	return Math.floor(Math.random()*(max-min+1)+min);
+}
 
 // Restore Mongo DB to development state
+function startProcess(callback) {
+	loadCategories(callback);
+}
+
+function loadCategories (callback) {
+	var categories_f = fs.readFileSync('big_db/categories.json', 'UTF-8');
+
+	var categories = JSON.parse(categories_f);
+
+	async.each(categories.categories, function (category, callback) {
+		var category = new Category({
+			"name" : category.name
+		});
+
+		category.save(function (err) {
+			if(err) console.log("--ERR: Error saving category: " + err);
+
+			callback();
+		});
+	}, function (err) {
+		if(err) console.log("--ERR: Error saving all categories: " + err);
+
+		console.log("--DO: Categories saved");
+
+		loadProducts(callback);
+	});
+}
+
+function loadProducts(callback) {
+	var products_f = fs.readFileSync('big_db/products.json', 'UTF-8');
+	var products = JSON.parse(products_f);
+
+	async.each(products.products, function (product, callback) {
+		var product = new Product({
+			"code" : product.code,
+			"name" : product.name,
+			"description" : product.description,
+			"image" : product.image
+ 		});
+
+ 		product.save(function (err, prod) {
+ 			if (err) console.log("--ERR: Error saving product: " + err);
+
+ 			var num_categories = Math.floor(Math.random() * 3) + 1;
+
+ 			Category.find({}, function (err, categories) {
+ 				var rand_categories = [];
+
+ 				for (var i = 0; i < num_categories; i++) {
+ 					var index = Math.floor(Math.random() * categories.length);
+
+ 					var cat = categories[index];
+
+ 					rand_categories.push(cat['_id']);
+ 				}
+
+ 				async.each(rand_categories, function (chosen_cat, callback) {
+ 					var belongs_to = new Belongs_to({
+						"product_id" : prod.id,
+						"category_id" : chosen_cat
+					});
+
+					belongs_to.save(function (err) {
+						if (err) console.log("--ERR: Error saving belongs to: " + err);
+
+						callback();
+					});
+ 				}, function (err) {
+ 					if (err) console.log("--ERR: Error saving all belongs_to: " + err);
+ 				});
+
+ 				callback();
+ 			});
+ 		});
+
+	}, function (err) {
+		if (err) console.log("--ERR: Error saving all products: " + err);
+
+		console.log("--DO: Products saved");
+
+		loadAdmins(callback);
+	});
+}
+
+function loadAdmins(callback) {
+	var admins_f = fs.readFileSync('big_db/admins.json', 'UTF-8');
+	
+	var admins = JSON.parse(admins_f);
+
+	async.each(admins.admins, function (admin, callback) {
+		var admin1 = new Actor({
+			"_type" : admin._type,
+			"name" : admin.name,
+			"surname" : admin.surname,
+			"email" : admin.email,
+			"password" : admin.password
+		});
+
+		admin1.save(function (err) {
+			if (err) console.log("--ERR: Error saving admin: " + err);
+
+			callback();
+		})
+	}, function (err) {
+		if(err) console.log("--ERR: Error saving all admins: " + err);
+
+		loadCustomers(callback);
+	});
+}
+
+function loadCustomers(callback) {
+	var customers_f = fs.readFileSync('big_db/customers.json', 'UTF-8');
+
+	var customers = JSON.parse(customers_f);
+
+	async.each(customers.customers, function (customer, callback){
+		var credit_card = new Credit_card({
+			"holderName" : customer.name + " " + customer.surname,
+			"number" : generator.GenCC("VISA")[0],
+			"expirationMonth" : 06,
+			"expirationYear" : 2020,
+			"cvcCode" : 224
+		});
+
+		credit_card.save( function (err, card) {
+			if(err) console.log("--ERR: Error saving credit card: " + err);
+
+			var customer1 = new Customer({
+				"_type" : customer._type,
+				"name" : customer.name,
+				"surname" : customer.surname,
+				"email" : customer.email,
+				"password" : customer.password, //customer
+				"coordinates" : customer.coordinates,
+				"address" : customer.address,
+				"country" : customer.country,
+				"city" : customer.city,
+				"phone" : customer.phone,
+				"credit_card_id" : card.id
+			});
+
+			customer1.save(function (err) {
+				if (err) console.log("--ERR: Error saving customer: " + err);
+
+				callback();
+			});
+		});
+	}, function (err) {
+		if (err) console.log("--ERR: Error saving all customers: " + err);
+
+		console.log("--DO: Customers saved");
+
+		loadSuppliers(callback);
+	});
+}
+
+function loadSuppliers(callback) {
+	var suppliers_f = fs.readFileSync('big_db/suppliers.json', 'UTF-8');
+
+	var suppliers = JSON.parse(suppliers_f);
+
+	async.each(suppliers.suppliers, function (supplier, callback){
+		var supplier1 = new Supplier({
+			"_type" : supplier._type,
+			"name" : supplier.name,
+			"surname" : supplier.surname,
+			"email" : supplier.email,
+			"password" : supplier.password, //supplier
+			"coordinates" : supplier.coordinates,
+			"address" : supplier.address
+		});
+
+		supplier1.save(function (err) {
+			if (err) console.log("--ERR: Error saving supplier: " + err);
+
+			callback();
+		});
+	}, function (err) {
+		if (err) console.log("--ERR: Error saving all suppliers: " + err);
+
+		console.log("--DO: Suppliers saved");
+
+		loadPurchases(callback);
+	});
+}
+
+function loadPurchases(callback) {
+	var customers = Customer.find({}, function (err, customers) {
+		async.each(customers, function (customer, callback) {
+			console.log("Customer");
+			var max_products = 300;
+			var min_products = 200;
+
+			var nr_products = random(max_products, min_products);
+
+			var rand_products = [];
+
+			Product.find({}, function (err, products) {
+				for(var i = 0; i < nr_products; i++) {
+					var rand_product = products[Math.floor(Math.random() * products.length)];
+
+					rand_products.push(rand_product);
+				}
+
+				console.log("Products: " + rand_products.length);
+
+				async.each(rand_products, function (prd, callback) {
+					buyProduct(prd, customer.id, function () {
+						callback();
+					});
+
+				}, function (err) {
+					if(err) console.log("--ERR: Error purchasing producs: " + err);
+
+					console.log("--DO: Purchased products for customer");
+				});
+			});
+		}, function (err) {
+			if(err) console.log("--ERR: Error purchasing all products: " + err);
+
+			console.log("--DO: Purchased all products");
+
+			callback();
+		});
+	});
+}
+
+function buyProduct(product, customer_id ,callback) {
+	loadProvides(product, 
+	function (provide) {
+		console.log("Buying product");
+		var deliveryDate = new Date();
+ 		deliveryDate.setDate(deliveryDate.getDate() + 15);
+
+		var purchase = new Purchase({
+			"deliveryDate" : deliveryDate,
+			"paymentDate" : new Date(),
+			"customer_id" : customer_id
+		});
+
+		purchase.save(function (err, saved) {
+			if(err) {
+				console.log("--ERR: Error saving purchase: " + err);
+			} else {
+				var purchase_line = new PurchaseLine({
+					"quantity" : 1,
+					"purchase_id" : saved.id,
+					"provide_id" : provide.id
+				});
+
+				purchase_line.save(function (err) {
+					if (err) {
+						console.log("--ERR: Error saving purchase line: " + err);	
+					} else {
+						var profile = random(2, 0);
+
+						var rateValue = -1;
+						var reputationValue = -1;
+
+						switch(profile) {
+							case 0: //Optimistic
+								var baseRate = random(5, 3);
+								var deviation = -1 * random(0, 1);
+								rateValue = baseRate + deviation;
+
+								var baseReputation = random(5, 3);
+								deviation = -1 * random(0, 1);
+								reputationValue = baseReputation + deviation;								
+								break;
+							case 1: //Pessimistic
+								var baseRate = random(3, 1);
+								var deviation = random(0, 1);
+								rateValue = baseRate + deviation;
+
+								var baseReputation = random(3, 1);
+								deviation = -1 * random(0, 1);
+								reputationValue = baseReputation + deviation;
+								break;
+							case 2: //Neutral
+								var baseRate = random(2, 4);
+								var deviation = random(1, -1);
+								rateValue = baseRate + deviation;
+
+								var baseReputation = random(2, 4);
+								deviation = -1 * random(1, -1);
+								reputationValue = baseReputation + deviation;
+								break;
+						}
+
+						var rate = new Rate({
+							"value" : rateValue,
+							"product_id" : product.id,
+							"customer_id" : customer_id
+						});
+
+						var reputation = new Reputation({
+							"value" : reputationValue,
+							"supplier_id" : provide.supplier_id,
+							"customer_id" : customer_id
+						});
+
+						rate.save(function (err) {
+							if(err) console.log("--ERR: Error saving rate: " + err);
+
+							reputation.save( function (err) {
+								if(err) console.log("--ERR: Error saving reputation: " + err);
+
+								callback();
+							});
+						});
+					}
+				});
+			}
+		});
+	});
+}
+
+function loadProvides(product, callback) {
+	Provide.find({ "product_id" : product.id }, function (err, provides) {
+		if(provides.length == 0) {
+			var max_suppliers = 3;
+			var min_suppliers = 1;
+
+			var nr_suppliers = random(max_suppliers, min_suppliers);
+
+			var rand_suppliers = [];
+
+			Supplier.find({}, function (err, suppliers) {
+				for (var i = 0; i < nr_suppliers; i++) {
+					var rand_supplier = suppliers[Math.floor(Math.random() * suppliers.length)];
+
+					rand_suppliers.push(rand_supplier);
+				}
+
+				async.each(rand_suppliers, function (supplier, callback2) {
+					var provide = new Provide({
+						"price" : random(20, 200),
+						"product_id" : product.id,
+						"supplier_id" : supplier.id
+					});
+
+					provide.save(function (err) {
+						if(err) console.log("--ERR: Error saving provide: " + err);
+
+						callback2();
+					})
+
+				}, function (error) {
+					var supplier = rand_suppliers[Math.floor(Math.random() * rand_suppliers.length)];
+
+					Provide.findOne({ "product_id" : product.id, "supplier_id" : supplier.id }, function (err, provide) {
+						callback(provide);
+					});
+				});
+			});
+		} else {
+			var provide = provides[Math.floor(Math.random() * provides.length)];
+
+			callback(provide);
+		}
+	});
+}
+
+exports.loadBigDataset = function (req, res) {
+	startProcess(function () {
+		console.log("Finished");
+	});
+
+	res.status(200).send("Finished.")
+}
+
 exports.resetDataset = function (req, res) {
 	console.log('Function-management-resetDataset');
 
@@ -38,7 +416,7 @@ exports.resetDataset = function (req, res) {
 		credit_card1.save(function (err, cc1) {
 			if(err) console.log("--ERR: Create CC1: " + err);
 
-			var customer1 = new Customer({
+			var supplier1 = new Customer({
 				"_id" : 1,
 				"_type" : "Customer",
 				"name" : "customer",
@@ -1199,6 +1577,5 @@ exports.resetDataset = function (req, res) {
 	reputation4.save(function(err) {
 		if(err) console.log("--ERR: saving reputation 4: " + err);
 	});
-
 	res.json("Done, check the console");
 };
