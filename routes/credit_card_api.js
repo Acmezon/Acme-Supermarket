@@ -6,7 +6,6 @@ var CreditCard = require('../models/credit_card'),
 //Syncronous
 exports.newCreditCard = function (credit_card, callback) {
 	credit_card.save(function (err) {
-		console.log(err);
 		callback(db_utils.handleInsertErrors(err));
 	});
 

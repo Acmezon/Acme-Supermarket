@@ -81,7 +81,7 @@ angular.module('acme_supermarket').registerCtrl('ShoppingCartCtrl', ['$scope', '
 	}
 
 	$scope.hasEmptyCart = function () {
-		return $scope.productsInCart()===0;
+		return $scope.productsInCart()==0;
 	}
 
 	$scope.add = function(product) {
@@ -91,7 +91,7 @@ angular.module('acme_supermarket').registerCtrl('ShoppingCartCtrl', ['$scope', '
 		var index = -1;		
 		var products = eval( $scope.shoppingcart );
 		for( var i = 0; i < products.length; i++ ) {
-			if( products[i].id === id ) {
+			if( products[i].id == id ) {
 				products[i].quantity = products[i].quantity + 1
 			}
 		}
@@ -117,7 +117,7 @@ angular.module('acme_supermarket').registerCtrl('ShoppingCartCtrl', ['$scope', '
 		var index = -1;		
 		var products = eval( $scope.shoppingcart );
 		for( var i = 0; i < products.length; i++ ) {
-			if( products[i].id === id ) {
+			if( products[i].id == id ) {
 				products[i].quantity = products[i].quantity - 1
 			}
 		}
@@ -138,20 +138,24 @@ angular.module('acme_supermarket').registerCtrl('ShoppingCartCtrl', ['$scope', '
 
 
 	$scope.remove = function (product_id) {
+		console.log("To be removed "+product_id)
 		var cookie = $cookies.get("shoppingcart");
 		if (cookie) {
 			cookie = JSON.parse(cookie);
+			console.log(cookie)
 			if (!$.isEmptyObject(cookie)) {
 				for (var id in cookie) {
 					if (cookie.hasOwnProperty(id)) {
-						if (id===product_id)
+						console.log("Removing " + id)
+						if (id==product_id) {
 							delete cookie[id];
+						}
 					}
 				}
 			}
 		}
 		for (var i = 0; i<$scope.shoppingcart.length; i++) {
-			if ($scope.shoppingcart[i]._id === product_id) {
+			if ($scope.shoppingcart[i]._id == product_id) {
 				$scope.shoppingcart.splice(i, 1);
 			}
 		}

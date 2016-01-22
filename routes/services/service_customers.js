@@ -1,4 +1,5 @@
 var Actor = require('../../models/actor'),
+	Customer = require('../../models/customer'),
 	Provide = require('../../models/provide'),
 	Purchase = require('../../models/purchase'),
 	PurchaseLine = require('../../models/purchase_line'),
@@ -24,6 +25,33 @@ exports.checkPrincipalOrAdmin = function(cookie, jwtKey, customer_id, callback) 
 						} else {
 							var role = actor._type.toLowerCase();
 							callback( (role=='admin') || (role=='customer' && actor._id==customer_id) );
+						}
+					});
+				}
+			});
+		}
+	}
+}
+
+// Returns a customer object for the principal
+exports.getPrincipalCustomer = function(cookie, jwtKey, callback) {
+	if (cookie !== undefined) {
+		var token = cookie.token;
+		// decode token
+		if (token) {
+			// verifies secret and checks exp
+			jwt.verify(token, jwtKey, function(err, decoded) {
+				if (err) {
+					callback(null);
+				} else {
+					Customer.findOne({
+						email: decoded.email,
+						_type: 'Customer'
+					}, function (err, customer){
+						if (err) {
+							callback(null);
+						} else {
+							callback(customer);
 						}
 					});
 				}
@@ -105,6 +133,36 @@ exports.checkPurchasing = function (user_id, product_id, callback) {
 			});
 		});
 	});
+}
+
+// Returns true if principal has purchased the purchase object
+exports.checkHasPurchasedPurchase = function(cookie, jwtKey, purchase, callback) {
+	if (cookie !== undefined) {
+		var token = cookie.token;
+		// decode token
+		if (token) {
+			// verifies secret and checks exp
+			jwt.verify(token, jwtKey, function(err, decoded) {
+				if (err) {
+					callback(false);
+				} else {
+					Customer.findOne({
+						email: decoded.email
+					}, function (err, customer){
+						if (err) {
+							callback(false);
+						} else {
+							callback(customer._id==purchase.customer_id);
+						}
+					});
+				}
+			});
+		} else {
+			callback(false);
+		}
+	} else {
+		callback(false)
+	}
 }
 
 // Returns true if signup customer form fields are correct

@@ -34,15 +34,16 @@
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/bootstrap-arrow-buttons.css">
     <link rel="stylesheet" href="css/ng-table.min.css">
+    <link rel="stylesheet" href="css/template_bootstrap/lang.css">
 	<link rel="stylesheet" href="css/app.css">
 </head>
 <body>
 	<toast></toast>
-	<div ng-include src="'views/public/header.html'"></div>
+	<div id="header" ng-include src="'views/public/header.html'"></div>
 
 	<div ng-view autoscroll="true"></div>
 
-	<div ng-include src="'views/public/footer.html'"></div>
+	<div id="footer" ng-include src="'views/public/footer.html'"></div>
 	
 	<script src="js/lib/bootstrap.js"></script>
 	<script src="js/lib/angular/angular.js"></script>

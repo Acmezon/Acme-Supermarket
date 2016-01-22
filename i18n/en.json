@@ -206,7 +206,8 @@
 		"ExpMonth" : "Expiration month",
 		"ExpYear" : "Expiration year",
 		"CVC" : "CVV",
-		"CCData" : "Credit Card data"
+		"CCData" : "Credit Card data",
+		"Cancel" : "Cancel"
 	},
 	"Products" : {
 		"Title" : "Products",
@@ -263,7 +264,7 @@
 		},
 		"Remove" : "Remove",
 		"Return" : "Return",
-		"Continue" : "Checkout"
+		"Continue" : "Continue"
 	},
 	"Customers": {
 		"Title" : "Customers management",
@@ -310,6 +311,7 @@
 		}
 	},
 	"Dashboard" : {
+		"Title" : "Dashboard",
 		"Service" : "Service",
 		"ServiceStatus" : "Service status",
 		"SocialMedia" : {
@@ -323,5 +325,63 @@
 			"Stopping" : "The social media presence analysis is being stopped. It could take a few seconds",
 			"StopError" : "The social media presence analysis is not able to stop. Try again later"
 		}
+	},
+	"Checkout" : {
+		"Title" : "Checkout",
+		"Products" : "Products",
+		"Product" : {
+			"Product" : "Product",
+			"Name" : "Product name",
+			"Description" : "Description",
+			"Image" : "Image",
+			"Code" : "Product code",
+			"Price" : "Unit price",
+			"Supplier" : "Supplier",
+			"Quantity" : "Quantity",
+			"Total" : "Total"
+		},
+		"Return" : "Return",
+		"Continue" : "Checkout",
+		"Empty" : {
+			"Title" : "Empty",
+			"Description1" : "You have no items in your shopping cart.",
+			"Click" : "Click ",
+			"Here" : "here",
+			"Description2" : " to continue shopping"
+		},
+		"CreditCard" : {
+			"Empty" : {
+				"Title" : "No credit card registered",
+				"Description1" : "Please ",
+				"Link" : "register credit card",
+				"Description2" : " to proceed with purchase."
+			},
+			"Title" : "Credit card",
+			"Type" : "Type",
+			"HolderName" : "holder name",
+			"Number" : "Number",
+			"Expiration" : "Expiration",
+			"CvcCode" : "CVC",
+			"Unknown" : "Unknown"
+		},
+		"Address" : {
+			"Title" : "Billing address",
+			"Address" : "Line 1",
+			"Country" : "Country",
+			"City" : "City",
+			"Phone" : "Contact phone"
+		},
+		"Days" : {
+			"Title" : "Select billing time",
+			"Days" : "days"
+		},
+		"Success" : "Transaction complete",
+		"Error" : "Error",
+		"ErrorDescription" : "There has been an error with your purchase. Please try again later, we have restored your shopping cart.",
+		"Purchase" : {
+			"PaymentDate" : "Payment date",
+			"DeliveryDate" : "Delivery date"
+		},
+		"Thanks" : "Thanks for purchasing!"
 	}
 }
