@@ -7,7 +7,7 @@
 var mongoose = require('mongoose'),
 	extend = require('mongoose-schema-extend'),//Necesario para la herencia
 	config = require('../config'),
-	autoIncrement = require('mongoose-auto-increment');;
+	autoIncrement = require('mongoose-auto-increment');
 
 exports.connect = function () {
 	mongoose.connect(config.database);
