@@ -33,11 +33,11 @@
 				</div>
 				<div class="desc1 span_3_of_2">
 					<!-- Rating Stars Box -->
-					<div ng-show="!userHasPurchased" class="rating">
+					<div ng-if="!userHasPurchased" class="rating">
 						<i ng-repeat="n in [1, 2, 3, 4, 5] track by $index" class="glyphicon" ng-class="{'glyphicon-star': rate >= $index + 1, 'glyphicon-star-empty': rate < $index + 1}"></i>
 					</div>
 
-					<div ng-show="userHasPurchased">
+					<div ng-if="userHasPurchased">
 						<uib-rating ng-model="rate" class="rating" max="max" ng-click="rateProduct()"></uib-rating>
 					</div>
 					<!--<div class="rating" data-stars="{{product.rating}}"></div>-->

@@ -26,6 +26,21 @@ exports.getAllProducts = function (req, res) {
 	});
 };
 
+//
+exports.getAllProductsLimit = function(req, res) {
+	var limit = parseInt(req.params.limit);
+	console.log('Function-productsApi-getAllProductsLimit  -- limit:' + limit);
+
+	// Find no conditions
+	Product.find().limit(limit).exec(function (err, products){
+		if(err){
+			res.status(500).json({success: false, message: err});
+		}else{
+			res.status(200).json(products);
+		}
+	});
+}
+
 
 // Returns a product object identified by ID
 exports.getProduct = function (req, res) {
@@ -153,46 +168,51 @@ exports.updateProductRating = function (req, res) {
 			Actor.findOne({ email : user}, function (err, actor) {
 				var u_id = actor._id;
 
-				CustomerService.checkPurchasing(u_id, req.body.id, function (response) {
-					if(!response) {
-						res.sendStatus(401)
-						return;
-					}
-					Rate.findOne({ customer_id : u_id }, function (err, rate) {
-						if(err) {
-							res.sendStatus(503);
+				if (actor._type=='customer') {
+					CustomerService.checkPurchasing(actor, req.body.id, function (response) {
+						if(!response) {
+							res.sendStatus(401)
 							return;
-						} else {
-							if(rate) {
-								Rate.findByIdAndUpdate(rate._id, { $set : { rate : req.body.rating } }, function (err, updated) {
-									if (err) {
-										res.sendStatus(503);
-										return;
-									} else {
-										res.sendStatus(200);
-										return;
-									}
-								});
-							} else {
-								var new_rate = new Rate({
-									rate: req.body.rating,
-									product_id : req.body.id,
-									customer_id : customer_id
-								});
-
-								Rate.newRate(new_rate, function (err) {
-									if (err) {
-										res.sendStatus(503);
-										return;
-									} else {
-										res.sendStatus(200);
-										return;
-									}
-								});
-							}
 						}
+						Rate.findOne({ customer_id : u_id }, function (err, rate) {
+							if(err) {
+								res.sendStatus(503);
+								return;
+							} else {
+								if(rate) {
+									Rate.findByIdAndUpdate(rate._id, { $set : { rate : req.body.rating } }, function (err, updated) {
+										if (err) {
+											res.sendStatus(503);
+											return;
+										} else {
+											res.sendStatus(200);
+											return;
+										}
+									});
+								} else {
+									var new_rate = new Rate({
+										rate: req.body.rating,
+										product_id : req.body.id,
+										customer_id : customer_id
+									});
+
+									Rate.newRate(new_rate, function (err) {
+										if (err) {
+											res.sendStatus(503);
+											return;
+										} else {
+											res.sendStatus(200);
+											return;
+										}
+									});
+								}
+							}
+						});
 					});
-				});
+				} else {
+					res.sendStatus(401);
+					return;
+				}
 			});
 		}
 	});
@@ -210,7 +230,7 @@ exports.userHasPurchased = function (req, res) {
 					res.sendStatus(503);
 					return;
 				} else {
-					CustomerService.checkPurchasing(customer._id, req.body.product, function (response){
+					CustomerService.checkPurchasing(customer, req.body.product, function (response){
 						res.status(200).json({ hasPurchased : response });
 					});
 					return;

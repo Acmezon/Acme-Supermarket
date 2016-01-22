@@ -3,7 +3,7 @@
 angular.module('acme_supermarket').registerCtrl('HomeCtrl', ['$scope', '$http', function ($scope, $http) {
 	$http({
 		method: 'GET',
-		url: '/api/products'
+		url: '/api/products/limit/' + 9
 	}).
 	then(function success(response1) {
 		$scope.products = response1.data;
