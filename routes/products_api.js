@@ -7,26 +7,261 @@ var Authentication = require('./authentication'),
 	Actor = require('../models/actor'),
 	Customer = require('../models/customer'),
 	Provide = require('../models/provide'),
+	BelongsTo = require('../models/belongs_to'),
 	PurchaseLine = require('../models/purchase_line'),
 	Purchase = require('../models/purchase'),
 	ActorService = require('./services/service_actors'),
-	CustomerService = require('./services/service_customers');
+	CustomerService = require('./services/service_customers'),
+	ProductService = require('./services/service_products');
 
-// Returns all objects of the system
-exports.getAllProducts = function (req, res) {
-	console.log('Function-productsApi-getAllProducts');
+// Returns all objects of the system, filtered
+exports.getAllProductsFiltered = function(req, res) {
+    console.log('Function-productsApi-getAllProductsFiltered');
 
-	// Find no conditions
-	Product.find(function(err,products){
-		if(err){
-			res.status(500).json({success: false, message: err});
-		}else{
-			res.status(200).json(products);
-		}
-	});
+    var ordering_sort = req.body.sort,
+        ordering_order = parseInt(req.body.order) || 1,
+        ordering_currentPage = parseInt(req.body.currentPage) || 0,
+        ordering_pageSize = parseInt(req.body.pageSize) || 10,
+        filter_id_category = parseInt(req.body.categoryFilter) || null,
+        filter_maxPrice = req.body.priceFilter ? parseInt(req.body.priceFilter) || -1 : -1,
+        filter_minRating = parseInt(req.body.ratingFilter) || 0,
+        filter_maxRating = filter_minRating==0 ? 5 : parseInt(req.body.ratingFilter) + 1 || 5;
+
+    // Format sort criteria
+    if (ordering_sort == 'rating') {
+        ordering_sort = 'avgRating';
+    } else {
+        if (ordering_sort == 'price') {
+            ordering_sort = 'minPrice';
+        } else {
+            ordering_sort = 'name';
+        }
+    }
+
+    var ord_tuple = {};
+    ord_tuple[ordering_sort] = ordering_order;
+
+    if (filter_id_category != -1){
+        // CATEGORY FILTER ACTIVATED
+        BelongsTo.find({
+            'category_id': filter_id_category
+        }).select('product_id').exec(function(err, product_ids) {
+            if (err) {
+                res.status(500).json({
+                    success: false,
+                    message: err
+                });
+            } else {
+                // CONTINUE
+                if (filter_maxPrice != -1) {
+                	// PRICE FILTER ACTIVATED
+	                Product.find({
+	                        maxPrice: {
+	                            $lt: filter_maxPrice
+	                        },
+	                        avgRating: {
+	                            $gte: filter_minRating,
+	                            $lt: filter_maxRating
+	                        },
+	                        '_id': {
+	                            $in: product_ids
+	                        }
+	                    }).select({'_id':1, 'name':1, 'image':1, 'minPrice':1, 'maxPrice':1, 'avgRating':1})
+	                    .sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
+	                    .exec(function(err, products) {
+	                        if (err) {
+	                            res.status(500).json({
+	                                success: false,
+	                                message: err
+	                            });
+	                        } else {
+	                            res.status(200).json(products);
+	                        }
+	                    });
+				} else {
+					// PRICE FILTER DEACTIVATED
+					Product.find({
+	                        avgRating: {
+	                            $gte: filter_minRating,
+	                            $lt: filter_maxRating
+	                        },
+	                        '_id': {
+	                            $in: product_ids
+	                        }
+	                    }).select({'_id':1, 'name':1, 'image':1, 'minPrice':1, 'maxPrice':1, 'avgRating':1})
+	                    .sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
+	                    .exec(function(err, products) {
+	                        if (err) {
+	                            res.status(500).json({
+	                                success: false,
+	                                message: err
+	                            });
+	                        } else {
+								res.status(200).json(products);
+	                        }
+	                    });
+				}
+            }
+        });
+    } else {
+        // CATEGORY FILTER DEACTIVATED
+                if (filter_maxPrice != -1) {
+                	// PRICE FILTER ACTIVATED
+			        Product.find({
+			                maxPrice: {
+			                    $lt: filter_maxPrice
+			                },
+			                avgRating: {
+			                    $gte: filter_minRating,
+			                    $lt: filter_maxRating
+			                },
+			            }).select({'_id':1, 'name':1, 'image':1, 'minPrice':1, 'maxPrice':1, 'avgRating':1})
+			            .sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
+			            .exec(function(err, products) {
+			                if (err) {
+			                    res.status(500).json({
+			                        success: false,
+			                        message: err
+			                    });
+			                } else {
+			                    res.status(200).json(products);
+			                }
+			            });
+			    } else {
+			    	// PRICE FILTER DEACTIVATED
+			    	Product.find({
+			                avgRating: {
+			                    $gte: filter_minRating,
+			                    $lt: filter_maxRating
+			                },
+			            }).select({'_id':1, 'name':1, 'image':1, 'minPrice':1, 'maxPrice':1, 'avgRating':1})
+			            .sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
+			            .exec(function(err, products) {
+			                if (err) {
+			                    res.status(500).json({
+			                        success: false,
+			                        message: err
+			                    });
+			                } else {
+			                    res.status(200).json(products);
+			                }
+			            });
+			    }
+    }
 };
 
-//
+// Returns number of objects of the system, filtered
+exports.countProductsFiltered = function(req, res) {
+    console.log('Function-productsApi-countProductsFiltered');
+
+    var filter_id_category = parseInt(req.body.categoryFilter) || null,
+        filter_maxPrice = req.body.priceFilter ? parseInt(req.body.priceFilter) || -1 : -1,
+        filter_minRating = parseInt(req.body.ratingFilter) || 0,
+        filter_maxRating = filter_minRating==0 ? 5 : parseInt(req.body.ratingFilter) + 1 || 5;
+
+    if (filter_id_category != -1){
+        // CATEGORY FILTER ACTIVATED
+        BelongsTo.find({
+            'category_id': filter_id_category
+        }).select('product_id').exec(function(err, product_ids) {
+            if (err) {
+                res.status(500).json({
+                    success: false,
+                    message: err
+                });
+            } else {
+                // CONTINUE
+                if (filter_maxPrice != -1) {
+                	// PRICE FILTER ACTIVATED
+	                Product.count({
+	                        maxPrice: {
+	                            $lt: filter_maxPrice
+	                        },
+	                        avgRating: {
+	                            $gte: filter_minRating,
+	                            $lt: filter_maxRating
+	                        },
+	                        '_id': {
+	                            $in: product_ids
+	                        }
+	                    }).exec(function(err, number) {
+	                        if (err) {
+	                            res.status(500).json({
+	                                success: false,
+	                                message: err
+	                            });
+	                        } else {
+	                            res.status(200).json(number);
+	                        }
+	                    });
+				} else {
+					// PRICE FILTER DEACTIVATED
+					Product.count({
+	                        avgRating: {
+	                            $gte: filter_minRating,
+	                            $lt: filter_maxRating
+	                        },
+	                        '_id': {
+	                            $in: product_ids
+	                        }
+	                    }).exec(function(err, number) {
+	                        if (err) {
+	                            res.status(500).json({
+	                                success: false,
+	                                message: err
+	                            });
+	                        } else {
+								res.status(200).json(number);
+	                        }
+	                    });
+				}
+            }
+        });
+    } else {
+        // CATEGORY FILTER DEACTIVATED
+                if (filter_maxPrice != -1) {
+                	// PRICE FILTER ACTIVATED
+			        Product.count({
+			                maxPrice: {
+			                    $lt: filter_maxPrice
+			                },
+			                avgRating: {
+			                    $gte: filter_minRating,
+			                    $lt: filter_maxRating
+			                },
+			            }).exec(function(err, number) {
+			                if (err) {
+			                    res.status(500).json({
+			                        success: false,
+			                        message: err
+			                    });
+			                } else {
+			                    res.status(200).json(number);
+			                }
+			            });
+			    } else {
+			    	// PRICE FILTER DEACTIVATED
+			    	Product.count({
+			                avgRating: {
+			                    $gte: filter_minRating,
+			                    $lt: filter_maxRating
+			                },
+			            }).exec(function(err, number) {
+			                if (err) {
+			                    res.status(500).json({
+			                        success: false,
+			                        message: err
+			                    });
+			                } else {
+			                    res.status(200).json(number);
+			                }
+			            });
+			    }
+    }
+
+};
+
+// Return collection of limited products: Used in home page.
 exports.getAllProductsLimit = function(req, res) {
 	var limit = parseInt(req.params.limit);
 	console.log('Function-productsApi-getAllProductsLimit  -- limit:' + limit);
@@ -160,6 +395,9 @@ exports.updateProductImage = function (req, res) {
 
 // Update a product with a new/edited rating
 exports.updateProductRating = function (req, res) {
+	var product_id = req.body.id;
+	var rating_value = req.body.rating
+
 	Authentication.currentUser(req.cookies.session, req.app.get('superSecret'), function (user) {
 		if(user == -1) {
 			res.status(403).json({success: false, message: "Doesnt have permission"});
@@ -169,7 +407,7 @@ exports.updateProductRating = function (req, res) {
 				var u_id = actor._id;
 
 				if (actor._type=='customer') {
-					CustomerService.checkPurchasing(actor, req.body.id, function (response) {
+					CustomerService.checkPurchasing(actor, product_id, function (response) {
 						if(!response) {
 							res.sendStatus(401)
 							return;
@@ -180,19 +418,22 @@ exports.updateProductRating = function (req, res) {
 								return;
 							} else {
 								if(rate) {
-									Rate.findByIdAndUpdate(rate._id, { $set : { rate : req.body.rating } }, function (err, updated) {
+									// Rate found: Update
+									Rate.findByIdAndUpdate(rate._id, { $set : { rate : rating_value } }, function (err, updated) {
 										if (err) {
 											res.sendStatus(503);
 											return;
 										} else {
+											ProductService.updateAverageRating(product_id);
 											res.sendStatus(200);
 											return;
 										}
 									});
 								} else {
+									// Rate not found: Create new one
 									var new_rate = new Rate({
-										rate: req.body.rating,
-										product_id : req.body.id,
+										rate: rating_value,
+										product_id : product_id,
 										customer_id : customer_id
 									});
 
@@ -201,6 +442,7 @@ exports.updateProductRating = function (req, res) {
 											res.sendStatus(503);
 											return;
 										} else {
+											ProductService.updateAverageRating(product_id);
 											res.sendStatus(200);
 											return;
 										}
