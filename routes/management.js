@@ -16,7 +16,8 @@ var db_utils = require('./db_utils'),
 	mongoose = require('mongoose'),
 	fs = require('fs'),
 	async = require('async'),
-	generator = require('creditcard-generator');
+	generator = require('creditcard-generator'),
+	ProductService = require('./services/service_products');
 
 
 function random(max, min) {
@@ -381,6 +382,35 @@ function loadProvides(product, callback) {
 			var provide = provides[Math.floor(Math.random() * provides.length)];
 
 			callback(provide);
+		}
+	});
+}
+
+exports.updateAllAvgRatingAndMinMaxPrice = function (req, res) {
+	Product.find(function (err, products) {
+		if (err) {
+			res.status(500).json({success: false, message: err});
+		} else {
+			var error = '';
+			products.forEach( function(product) {
+				ProductService.updateAverageRating(product._id, function (response1) {
+					if (!response1){
+						error += 'Error updating avg rating of product ID: ' + product._id + '\n';
+						console.log('Error updating avg rating of product ID: ' + product._id);
+					} else {
+						console.log('Updated avgRating of product ID: ' + product._id);
+					}
+					ProductService.updateMinMaxPrice(product._id, function (response2) {
+						if (!response2){
+							error += 'Error updating minmax price of product ID: ' + product._id + '\n';
+							console.log('Error updating minmax price of product ID: ' + product._id);
+						} else {
+							console.log('Updated minmax Price of product ID: ' + product._id);
+						}
+					});
+				});
+			});
+			res.status(200).json('Check console!');
 		}
 	});
 }

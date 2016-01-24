@@ -234,7 +234,8 @@
 		"Next" : "Next",
 		"Empty" : "No products with these features",
 		"RatingPurchaseError" : "You can not rate a product without purchasing it",
-		"ClearFilters" : "Clear filters"
+		"ClearFilters" : "Clear filters",
+		"Categories" : "Categories"
 	},
 	"Product" : {
 		"Edit" : "Edit",

@@ -8,7 +8,10 @@ var productSchema = mongoose.Schema({
 	name: String,
 	description: {type: String, required: true},
 	code: {type: String, required: true, unique:true},
-	image: String
+	image: String,
+	minPrice: {type: Number, required:false, min:0},
+	maxPrice: {type: Number, required:false, min:0},
+	avgRating: {type: Number, required:false, min:0, max:5}
 });
 
 productSchema.plugin(autoIncrement.plugin, 'Product');

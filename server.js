@@ -64,7 +64,8 @@ app.get('/home', routes.index);
 /* JSON API */
 
 // Products
-app.get('/api/products', api.Products.getAllProducts);
+app.post('/api/products/filtered', api.Products.getAllProductsFiltered);
+app.post('/api/products/filtered/count', api.Products.countProductsFiltered);
 app.get('/api/products/limit/:limit', api.Products.getAllProductsLimit)
 app.get('/api/product/:id', api.Products.getProduct);
 app.post('/api/product/updateProduct', api.Products.updateProduct);
@@ -78,6 +79,9 @@ app.get('/api/averageRatingByProductId/:id', api.Rates.getAverageRatingByProduct
 // Provides
 app.get('/api/provide/:id', api.Provides.getProvide);
 app.get('/api/providesByProductId/:id', api.Provides.getProvidesByProductId);
+
+// Categories
+app.get('/api/categories', api.Categories.getCategories);
 
 // Purchases
 app.get('/api/purchase/:id', api.Purchases.getPurchase);
@@ -120,6 +124,7 @@ app.get('/api/creditcard/:id', api.CreditCard.getCreditCard);
 // Management
 app.get('/api/resetDataset', api.Management.resetDataset);
 app.get('/api/loadBigDataset', api.Management.loadBigDataset);
+app.get('/api/updateProductFields', api.Management.updateAllAvgRatingAndMinMaxPrice);
 
 // i18n
 app.get('/api/lang', api.i18n.getLanguageFile);

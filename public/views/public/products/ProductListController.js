@@ -1,65 +1,157 @@
 'use strict'
 
 angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$http', function ($scope, $http) {
-	
-	$http({
-		method: 'GET',
-		url: '/api/products'
-	}).
-	then(function success(response1) {
-		$scope.products = response1.data;
-		$scope.products.forEach(function(product) {
-    		$http({
-				method: 'GET',
-				url: '/api/providesByProductId/' + product._id
-			}).
-			then(function success(response2) {
-				var provides = response2.data;
-				var minMax = minMaxPrices(provides);
-				product.minPrice = minMax[0];
-				product.maxPrice = minMax[1]; 
-			}, function error (response2) {
-			});
 
-			$http({
-				method: 'GET',
-				url: '/api/averageRatingByProductId/' + product._id
-			}).
-			then(function success(response2) {
-				product.rating = response2.data;
-			}, function error (response2) {
-			});
-		});
-
-	}, function error(response1) {
-	});
-
-	var minMaxPrices = function (provides) {
-		var lowest = Number.POSITIVE_INFINITY;
-		var highest = Number.NEGATIVE_INFINITY;
-		var tmp;
-		for (var i = provides.length - 1; i >= 0; i--) {
-		    tmp = provides[i].price;
-		    if (tmp < lowest) lowest = tmp;
-		    if (tmp > highest) highest = tmp;
-		}
-		return [lowest, highest];
-	}
-
-
+	// DEFAULT VALUES
 	// Orderings
-
 	$scope.inverseOrder = false;
 	$scope.sortProductsBy = 'name';
+    // Filters
+    $scope.priceFilterMode = 0;
+    $scope.ratingFilterMode = 0;
+    $scope.categoryFilterMode = -1;
+	// Pagination
+	$scope.currentPage = 0;
+    $scope.pageSize = '10';
+    // Inject Math
+    $scope.Math = window.Math;
 
-	$scope.invertOrder = function(sortProductsBy) {
-		$scope.inverseOrder = !$scope.inverseOrder;
+    // INIT
+
+    $http.get('/api/categories')
+    	.then( function success (response) {
+    		$scope.categories = response.data;
+    });
+
+    // Refresh the page (order, filter and pagination)
+	$scope.refreshPage = function(callback) {
+
+		$http.post('/api/products/filtered',
+			{
+				sort : $scope.sortProductsBy,
+				order : $scope.inverseOrder ? -1 : 1,
+				currentPage : $scope.currentPage,
+				pageSize : $scope.pageSize,
+				categoryFilter : $scope.categoryFilterMode,
+				priceFilter : translatePriceFilter($scope.priceFilterMode),
+				ratingFilter : $scope.ratingFilterMode
+			}
+		).then(function success(response) {
+			callback(response.data);
+			return;
+		});
 	};
 
-	$scope.normalOrInverse = function(sortProductsBy) {
-		var r;
+	// Refresh the pages
+	$scope.refreshCount = function(callback) {
+		$http.post('/api/products/filtered/count', 
+			{
+				categoryFilter : $scope.categoryFilterMode,
+				priceFilter : translatePriceFilter($scope.priceFilterMode),
+				ratingFilter : $scope.ratingFilterMode
+			}
+		).then(function success(response) {
+			callback(response.data);
+			return;
+		});
+	};
+
+	$scope.refresh = function () {
+		$scope.refreshCount(function (number) {
+    		$scope.numberOfProducts = number;
+    		if ($scope.currentPage > Math.ceil($scope.numberOfProducts/parseInt($scope.pageSize))) {
+    			$scope.currentPage = 0;
+    			$scope.reload();
+    		}
+    	});
+	};
+
+	$scope.reload = function() {
+		$scope.refreshPage(function (products) {
+    		$scope.products = products;
+    		$scope.refresh();
+    	});
+	};
+
+	// Auxiliar function: priceCode to maxPrice in filter
+   	var translatePriceFilter = function(code) {
+   		var res = '';
+    	code = parseInt(code)
+    	if (code>=0 && code<=9) {
+			switch(code) {
+    			case 0:
+    				break;
+    			case 1:
+    				res = 1;
+    				break;
+    			case 2:
+    				res = 5;
+    				break;
+    			case 3:
+    				res = 10;
+    				break;
+    			case 4:
+    				res = 20;	
+    				break;
+    			case 5:
+    				res = 50;
+    				break;
+    			case 6:
+    				res = 100;
+    				break;
+    			case 7:
+    				res = 200;
+    				break;
+    			case 8:
+    				res = 500;
+    				break;
+    			case 9:
+    				break;
+    			default:
+    				break;
+    		}
+    	}
+    	return res;
+	};
+
+    $scope.reload();
+
+
+    // FUNCTIONS
+
+    
+
+
+	// Clear filters
+	$scope.clearFilters = function(){
+		$scope.priceFilterMode = 0;
+    	$scope.ratingFilterMode = 0;
+    	$scope.categoryFilterMode = -1;
+    	$scope.reload();
+	};
+
+	// Change Category filter
+	$scope.categoryFilter = function(mode) {
+		$scope.categoryFilterMode = mode;
+    	$scope.reload();
+	};
+
+	// Change Price filter
+	$scope.priceFilter = function(mode) {
+		$scope.priceFilterMode = mode;
+    	$scope.reload();
+	};
+
+	// Change Rating filter
+	$scope.ratingFilter = function(mode) {
+		$scope.ratingFilterMode = mode;
+    	$scope.reload();
+	};
+
+	// Invert order button
+	$scope.invertOrder = function() {
+		$scope.inverseOrder = !$scope.inverseOrder;
 		if ($scope.inverseOrder) {
-			r = '-'.concat($scope.sortProductsBy);
 			// Method to make image rotate
 			$('.v-middle').css({
 		        '-webkit-transform': 'rotate(' + 180 + 'deg)',  //Safari 3.1+, Chrome  
@@ -70,7 +162,6 @@ angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$
 
 		    });
 		} else {
-			r = $scope.sortProductsBy;
 			$('.v-middle').css({
 		        '-webkit-transform': 'rotate(' + 0 + 'deg)',  //Safari 3.1+, Chrome  
 		        '-moz-transform': 'rotate(' + 0 + 'deg)',     //Firefox 3.5-15  
@@ -81,133 +172,10 @@ angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$
 		    });
 		}
 
-		return r;
-	}
+		$scope.reload();
+	};
 
-	// Pagination
 
-	$scope.currentPage = 0;
-    $scope.pageSize = 10;
-
-    $scope.numberOfPages = function() {
-    	var products = $scope.applyFilters();
-    	if (products) {
-    		return Math.ceil(products.length/$scope.pageSize);     
-    	}        
-    }
-
-    // Filters
-
-    $scope.priceFilterMode = 0;
-    $scope.ratingFilterMode = 0;
-
-   	$scope.priceFilter = function(products, type) {
-    	var type = parseInt(type);
-   		var r = [];
-   		// Check products response received
-    	if (type>=0 && type<=9 && products) {
-    		// Check provides response received
-    		if (products[0].minPrice && products[0].maxPrice) {
-	    		for (var i = 0; i<products.length; i++) {
-	    			switch(type) {
-		    			case 0:
-		    				r.push(products[i]);
-		    				break;
-		    			case 1:
-		    				if (products[i].minPrice >= 0 && products[i].maxPrice <1) {
-		    					r.push(products[i]);
-		    				}
-		    				break;
-		    			case 2:
-		    				if (products[i].minPrice >= 1 && products[i].maxPrice <5) {
-		    					r.push(products[i]);
-		    				}
-		    				break;
-		    			case 3:
-		    				if (products[i].minPrice >= 5 && products[i].maxPrice <10) {
-		    					r.push(products[i]);
-		    				}
-		    				break;
-		    			case 4:
-		    				if (products[i].minPrice >= 10 && products[i].maxPrice <20) {
-		    					r.push(products[i]);
-		    				}	
-		    				break;
-		    			case 5:
-		    				if (products[i].minPrice >= 20 && products[i].maxPrice <50) {
-		    					r.push(products[i]);
-		    				}
-		    				break;
-		    			case 6:
-		    				if (products[i].minPrice >= 50 && products[i].maxPrice <100) {
-		    					r.push(products[i]);
-		    				}
-		    				break;
-		    			case 7:
-		    				if (products[i].minPrice >= 100 && products[i].maxPrice <200) {
-		    					r.push(products[i]);
-		    				}
-		    				break;
-		    			case 8:
-		    				if (products[i].minPrice >= 200 && products[i].maxPrice <500) {
-		    					r.push(products[i]);
-		    				}
-		    				break;
-		    			case 9:
-		    				if (products[i].minPrice >= 500) {
-		    					r.push(products[i]);
-		    				}
-		    				break;
-		    		}
-	    		}
-	    	}
-    	}
-    	return r;
-    }
-
-    $scope.ratingFilter = function(products, type) {
-    	var type = parseInt(type);
-   		var r = [];
-   		if (type>=0 && type<=5 && products) {
-   			for (var i = 0; i<products.length; i++) {
-   				switch(type) {
-	    			case 0:
-	    				r.push(products[i]);
-	    				break;
-	    			case 1:
-	    				if (products[i].rating >= 1 && products[i].rating <2) {
-	    					r.push(products[i]);
-	    				}
-	    				break;
-	    			case 2:
-	    				if (products[i].rating >= 2 && products[i].rating <3) {
-	    					r.push(products[i]);
-	    				}
-	    				break;
-	    			case 3:
-	    				if (products[i].rating >= 3 && products[i].rating <4) {
-	    					r.push(products[i]);
-	    				}
-	    				break;
-	    			case 4:
-	    				if (products[i].rating >= 4 && products[i].rating <5) {
-	    					r.push(products[i]);
-	    				}	
-	    				break;
-	    			case 5:
-	    				if (products[i].rating === 5) {
-	    					r.push(products[i]);
-	    				}
-	    				break;
-	    		}
-   			}
-   		}
-   		return r;
-    }
-
-    $scope.applyFilters = function() {
-    	return $scope.ratingFilter($scope.priceFilter($scope.products, $scope.priceFilterMode), $scope.ratingFilterMode);
-    }
-
+	
 
 }]);
