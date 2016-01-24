@@ -4,7 +4,8 @@
 
 //MongoDB
 //Declaracion de la base de datos
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+	config = require('../config');
 
 exports.connect = function () {
 	mongoose.connect(config.database);

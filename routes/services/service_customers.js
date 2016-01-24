@@ -6,7 +6,7 @@ var Actor = require('../../models/actor'),
 	jwt = require('jsonwebtoken'),
 	validator = require('validator');
 
-// Returns true if principal is user_id by or principal is an admin
+// Returns true if principal is user_id or principal is an admin
 exports.checkPrincipalOrAdmin = function(cookie, jwtKey, customer_id, callback) {
 	if (cookie !== undefined) {
 		var token = cookie.token;

@@ -13,7 +13,7 @@ var express = require('express'),
 		routes = require('./routes/routes'),
 		http = require('http'),
 		path = require('path'),
-		db_utils = require('./routes/db_utils');
+		db_utils = require('./routes/db_utils'),
 		config = require('./config'),
 		cookieParser = require('cookie-parser');
 
@@ -111,6 +111,7 @@ app.post('/api/customer/updateCC', api.Customer.updateCC);
 app.post('/api/customer', api.Customer.updateCustomer);
 app.delete('/api/customer/:id', api.Customer.deleteCustomer);
 app.get('/api/mycreditcard', api.Customer.getMyCreditCard);
+app.get('/api/myRecommendations', api.Customer.getMyRecommendations);
 
 // Admins
 
