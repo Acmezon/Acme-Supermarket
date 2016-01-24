@@ -17,7 +17,8 @@ var db_utils = require('./db_utils'),
 	fs = require('fs'),
 	async = require('async'),
 	generator = require('creditcard-generator'),
-	ProductService = require('./services/service_products');
+	ProductService = require('./services/service_products'),
+	PurchaseService = require('./services/service_purchase');
 
 
 function random(max, min) {
@@ -332,6 +333,10 @@ function buyProduct(product, customer_id ,callback) {
 								callback();
 							});
 						});
+
+						if(!PurchaseService.storePurchaseInRecommendation(customer_id, product.id)) {
+							console.log("--ERR: Error saving purchase in recommender system.")
+						}
 					}
 				});
 			}
@@ -417,6 +422,7 @@ exports.updateAllAvgRatingAndMinMaxPrice = function (req, res) {
 
 exports.loadBigDataset = function (req, res) {
 	startProcess(function () {
+		updateAllAvgRatingAndMinMaxPrice(req, res);
 		console.log("Finished");
 	});
 

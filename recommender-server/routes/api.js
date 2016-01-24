@@ -3,6 +3,7 @@ var Recommendation_rates = require('../models/recommendations_rates'),
 	Recommendation_purchases = require('../models/recommendation_purchases'),
 	Config_rates = require('../models/config_rates'),
 	Config_purchases = require('../models/config_purchases'),
+	Purchase = require('../models/purchase'),
 	recommendation_service = require('./services/service_recommender_system');
 
 // Returns the recommendations of a customer identified by received id
@@ -55,6 +56,49 @@ exports.updateParameters = function(req, res) {
 			}
 		}
 	);
+}
+
+exports.storePurchase = function(req, res) {
+	var customer_id = req.body.customer;
+	var product_id = req.body.product;
+
+	//Si no esta presente el producto o el cliente
+	if(!customer_id || !product_id) {
+		//Devolvemos un error de petición mal formada
+		res.sendStatus(400);
+		return;
+	}
+
+	Purchase.find({'customer_id' : customer_id, 'product_id' : product_id}, function (err, results) {
+		if(err){
+			console.log(err);
+			res.sendStatus(500);
+		}
+
+		if(results.length) {
+			//Si ya hay un registro que indica que el cliente ha comprado ese producto, no se hace nada
+			console.log("Already purchased");
+			res.sendStatus(200);
+			return;
+		} else {
+			//Si no existe el registro, se crea uno nuevo
+			var purchase = new Purchase({
+				'customer_id' : customer_id,
+				'product_id' : product_id
+			});
+
+			//Y se guarda
+			purchase.save( function (err) {
+				if(err) {
+					console.log(err);
+					res.sendStatus(500);
+				}
+
+				res.sendStatus(200);
+			});
+		}
+
+	});
 }
 
 exports.notFound = function(req, res) {

@@ -1,10 +1,3 @@
-
-/**
-* Module dependencies
-*/
-
-
-
 var express = require('express'),
 	bodyParser = require('body-parser'),
 	http = require('http'),
@@ -27,6 +20,7 @@ var api = require('./routes/api');
 app.get('/api/recommendations/:userId', api.getRecommendations);
 app.get('/api/recommend/:userId', api.recommend)
 app.get('/api/updateParameters/:userId', api.updateParameters);
+app.post('/api/storePurchase', api.storePurchase)
 
 // redirect all others to the index (HTML5 history) Use in production only
 app.get('*', api.notFound);
