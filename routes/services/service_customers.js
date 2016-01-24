@@ -56,7 +56,11 @@ exports.getPrincipalCustomer = function(cookie, jwtKey, callback) {
 					});
 				}
 			});
+		} else {
+			callback(null);
 		}
+	} else {
+		callback(null);
 	}
 }
 

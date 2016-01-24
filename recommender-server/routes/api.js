@@ -73,6 +73,7 @@ exports.storePurchase = function(req, res) {
 		if(err){
 			console.log(err);
 			res.sendStatus(500);
+			return;
 		}
 
 		if(results.length) {
@@ -90,11 +91,13 @@ exports.storePurchase = function(req, res) {
 			//Y se guarda
 			purchase.save( function (err) {
 				if(err) {
-					console.log(err);
+					console.log("ERR: " + err);
 					res.sendStatus(500);
+					return;
 				}
 
 				res.sendStatus(200);
+				return;
 			});
 		}
 

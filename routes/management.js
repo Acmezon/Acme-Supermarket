@@ -18,7 +18,8 @@ var db_utils = require('./db_utils'),
 	async = require('async'),
 	generator = require('creditcard-generator'),
 	ProductService = require('./services/service_products'),
-	PurchaseService = require('./services/service_purchase');
+	PurchaseService = require('./services/service_purchase'),
+	shuffle = require('shuffle-array');
 
 
 function random(max, min) {
@@ -72,20 +73,13 @@ function loadProducts(callback) {
  			var num_categories = Math.floor(Math.random() * 3) + 1;
 
  			Category.find({}, function (err, categories) {
- 				var rand_categories = [];
-
- 				for (var i = 0; i < num_categories; i++) {
- 					var index = Math.floor(Math.random() * categories.length);
-
- 					var cat = categories[index];
-
- 					rand_categories.push(cat['_id']);
- 				}
+ 				var shuffled_categories = shuffle(categories);
+ 				var rand_categories = shuffled_categories.slice(0, num_categories);
 
  				async.each(rand_categories, function (chosen_cat, callback) {
  					var belongs_to = new Belongs_to({
 						"product_id" : prod.id,
-						"category_id" : chosen_cat
+						"category_id" : chosen_cat.id
 					});
 
 					belongs_to.save(function (err) {
@@ -221,14 +215,9 @@ function loadPurchases(callback) {
 
 			var nr_products = random(max_products, min_products);
 
-			var rand_products = [];
-
 			Product.find({}, function (err, products) {
-				for(var i = 0; i < nr_products; i++) {
-					var rand_product = products[Math.floor(Math.random() * products.length)];
-
-					rand_products.push(rand_product);
-				}
+				var shuffled_products = shuffle(products);
+				var rand_products = shuffled_products.slice(0, nr_products);
 
 				async.each(rand_products, function (prd, callback2) {
 					buyProduct(prd, customer.id, callback2);
@@ -334,9 +323,7 @@ function buyProduct(product, customer_id ,callback) {
 							});
 						});
 
-						if(!PurchaseService.storePurchaseInRecommendation(customer_id, product.id)) {
-							console.log("--ERR: Error saving purchase in recommender system.")
-						}
+						PurchaseService.storePurchaseInRecommendation(customer_id, product.id);
 					}
 				});
 			}
@@ -352,14 +339,9 @@ function loadProvides(product, callback) {
 
 			var nr_suppliers = random(max_suppliers, min_suppliers);
 
-			var rand_suppliers = [];
-
 			Actor.find({"_type" : "Supplier"}, function (err, suppliers) {
-				for (var i = 0; i < nr_suppliers; i++) {
-					var rand_supplier = suppliers[Math.floor(Math.random() * suppliers.length)];
-
-					rand_suppliers.push(rand_supplier);
-				}
+				var shuffled_suppliers = shuffle(suppliers);
+				var rand_suppliers = shuffled_suppliers.slice(0, nr_suppliers);
 
 				async.each(rand_suppliers, function (supplier, callback2) {
 					var provide = new Provide({
@@ -422,7 +404,6 @@ exports.updateAllAvgRatingAndMinMaxPrice = function (req, res) {
 
 exports.loadBigDataset = function (req, res) {
 	startProcess(function () {
-		updateAllAvgRatingAndMinMaxPrice(req, res);
 		console.log("Finished");
 	});
 

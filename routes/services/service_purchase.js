@@ -10,12 +10,11 @@ exports.storePurchaseInRecommendation = function(customer, product) {
 				}
 		}, function (err,httpResponse,body){
 			if(err) {
-				console.log(err);
 				return false;
 			}
 
 			if(httpResponse.statusCode == 500) {
-				console.log(body)
+				console.log("Is 500");
 				return false;
 			}
 

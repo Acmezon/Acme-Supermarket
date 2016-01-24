@@ -7,7 +7,8 @@ var Customer = require('../models/customer'),
 	crypto = require('crypto'),//Necesario para encriptacion por MD5	
 	db_utils = require('./db_utils'),
 	jwt = require('jsonwebtoken'),
-	request = require('request');
+	request = require('request'),
+	SocialMediaService = require('./services/service_social_media');
 
 // Returns all customers of the system (W/O PASSWORDS)
 exports.getCustomers = function (req, res) {
@@ -285,64 +286,35 @@ exports.getMyCreditCard = function (req, res) {
 };
 
 exports.getMyRecommendations = function (req, res) {
-	var cookie = req.cookies.session;
-
-	if (cookie !== undefined) {
-		var token = cookie.token;
-
-		// decode token
-		if (token) {
-
-			// verifies secret and checks exp
-			jwt.verify(token, req.app.get('superSecret'), function(err, decoded) {
-				if (err) {
-					res.status(404).send({
-						success: false
-					});
-				} else {
-					var email = decoded.email;
-					var password = decoded.password;
-
-					Customer.findOne({email: email}, function (err, customer){
-						if(err){
-							res.status(404).send({
-								success: false
-							});							
-						} else{
-							// Check password correct
-							if (password != customer.password) {
-								res.status(401).json({success: false, message: "Not authenticated"});
+	CustomerService.getPrincipalCustomer(req.cookies.session, req.app.get('superSecret'), function (customer) {
+		if(customer) {
+			request(
+				{
+					uri : 'http://localhost:3030/api/recommendations/' + customer.id,
+					json : true
+				}, function (error, response, body) {
+					if (error || response.statusCode == 500 || response.statusCode == 204
+						|| response.statusCode == 404) {
+						SocialMediaService.socialMediaRecommendations( function (products) {
+							if(products) {
+								res.status(200).json(products);
 							} else {
-								// Check is customer
-								ActorService.getUserRole(req.cookies.session, req.app.get('superSecret'), function (role) {
-									if (role=='customer') {
-										request(
-										{
-											uri : 'http://localhost:3030/api/recommendations/' + customer.id,
-											json : true
-										}, function (error, response, body) {
-											console.log(response.statusCode)
-											if (error || response.statusCode == 500 || response.statusCode == 204
-												|| response.statusCode == 404) {
-												res.sendStatus(200);
-											} else {
-												res.status(200).json(body);
-											}
-										})
-									} else {
-										res.status(403).json({success: false, message: "Doesnt have permission"});
-									}
-								});
+								res.sendStatus(500);
 							}
-						}
-					});
+						});
+					} else {
+						res.status(200).json(body);
+					}
+				}
+			);
+		} else {
+			SocialMediaService.socialMediaRecommendations( function (products) {
+				if(products) {
+					res.status(200).json(products);
+				} else {
+					res.sendStatus(500);
 				}
 			});
-
-		} else {
-			res.status(401).json({success: false, message: "Not authenticated"});
 		}
-	} else {
-		res.status(401).json({success: false, message: "Not authenticated"});
-	}
+	});
 };
