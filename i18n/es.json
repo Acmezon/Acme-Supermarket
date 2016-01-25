@@ -24,12 +24,13 @@
 	},
 	"Home": {
 		"Title": "Inicio",
-		"FeaturedProducts" : "Productos Destacados",
+		"RecommendedProducts" : "Productos Recomendados",
 		"New" : "Nuevo",
 		"NewProducts" : "Productos Nuevos",
 		"CheckItOut" : "Consíguelo",
 		"NewslettersSignup" : "Suscribirse al <br> Newsletter",
-		"Subscribe" : "Suscribirse"
+		"Subscribe" : "Suscribirse",
+		"Recommended" : "Recomendado"
 	},
 	"Header": {
 		"Account" : "Mi cuenta",

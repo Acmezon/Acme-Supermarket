@@ -12,7 +12,8 @@ var Authentication = require('./authentication'),
 	Purchase = require('../models/purchase'),
 	ActorService = require('./services/service_actors'),
 	CustomerService = require('./services/service_customers'),
-	ProductService = require('./services/service_products');
+	ProductService = require('./services/service_products'),
+	async = require('async');
 
 // Returns all objects of the system, filtered
 exports.getAllProductsFiltered = function(req, res) {
@@ -481,3 +482,27 @@ exports.userHasPurchased = function (req, res) {
 		}
 	});
 };
+
+//Returs a json with all the products identified by all the IDs received in a list
+exports.getProductsByIdList = function (req, res) {
+	var products = req.body.products.data;
+	var products_json = [];
+
+	async.each(products, function (product, callback) {
+		var p_id = product.product_id;
+
+		Product.findById( p_id,function (err, prd){
+			if(err){
+				console.log('---ERROR finding Product: '+p_id);
+			}else{
+				products_json.push(prd);
+				callback();
+			}
+		});
+
+	}, function (error) {
+		if(error) res.sendStatus(500);
+
+		res.status(200).json(products_json);
+	});
+}

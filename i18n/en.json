@@ -24,12 +24,13 @@
 	},
 	"Home": {
 		"Title": "Home",
-		"FeaturedProducts" : "Featured Products",
+		"RecommendedProducts" : "Recommended Products",
 		"New" : "New",
 		"NewProducts" : "Mew Products",
 		"CheckItOut" : "Check It out",
 		"NewslettersSignup" : "Newsletters <br> Signup",
-		"Subscribe" : "Subscribe"
+		"Subscribe" : "Subscribe",
+		"Recommended" : "Recommended"
 	},
 	"Header": {
 		"Account" : "Account",

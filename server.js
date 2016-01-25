@@ -72,6 +72,7 @@ app.post('/api/product/updateProduct', api.Products.updateProduct);
 app.post('/api/product/updateProductImage', api.Products.updateProductImage);
 app.post('/api/product/updateProductRating', api.Products.updateProductRating);
 app.post('/api/product/userHasPurchased', api.Products.userHasPurchased);
+app.post('/api/product/getByIdList', api.Products.getProductsByIdList);
 
 // Rates
 app.get('/api/averageRatingByProductId/:id', api.Rates.getAverageRatingByProductId);

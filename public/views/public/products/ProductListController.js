@@ -175,7 +175,11 @@ angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$
 		$scope.reload();
 	};
 
-
-	
+	$http.get('/api/myRecommendations').then(function success(products) {
+		$http.post('/api/product/getByIdList', { products : products}).then(
+			function success(product_list) {
+				$scope.recommendedProducts = product_list.data;
+			}, function error(response){});
+	}, function error(response) {});
 
 }]);
