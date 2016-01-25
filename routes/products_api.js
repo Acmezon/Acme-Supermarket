@@ -13,6 +13,7 @@ var Authentication = require('./authentication'),
 	ActorService = require('./services/service_actors'),
 	CustomerService = require('./services/service_customers'),
 	ProductService = require('./services/service_products'),
+	RecommenderService = require('./services/service_recommender_server'),
 	async = require('async');
 
 // Returns all objects of the system, filtered
@@ -397,65 +398,79 @@ exports.updateProductImage = function (req, res) {
 // Update a product with a new/edited rating
 exports.updateProductRating = function (req, res) {
 	var product_id = req.body.id;
-	var rating_value = req.body.rating
+	var rating_value = req.body.rating;
 
-	Authentication.currentUser(req.cookies.session, req.app.get('superSecret'), function (user) {
-		if(user == -1) {
+	CustomerService.getPrincipalCustomer(req.cookies.session, req.app.get('superSecret'), function (user) {
+		if(user == null) {
 			res.status(403).json({success: false, message: "Doesnt have permission"});
 			return;
 		} else {
-			Actor.findOne({ email : user}, function (err, actor) {
-				var u_id = actor._id;
-
-				if (actor._type=='customer') {
-					CustomerService.checkPurchasing(actor, product_id, function (response) {
-						if(!response) {
-							res.sendStatus(401)
-							return;
-						}
-						Rate.findOne({ customer_id : u_id }, function (err, rate) {
-							if(err) {
-								res.sendStatus(503);
-								return;
-							} else {
-								if(rate) {
-									// Rate found: Update
-									Rate.findByIdAndUpdate(rate._id, { $set : { rate : rating_value } }, function (err, updated) {
-										if (err) {
-											res.sendStatus(503);
-											return;
-										} else {
-											ProductService.updateAverageRating(product_id);
-											res.sendStatus(200);
-											return;
-										}
-									});
+			CustomerService.checkPurchasing(user, product_id, function (response) {
+				if(!response) {
+					res.sendStatus(401)
+					return;
+				}
+				Rate.findOne({ customer_id : user.id }, function (err, rate) {
+					if(err) {
+						res.sendStatus(503);
+						return;
+					} else {
+						if(rate) {
+							// Rate found: Update
+							Rate.findByIdAndUpdate(rate._id, { $set : { rate : rating_value } }, function (err, updated) {
+								if (err) {
+									res.sendStatus(503);
+									return;
 								} else {
-									// Rate not found: Create new one
-									var new_rate = new Rate({
-										rate: rating_value,
-										product_id : product_id,
-										customer_id : customer_id
-									});
-
-									Rate.newRate(new_rate, function (err) {
-										if (err) {
-											res.sendStatus(503);
-											return;
+									// Update average rating and recalculate recommendations
+									ProductService.updateAverageRating(product_id, function (success) {
+										if(!success){
+											console.log("Ratings not updated");
 										} else {
-											ProductService.updateAverageRating(product_id);
-											res.sendStatus(200);
-											return;
+											RecommenderService.recommendRates(user.id, function (err, response){
+												if(err || response.statusCode == 500) {
+													console.log("No recommendations updated");
+												} else {
+													res.sendStatus(200);
+													return;
+												}
+											});
 										}
 									});
 								}
-							}
-						});
-					});
-				} else {
-					res.sendStatus(401);
-					return;
-				}
+							});
+						} else {
+							// Rate not found: Create new one
+							var new_rate = new Rate({
+								rate: rating_value,
+								product_id : product_id,
+								customer_id : user.id
+							});
+
+							Rate.newRate(new_rate, function (err) {
+								if (err) {
+									res.sendStatus(503);
+									return;
+								} else {
+									ProductService.updateAverageRating(product_id, function (success) {
+										if(!success){
+											console.log("Ratings not updated");
+										} else {
+											RecommenderService.recommendRates(user.id, function (err, response){
+												if(err || response.statusCode == 500) {
+													console.log("No recommendation updated")
+												} else {
+													res.sendStatus(200);
+													return;
+												}
+											});
+										}
+									});
+								}
+							});
+						}
+					}
+				});
 			});
 		}
 	});

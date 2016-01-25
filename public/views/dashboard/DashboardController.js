@@ -1,6 +1,7 @@
 angular.module('acme_supermarket').registerCtrl('DashboardCtrl', ['$scope', '$http', '$translate', 'ngToast', '$location',
 function ($scope, $http, $translate, ngToast, $location) {
-	checkSocialMediaStatus()
+	checkSocialMediaStatus();
+	checkRecommenderServerStatus();
 
 	$scope.startSocialMediaService = function() {
 		if($scope.socialMediaServiceRunning) {
@@ -77,6 +78,15 @@ function ($scope, $http, $translate, ngToast, $location) {
 				$scope.socialMediaServiceRunning = response.data.running;
 			}
 		,function error(response){});
+	}
+
+	function checkRecommenderServerStatus() {
+		$http.get('/api/recommender/checkStatus').then(
+		function success(response) {
+			$scope.recommenderServerRunning = response.data.online;
+		}, function error (response) {
+			$scope.recommenderServerRunning = false;
+		});
 	}
 
 }]);

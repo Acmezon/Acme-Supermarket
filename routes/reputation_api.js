@@ -12,19 +12,19 @@ exports.getAverageReputationBySupplierId = function (req, res) {
 	// Check authenticated
 	ActorService.getUserRole(cookie, jwtKey, function (role) {
 		if (role=='admin' || role=='customer' || role=='supplier') {
-			Reputation.find({supplier_id: _code},function(err,reputations){
-				var errors= [];//db_utils.handleErrors(err);
-				if(errors.length > 0){
-					console.log('---ERROR finding Reputation with  supplier_id: '+_code+' message: '+errors);
-					res.status(500).json({success: false, message: errors});
-				}else{
-					var total = 0;
-					for(var i = 0; i < reputations.length; i++) {
-					    total += reputations[i].value;
+			Reputation.aggregate([
+				{ "$match" : { "supplier_id" : parseInt(_code) }},
+				{
+					"$group":{
+						"_id" : "$supplier_id",
+						"avg" : { "$avg" : "$value"}
 					}
-					var reputation = total / reputations.length;
-					res.status(200).json(reputation);
 				}
+			], function (err, results) {
+				if(err) return false;
+				var reputation = results[0].avg;
+
+				res.status(200).json(reputation);
 			});
 		} else {
 			res.status(401).json({success: false, message: 'Doesnt have permission'});

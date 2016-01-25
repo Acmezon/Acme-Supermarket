@@ -326,6 +326,12 @@
 			"StartError" : "El anlálisis de presencia en redes sociales no se pudo iniciar. Inténtelo de nuevo más tarde",
 			"Stopping" : "El anlálisis de presencia en redes sociales se está deteniendo. Puede tardar unos segundos",
 			"StopError" : "El anlálisis de presencia en redes sociales no ha podido ser detenido. Inténtelo de nuevo más tarde"
+		},
+		"Recommender" : {
+			"Server" : "Servidor del sistema de recomendación",
+			"Running" : "Online",
+			"Stopped" : "Offline",
+			"Serverstatus" : "Estado del servidor"
 		}
 	},
 	"Checkout" : {

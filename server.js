@@ -136,6 +136,9 @@ app.get('/api/socialMedia/status', api.SocialMedia.isTwitterScrapperRunning);
 app.get('/api/socialMedia/start', api.SocialMedia.launchTwitterScrapper);
 app.get('/api/socialMedia/stop', api.SocialMedia.stopTwitterScrapper);
 
+//Recommender server
+app.get('/api/recommender/checkStatus', api.RecommenderServer.checkStatus);
+
 // redirect all others to the index (HTML5 history) Use in production only
 app.get('*', routes.index);
 

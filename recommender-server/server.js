@@ -18,9 +18,11 @@ var api = require('./routes/api');
 
 /* JSON API */
 app.get('/api/recommendations/:userId', api.getRecommendations);
-app.get('/api/recommend/:userId', api.recommend)
+app.get('/api/recommend/rates/:userId', api.recommendRates);
+app.get('/api/recommend/purchases/:userId', api.recommendPurchases);
 app.get('/api/updateParameters/:userId', api.updateParameters);
-app.post('/api/storePurchase', api.storePurchase)
+app.post('/api/storePurchase', api.storePurchase);
+app.get('/api/checkStatus', api.checkStatus);
 
 // redirect all others to the index (HTML5 history) Use in production only
 app.get('*', api.notFound);

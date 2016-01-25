@@ -3,7 +3,8 @@ var Purchase = require('../models/purchase'),
 	CustomerService = require('./services/service_customers'),
 	ProvideService = require('./services/service_provides'),
 	ActorService = require('./services/service_actors'),
-	PurchaseService = require('./services/service_purchase');
+	PurchaseService = require('./services/service_purchase'),
+	RecommenderService = require('./services/service_recommender_server');
 
 exports.getPurchasesByCustomerId = function(req, res) {
 	var _code = req.params.id;
@@ -124,6 +125,14 @@ exports.purchase = function (req, res) {
 						});
 			  			// FINISH LOOP
 			  			// FINISH PURCHASE PROCESS
+			  			// RECALCULATE RECOMMENDATION
+			  			RecommenderService.recommendPurchases(customer.id, function (err, response){
+			  				if(err || response.statusCode == 500) {
+			  					console.log("No recommendation updated")
+			  				} else {
+			  					console.log("Recommendations updated")
+			  				}
+			  			});
 			  			res.status(200).send(newPurchase);
 			  		}
 				});

@@ -31,12 +31,12 @@ exports.getRecommendations = function (req, res) {
 
 };
 
-exports.recommend = function(req, res) {
+exports.recommendRates = function(req, res) {
 	var user_id = req.params.userId;
-	recommendation_service.runRecommendation(user_id, 
+	recommendation_service.runRatesRecommendation(user_id, 
 		function (error, stdout, stderr) {
 			if(error) {
-				res.sendStatus(503);
+				res.sendStatus(500);
 			} else {
 				res.sendStatus(200);
 			}
@@ -44,13 +44,27 @@ exports.recommend = function(req, res) {
 	);
 }
 
+exports.recommendPurchases = function(req, res) {
+	var user_id = req.params.userId;
+	recommendation_service.runPurchasesRecommendation(user_id, 
+		function (error, stdout, stderr) {
+			if(error) {
+				res.sendStatus(500);
+			} else {
+				res.sendStatus(200);
+			}
+		}
+	);
+}
+
+
 exports.updateParameters = function(req, res) {
 	var user_id = req.params.userId;
 
 	recommendation_service.updateParameters(user_id, 
 		function (error, stdout, stderr) {
 			if(error) {
-				res.sendStatus(503);
+				res.sendStatus(500);
 			} else {
 				res.sendStatus(200);
 			}
@@ -102,6 +116,10 @@ exports.storePurchase = function(req, res) {
 		}
 
 	});
+}
+
+exports.checkStatus = function(req, res) {
+	res.sendStatus(200);
 }
 
 exports.notFound = function(req, res) {

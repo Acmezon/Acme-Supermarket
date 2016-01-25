@@ -48,7 +48,7 @@ exports.getPrincipalCustomer = function(cookie, jwtKey, callback) {
 						email: decoded.email,
 						_type: 'Customer'
 					}, function (err, customer){
-						if (err) {
+						if (err || !customer) {
 							callback(null);
 						} else {
 							callback(customer);
@@ -91,11 +91,11 @@ exports.checkOwnerOrAdmin = function(cookie, jwtKey, credit_card_id, callback) {
 	}
 }
 
-// Returns true if used_id has purchased product_id (via provides)
+// Returns true if user has purchased product_id (via provides)
 exports.checkPurchasing = function (user, product_id, callback) {
 
 	if (user) {
-		if (user._type=='customer') {
+		if (user._type=='Customer') {
 			Provide.find({ product_id : product_id }, function (err, provides) {
 				if (err || provides.length == 0) {
 					callback(false);
@@ -128,7 +128,7 @@ exports.checkPurchasing = function (user, product_id, callback) {
 						}
 
 						for(var i = 0; i < purchases.length; i++) {
-							if ( String(purchases[i].customer_id) == String(user_id)) {
+							if ( String(purchases[i].customer_id) == String(user.id)) {
 								callback(true);
 								return;
 							}
