@@ -115,7 +115,7 @@ function loadAdmins(callback) {
 	var admins = JSON.parse(admins_f);
 
 	async.each(admins.admins, function (admin, callback) {
-		var admin1 = new Actor({
+		var admin1 = new Admin({
 			"_type" : admin._type,
 			"name" : admin.name,
 			"surname" : admin.surname,
@@ -493,7 +493,7 @@ exports.resetDataset = function (req, res) {
 	});
 
 	var admin = new Admin({
-		"type" : "Admin",
+		"_type" : "Admin",
 		"name" : "admin",
 		"surname" : "admin",
 		"email" : "admin@mail.com",
