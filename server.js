@@ -127,6 +127,7 @@ app.get('/api/creditcard/:id', api.CreditCard.getCreditCard);
 app.get('/api/resetDataset', api.Management.resetDataset);
 app.get('/api/loadBigDataset', api.Management.loadBigDataset);
 app.get('/api/updateProductFields', api.Management.updateAllAvgRatingAndMinMaxPrice);
+app.get('/api/fixDeadImages', api.Management.fixDeadImages)
 
 // i18n
 app.get('/api/lang', api.i18n.getLanguageFile);

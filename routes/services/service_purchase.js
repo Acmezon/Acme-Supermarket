@@ -19,7 +19,6 @@ exports.storePurchaseInRecommendation = function(customer, product) {
 			}
 
 			if(httpResponse.statusCode == 200) {
-				console.log("True");
 				return true;
 			}
 		}

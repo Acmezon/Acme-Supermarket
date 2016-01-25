@@ -88,12 +88,35 @@
 				<div>
 					<h3 class="m_3">{{ 'Products.OtherRecommendations' | translate}}</h3>
 					<!-- Recommendations carrousel -->
+					<div ng-repeat="product in recommendedProducts | limitTo:3">
+
+						<div class="col_1_of_3 span_1_of_3">
+							<a class="product" href="product/{{product._id}}">
+								<div class="inner_content clearfix">
+									<div class="product_image">
+										<img src="img/{{product.image}}" alt=""/>
+									</div>
+									<div class="sale-box">
+										<span class="on_sale title_shop">{{ 'Home.Recommended' | translate }}</span>
+									</div>
+									<div class="product-block">
+										<div class="cart-left">
+											<p class="title">{{product.name}}</p>
+											<div class="price1">
+												<span class="actual">{{product.minPrice}} - {{product.maxPrice}} €</span>
+											</div>
+										</div>
+										<div class="cart-right"></div>
+										<div class="clear"></div>
+									</div>
+								</div>
+							</a>
+						</div>
+						
+					</div>
+
 					<ul id="recommendations">
-						<li><img src="img/template_bootstrap/pic1.jpg" /><a href="product/name1">Name 1</a><p>Rs 600</p></li>
-						<li><img src="img/template_bootstrap/pic2.jpg" /><a href="product/name2">Name 2</a><p>Rs 850</p></li>
-						<li><img src="img/template_bootstrap/pic3.jpg" /><a href="product/name3">Name 3</a><p>Rs 900</p></li>
-						<li><img src="img/template_bootstrap/pic4.jpg" /><a href="product/name4">Name 4</a><p>Rs 550</p></li>
-						<li><img src="img/template_bootstrap/pic5.jpg" /><a href="product/name5">Name 5</a><p>Rs 750</p></li>
+						<li ng-repeat="product in recommendedProducts"><img src="img/{{product.image}}" /><a href="product/{{product._id}}">{{product.name}}</a><div class="price1"><span class="actual">{{product.minPrice}} - {{product.maxPrice}} €</span></div></li>
 					</ul>
 					<script type="text/javascript" src="js/lib/jquery.flexisel.js"></script>
 					<script type="text/javascript">
