@@ -6,7 +6,9 @@ var Customer = require('../models/customer'),
 	CustomerService = require('./services/service_customers'),
 	crypto = require('crypto'),//Necesario para encriptacion por MD5	
 	db_utils = require('./db_utils'),
-	jwt = require('jsonwebtoken');
+	jwt = require('jsonwebtoken'),
+	request = require('request'),
+	SocialMediaService = require('./services/service_social_media');
 
 // Returns all customers of the system (W/O PASSWORDS)
 exports.getCustomers = function (req, res) {
@@ -281,4 +283,38 @@ exports.getMyCreditCard = function (req, res) {
 	} else {
 		res.status(401).json({success: false, message: "Not authenticated"});
 	}
+};
+
+exports.getMyRecommendations = function (req, res) {
+	CustomerService.getPrincipalCustomer(req.cookies.session, req.app.get('superSecret'), function (customer) {
+		if(customer) {
+			request(
+				{
+					uri : 'http://localhost:3030/api/recommendations/' + customer.id,
+					json : true
+				}, function (error, response, body) {
+					if (error || response.statusCode == 500 || response.statusCode == 204
+						|| response.statusCode == 404) {
+						SocialMediaService.socialMediaRecommendations( function (products) {
+							if(products) {
+								res.status(200).json(products);
+							} else {
+								res.sendStatus(500);
+							}
+						});
+					} else {
+						res.status(200).json(body);
+					}
+				}
+			);
+		} else {
+			SocialMediaService.socialMediaRecommendations( function (products) {
+				if(products) {
+					res.status(200).json(products);
+				} else {
+					res.sendStatus(500);
+				}
+			});
+		}
+	});
 };

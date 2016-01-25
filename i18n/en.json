@@ -24,12 +24,13 @@
 	},
 	"Home": {
 		"Title": "Home",
-		"FeaturedProducts" : "Featured Products",
+		"RecommendedProducts" : "Recommended Products",
 		"New" : "New",
 		"NewProducts" : "Mew Products",
 		"CheckItOut" : "Check It out",
 		"NewslettersSignup" : "Newsletters <br> Signup",
-		"Subscribe" : "Subscribe"
+		"Subscribe" : "Subscribe",
+		"Recommended" : "Recommended"
 	},
 	"Header": {
 		"Account" : "Account",
@@ -325,6 +326,12 @@
 			"StartError" : "The social media presence analysis could not start. Try again later",
 			"Stopping" : "The social media presence analysis is being stopped. It could take a few seconds",
 			"StopError" : "The social media presence analysis is not able to stop. Try again later"
+		},
+		"Recommender" : {
+			"Server" : "Recommender system server",
+			"Running" : "Online",
+			"Stopped" : "Offline",
+			"Serverstatus" : "Server status"
 		}
 	},
 	"Checkout" : {

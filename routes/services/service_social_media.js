@@ -1,5 +1,6 @@
-var exec = require('child_process').exec, child;
-var fs = require('fs');
+var exec = require('child_process').exec, child,
+	fs = require('fs'),
+	SocialMediaProductData = require('../../models/social_media_product_data');
 
 //Inicia el proceso de escucha en twitter y guarda su ID
 exports.runProcess = function (){
@@ -69,3 +70,30 @@ function removePID(pid) {
 
 	return true;
 }
+
+
+var socialMediaRecommendations = function (callback) {
+	SocialMediaProductData.aggregate([
+		{"$group": {
+			"_id": {
+				"product_id": "$product_id",
+			},
+			"occurances": {
+				"$sum": 1,
+			}
+		}},
+		{"$sort": {"occurances": -1}},
+		{"$limit" : 20}
+	], function (err, results) {
+		if(err) return false;
+		var products = [];
+
+		for(var i = 0; i < results.length; i++) {
+			products.push({ "product_id" : results[i]._id.product_id })
+		}
+
+		callback(products);
+	});
+}
+
+exports.socialMediaRecommendations = socialMediaRecommendations;

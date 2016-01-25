@@ -12,7 +12,7 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 	}).
 	then(function success(response) {
 		$scope.product = response.data;
-		$scope.rate = response.data.rating
+		$scope.rate = $scope.product.avgRating;
 
 		$scope.out_suppliers = [];
 
@@ -23,11 +23,7 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 		}).
 		then (function success (response2) {
 			var provides = response2.data;
-
-			var minMax = minMaxPrices(provides);
-			$scope.product.minPrice = minMax[0];
-			$scope.product.maxPrice = minMax[1]; 
-
+			
 			provides.forEach(function(provide) {
 
 				// Get supplier of each provide

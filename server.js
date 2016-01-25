@@ -13,7 +13,7 @@ var express = require('express'),
 		routes = require('./routes/routes'),
 		http = require('http'),
 		path = require('path'),
-		db_utils = require('./routes/db_utils');
+		db_utils = require('./routes/db_utils'),
 		config = require('./config'),
 		cookieParser = require('cookie-parser');
 
@@ -72,6 +72,7 @@ app.post('/api/product/updateProduct', api.Products.updateProduct);
 app.post('/api/product/updateProductImage', api.Products.updateProductImage);
 app.post('/api/product/updateProductRating', api.Products.updateProductRating);
 app.post('/api/product/userHasPurchased', api.Products.userHasPurchased);
+app.post('/api/product/getByIdList', api.Products.getProductsByIdList);
 
 // Rates
 app.get('/api/averageRatingByProductId/:id', api.Rates.getAverageRatingByProductId);
@@ -115,6 +116,7 @@ app.post('/api/customer/updateCC', api.Customer.updateCC);
 app.post('/api/customer', api.Customer.updateCustomer);
 app.delete('/api/customer/:id', api.Customer.deleteCustomer);
 app.get('/api/mycreditcard', api.Customer.getMyCreditCard);
+app.get('/api/myRecommendations', api.Customer.getMyRecommendations);
 
 // Admins
 
@@ -133,6 +135,9 @@ app.get('/api/lang', api.i18n.getLanguageFile);
 app.get('/api/socialMedia/status', api.SocialMedia.isTwitterScrapperRunning);
 app.get('/api/socialMedia/start', api.SocialMedia.launchTwitterScrapper);
 app.get('/api/socialMedia/stop', api.SocialMedia.stopTwitterScrapper);
+
+//Recommender server
+app.get('/api/recommender/checkStatus', api.RecommenderServer.checkStatus);
 
 // redirect all others to the index (HTML5 history) Use in production only
 app.get('*', routes.index);

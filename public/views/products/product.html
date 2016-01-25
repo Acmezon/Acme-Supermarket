@@ -34,7 +34,7 @@
 				<div class="desc1 span_3_of_2">
 					<!-- Rating Stars Box -->
 					<div ng-if="!userHasPurchased" class="rating">
-						<i ng-repeat="n in [1, 2, 3, 4, 5] track by $index" class="glyphicon" ng-class="{'glyphicon-star': rate >= $index + 1, 'glyphicon-star-empty': rate < $index + 1}"></i>
+						<span ng-repeat="n in [1, 2, 3, 4, 5] track by $index" class="glyphicon" ng-class="{'glyphicon-star': rate >= $index + 1, 'glyphicon-star-empty': rate < $index + 1}"></span>
 					</div>
 
 					<div ng-if="userHasPurchased">
