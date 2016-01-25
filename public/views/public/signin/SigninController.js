@@ -1,7 +1,6 @@
 'use strict'
 
 angular.module('acme_supermarket').registerCtrl('SigninCtrl', ['$scope', '$http', '$window', '$rootScope', function ($scope, $http, $window, $rootScope) {
-
 	$scope.loginFailed = false;
 	if($rootScope.loginFailed){
 		$scope.loginFailed = true;

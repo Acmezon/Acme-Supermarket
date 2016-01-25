@@ -235,3 +235,21 @@ th {
   	display:none;
   }
 }
+
+/*Fix product box height*/
+.inner_content {
+	height: 340px;
+}
+
+/*Make recommendation slider not force the text to be in one line*/
+.nbs-flexisel-item {
+	line-height: initial;
+}
+
+/*Make recommendation slider arrows not overlap the products*/
+.nbs-flexisel-nav-left {
+	left: -25px;
+}
+.nbs-flexisel-nav-right {
+	right: -25px;
+}

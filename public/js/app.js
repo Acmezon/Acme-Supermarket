@@ -41,9 +41,9 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			// Make an AJAX call to check if the user is logged in
 			$http.get('/islogged').then(function success(response){
 				// Authenticated
-				if (response.data.success)
+				if (response.data.success) {
 					deferred.resolve();
-
+				}
 				// Not Authenticated
 				else {
 					$rootScope.loginFailed = true;
@@ -54,6 +54,28 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 				$rootScope.loginFailed = true;
 				deferred.reject();
 				$location.url('/signin');
+			});
+			return deferred.promise;
+		};
+
+		var notLoggedin = function($q, $timeout, $http, $location, $rootScope){
+			// Initialize a new promise
+			var deferred = $q.defer();
+
+			// Make an AJAX call to check if the user is logged in
+			$http.get('/islogged').then(function success(response){
+				// Not Authenticated
+				if (!response.data.success) {
+					deferred.resolve();
+				}
+				// Not Authenticated
+				else {
+					deferred.reject();
+					$location.url('/home');
+				}
+			}, function error(response) {
+				deferred.reject();
+				$location.url('/home');
 			});
 			return deferred.promise;
 		};
@@ -187,7 +209,10 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 		}).
 		when('/signin', {
 			templateUrl: 'views/public/signin/signin.html',
-			controller: 'SigninCtrl'
+			controller: 'SigninCtrl',
+			resolve : {
+				loggedin : notLoggedin
+			}
 		}).
 		when('/signout', {
 			templateUrl: 'views/public/signout/signout.html',
@@ -195,7 +220,10 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 		}).
 		when('/signup', {
 			templateUrl: 'views/public/signup/signup.html',
-			controller: 'SignupCtrl'
+			controller: 'SignupCtrl',
+			resolve : {
+				loggedin : notLoggedin
+			}
 		}).
 		when('/myprofile', {
 			templateUrl: 'views/user/profile/profile.html',

@@ -4,8 +4,6 @@ angular.module('acme_supermarket').registerCtrl('ProductDetailsCtrl', ['$scope',
 function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $cookieStore, $location, $rootScope) {
 	var id = $routeParams.id;
 
-	
-
 	$http({
 		method: 'GET',
 		url: '/api/product/' + id
@@ -211,15 +209,10 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 		$cookieStore.put("shoppingcart", new_cookie);
 	}
 
-	var minMaxPrices = function (provides) {
-		var lowest = Number.POSITIVE_INFINITY;
-		var highest = Number.NEGATIVE_INFINITY;
-		var tmp;
-		for (var i = provides.length - 1; i >= 0; i--) {
-		    tmp = provides[i].price;
-		    if (tmp < lowest) lowest = tmp;
-		    if (tmp > highest) highest = tmp;
-		}
-		return [lowest, highest];
-	}
+	$http.get('/api/myRecommendations').then(function success(products) {
+		$http.post('/api/product/getByIdList', { products : products}).then(
+			function success(product_list) {
+				$scope.recommendedProducts = product_list.data;
+			}, function error(response){});
+	}, function error(response) {});
 }]);
