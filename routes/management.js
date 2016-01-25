@@ -33,22 +33,25 @@ function startProcess(callback) {
 
 function loadCategories (callback) {
 	var categories_f = fs.readFileSync('big_db/categories.json', 'UTF-8');
-
 	var categories = JSON.parse(categories_f);
+	
+	var categories_mapping = {};
 
-	async.each(categories.categories, function (category, callback) {
+	async.each(categories.categories, function (category, category_callback) {
 		var category = new Category({
 			"name" : category.name
 		});
 
-		category.save(function (err) {
+		category.save(function (err, saved) {
 			if(err) console.log("--ERR: Error saving category: " + err);
 
-			callback();
+			categories_mapping[category._id] = saved.id;
+			category_callback();
 		});
 	}, function (err) {
 		if(err) console.log("--ERR: Error saving all categories: " + err);
 
+		fs.writeFileSync('big_db/categories_mapping.json', categories_mapping);
 		console.log("--DO: Categories saved");
 
 		loadProducts(callback);
@@ -59,9 +62,11 @@ function loadProducts(callback) {
 	var products_f = fs.readFileSync('big_db/products.json', 'UTF-8');
 	var products = JSON.parse(products_f);
 
-	async.each(products.products, function (product, callback) {
+	var products_mapping = {};
+
+	async.each(products.products, function (product, products_callback) {
 		var product = new Product({
-			"code" : product.code,
+			"code" : mongoose.Types.ObjectId(),
 			"name" : product.name,
 			"description" : product.description,
 			"image" : product.image
@@ -70,35 +75,43 @@ function loadProducts(callback) {
  		product.save(function (err, prod) {
  			if (err) console.log("--ERR: Error saving product: " + err);
 
- 			var num_categories = Math.floor(Math.random() * 3) + 1;
-
- 			Category.find({}, function (err, categories) {
- 				var shuffled_categories = shuffle(categories);
- 				var rand_categories = shuffled_categories.slice(0, num_categories);
-
- 				async.each(rand_categories, function (chosen_cat, callback) {
- 					var belongs_to = new Belongs_to({
-						"product_id" : prod.id,
-						"category_id" : chosen_cat.id
-					});
-
-					belongs_to.save(function (err) {
-						if (err) console.log("--ERR: Error saving belongs to: " + err);
-
-						callback();
-					});
- 				}, function (err) {
- 					if (err) console.log("--ERR: Error saving all belongs_to: " + err);
- 				});
-
- 				callback();
- 			});
+ 			products_mapping[product.product_id] = prod.id;
+ 			products_callback();
  		});
 
 	}, function (err) {
 		if (err) console.log("--ERR: Error saving all products: " + err);
 
+		fs.writeFileSync('big_db/products_mapping.json', products_mapping);
 		console.log("--DO: Products saved");
+
+		loadBelongsTo(callback);
+	});
+}
+
+function loadBelongsTo(callback) {
+	var belongs_to_f = fs.readFileSync('big_db/belongs_to.json', 'UTF-8');
+	var belongs_to = JSON.parse(belongs_to_f);
+
+	var categories_mapping = JSON.parse(fs.readFileSync('big_db/categories_mapping.json', 'UTF-8'));
+	var products_mapping = JSON.parse(fs.readFileSync('big_db/products_mapping.json', 'UTF-8'));
+
+	async.each(rand_categories, function (belongs, belongs_to_callback) {
+
+		var new_belongs_to = new Belongs_to({
+			"product_id" : products_mapping[belongs.product_id],
+			"category_id" : categories_mapping[belongs.category_id]
+		});
+
+		belongs_to.save(function (err) {
+			if (err) console.log("--ERR: Error saving belongs to: " + err);
+
+			belongs_to_callback();
+		});
+	}, function (err) {
+		if (err) console.log("--ERR: Error saving all belongs_to: " + err);
+
+		console.log("--DO: Belongs to saved");
 
 		loadAdmins(callback);
 	});

@@ -1,65 +1,104 @@
-{ "categories" : [
-	{
-		"name" : "Alimentación, bebida y tabaco"
-	},
-	{
-		"name" : "Arte y ocio"
-	},
-	{
-		"name" : "Bebés y niños pequeños"
-	},
-	{
-		"name" : "Bricolaje"
-	},
-	{
-		"name" : "Casa y jardín"
-	},
-	{
-		"name" : "Cámaras y ópticas"
-	},
-	{
-		"name" : "Economía e industria"
-	},
-	{
-		"name" : "Electrónica"
-	},
-	{
-		"name" : "Elementos religiosos y ceremoniales"
-	},
-	{
-		"name" : "Equipamiento deportivo"
-	},
-	{
-		"name" : "Juegos y juguetes"
-	},
-	{
-		"name" : "Maletas y bolsos de viaje"
-	},
-	{
-		"name" : "Material de oficina"
-	},
-	{
-		"name" : "Mobiliario"
-	},
-	{
-		"name" : "Multimedia"
-	},
-	{
-		"name" : "Productos para adultos"
-	},
-	{
-		"name" : "Productos para mascotas y animales"
-	},
-	{
-		"name" : "Ropa y accesorios"
-	},
-	{
-		"name" : "Salud y belleza"
-	},
-	{
-		"name" : "Software"
-	},
-	{
-		"name" : "Vehículos y recambios"
-	}
-]}
+{
+	"categories": [
+		{
+			"id": 1,
+			"name": "Single-player"
+		},
+		{
+			"id": 2,
+			"name": "Steam Achievements"
+		},
+		{
+			"id": 3,
+			"name": "Partial Controller Support"
+		},
+		{
+			"id": 4,
+			"name": "Full controller support"
+		},
+		{
+			"id": 5,
+			"name": "Multi-player"
+		},
+		{
+			"id": 6,
+			"name": "Co-op"
+		},
+		{
+			"id": 7,
+			"name": "Steam Cloud"
+		},
+		{
+			"id": 8,
+			"name": "Includes level editor"
+		},
+		{
+			"id": 9,
+			"name": "Steam Workshop"
+		},
+		{
+			"id": 10,
+			"name": "Local Co-op"
+		},
+		{
+			"id": 11,
+			"name": "Steam Trading Cards"
+		},
+		{
+			"id": 12,
+			"name": "Cross-Platform Multiplayer"
+		},
+		{
+			"id": 13,
+			"name": "Steam Leaderboards"
+		},
+		{
+			"id": 14,
+			"name": "Stats"
+		},
+		{
+			"id": 15,
+			"name": "Captions available"
+		},
+		{
+			"id": 16,
+			"name": "VR Support"
+		},
+		{
+			"id": 17,
+			"name": ""
+		},
+		{
+			"id": 18,
+			"name": "MMO"
+		},
+		{
+			"id": 19,
+			"name": "Commentary available"
+		},
+		{
+			"id": 20,
+			"name": "Valve Anti-Cheat enabled"
+		},
+		{
+			"id": 21,
+			"name": "Includes Source SDK"
+		},
+		{
+			"id": 22,
+			"name": "New releases"
+		},
+		{
+			"id": 23,
+			"name": "Steam Turn Notifications"
+		},
+		{
+			"id": 24,
+			"name": "Mods (require HL2)"
+		},
+		{
+			"id": 25,
+			"name": "Mods"
+		}
+	]
+}
