@@ -1,7 +1,6 @@
 'use strict'
 
 angular.module('acme_supermarket').registerCtrl('SignupCtrl', ['$scope', '$http', '$window', '$rootScope', 'ngToast', '$translate', function ($scope, $http, $window, $rootScope, ngToast, $translate) {
-	
 	// Function invoked by login submit
 	$scope.submitSignUp = function() {
 		$http.post('/api/signup', $scope.customer)

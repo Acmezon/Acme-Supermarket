@@ -100,19 +100,19 @@ exports.isAuthenticated = function(req, res) {
 			// verifies secret and checks exp
 			jwt.verify(token, req.app.get('superSecret'), function(err, decoded) {
 				if (err) {
-					res.sendStatus(401);
+					res.status(200).json( {success: false} );
 				} else {
 					// if everything is good, save to request for use in other routes
 					//req.decoded = decoded;
-					res.json({success: true});
+					res.status(200).json({success: true});
 				}
 			});
 
 		} else {
-			res.sendStatus(401);
+			res.status(200).json( {success: false} );
 		}
 	} else {
-		res.sendStatus(401);
+		res.status(200).json( {success: false} );
 	}
 };
 
