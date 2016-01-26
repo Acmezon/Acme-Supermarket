@@ -475,7 +475,7 @@ exports.updateProductRating = function (req, res) {
 					res.sendStatus(401)
 					return;
 				}
-				Rate.findOne({ customer_id : user.id }, function (err, rate) {
+				Rate.findOne({ customer_id : user.id, product_id : product_id }, function (err, rate) {
 					if(err) {
 						res.sendStatus(503);
 						return;

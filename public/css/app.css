@@ -301,3 +301,13 @@ div.delete-product {
 div.product-list > div {
 	position: relative;
 }
+
+/*Remove spacing between stars in suppliers ratings*/
+div.provide-rating {
+	font-size: 0px;
+}
+
+span.rating_supplier i {
+	font-size: 14px;
+	color: gold;
+}

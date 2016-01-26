@@ -19,50 +19,23 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 			method: 'GET',
 			url: '/api/providesByProductId/' + $scope.product._id
 		}).
-		then (function success (response2) {
-			var provides = response2.data;
-			
-			provides.forEach(function(provide) {
-
-				// Get supplier of each provide
-				$http({
-					method: 'GET',
-					url: '/api/supplierName/' + provide.supplier_id
-				}).
-				then (function success (response3) {
-					var supplierName = response3.data;
-					provide.supplierName = supplierName;
-				}, function error (response3){
-				});
-
-				// Get average reputation of supplier
-				$http({
-					method: 'GET',
-					url: '/api/averageReputationBySupplierId/' + provide.supplier_id
-				}).
-				then (function success (response3) {
-					var avgreputation = response3.data;
-					provide.reputation = avgreputation;
-
-					// Disables the add cart button fot not customers
-					$http({
-						method: 'GET',
-						url: '/api/getUserRole'
-					}).
-					then(function success(response4) {
-						$scope.role = response4.data;
-					}, function error(response4) {
-					});
-				}, function error(response3) {
-				});
-
-			});
+		then (function success (res_provides) {
+			var provides = res_provides.data;
 
 			// FINISH PROCESS
 			// PUT INTO OUTPUT VARIABLE
+			$http({
+				method: 'GET',
+				url: '/api/getUserRole'
+			}).
+			then(function success(role) {
+				$scope.role = role.data;
+			}, function error(role) {
+			});
+
 			$scope.out_suppliers = provides;
 
-		}, function error (response2) {
+		}, function error (res_provides) {
 		});
 
 
@@ -160,31 +133,32 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 		{
 			id: id,
 			rating: $scope.rate
-		}).then(function success(response) {},
-				function error(response) {
-					switch(response.status) {
-						case 403:
-							$rootScope.loginFailed = true;
-							$location.url('/signin');
-							break;
-						case 401:
-							$translate(['Product.RatingPurchaseError']).then(function (translation) {
-								ngToast.create({
-									className: 'warning',
-									content: translation['Product.RatingPurchaseError']
-								});
-							});
-							break;
-						default:
-							$translate(['Product.RatingError']).then(function (translation) {
-								ngToast.create({
-									className: 'danger',
-									content: translation['Product.RatingError']
-								});
-							});
-							break;
-					}
-				});
+		}).then(
+		function success(response) {},
+		function error(response) {
+			switch(response.status) {
+				case 403:
+					$rootScope.loginFailed = true;
+					$location.url('/signin');
+					break;
+				case 401:
+					$translate(['Product.RatingPurchaseError']).then(function (translation) {
+						ngToast.create({
+							className: 'warning',
+							content: translation['Product.RatingPurchaseError']
+						});
+					});
+					break;
+				default:
+					$translate(['Product.RatingError']).then(function (translation) {
+						ngToast.create({
+							className: 'danger',
+							content: translation['Product.RatingError']
+						});
+					});
+					break;
+			}
+		});
 	};
 
 	$scope.addToCart = function (provide_id) {
@@ -215,4 +189,37 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 				$scope.recommendedProducts = product_list.data;
 			}, function error(response){});
 	}, function error(response) {});
+
+	$scope.rateProvide = function(provide_id, value) {
+		$http.post('/api/supplier/updateSupplierRating',
+		{
+			provide_id: provide_id,
+			rating: value
+		}).then(
+		function success(response) {},
+		function error(response) {
+			switch(response.status) {
+				case 403:
+					$rootScope.loginFailed = true;
+					$location.url('/signin');
+					break;
+				case 401:
+					$translate(['Product.RatingProvidePurchaseError']).then(function (translation) {
+						ngToast.create({
+							className: 'warning',
+							content: translation['Product.RatingProvidePurchaseError']
+						});
+					});
+					break;
+				default:
+					$translate(['Product.RatingError']).then(function (translation) {
+						ngToast.create({
+							className: 'danger',
+							content: translation['Product.RatingError']
+						});
+					});
+					break;
+			}
+		});
+	};
 }]);

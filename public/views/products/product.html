@@ -56,21 +56,10 @@
 							<tr ng-repeat="provide in out_suppliers">
 								<td>{{provide.supplierName}}</td>
 								<td title="{{provide.reputation}}" style="width:17%">
-									<label ng-show="provide.reputation">
-										<span class="glyphicon glyphicon-star"></span>
-									</label>
-									<label ng-show="provide.reputation >= 2">
-										<span class="glyphicon glyphicon-star"></span>
-									</label>
-									<label ng-show="provide.reputation >= 3" >
-										<span class="glyphicon glyphicon-star"></span>
-									</label>
-									<label ng-show="provide.reputation >= 4">
-										<span class="glyphicon glyphicon-star"></span>
-									</label>
-									<label ng-show="provide.reputation === 5">
-										<span class="glyphicon glyphicon-star"></span>
-									</label>
+									<span ng-if="!provide.userHasPurchased" ng-repeat="n in [1, 2, 3, 4, 5] track by $index" class="glyphicon" ng-class="{'glyphicon-star': provide.reputation >= $index + 1, 'glyphicon-star-empty': provide.reputation < $index + 1}"></span>
+									<div ng-if="provide.userHasPurchased" class="provide-rating">
+										<uib-rating ng-model="provide.reputation" class="rating_supplier" max="max" ng-click="rateProvide(provide._id, provide.reputation)"></uib-rating>
+									</div>
 								</td>
 								<td>{{provide.price | number:2}} €</td>
 								<td style="width:10%" ng-if="role=='customer'">

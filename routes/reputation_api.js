@@ -1,5 +1,6 @@
 var db_utils = require('./db_utils'),
 	Reputation = require('../models/reputation'),
+	ReputationService = require('./services/service_reputation'),
 	ActorService = require('./services/service_actors');
 
 //Devuelve la reputacion media para un supplier
@@ -12,16 +13,11 @@ exports.getAverageReputationBySupplierId = function (req, res) {
 	// Check authenticated
 	ActorService.getUserRole(cookie, jwtKey, function (role) {
 		if (role=='admin' || role=='customer' || role=='supplier') {
-			Reputation.aggregate([
-				{ "$match" : { "supplier_id" : parseInt(_code) }},
-				{
-					"$group":{
-						"_id" : "$supplier_id",
-						"avg" : { "$avg" : "$value"}
-					}
+			ReputationService.averageReputation(function (err, results) {
+				if(err){
+					console.log(err);
+					res.sendStatus(500);
 				}
-			], function (err, results) {
-				if(err) return false;
 				var reputation = results[0].avg;
 
 				res.status(200).json(reputation);
@@ -30,6 +26,4 @@ exports.getAverageReputationBySupplierId = function (req, res) {
 			res.status(401).json({success: false, message: 'Doesnt have permission'});
 		}
 	});
-
-	
 };
