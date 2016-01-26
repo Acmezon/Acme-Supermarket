@@ -14,11 +14,9 @@ exports.getSupplierName = function (req, res) {
 		if (role=='admin' || role=='customer' | role=='supplier') {
 
 			Supplier.findById( _code,function(err,supplier){
-				//TODO: Comprobar errores correctamente
-				var errors= [];//db_utils.handleErrors(err);
-				if(errors.length > 0){
-					console.log('---ERROR finding Supplier: '+_code+' message: '+errors);
-					res.status(500).json({success: false, message: errors});
+				if(err){
+					console.log('---ERROR finding Supplier: '+_code+' message: '+err);
+					res.status(500).json({success: false, message: err});
 				}else{
 					//console.log(supplier);
 					res.status(200).json(supplier.name);

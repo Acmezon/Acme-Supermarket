@@ -398,7 +398,7 @@
 		"Thanks" : "¡Gracias por comprar!"
 	},
 	"Purchases" : {
-		"Title" : "Compras",
+		"Title" : "Administración de compras",
 		"Customer" : "ID Cliente",
 		"Filter" : {
 			"Title" : "Filtros",

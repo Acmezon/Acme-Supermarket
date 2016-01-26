@@ -316,6 +316,13 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 				admin: checkAdmin
 			}
 		}).
+		when('/purchase/:id', {
+			templateUrl: 'views/purchases/purchase.html',
+			controller: 'PurchaseDetailsCtrl',
+			resolve: {
+				loggedin: checkLoggedin
+			}
+		}).
 		when('/401', {
 			templateUrl: 'views/public/errors/401.html'
 		}).

@@ -2,10 +2,14 @@
 
 <div class="wrap">
 	<ul class="breadcrumb breadcrumb__t">
-		<li><a class="home" href="/">{{ 'Home.Title' | translate }}</a> / {{ 'Purchases.MyPurchases.Title' | translate }}</li>
+		<li><a class="home" href="/">{{ 'Home.Title' | translate }}</a> / 
+			<span ng-if="view=='mypurchases'">{{ 'Purchases.MyPurchases.Title' | translate }}</span>
+			<span ng-if="view=='purchases'">{{'Purchases.Title' | translate}}</span>
+		</li>
 	</ul>
 
-	<h2 class="head">{{'Purchases.MyPurchases.Title' | translate}}</h2>
+	<h2 class="head" ng-if="view=='mypurchases'">{{'Purchases.MyPurchases.Title' | translate}}</h2>
+	<h2 class="head" ng-if="view=='purchases'">{{'Purchases.Title' | translate}}</h2>
 
 	<div ng-if="view=='purchases'">
 		<!-- Admin view -->
