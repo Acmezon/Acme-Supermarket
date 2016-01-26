@@ -50,7 +50,15 @@
 		"Cookies" : "Cookies",
 		"TermsConditions" : "Términos y Condiciones",
 		"ContactUs" : "Contacta",
-		"Information" : "Información",
+		"Delivery" : "Envíos",
+		"Information" : {
+			"Title" : "Información",
+			"Costs" : "Coste de envío",
+			"Times" : "Periodos de entrega",
+			"Locations" : "Ubicación de envíos",
+			"Responsabilities" : "Responsabilidades",
+			"Insurance" : "Seguro"
+		},
 		"Banner" : {
 			"Shipping" : "Envíos rápidos directos a tí",
 			"Contact" : "Fácil contacto con proveedores"
@@ -177,7 +185,7 @@
 				"Title" : "Responsabilidades en el envío",
 				"Body" : "Para los pedidos enviados con el servicio de envío, las empresas de mensajería solo cubren la pérdida o el daño de la mercancía durante el transporte  sujeto a la responsabilidad máxima se especifica en los términos y condiciones de su servicio. Dicha responsabilidad cesará una vez que las mercancías se entregan al destino designado. Acme-Supermarket no es responsable por las normativa mencionado o cualquier conflicto surgido con respecto a la entrega de las mercancías. Sin embargo, vamos a hacer todo lo posible para ayudarle en cualquier caso de que  necesite ponerse en contacto con el servicio de mensajería para resolver algún asunto."
 			},
-			"Section4" : {
+			"Section5" : {
 				"Title" : "Seguro",
 				"Body" : "Para pedidos enviados con cualquier clase de envío, Acme-Supermarket cubrirá, cualquier daño físico o daño causado durante el tránsito hasta el total del pedido. Usted puede optar por otro envio por el mismo producto como un reemplazo o el reembolso completo, sujetos a una prueba satisfactoria de la pérdida o daño físico de los productos obtenidos de la mensajería u otras partes relacionadas si se considera necesario."
 			}

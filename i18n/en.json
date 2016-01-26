@@ -50,7 +50,15 @@
 		"Cookies" : "Cookies",
 		"TermsConditions" : "Terms & Conditions",
 		"ContactUs" : "Contact Us",
-		"Information" : "Information",
+		"Delivery" : "Delivery",
+		"Information" : {
+			"Title" : "Information",
+			"Costs" : "Delivery costs",
+			"Times" : "Delivery times",
+			"Locations" : "Billing locations",
+			"Responsabilities" : "Responsabilities",
+			"Insurance" : "Insurance"
+		},
 		"Banner" : {
 			"Shipping" : "Fast shipping directly to you",
 			"Contact" : "Easy contact with suppliers"
