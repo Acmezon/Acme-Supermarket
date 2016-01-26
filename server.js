@@ -101,6 +101,7 @@ app.get('/api/purchaselines/bypurchase/:id', api.PurchaseLines.getPurchaseLinesB
 
 // Suppliers
 app.get('/api/supplierName/:id', api.Supplier.getSupplierName);
+app.post('/api/supplier/updateSupplierRating', api.Supplier.updateSupplierRating);
 
 // Reputations
 app.get('/api/averageReputationBySupplierId/:id', api.Reputation.getAverageReputationBySupplierId);

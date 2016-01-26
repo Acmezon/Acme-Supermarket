@@ -93,7 +93,6 @@ exports.checkOwnerOrAdmin = function(cookie, jwtKey, credit_card_id, callback) {
 
 // Returns true if user has purchased product_id (via provides)
 exports.checkPurchasing = function (user, product_id, callback) {
-
 	if (user) {
 		if (user._type=='Customer') {
 			Provide.find({ product_id : product_id }, function (err, provides) {
@@ -147,6 +146,44 @@ exports.checkPurchasing = function (user, product_id, callback) {
 		return;
 	}
 }
+
+//Returns true if the received user has purchased the provide received
+exports.checkHasPurchasedProvide = function (user_id, provide_id, callback) {
+	if (user_id) {
+		PurchaseLine.find({ 'provide_id' : provide_id }, function (err, lines) {
+			if(err || lines.length == 0) {
+				callback(false);
+				return;
+			}
+
+			var purchase_ids = [];
+
+			for (var i = 0; i < lines.length; i++) {
+				if(purchase_ids.indexOf(lines[i].purchase_id < 0))
+					purchase_ids.push(lines[i].purchase_id);
+			}
+
+			Purchase.find({ '_id' : { $in : purchase_ids } }, function (err, purchases) {
+				if(err || purchases.length == 0) {
+					callback(false);
+					return;
+				}
+
+				for(var i = 0; i < purchases.length; i++) {
+					if ( String(purchases[i].customer_id) == String(user_id)) {
+						callback(true);
+						return;
+					}
+				}
+				callback(false);
+				return;
+			});
+		});
+	} else {
+		callback(false)
+		return;
+	}
+};
 
 // Returns true if principal has purchased the purchase object
 exports.checkHasPurchasedPurchase = function(cookie, jwtKey, purchase, callback) {
