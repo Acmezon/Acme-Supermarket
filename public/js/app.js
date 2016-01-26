@@ -208,6 +208,9 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 		when('/about', {
 			templateUrl: 'views/public/home/about.html',
 		}).
+		when('/delivery', {
+			templateUrl: 'views/public/home/delivery.html',
+		}).
 		when('/signin', {
 			templateUrl: 'views/public/signin/signin.html',
 			controller: 'SigninCtrl',

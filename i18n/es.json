@@ -158,6 +158,29 @@
 					"Description" : "Busca, filtra y ordena por múltiples métodods: Valoración media, precio, nombre, categoría...Y todo ello sin largas pantallas de carga"
 				}
 			}
+		},
+		"Delivery" : {
+			"Title" : "Información de envíos",
+			"Section1" : {
+				"Title": "Coste de envío",
+				"Body" : "Acme-Supermarket ofrece servicios libre de costes. Sin cargos adicionales o altos precios."
+			},
+			"Section2" : {
+				"Title" : "Periodos de entrega",
+				"Body" : "Como un valor agregado a nuestros servicios se envío, ofrecemos tres servicios  premium diferentes a su elección durante el proceso de compra . Ninguno de estos servicios tiene ningun coste adicional. Sin embargo, la disponibilidad puede verse restringida en determinados momentos del año."
+			},
+			"Section3" : {
+				"Title" : "Ubicación de envíos",
+				"Body" : "Actualmente ofrecemos envíos a España y a todo el mundo."
+			},
+			"Section4" : {
+				"Title" : "Responsabilidades en el envío",
+				"Body" : "Para los pedidos enviados con el servicio de envío, las empresas de mensajería solo cubren la pérdida o el daño de la mercancía durante el transporte  sujeto a la responsabilidad máxima se especifica en los términos y condiciones de su servicio. Dicha responsabilidad cesará una vez que las mercancías se entregan al destino designado. Acme-Supermarket no es responsable por las normativa mencionado o cualquier conflicto surgido con respecto a la entrega de las mercancías. Sin embargo, vamos a hacer todo lo posible para ayudarle en cualquier caso de que  necesite ponerse en contacto con el servicio de mensajería para resolver algún asunto."
+			},
+			"Section4" : {
+				"Title" : "Seguro",
+				"Body" : "Para pedidos enviados con cualquier clase de envío, Acme-Supermarket cubrirá, cualquier daño físico o daño causado durante el tránsito hasta el total del pedido. Usted puede optar por otro envio por el mismo producto como un reemplazo o el reembolso completo, sujetos a una prueba satisfactoria de la pérdida o daño físico de los productos obtenidos de la mensajería u otras partes relacionadas si se considera necesario."
+			}
 		}
 	},
 	"Signup" : {

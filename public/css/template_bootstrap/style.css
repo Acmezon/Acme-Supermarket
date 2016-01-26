@@ -1831,7 +1831,7 @@ p.m_5 a:hover{
 }
 p.m_text{
 	color:#777;
-	font-size:0.85em;
+	font-size:1.1em;
 	line-height:1.8em;
 }
 /*--thumbs--*/
@@ -2182,7 +2182,7 @@ ul.delivery-list{
 	margin-bottom: 20px;
 }
 ul.delivery-list li{
-	font-size: 0.85em;
+	font-size: 1.1em;
 	margin: 0 0 8px 10px;
 	list-style-image: url(../../img/template_bootstrap/list_marker.png);
 }

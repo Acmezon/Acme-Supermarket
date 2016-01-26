@@ -158,6 +158,29 @@
 					"Description" : "Search, filter, order by multiple methods: Rating, Price, Name, Category... And all without heavy loading screens"
 				}
 			}
+		},
+		"Delivery" : {
+			"Title" : "Delivery information",
+			"Section1" : {
+				"Title": "Delivery costs",
+				"Body" : "Acme-Supermarket offers free-cost billing services. No additional charges or high prices."
+			},
+			"Section2" : {
+				"Title" : "Delivery times",
+				"Body" : "As an added value to our shipping services , we offer three different premium services of their choice during the process. None of these services have any additional cost . However , availability may be restricted at certain times of the year."
+			},
+			"Section3" : {
+				"Title" : "Delivery locations",
+				"Body" : "We currently offer shipping to Spain and all the globe."
+			},
+			"Section4" : {
+				"Title" : "Delivery responsabilities",
+				"Body" : "For orders shipped to the shipping service, courier companies only cover the loss or damage of goods in transit subject to the maximum liability specified in the terms and conditions of service. Such liability will cease once the goods are delivered to the designated destination. Acme- Supermarket is not responsible for the regulations mentioned or any dispute arising with respect to the delivery of goods . However , we will do everything possible to help in any case you need to contact the courier to resolve an issue."
+			},
+			"Section5" : {
+				"Title" : "Insurance",
+				"Body" : "For orders shipped with any kind of shipping, Acme-Supermarket cover any physical damage or damage caused during transit to the total order. You can choose other costs for the same product as a replacement or full refund , subject to satisfactory proof of the loss or physical damage to the products obtained from or related courier if deemed necessary parts."
+			}
 		}
 	},
 	"Signup" : {

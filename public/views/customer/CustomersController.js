@@ -20,6 +20,7 @@ angular.module('acme_supermarket').registerCtrl('CustomersCtrl', ['$scope', '$ht
 				// Paste credit card info
 
 				var creditcard = response2.data;
+				creditcard.number = hideCreditCard(creditcard.number);
 				customer.creditcard = creditcard;
 				
 			}, function error(response2) {
@@ -31,6 +32,18 @@ angular.module('acme_supermarket').registerCtrl('CustomersCtrl', ['$scope', '$ht
 		
 	}, function error(response) {
 	});
+
+	var hideCreditCard = function(number) {
+		for (var i = 0; i < number.length - 4; i++) {
+			number = setCharAt(number, i, '*')
+		}
+		return number
+	}
+
+	var setCharAt = function(str,index,chr) {
+    	if(index > str.length-1) return str;
+    	return str.substr(0,index) + chr + str.substr(index+1);
+	}
 	
 	$scope.edit = function (originalModel) {
 		// Make a copy of customer being edited
