@@ -190,11 +190,13 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 		$routeProvider.
 		when('/', {
 			templateUrl: 'views/public/home/home.html',
-			controller: 'HomeCtrl'
+			controller: 'HomeCtrl',
+			activetab: 'home'
 		}).
 		when('/home', {
 			templateUrl: 'views/public/home/home.html',
-			controller: 'HomeCtrl'
+			controller: 'HomeCtrl',
+			activetab: 'home'
 		}).
 		when('/contact', {
 			templateUrl: 'views/public/home/contact.html',
@@ -234,11 +236,13 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			controller: 'ProfileCtrl',
 			resolve: {
 				loggedin: checkLoggedin
-			}
+			},
+			activetab: 'account'
 		}).
 		when('/products', {
 			templateUrl: 'views/public/products/products.html',
-			controller: 'ProductListCtrl'
+			controller: 'ProductListCtrl',
+			activetab: 'products'
 		}).
 		when('/products/create', {
 			templateUrl: 'views/products/create/createProduct.html',
@@ -246,7 +250,8 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			resolve : {
 				loggedin: checkLoggedin,
 				admin: checkAdmin
-			}
+			},
+			activetab: 'management'
 		}).
 		when('/product/:id', {
 			templateUrl: 'views/products/product.html',
@@ -261,7 +266,8 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			resolve: {
 				loggedin: checkLoggedin,
 				customer: checkCustomer
-			}
+			},
+			activetab: 'account'
 		}).
 		when('/customers', {
 			templateUrl: 'views/customer/customers.html',
@@ -269,7 +275,8 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			resolve: {
 				loggedin: checkLoggedin,
 				admin: checkAdmin
-			}
+			},
+			activetab: 'management'
 		}).
 		when('/dashboard', {
 			templateUrl: 'views/dashboard/dashboard.html',
@@ -277,7 +284,8 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			resolve: {
 				loggedin: checkLoggedin,
 				admin: checkAdmin
-			}
+			},
+			activetab: 'management'
 		}).
 		when('/checkout', {
 			templateUrl: 'views/checkout/checkout.html',
@@ -309,7 +317,8 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			resolve: {
 				loggedin: checkLoggedin,
 				admin: checkCustomer
-			}
+			},
+			activetab: 'account'
 		}).
 		when('/purchases', {
 			templateUrl: 'views/purchases/purchases.html',
@@ -317,7 +326,8 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			resolve: {
 				loggedin: checkLoggedin,
 				admin: checkAdmin
-			}
+			},
+			activetab: 'management'
 		}).
 		when('/purchase/:id', {
 			templateUrl: 'views/purchases/purchase.html',

@@ -159,7 +159,7 @@
 						<span class="glyphicon glyphicon-info-sign"></span>
 					</button>
 				</td>
-				<td data-title="'Customers.Actor.Name' | translate" filter="{name: 'text'}" sortable="'name'" ng-switch="customer.isEditing" ng-class="name.$dirty ? 'bg-warning' : ''" ng-form="name" demo-tracked-table-cell>
+				<td data-title="'Customers.Actor.Name' | translate" filter="{name: 'text'}" sortable="'name'" ng-switch="customer.isEditing" ng-class="name.$dirty ? 'bg-warning' : ''" ng-form="name" demo-tracked-table-cell style="width:8%">
 					<span ng-switch-default class="editable-text customer-name">
 						{{customer.name}}
 					</span>
@@ -191,7 +191,7 @@
               			<input type="text" name="address" ng-model="customer.address" class="editable-input form-control input-sm" required/>
             		</div>
 				</td>
-				<td data-title="'Customers.Customer.Country' | translate" filter="{country: 'text'}" sortable="'country'" ng-switch="customer.isEditing" ng-class="country.$dirty ? 'bg-warning' : ''" ng-form="country" demo-tracked-table-cell>
+				<td data-title="'Customers.Customer.Country' | translate" filter="{country: 'text'}" sortable="'country'" ng-switch="customer.isEditing" ng-class="country.$dirty ? 'bg-warning' : ''" ng-form="country" demo-tracked-table-cell style="width:10%">
 					<span ng-switch-default class="editable-text customer-country">
 						{{customer.country}}
 					</span>

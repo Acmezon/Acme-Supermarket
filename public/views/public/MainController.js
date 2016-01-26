@@ -1,6 +1,8 @@
 'use strict'
 
-angular.module('acme_supermarket').registerCtrl('MainCtrl', ['$scope', '$http', '$window', '$rootScope', '$cookies', function ($scope, $http, $window, $rootScope, $cookies) {
+angular.module('acme_supermarket').registerCtrl('MainCtrl', ['$scope', '$http', '$window', '$rootScope', '$cookies', '$route', function ($scope, $http, $window, $rootScope, $cookies, $route) {
+
+	$scope.$route = $route;
 	
 	// Function invoked by login submit
 	$scope.signout = function() {

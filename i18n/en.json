@@ -33,7 +33,12 @@
 		"Recommended" : "Recommended"
 	},
 	"Header": {
-		"Account" : "Account",
+		"Account" : {
+			"Title" : "Account",
+			"MyProfile" : "My profile",
+			"MyPurchases" : "My purchases",
+			"ShoppingCart" : "Shopping cart"
+		},
 		"Checkout" : "Checkout",
 		"Signin" : "Sign in",
 		"Signout" : "Sign out",
@@ -43,7 +48,11 @@
 		"NoProducts" : "No products",
 		"Cart" : "Cart",
 		"Dashboard" : "Dashboard",
-		"GoShopping" : "Go shopping"
+		"GoShopping" : "Go shopping",
+		"Management" : "Management",
+		"Customers" : "Customers",
+		"Purchases" : "Purchases",
+		"CreateProduct" : "Add product"
 	},
 	"Footer": {
 		"AboutUs" : "About Us",

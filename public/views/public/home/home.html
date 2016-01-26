@@ -3,11 +3,11 @@
 <!-- Carousel
 	================================================== -->
 <div class="overlay"><h1>Texto opcional</h1></div>
-<div id="home-carousel" class="carousel slide">
+<div id="banner" class="carousel slide">
 	<!-- Indicators -->
 	<ol class="carousel-indicators">
-		<li data-target="#home-carousel" data-slide-to="0" class="active"></li>
-		<li data-target="#home-carousel" data-slide-to="1"></li>
+		<li data-target="#banner" data-slide-to="0" class="active"></li>
+		<li data-target="#banner" data-slide-to="1"></li>
 	</ol>
 	<div class="carousel-inner">
 		<div class="item active">
@@ -25,13 +25,18 @@
 				</div>
 			</div>
 		</div>
+		<script>
+			$('.carousel-control').click(function (e) {
+  				e.preventDefault();
+			});
+		</script>
 	</div>
 
 	<!-- Controls -->
-	<a class="left carousel-control" href="#home-carousel" data-slide="prev">
+	<a class="left carousel-control" href="#banner" data-slide="prev">
 		<i class="glyphicon glyphicon-chevron-left"></i>
 	</a>
-	<a class="right carousel-control" href="#home-carousel" data-slide="next">
+	<a class="right carousel-control" href="#banner" data-slide="next">
 		<i class="glyphicon glyphicon-chevron-right"></i>
 	</a>  
 </div>

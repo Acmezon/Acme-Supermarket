@@ -11,7 +11,7 @@
         <div class="cssmenu">
             <ul>
                 <li class="active" restrict access="isLogged">
-                    <a href="/myprofile">{{ 'Header.Account' | translate }}</a>
+                    <a href="/myprofile">{{ 'Header.Account.Title' | translate }}</a>
                 </li>
 
                 <li restrict access="customer">
@@ -37,44 +37,40 @@
 <div class="header-bottom" ng-controller="MainCtrl">
     <div class="wrap">
         <div class="header-bottom-left">
-            <div class="logo">
-                <a href="/">
-                    <img src="img/template_bootstrap/logo.png" alt=""/>
-                </a>
-            </div>
-            <div class="menu" restrict access="anonymous">
-                <ul class="megamenu skyblue">
-                    <li class="active grid">
-                        <a href="/">{{ 'Home.Title' | translate }}</a>
-                    </li>
-                    <li>
-                        <a class="color4" href="/products">{{ 'Header.ProductList' | translate }}</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="menu" restrict access="customer">
-                <ul class="megamenu skyblue">
-                    <li class="active grid">
-                        <a href="/">{{ 'Home.Title' | translate }}</a>
-                    </li>
-                    <li>
-                        <a class="color4" href="/products">{{ 'Header.ProductList' | translate }}</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="menu" restrict access="admin">
-                <ul class="megamenu skyblue">
-                    <li class="active grid">
-                        <a href="/">{{ 'Home.Title' | translate }}</a>
-                    </li>
-                    <li>
-                        <a class="color4" href="/products">{{ 'Header.ProductList' | translate }}</a>
-                    </li>
-                    <li>
-                        <a class="color4" href="/dashboard">{{ 'Header.Dashboard' | translate }}</a>
-                    </li>
-                </ul>
-            </div>
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="/"><img src="img/template_bootstrap/logo.png" alt=""/></a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li ng-class="{active: $route.current.activetab == 'home'}"><a href="/">{{ 'Home.Title' | translate }}</a></li>
+                        <li ng-class="{active: $route.current.activetab == 'products'}"><a href="/products">{{ 'Header.ProductList' | translate }}</a></li>
+                        <li ng-class="{active: $route.current.activetab == 'management'}" restrict access="admin" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="">
+                                {{'Header.Management' | translate}}
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/dashboard">{{ 'Header.Dashboard' | translate }}</a></li>
+                                <li><a href="/customers">{{ 'Header.Customers' | translate }}</a></li>
+                                <li><a href="/purchases">{{ 'Header.Purchases' | translate }}</a></li>
+                                <li><a href="/products/create">{{ 'Header.CreateProduct' | translate }}</a></li>
+                            </ul>
+                        </li> 
+                        <li ng-class="{active: $route.current.activetab == 'account'}" restrict access="isLogged" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="">
+                                {{'Header.Account.Title' | translate}}
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/myprofile">{{ 'Header.Account.MyProfile' | translate }}</a></li>
+                                <li restrict access="customer"><a href="/mypurchases">{{ 'Header.Account.MyPurchases' | translate }}</a></li>
+                                <li restrict access="customer"><a href="/shoppingcart">{{ 'Header.Account.ShoppingCart' | translate }}</a></li> 
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
         </div>
         <div class="header-bottom-right">
             <div class="search">
