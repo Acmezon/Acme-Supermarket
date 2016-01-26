@@ -232,13 +232,13 @@ th {
   @page { margin: 0; }
   body { margin: 1.6cm; }
   #header, #footer, #btn-print, .breadcrumb {
-  	display:none;
+	display:none;
   }
 }
 
 /*Fix product box height*/
 .inner_content {
-	height: 340px;
+	height: 325px;
 }
 
 /*Make recommendation slider not force the text to be in one line*/
@@ -252,4 +252,52 @@ th {
 }
 .nbs-flexisel-nav-right {
 	right: -25px;
+}
+
+/*Add product link*/
+a.add-product {
+	font-size: 30px;
+}
+
+/*Spacing under input in create product form*/
+.create_product_form .input-group, .create_product_form {
+	margin-bottom: 10px;
+}
+
+.create_product_form button.grey {
+	float: none;
+	display: block;
+}
+
+.create_product_form div.input-group {
+	width: 30%;
+}
+
+/*Fix products images and position*/
+.product_image img {
+	max-width: 345px;
+	max-height: 215px;
+	margin: auto;
+}
+
+/*Make product name fit in div*/
+p.title {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+/*Delete product button*/
+div.delete-product {
+	font-size: 40px;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	cursor: pointer;
+	color: #4E1212;
+	margin-right: 5px;
+}
+
+div.product-list > div {
+	position: relative;
 }

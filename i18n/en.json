@@ -236,12 +236,18 @@
 		"Empty" : "No products with these features",
 		"RatingPurchaseError" : "You can not rate a product without purchasing it",
 		"ClearFilters" : "Clear filters",
-		"Categories" : "Categories"
+		"Categories" : "Categories",
+		"Create" : "New product",
+		"DeleteError" : "Error removing product. Please, try again later"
 	},
 	"Product" : {
 		"Edit" : "Edit",
 		"Upload" : "Drop an image here to change the current one",
-		"RatingError" : "Error while saving your rating. Please reload the page and try again"
+		"RatingError" : "Error while saving your rating. Please reload the page and try again",
+		"Create" : {
+			"Name" : "Nombre",
+			"Description" : "Descripción"
+		}
 	},
 	"ShoppingCart": {
 		"Title" : "Shopping cart",
