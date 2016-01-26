@@ -235,3 +235,19 @@ th {
   	display:none;
   }
 }
+
+table#purchases-table>tbody>tr>th {
+	cursor: pointer;
+}
+
+table#purchases-table>tbody>tr>th>span.glyphicon {
+	opacity: .3;
+}
+
+table#purchases-table>tbody>tr>th>span.glyphicon:hover {
+	opacity: 1;
+}
+
+table#purchases-table>tbody>tr>th>span.glyphicon.order-selected {
+	opacity: 1;
+}

@@ -11,7 +11,7 @@ exports.config = {
 	},
 	seleniumAddress: 'http://localhost:4444/wd/hub',
 	specs: [
-		'e2e/management/TC03-removeCustomer.js',
+		'backend/purchases/TC01-purchase.js'
 		//'backend/products/TC03-rateProduct.js'
 
 	]/*,

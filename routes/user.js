@@ -9,8 +9,9 @@ var jwt = require('jsonwebtoken'),
 exports.getMyProfile = function (req, res) {
 	console.log('Function-usersApi-getMyProfile');
 	var cookie = req.cookies.session;
+	console.log(req.cookies)
 
-	if (cookie !== undefined) {
+	if (cookie != undefined) {
 		var token = cookie.token;
 
 		// decode token
@@ -19,7 +20,7 @@ exports.getMyProfile = function (req, res) {
 			// verifies secret and checks exp
 			jwt.verify(token, req.app.get('superSecret'), function(err, decoded) {
 				if (err) {
-					res.status(404).send({
+					res.status(401).send({
 						success: false
 					});
 				} else {
@@ -28,7 +29,7 @@ exports.getMyProfile = function (req, res) {
 
 					Actor.findOne({email: email}, function(err, actor){
 						if(err){
-							res.status(404).send({
+							res.status(401).send({
 								success: false
 							});
 						}
@@ -91,12 +92,12 @@ exports.getMyProfile = function (req, res) {
 			});
 
 		} else {
-			res.status(404).send({
+			res.status(401).send({
 				success: false
 			});
 		}
 	} else {
-		res.status(404).send({
+		res.status(401).send({
 			success: false
 		});
 	}

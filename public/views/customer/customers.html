@@ -1,6 +1,9 @@
 <script src="views/customer/CustomersController.js"></script>
 
 <div class="wrap">
+	<ul class="breadcrumb breadcrumb__t">
+		<li><a class="home" href="/">{{ 'Home.Title' | translate }}</a> / {{ 'Customers.Title' | translate }}</li>
+	</ul>
 	<h2 class="head">{{'Customers.Title' | translate}} 
 		<button type="button" class="btn" ng-click="refresh()">
 			<span class="glyphicon glyphicon-refresh"></span>

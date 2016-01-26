@@ -85,8 +85,13 @@ app.get('/api/categories', api.Categories.getCategories);
 
 // Purchases
 app.get('/api/purchase/:id', api.Purchases.getPurchase);
+app.post('/api/purchases/filtered', api.Purchases.getPurchasesFiltered);
+app.post('/api/purchases/filtered/count', api.Purchases.countPurchasesFiltered);
 app.get('/api/purchase/process/:billingMethod', api.Purchases.purchase);
 app.get('/api/purchases/bycustomer/:id', api.Purchases.getPurchasesByCustomerId);
+app.post('/api/purchases/mypurchases/filtered', api.Purchases.getMyPurchasesFiltered);
+app.post('/api/purchases/mypurchases/filtered/count', api.Purchases.countMyPurchasesFiltered);
+app.delete('/api/purchase', api.Purchases.deletePurchase);
 
 // Purchase lines
 app.get('/api/purchaselines/bypurchase/:id', api.PurchaseLines.getPurchaseLinesByPurchaseId);
@@ -110,10 +115,11 @@ app.post('/api/user/updateUser', api.User.updateUser);
 app.post('/api/user/changePassword', api.User.changePassword);
 
 // Customers
+app.get('/api/customer/:id', api.Customer.getCustomer);
 app.get('/api/customers', api.Customer.getCustomers);
 app.post('/api/customer/updateCC', api.Customer.updateCC);
 app.post('/api/customer', api.Customer.updateCustomer);
-app.delete('/api/customer/:id', api.Customer.deleteCustomer);
+app.delete('/api/customer/', api.Customer.deleteCustomer);
 app.get('/api/mycreditcard', api.Customer.getMyCreditCard);
 
 // Admins
