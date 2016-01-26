@@ -129,6 +129,7 @@
 		},
 		"About" : {
 			"Title" : "About us",
+			"Developer" : "Developer",
 			"Context" : {
 				"Title" : "Context",
 				"Description1" : "Acme-Supermarket is a web application developed by",

@@ -129,6 +129,7 @@
 		},
 		"About" : {
 			"Title" : "Sobre nosotros",
+			"Developer" : "Desarrollador",
 			"Context" : {
 				"Title" : "Contexto",
 				"Description1" : "Acme-Supermarket es una aplicación web creada por ",
