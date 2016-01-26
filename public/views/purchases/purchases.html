@@ -1,0 +1,118 @@
+<script src="views/purchases/PurchasesListController.js"></script>
+
+<div class="wrap">
+	<ul class="breadcrumb breadcrumb__t">
+		<li><a class="home" href="/">{{ 'Home.Title' | translate }}</a> / {{ 'Purchases.MyPurchases.Title' | translate }}</li>
+	</ul>
+
+	<h2 class="head">{{'Purchases.MyPurchases.Title' | translate}}</h2>
+
+	<div ng-if="view=='purchases'">
+		<!-- Admin view -->
+		<div ng-if="numberOfPurchases==0">
+			<h4 class="title">{{'Purchases.Empty' | translate}}</h4>
+		</div>
+
+		<div class="panel panel-default">
+			<div class="panel-heading" role="tab" id="filterHeading">
+				<a role="button" data-toggle="collapse" data-target="#filters" aria-expanded="true" aria-controls="filters">
+					<h4 class="panel-title">
+						{{'Purchases.Filter.Title' | translate}}
+						<span class="indicator glyphicon glyphicon-chevron-down pull-right"></span>
+					</h4>
+				</a>
+			</div>
+			<div id="filters" class="panel-collapse collapse" role="tabpanel" aria-labelledby="filterHeading">
+				<div class="panel-body">
+					<button class="btn" ng-disabled="customerFilter==''" ng-click="customerFilter=''; clearFilters()">
+				        {{'Products.ClearFilters' | translate}} <span class="glyphicon glyphicon-erase"></span>
+				    </button>
+					<div class="col-lg-3">
+						<div class="input-group">
+
+							<input type="text" class="form-control" ng-model="customerFilter" placeholder="{{'Purchases.Filter.Customer' | translate}}">
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="button" ng-click="filter(customerFilter)"><span class="glyphicon glyphicon-play"></span></button>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div ng-if="view=='mypurchases'">
+		<!-- Customer view -->
+		<div ng-if="numberOfPurchases==0">
+			<h4 class="title">{{'Purchases.MyPurchases.Empty.Title' | translate}}</h4>
+			<p class="cart">{{'Purchases.MyPurchases.Empty.Description' | translate}}<br>{{'ShoppingCart.Empty.Click' | translate}}<a href="/products">{{'ShoppingCart.Empty.Here' | translate}}</a>{{'ShoppingCart.Empty.Description2' | translate}}</p>
+		</div>
+	</div>
+
+
+
+	<div ng-if="purchases.length">
+
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3">
+				<nav>
+					<ul class="pagination">
+						<li ng-class="{'disabled' : currentPage==0}" ng-click="loadPage(0)">
+							<span aria-hidden="true">{{'Purchases.First' | translate}}</span>
+						</li>
+						<li ng-class="{'disabled' : currentPage==0}" ng-click="loadPage(currentPage-1)">
+							<span aria-hidden="true">&laquo;</span>
+						</li>
+						<li ng-class="{'active': currentPage==number}" ng-click="loadPage(number)" ng-repeat="number in pages" >
+							<span aria-hidden="true">{{number}}</span>
+						</li>
+						<li ng-class="{'disabled' : currentPage>=numberOfPurchases/pageSize - 1}" ng-click="loadPage(currentPage+1)">
+							<span aria-hidden="true">&raquo;</span>
+						</li>
+						<li ng-class="{'disabled' : currentPage>=numberOfPurchases/pageSize - 1}" ng-click="loadPage(Math.ceil(numberOfPurchases/pageSize)-1)">
+							<span aria-hidden="true">{{'Purchases.Last' | translate}}</span>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-8 col-md-offset-2">
+				<table id="purchases-table" class="table table-bordered table-responsive table-hover">
+					<tr>
+						<th style="width:5%">{{'Purchases.Details' | translate}}</th>
+						<th ng-if="view=='purchases'">
+							{{'Purchases.Customer' | translate}} <span style="float:right" class="glyphicon" ng-class="{'glyphicon-triangle-top' : !inverseOrder, 'glyphicon-triangle-bottom' : inverseOrder, 'order-selected' : sortBy=='customer_id'}" ng-click="sort('customer_id')"></span></th>
+						<th>{{'Purchases.PaymentDate' | translate}} <span style="float:right" class="glyphicon" ng-class="{'glyphicon-triangle-top' : !inverseOrder, 'glyphicon-triangle-bottom' : inverseOrder, 'order-selected' : sortBy=='paymentDate'}" ng-click="sort('paymentDate')"></span></th>
+						<th>{{'Purchases.DeliveryDate' | translate}} <span style="float:right" class="glyphicon" ng-class="{'glyphicon-triangle-top' : !inverseOrder, 'glyphicon-triangle-bottom' : inverseOrder, 'order-selected' : sortBy=='deliveryDate'}" ng-click="sort('deliveryDate')"></span></th>
+						<th ng-if="view=='purchases'" style="width:5%">{{'Purchases.Remove' | translate}}</th>
+					</tr>
+					<tr ng-repeat="purchase in purchases">
+						<td>
+							<a ng-href="/purchase/{{purchase._id}}">
+								<button type="button" class="btn btn-info btn-sm">
+									<span class="glyphicon glyphicon-info-sign"></span>
+								</button>
+							</a>
+						</td>
+						<td ng-if="view=='purchases'">
+							{{purchase.customer_id}}
+						</td>
+						<td>
+							{{purchase.paymentDate | date: 'dd/MM/yyyy HH:mm'}}
+						</td>
+						<td>
+							{{purchase.deliveryDate | date:'dd/MM/yyyy'}}
+						</td>
+						<td ng-if="view=='purchases'">
+							<button class="btn btn-danger btn-sm" ng-click="remove(purchase._id)">
+		            			<span class="glyphicon glyphicon-trash"></span>
+		            		</button>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+
+</div>

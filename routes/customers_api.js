@@ -10,6 +10,31 @@ var Customer = require('../models/customer'),
 	request = require('request'),
 	SocialMediaService = require('./services/service_social_media');
 
+// Return a customer identified by id
+exports.getCustomer = function (req, res) {
+	var _code = req.params.id
+	console.log('Function-productsApi-getCustomer -- id: ' + _code);
+
+	var cookie = req.cookies.session;
+	var jwtKey = req.app.get('superSecret');
+
+	// Check principal is an admin or principal customer
+	CustomerService.checkPrincipalOrAdmin(cookie, jwtKey, _code, function (response) {
+		if (response) {
+			// Find no conditions
+			Customer.findById(_code, function(err,customer){
+				if (err) {
+					res.status(500).json({success: false, message: err});
+				} else {
+					res.status(200).json(customer);
+				}
+			});
+		} else {
+			res.status(403).json({success: false, message: "Doesnt have permission"});
+		}
+	});
+};
+
 // Returns all customers of the system (W/O PASSWORDS)
 exports.getCustomers = function (req, res) {
 	console.log('Function-productsApi-getCustomers');
@@ -27,6 +52,7 @@ exports.getCustomers = function (req, res) {
 					for (var i = 0; i < customers.length; i++) {
 						customers[i].password = "";
 					}
+
 					res.status(200).json(customers);
 				}
 			});

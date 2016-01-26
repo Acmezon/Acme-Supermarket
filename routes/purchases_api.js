@@ -19,6 +19,7 @@ exports.getPurchasesByCustomerId = function(req, res) {
 	});
 }
 
+// Returns a purchase identified by id
 exports.getPurchase = function (req, res) {
 	var _code = req.params.id;
 	console.log('Function-purchasesApi-purchase  --  id: ' + _code);
@@ -41,6 +42,229 @@ exports.getPurchase = function (req, res) {
 					}
 				});
 			});
+		}
+	});
+}
+
+// Returns all the purchases of the system, filtered
+exports.getPurchasesFiltered = function (req, res) {
+	console.log('Function-purchasesApi-purchasesFiltered');
+
+	var currentPage = parseInt(req.body.currentPage) || 0,
+		pageSize = parseInt(req.body.pageSize) || 20,
+		sort = req.body.sort,
+		order = parseInt(req.body.order) || 1,
+		customerFilter = parseInt(req.body.customerFilter) || null;
+
+
+	var ord_tuple = {};
+    ord_tuple[sort] = order;
+
+	var cookie = req.cookies.session;
+	var jwtKey = req.app.get('superSecret');
+
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
+		if (role=='admin' || role=='customer' || role=='supplier') { 
+			if (role=='admin') {
+
+				if (customerFilter) {
+
+					Purchase.find({
+						customer_id: customerFilter
+					}).sort(ord_tuple)
+					.skip(pageSize * currentPage)
+					.limit(pageSize)
+					.exec(function (err, purchases) {
+						if (err) {
+							// Internal server error
+							res.status(500).json({success: false, message: err});
+						} else {
+							res.status(200).json(purchases);
+						}
+					});
+
+				} else {
+
+					Purchase.find().sort(ord_tuple)
+					.skip(pageSize * currentPage)
+					.limit(pageSize)
+					.exec(function (err, purchases) {
+						if (err) {
+							// Internal server error
+							res.status(500).json({success: false, message: err});
+						} else {
+							res.status(200).json(purchases);
+						}
+					});
+
+				}
+
+			} else {
+				// Not admin should not be requesting this
+				res.status(403).json({success: false});
+			}
+		} else {
+			// Not authenticated
+			res.status(401).json({success: false});
+		}
+	});
+}
+
+// Counts all the purchases of the system, filtered
+exports.countPurchasesFiltered = function (req, res) {
+	console.log('Function-purchasesApi-countPurchasesFiltered');
+
+	var currentPage = parseInt(req.body.currentPage) || 0,
+		pageSize = parseInt(req.body.pageSize) || 20,
+		sort = req.body.sort,
+		order = parseInt(req.body.order) || 1,
+		customerFilter = parseInt(req.body.customerFilter) || null;
+
+	var ord_tuple = {};
+    ord_tuple[sort] = order;
+
+	var cookie = req.cookies.session;
+	var jwtKey = req.app.get('superSecret');
+
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
+		if (role=='admin' || role=='customer' || role=='supplier') { 
+			if (role=='admin') {
+
+				if (customerFilter) {
+
+					Purchase.count({
+						customer_id: customerFilter
+					}).exec(function (err, number) {
+						if (err) {
+							// Internal server error
+							res.status(500).json({success: false, message: err});
+						} else {
+							res.status(200).json(number);
+						}
+					});
+
+				} else {
+
+					Purchase.count()
+					.exec(function (err, number) {
+						if (err) {
+							// Internal server error
+							res.status(500).json({success: false, message: err});
+						} else {
+							res.status(200).json(number);
+						}
+					});
+
+				}
+
+			} else {
+				// Not admin should not be requesting this
+				res.status(403).json({success: false});
+			}
+		} else {
+			// Not authenticated
+			res.status(401).json({success: false});
+		}
+	});
+}
+
+// Returns principal's purchases, filtered
+exports.getMyPurchasesFiltered = function (req, res) {
+	console.log('Function-purchasesApi-myPurchasesFiltered');
+
+	var currentPage = parseInt(req.body.currentPage) || 0,
+		pageSize = parseInt(req.body.pageSize) || 20,
+		sort = req.body.sort,
+		order = parseInt(req.body.order) || 1;
+
+	var ord_tuple = {};
+    ord_tuple[sort] = order;
+
+	var cookie = req.cookies.session;
+	var jwtKey = req.app.get('superSecret');
+
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
+		if (role=='admin' || role=='customer' || role=='supplier') { 
+			if (role=='customer') {
+				CustomerService.getPrincipalCustomer(cookie, jwtKey, function (customer) {
+					if (customer) {
+
+						Purchase.find({
+							customer_id: customer._id
+						}).sort(ord_tuple)
+						.skip(pageSize * currentPage)
+						.limit(pageSize)
+						.exec(function (err, purchases) {
+							if (err) {
+								// Internal server error
+								res.status(500).json({success: false, message: err});
+							} else {
+								res.status(200).json(purchases);
+							}
+						});
+
+					} else {
+						// No customer found by principal
+						res.status(403).json({success: false});
+					}
+				});
+
+			} else {
+				// Non customer should not be requesting this
+				res.status(403).json({success: false});
+			}
+		} else {
+			// Not authenticated
+			res.status(401).json({success: false});
+		}
+	});
+}
+
+// Counts principal's purchases
+exports.countMyPurchasesFiltered = function (req, res) {
+	console.log('Function-purchasesApi-countPurchasesFiltered');
+
+	var currentPage = parseInt(req.body.currentPage) || 0,
+		pageSize = parseInt(req.body.pageSize) || 20,
+		sort = req.body.sort,
+		order = parseInt(req.body.order) || 1;
+
+	var ord_tuple = {};
+    ord_tuple[sort] = order;
+
+	var cookie = req.cookies.session;
+	var jwtKey = req.app.get('superSecret');
+
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
+		if (role=='admin' || role=='customer' || role=='supplier') { 
+			if (role=='customer') {
+				CustomerService.getPrincipalCustomer(cookie, jwtKey, function (customer) {
+					if (customer) {
+
+						Purchase.count({
+							customer_id: customer._id
+						}).exec(function (err, number) {
+							if (err) {
+								// Internal server error
+								res.status(500).json({success: false, message: err});
+							} else {
+								res.status(200).json(number);
+							}
+						});
+
+					} else {
+						// No customer found by principal
+						res.status(403).json({success: false});
+					}
+				});
+
+			} else {
+				// Non customer should not be requesting this
+				res.status(403).json({success: false});
+			}
+		} else {
+			// Not authenticated
+			res.status(401).json({success: false});
 		}
 	});
 }
@@ -142,4 +366,34 @@ exports.purchase = function (req, res) {
 			}
 		});
 	}
-}
+};
+
+// Delete a purchase
+exports.deletePurchase = function (req, res) {
+	var _code = req.body.id;
+	console.log('Function-purchasesApi-deletePurchase -- id: ' + _code);
+
+	var cookie = req.cookies.session;
+	var jwtKey = req.app.get('superSecret');
+
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
+		if (role=='admin' || role=='customer' || role=='supplier') {
+			if (role=='admin') {
+				Purchase.remove({ _id: _code }, function(err) {
+					if (!err) {
+						res.status(200).json({success: true});
+					} else {
+						// Internal server error
+						res.status(500).json({success: false, message: err});
+					}
+				});
+			} else {
+				// Error not an admin
+				res.status(403).send({success: false});
+			}
+		} else {
+			// Not authenticated
+			res.status(401).send({success: false});
+		}
+	});
+};

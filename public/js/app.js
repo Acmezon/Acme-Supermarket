@@ -300,6 +300,22 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 				admin: checkCustomer
 			}
 		}).
+		when('/mypurchases', {
+			templateUrl: 'views/purchases/purchases.html',
+			controller: 'PurchasesListCtrl',
+			resolve: {
+				loggedin: checkLoggedin,
+				admin: checkCustomer
+			}
+		}).
+		when('/purchases', {
+			templateUrl: 'views/purchases/purchases.html',
+			controller: 'PurchasesListCtrl',
+			resolve: {
+				loggedin: checkLoggedin,
+				admin: checkAdmin
+			}
+		}).
 		when('/401', {
 			templateUrl: 'views/public/errors/401.html'
 		}).

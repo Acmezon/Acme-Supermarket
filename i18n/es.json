@@ -396,5 +396,29 @@
 			"DeliveryDate" : "Fecha de entrega"
 		},
 		"Thanks" : "¡Gracias por comprar!"
+	},
+	"Purchases" : {
+		"Title" : "Compras",
+		"Customer" : "ID Cliente",
+		"Filter" : {
+			"Title" : "Filtros",
+			"Customer" : "Filtro ID de cliente"
+		},
+		"Purchase" : "Compra",
+		"PaymentDate" : "Fecha de pago",
+		"DeliveryDate" : "Fecha de entrega",
+		"Details" : "Detalles",
+		"Empty" : "Ninguna compra en el sistema",
+		"Number" : "compras en el sistema",
+		"MyPurchases" : {
+			"Title" : "Mis compras",
+			"Empty" : {
+				"Title" : "No hay compras",
+				"Description" : "Todavía no has realizado una compra."
+			}
+		},
+		"Remove" : "Eliminar",
+		"First" : "Primero",
+		"Last" : "Último"
 	}
 }
