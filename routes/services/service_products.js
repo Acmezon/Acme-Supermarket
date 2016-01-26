@@ -52,7 +52,7 @@ exports.updateMinMaxPrice = function(product_id, callback) {
 					}
 				});
 			} else {
-				callback(false);
+				callback(true);
 			}
 		}
 	});

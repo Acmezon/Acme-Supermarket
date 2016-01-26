@@ -12,7 +12,7 @@ angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$
 	$scope.categoryFilterMode = -1;
 	// Pagination
 	$scope.currentPage = 0;
-	$scope.pageSize = '10';
+	$scope.pageSize = '9';
 	// Inject Math
 	$scope.Math = window.Math;
 
