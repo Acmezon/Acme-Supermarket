@@ -17,7 +17,8 @@ var app = angular.module('acme_supermarket',
 				'ui.bootstrap',
 				'ngToast',
 				'credit-cards',
-				'ngTable'
+				'ngTable',
+				'ngFileUpload'
 			]
 	);
 
@@ -235,6 +236,14 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 		when('/products', {
 			templateUrl: 'views/public/products/products.html',
 			controller: 'ProductListCtrl'
+		}).
+		when('/products/create', {
+			templateUrl: 'views/products/create/createProduct.html',
+			controller: 'CreateProductCtrl',
+			resolve : {
+				loggedin: checkLoggedin,
+				admin: checkAdmin
+			}
 		}).
 		when('/product/:id', {
 			templateUrl: 'views/products/product.html',

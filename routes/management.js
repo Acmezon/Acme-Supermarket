@@ -69,7 +69,8 @@ function loadProducts(callback) {
 			"code" : mongoose.Types.ObjectId(),
 			"name" : product.name,
 			"description" : product.description || "-",
-			"image" : product.image
+			"image" : product.image,
+			"avgRating" : 0
 		});
 
 		new_product.save(function (err, prod) {

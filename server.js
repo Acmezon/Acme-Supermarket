@@ -6,16 +6,16 @@
 
 
 var express = require('express'),
-		bodyParser = require('body-parser'),
-		methodOverride = require('method-override'),
-		errorhandler = require('errorhandler'),
-		morgan = require('morgan'),
-		routes = require('./routes/routes'),
-		http = require('http'),
-		path = require('path'),
-		db_utils = require('./routes/db_utils'),
-		config = require('./config'),
-		cookieParser = require('cookie-parser');
+	bodyParser = require('body-parser'),
+	methodOverride = require('method-override'),
+	errorhandler = require('errorhandler'),
+	morgan = require('morgan'),
+	routes = require('./routes/routes'),
+	http = require('http'),
+	path = require('path'),
+	db_utils = require('./routes/db_utils'),
+	config = require('./config'),
+	cookieParser = require('cookie-parser');
 
 var app = module.exports = express();
 
@@ -73,6 +73,8 @@ app.post('/api/product/updateProductImage', api.Products.updateProductImage);
 app.post('/api/product/updateProductRating', api.Products.updateProductRating);
 app.post('/api/product/userHasPurchased', api.Products.userHasPurchased);
 app.post('/api/product/getByIdList', api.Products.getProductsByIdList);
+app.post('/api/products/create', api.Products.createProduct);
+app.delete('/api/products/:id', api.Products.deleteProduct);
 
 // Rates
 app.get('/api/averageRatingByProductId/:id', api.Rates.getAverageRatingByProductId);

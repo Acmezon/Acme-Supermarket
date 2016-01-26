@@ -1,6 +1,7 @@
 var Product = require('../../models/product');
 var Rate = require('../../models/rate');
 var Provide = require('../../models/provide');
+var fs = require('fs');
 
 // Update the avgRating of product with id
 exports.updateAverageRating = function(product_id, callback) {
@@ -53,6 +54,35 @@ exports.updateMinMaxPrice = function(product_id, callback) {
 			} else {
 				callback(false);
 			}
+		}
+	});
+}
+
+exports.removeProduct = function(product_id, callback) {
+	Product.remove({ _id : product_id}, function (err){
+		if(err) {
+			console.log(err);
+			callback(false);
+		}
+
+		callback(true);
+	});
+}
+
+exports.removeProductAndImage = function(product_id, image, callback) {
+	fs.unlink('public/img/' + image, function (err) {
+		if(err) {
+			console.log(err);
+			callback(false);
+		} else {
+			Product.remove({ _id : product_id}, function (err){
+				if(err) {
+					console.log(err);
+					callback(false);
+				}
+
+				callback(true);
+			});
 		}
 	});
 }

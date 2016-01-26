@@ -1,29 +1,29 @@
 'use strict'
 
-angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$http', function ($scope, $http) {
+angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$http', 'ngToast', '$translate', '$window', function ($scope, $http, ngToast, $translate, $window) {
 
 	// DEFAULT VALUES
 	// Orderings
 	$scope.inverseOrder = false;
 	$scope.sortProductsBy = 'name';
-    // Filters
-    $scope.priceFilterMode = 0;
-    $scope.ratingFilterMode = 0;
-    $scope.categoryFilterMode = -1;
+	// Filters
+	$scope.priceFilterMode = 0;
+	$scope.ratingFilterMode = 0;
+	$scope.categoryFilterMode = -1;
 	// Pagination
 	$scope.currentPage = 0;
-    $scope.pageSize = '10';
-    // Inject Math
-    $scope.Math = window.Math;
+	$scope.pageSize = '10';
+	// Inject Math
+	$scope.Math = window.Math;
 
-    // INIT
+	// INIT
 
-    $http.get('/api/categories')
-    	.then( function success (response) {
-    		$scope.categories = response.data;
-    });
+	$http.get('/api/categories')
+		.then( function success (response) {
+			$scope.categories = response.data;
+	});
 
-    // Refresh the page (order, filter and pagination)
+	// Refresh the page (order, filter and pagination)
 	$scope.refreshPage = function(callback) {
 
 		$http.post('/api/products/filtered',
@@ -58,94 +58,106 @@ angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$
 
 	$scope.refresh = function () {
 		$scope.refreshCount(function (number) {
-    		$scope.numberOfProducts = number;
-    		if ($scope.currentPage > Math.ceil($scope.numberOfProducts/parseInt($scope.pageSize))) {
-    			$scope.currentPage = 0;
-    			$scope.reload();
-    		}
-    	});
+			$scope.numberOfProducts = number;
+			if ($scope.currentPage > Math.ceil($scope.numberOfProducts/parseInt($scope.pageSize))) {
+				$scope.currentPage = 0;
+				$scope.reload();
+			}
+		});
 	};
 
 	$scope.reload = function() {
 		$scope.refreshPage(function (products) {
-    		$scope.products = products;
-    		$scope.refresh();
-    	});
+			$scope.products = products;
+			$scope.refresh();
+		});
 	};
 
 	// Auxiliar function: priceCode to maxPrice in filter
-   	var translatePriceFilter = function(code) {
-   		var res = '';
-    	code = parseInt(code)
-    	if (code>=0 && code<=9) {
+	var translatePriceFilter = function(code) {
+		var res = '';
+		code = parseInt(code)
+		if (code>=0 && code<=9) {
 			switch(code) {
-    			case 0:
-    				break;
-    			case 1:
-    				res = 1;
-    				break;
-    			case 2:
-    				res = 5;
-    				break;
-    			case 3:
-    				res = 10;
-    				break;
-    			case 4:
-    				res = 20;	
-    				break;
-    			case 5:
-    				res = 50;
-    				break;
-    			case 6:
-    				res = 100;
-    				break;
-    			case 7:
-    				res = 200;
-    				break;
-    			case 8:
-    				res = 500;
-    				break;
-    			case 9:
-    				break;
-    			default:
-    				break;
-    		}
-    	}
-    	return res;
+				case 0:
+					break;
+				case 1:
+					res = 1;
+					break;
+				case 2:
+					res = 5;
+					break;
+				case 3:
+					res = 10;
+					break;
+				case 4:
+					res = 20;	
+					break;
+				case 5:
+					res = 50;
+					break;
+				case 6:
+					res = 100;
+					break;
+				case 7:
+					res = 200;
+					break;
+				case 8:
+					res = 500;
+					break;
+				case 9:
+					break;
+				default:
+					break;
+			}
+		}
+		return res;
 	};
 
-    $scope.reload();
+	$scope.reload();
 
 
-    // FUNCTIONS
+	// FUNCTIONS
 
-    
-
+	// Delete product
+	$scope.deleteProduct = function (product_id) {
+		$http.delete('api/products/' + product_id)
+		.then(function success(response) {
+			$scope.reload();
+		}, function error(response) {
+			$translate(['Product.DeleteError']).then(function (translation) {
+				ngToast.create({
+					className: 'error',
+					content: translation['Product.DeleteError']
+				});
+			});
+		});
+	};
 
 	// Clear filters
 	$scope.clearFilters = function(){
 		$scope.priceFilterMode = 0;
-    	$scope.ratingFilterMode = 0;
-    	$scope.categoryFilterMode = -1;
-    	$scope.reload();
+		$scope.ratingFilterMode = 0;
+		$scope.categoryFilterMode = -1;
+		$scope.reload();
 	};
 
 	// Change Category filter
 	$scope.categoryFilter = function(mode) {
 		$scope.categoryFilterMode = mode;
-    	$scope.reload();
+		$scope.reload();
 	};
 
 	// Change Price filter
 	$scope.priceFilter = function(mode) {
 		$scope.priceFilterMode = mode;
-    	$scope.reload();
+		$scope.reload();
 	};
 
 	// Change Rating filter
 	$scope.ratingFilter = function(mode) {
 		$scope.ratingFilterMode = mode;
-    	$scope.reload();
+		$scope.reload();
 	};
 
 	// Invert order button
@@ -154,22 +166,22 @@ angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$
 		if ($scope.inverseOrder) {
 			// Method to make image rotate
 			$('.v-middle').css({
-		        '-webkit-transform': 'rotate(' + 180 + 'deg)',  //Safari 3.1+, Chrome  
-		        '-moz-transform': 'rotate(' + 180 + 'deg)',     //Firefox 3.5-15  
-		        '-ms-transform': 'rotate(' + 180 + 'deg)',      //IE9+  
-		        '-o-transform': 'rotate(' + 180 + 'deg)',       //Opera 10.5-12.00  
-		        'transform': 'rotate(' + 180 + 'deg)'          //Firefox 16+, Opera 12.50+  
+				'-webkit-transform': 'rotate(' + 180 + 'deg)',  //Safari 3.1+, Chrome  
+				'-moz-transform': 'rotate(' + 180 + 'deg)',     //Firefox 3.5-15  
+				'-ms-transform': 'rotate(' + 180 + 'deg)',      //IE9+  
+				'-o-transform': 'rotate(' + 180 + 'deg)',       //Opera 10.5-12.00  
+				'transform': 'rotate(' + 180 + 'deg)'          //Firefox 16+, Opera 12.50+  
 
-		    });
+			});
 		} else {
 			$('.v-middle').css({
-		        '-webkit-transform': 'rotate(' + 0 + 'deg)',  //Safari 3.1+, Chrome  
-		        '-moz-transform': 'rotate(' + 0 + 'deg)',     //Firefox 3.5-15  
-		        '-ms-transform': 'rotate(' + 0 + 'deg)',      //IE9+  
-		        '-o-transform': 'rotate(' + 0 + 'deg)',       //Opera 10.5-12.00  
-		        'transform': 'rotate(' + 0 + 'deg)'          //Firefox 16+, Opera 12.50+  
+				'-webkit-transform': 'rotate(' + 0 + 'deg)',  //Safari 3.1+, Chrome  
+				'-moz-transform': 'rotate(' + 0 + 'deg)',     //Firefox 3.5-15  
+				'-ms-transform': 'rotate(' + 0 + 'deg)',      //IE9+  
+				'-o-transform': 'rotate(' + 0 + 'deg)',       //Opera 10.5-12.00  
+				'transform': 'rotate(' + 0 + 'deg)'          //Firefox 16+, Opera 12.50+  
 
-		    });
+			});
 		}
 
 		$scope.reload();
