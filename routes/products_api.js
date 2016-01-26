@@ -421,7 +421,7 @@ exports.createProduct = function (req, res) {
 					filename: function (req, file, cb) {
 						var originalExtension = file.originalname.split(".")[file.originalname.split(".").length - 1]
 						
-						filename = saved.id + "." + originalExtension;
+						filename = "products/" + saved.id + "." + originalExtension;
 
 						cb(null, filename);
 					}
