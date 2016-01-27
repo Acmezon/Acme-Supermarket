@@ -86,7 +86,7 @@
 						<button id="provideproduct-submit" type="submit" name="submit" class="grey" ng-disabled="provideProductForm.$invalid">{{ 'Global.Submit' | translate }}</button>
 					</form>
 
-					<div ng-show="supplierProvides" class="delete-provide" ng-click="deleteProvide()"><i class="fa fa-trash"> {{ 'Product.DeleteProvide' | translate }}</i>
+					<div id="delete-provide" ng-show="supplierProvides" class="delete-provide" ng-click="deleteProvide()"><i class="fa fa-trash"> {{ 'Product.DeleteProvide' | translate }}</i>
 				</div>
 				<div>
 					<h3 class="m_3">{{ 'Products.OtherRecommendations' | translate}}</h3>

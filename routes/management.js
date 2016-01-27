@@ -19,7 +19,8 @@ var db_utils = require('./db_utils'),
 	generator = require('creditcard-generator'),
 	ProductService = require('./services/service_products'),
 	PurchaseService = require('./services/service_purchase'),
-	shuffle = require('shuffle-array');
+	shuffle = require('shuffle-array'),
+	sync = require('synchronize');
 
 
 function random(max, min) {
@@ -222,36 +223,32 @@ function loadSuppliers(callback) {
 }
 
 function loadPurchases(callback) {
-	var customers = Actor.find({ "_type" : "Customer"}, function (err, customers) {
-		
-		async.each(customers, function (customer, callback1) {
+	sync.fiber(function () {
+		var customers = sync.await(Actor.find({ "_type" : "Customer"}, sync.defer()));
+
+		for (var i = 0; i < customers.length; i++){
+			var customer = customers[i];
+
 			var max_products = 300;
 			var min_products = 200;
 
 			var nr_products = random(max_products, min_products);
 
-			Product.find({}, function (err, products) {
-				var shuffled_products = shuffle(products);
-				var rand_products = shuffled_products.slice(0, nr_products);
+			var products = sync.await(Product.find({}, sync.defer()));
+			var shuffled_products = shuffle(products);
+			var rand_products = shuffled_products.slice(0, nr_products);
+			
+			for(var j = 0; j < rand_products.length; j++) {
+				sync.await(buyProduct(rand_products[j], customer.id, sync.defer()));
+			}
+		}
 
-				async.each(rand_products, function (prd, callback2) {
-					buyProduct(prd, customer.id, callback2);
+	}, function (err, data) {
+		if(err) console.log("--ERR: Error purchasing all products: " + err);
 
-				}, function (err) {
-					if(err) console.log("--ERR: Error purchasing producs: " + err);
+		console.log("--DO: Purchased all products");
 
-					console.log("--DO: Purchased products for customer");
-
-					callback1();
-				});
-			});
-		}, function (err) {
-			if(err) console.log("--ERR: Error purchasing all products: " + err);
-
-			console.log("--DO: Purchased all products");
-
-			callback();
-		});
+		callback();
 	});
 }
 
@@ -334,7 +331,7 @@ function buyProduct(product, customer_id ,callback) {
 							reputation.save( function (err) {
 								if(err) console.log("--ERR: Error saving reputation: " + err);
 
-								callback();
+								callback(err);
 							});
 						});
 

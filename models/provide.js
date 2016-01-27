@@ -11,8 +11,6 @@ var provideSchema = mongoose.Schema({
 	supplier_id : {type: Number, ref:'Supplier'}
 }, {collection: 'provide'});
 
-provideSchema.index({ product_id: 1, supplier_id: 1}, { unique: true });
-
 provideSchema.plugin(autoIncrement.plugin, 'Provide');
 
 module.exports = mongoose.model('Provide', provideSchema);
