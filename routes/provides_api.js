@@ -113,13 +113,18 @@ exports.deleteSupplierProvidesByProductId = function(req, res) {
 			SupplierService.getPrincipalSupplier(cookie, jwtKey, function (supplier) {
 				if (supplier) {
 
-					Provide.remove({product_id: _code, supplier_id: supplier._id}, function(err){
-						if(err){
+					Provide.findOne({product_id: _code, supplier_id: supplier._id, deleted : false}, function (err, result){
+						if(err || !result){
 							// Internal Server Error
 							res.status(500).json({success: false, message: err});
 						}else{
-							//console.log(provide);
-							res.status(200).json({success: true});
+							Provide.findByIdAndUpdate(result.id, { $set : { deleted: true } }, function (err) {
+								if (err) {
+									res.status(500).json({success: false, message: err});
+								} else {
+									res.status(200).json({success: true});
+								}
+							});
 						}
 					});
 					

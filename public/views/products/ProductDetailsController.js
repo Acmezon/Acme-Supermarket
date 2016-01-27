@@ -259,4 +259,23 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 	}, function error(response) {
 		$scope.supplierProvides = false;
 	});
+
+	// Supplier deletes a provide
+	$scope.deleteProvide = function (){
+		$http({
+			method: 'GET',
+			url: '/api/provide/bysupplier/byproduct/delete/' + id
+		}).
+		then(function success(response) {
+			$window.location.reload();
+		}, function error (response) {
+			$translate(['Product.DeleteError']).then(function (translation) {
+				ngToast.create({
+					className: 'error',
+					content: translation['Product.DeleteError']
+				});
+			});
+		});		
+	}
+
 }]);

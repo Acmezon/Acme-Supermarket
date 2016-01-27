@@ -332,3 +332,11 @@ span.rating_supplier i {
 .supply-form form input {
 	margin: 0;
 }
+
+/*Delete provide button in product details*/
+div.delete-provide {
+	font-size: 25px;
+	cursor: pointer;
+	color: #4E1212;
+	margin-right: 5px;
+}

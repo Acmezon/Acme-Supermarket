@@ -293,7 +293,8 @@
 		},
 		"Provide" : "Provide this product",
 		"ProvidePrice" : "Product price",
-		"Provide error" : "The provide could not be saved. Please, try again later"
+		"ProvideError" : "The provide could not be saved. Please, try again later",
+		"DeleteProvide" : "Stop providing this product"
 	},
 	"ShoppingCart": {
 		"Title" : "Shopping cart",

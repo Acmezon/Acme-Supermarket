@@ -347,33 +347,40 @@ function buyProduct(product, customer_id ,callback) {
 }
 
 function loadProvides(product, callback) {
-	Provide.find({ "product_id" : product.id, deleted: false }, function (err, provides) {
+	Provide.find({ product_id : product.id, deleted: false }, function (err, provides) {
 		if(provides.length == 0) {
 			var max_suppliers = 3;
 			var min_suppliers = 1;
 
 			var nr_suppliers = random(max_suppliers, min_suppliers);
 
-			Actor.find({"_type" : "Supplier"}, function (err, suppliers) {
+			Supplier.find({_type : "Supplier"}, function (err, suppliers) {
 				var shuffled_suppliers = shuffle(suppliers);
 				var rand_suppliers = shuffled_suppliers.slice(0, nr_suppliers);
 
 				async.each(rand_suppliers, function (supplier, callback2) {
-					var provide = new Provide({
-						"price" : random(20, 200),
-						"product_id" : product.id,
-						"supplier_id" : supplier.id
+					Provide.findOne( {supplier_id : supplier.id, product_id : product.id }, function (err, result) {
+						if(err) console.log("--ERR: Error finding supplier provide: " + err);
+						if(result) {
+							callback2();
+						} else {
+							var provide = new Provide({
+								"price" : random(20, 200),
+								"product_id" : product.id,
+								"supplier_id" : supplier.id
+							});
+
+							provide.save(function (err, saved) {
+								if(err) console.log("--ERR: Error saving provide: " + err);
+								callback2();
+							});
+						}
 					});
-
-					provide.save(function (err, saved) {
-						if(err) console.log("--ERR: Error saving provide: " + err);
-						callback2();
-					})
-
+					
 				}, function (error) {
 					var supplier = rand_suppliers[Math.floor(Math.random() * rand_suppliers.length)];
 
-					Provide.findOne({ "product_id" : product.id, "supplier_id" : supplier.id, deleted: false }, function (err, provide) {
+					Provide.findOne({ product_id : product.id, "supplier_id" : supplier.id, deleted: false }, function (err, provide) {
 						if(err) console.log("--ERR: Error finding provide: " + err);
 						callback(provide);
 					});
