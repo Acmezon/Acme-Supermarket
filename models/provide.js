@@ -6,6 +6,7 @@ var Product = require('./product'),
 
 var provideSchema = mongoose.Schema({
 	price: {type: Number, required:true, min:0},
+	deleted: {type: Boolean, default: false},
 	product_id : {type: Number, ref:'Product'},
 	supplier_id : {type: Number, ref:'Supplier'}
 }, {collection: 'provide'});

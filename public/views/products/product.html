@@ -73,7 +73,19 @@
 						</tbody>
 					</table>
 				</div>
+
 				<div class="clear"></div>	
+				<div class="supply-form account_form" restrict access="supplier" ng-show="!supplierProvides" >
+					<h4 class="title">{{ 'Product.Provide' | translate }}</h4>
+					<form method="post" name="provideProductForm" id="submit-form" ng-submit="submitProvideProduct()" class="product_form" novalidate>
+						<div class="input-group">
+							<input name="price" type="number" step="any" min="0" class="form-control" placeholder="{{ 'Product.ProvidePrice' | translate }}*" ng-model="new_provide.price" ng-class="{'has-error': provideProductForm.price.$dirty && (provideProductForm.price.$error.required || provideProductForm.price.$error.min || provideProductForm.price.$invalid)}" ng-blur="setPriceValid()" required>
+							<div class="input-group-addon">€</div>
+						</div>
+
+						<button id="provideproduct-submit" type="submit" name="submit" class="grey" ng-disabled="provideProductForm.$invalid">{{ 'Global.Submit' | translate }}</button>
+					</form>
+				</div>
 				<div>
 					<h3 class="m_3">{{ 'Products.OtherRecommendations' | translate}}</h3>
 					<!-- Recommendations carrousel -->

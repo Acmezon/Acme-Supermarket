@@ -72,7 +72,7 @@ exports.updateSupplierRating = function (req, res) {
 					res.sendStatus(401)
 					return;
 				}
-				Provide.findOne( { _id : provide_id}, function (err, provide) {
+				Provide.findOne( { _id : provide_id, deleted: false }, function (err, provide) {
 					if(err || !provide) {
 						res.sendStatus(503);
 						return;
@@ -116,3 +116,82 @@ exports.updateSupplierRating = function (req, res) {
 		}
 	});
 };
+
+//Creates a provide for the current logged supplier to the received product
+exports.provideProduct = function (req, res) {
+	var product_id = req.body.product_id;
+	var price = req.body.price;
+	//Truncates the number to almost two decimal values
+	price = Number(price.toString().match(/^\d+(?:\.\d{0,2})?/))
+
+	SupplierService.getPrincipalSupplier(req.cookies.session, req.app.get('superSecret'),
+		function (supplier) {
+			if(supplier == null) {
+				res.sendStatus(401);
+				return;
+			}
+
+			if(product_id == undefined || price == undefined) {
+				res.sendStatus(503);
+				return;
+			}
+
+			Provide.findOne({ product_id: product_id, supplier_id : supplier.id, deleted: false }, function (err, provide) {
+				if(err){
+					res.sendStatus(500);
+					return;
+				}
+				if(provide) {
+					res.sendStatus(500);
+					return;
+				}
+				var newProvide = new Provide({
+					price : price,
+					deleted : false,
+					product_id : product_id,
+					supplier_id : supplier.id
+				});
+
+				newProvide.save(function (err) {
+					if(err){
+						res.sendStatus(500);
+						return;
+					}
+
+					res.sendStatus(200);
+				});
+			});
+		}
+	);
+};
+
+//Checks if the logged supplier already provides the product
+exports.checkProvides = function(req, res) {
+	var product_id = req.body.product_id;
+
+	SupplierService.getPrincipalSupplier(req.cookies.session, req.app.get('superSecret'),
+		function (supplier) {
+			if(supplier == null) {
+				res.status(200).json({ 'provides' : false });
+				return;
+			}
+
+			if(product_id == undefined) {
+				res.sendStatus(500);
+			}
+
+			Provide.findOne( {product_id: product_id, supplier_id : supplier.id, deleted: false }, function (err, provide) {
+				if (err) {
+					res.sendStatus(500);
+					return;
+				}
+
+				if(!provide) {
+					res.status(200).json({ 'provides' : false });
+				} else {
+					res.status(200).json({ 'provides' : true });
+				}
+			})
+		}
+	);
+}
