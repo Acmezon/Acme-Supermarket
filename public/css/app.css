@@ -275,6 +275,7 @@ a.add-product {
 
 /*Fix products images and position*/
 .product_image img {
+	width: 100%;
 	max-width: 345px;
 	max-height: 215px;
 	margin: auto;
@@ -339,4 +340,18 @@ div.delete-provide {
 	cursor: pointer;
 	color: #4E1212;
 	margin-right: 5px;
+}
+
+/*Responsive product list filter*/
+@media (max-width: 604px) {
+	.mens-toolbar div.sort {
+		float: none;
+		width: 100%;
+	}
+}
+
+@media (max-width: 400px) {
+	.mens-toolbar>.col-sm-4>button {
+		display: block;
+	}
 }

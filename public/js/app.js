@@ -249,7 +249,7 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			controller: 'ProductListCtrl',
 			resolve : {
 				loggedin: checkLoggedin,
-				admin: checkSupplier
+				supplier: checkSupplier
 			},
 			activetab: 'account'
 		}).

@@ -66,21 +66,27 @@ function loadProducts(callback) {
 	var products_mapping = {};
 
 	async.each(products.products, function (product, products_callback) {
-		var new_product = new Product({
-			"code" : mongoose.Types.ObjectId(),
-			"name" : product.name,
-			"description" : product.description || "-",
-			"image" : product.image,
-			"avgRating" : 0
-		});
+		try {
+			fs.accessSync('public/img/'+product.image, fs.F_OK);
+			// Exists, save product
+				var new_product = new Product({
+				"code" : mongoose.Types.ObjectId(),
+				"name" : product.name,
+				"description" : product.description || "-",
+				"image" : product.image,
+				"avgRating" : 0
+			});
 
-		new_product.save(function (err, prod) {
-			if (err) console.log("--ERR: Error saving product: " + err);
+			new_product.save(function (err, prod) {
+				if (err) console.log("--ERR: Error saving product: " + err);
 
-			products_mapping[product._id] = parseInt(prod.id);
+				products_mapping[product._id] = parseInt(prod.id);
+				products_callback();
+			});
+		} catch (e) {
+			// Not exists or not accessible, skip
 			products_callback();
-		});
-
+		}
 	}, function (err) {
 		if (err) console.log("--ERR: Error saving all products: " + err);
 
@@ -99,18 +105,25 @@ function loadBelongsTo(callback) {
 	var products_mapping = JSON.parse(fs.readFileSync('big_db/products_mapping.json', 'UTF-8'));
 
 	async.each(belongs_to.belongs_to, function (belongs, belongs_to_callback) {
-		var new_belongs_to = new Belongs_to({
-			"product_id" : parseInt(products_mapping[belongs.product_id]),
-			"category_id" : parseInt(categories_mapping[belongs.category_id])
-		});
+		var product_id = products_mapping[belongs.product_id];
+		
+		if(product_id != undefined) {
+			var new_belongs_to = new Belongs_to({
+				"product_id" : parseInt(product_id),
+				"category_id" : parseInt(categories_mapping[belongs.category_id])
+			});
 
-		new_belongs_to.save(function (err) {
-			if (err){
-				console.log("--ERR: Error saving belongs to: " + err + " for belongs_to " + belongs.product_id);
-			}
+			new_belongs_to.save(function (err) {
+				if (err){
+					console.log("--ERR: Error saving belongs to: " + err + " for belongs_to " + belongs.product_id);
+				}
 
+				belongs_to_callback();
+			});
+		} else {
 			belongs_to_callback();
-		});
+		}
+
 	}, function (err) {
 		if (err) console.log("--ERR: Error saving all belongs_to: " + err);
 
@@ -248,7 +261,7 @@ function loadPurchases(callback) {
 
 		console.log("--DO: Purchased all products");
 
-		callback();
+		clean(callback);
 	});
 }
 
@@ -343,6 +356,14 @@ function buyProduct(product, customer_id ,callback) {
 	});
 }
 
+function clean(callback) {
+	fs.unlinkSync('big_db/categories_mapping.json');
+
+	fs.unlinkSync('big_db/products_mapping.json');
+
+	callback();
+}
+
 function loadProvides(product, callback) {
 	Provide.find({ product_id : product.id, deleted: false }, function (err, provides) {
 		if(provides.length == 0) {
@@ -433,12 +454,13 @@ exports.fixDeadImages = function (req, res) {
 				} catch (e) {
 					// Not exists or not accessible
 					// Update product an set the image to default one
-					Product.findByIdAndUpdate(product.id, { "$set" : { "image" : "default.jpg" } }, 
+					/*Product.findByIdAndUpdate(product.id, { "$set" : { "image" : "default.jpg" } }, 
 					function (err) {
 						if (err) console.log("--ERR: Error updating image for product " + product.id + ": " + err);
 
 						console.log("Updated image of product ID: " + product.id);
-					})
+					})*/
+					console.log("Dead image for product " + product.id);
 				}
 			});
 			res.status(200).json('Check console!');
