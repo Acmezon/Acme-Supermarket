@@ -244,6 +244,15 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			controller: 'ProductListCtrl',
 			activetab: 'products'
 		}).
+		when('/myproducts', {
+			templateUrl: 'views/public/products/products.html',
+			controller: 'ProductListCtrl',
+			resolve : {
+				loggedin: checkLoggedin,
+				admin: checkSupplier
+			},
+			activetab: 'account'
+		}).
 		when('/products/create', {
 			templateUrl: 'views/products/create/createProduct.html',
 			controller: 'CreateProductCtrl',

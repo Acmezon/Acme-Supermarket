@@ -24,7 +24,7 @@ exports.getAllProductsFiltered = function(req, res) {
 		ordering_order = parseInt(req.body.order) || 1,
 		ordering_currentPage = parseInt(req.body.currentPage) || 0,
 		ordering_pageSize = parseInt(req.body.pageSize) || 9,
-		filter_id_category = parseInt(req.body.categoryFilter) || null,
+		filter_id_category = parseInt(req.body.categoryFilter) || -1,
 		filter_maxPrice = req.body.priceFilter ? parseInt(req.body.priceFilter) || -1 : -1,
 		filter_minRating = parseInt(req.body.ratingFilter) || 0,
 		filter_maxRating = filter_minRating==0 ? 5 : parseInt(req.body.ratingFilter) + 1 || 5;
@@ -156,7 +156,7 @@ exports.getAllProductsFiltered = function(req, res) {
 exports.countProductsFiltered = function(req, res) {
 	console.log('Function-productsApi-countProductsFiltered');
 
-	var filter_id_category = parseInt(req.body.categoryFilter) || null,
+	var filter_id_category = parseInt(req.body.categoryFilter) || -1,
 		filter_maxPrice = req.body.priceFilter ? parseInt(req.body.priceFilter) || -1 : -1,
 		filter_minRating = parseInt(req.body.ratingFilter) || 0,
 		filter_maxRating = filter_minRating==0 ? 5 : parseInt(req.body.ratingFilter) + 1 || 5;
@@ -262,6 +262,320 @@ exports.countProductsFiltered = function(req, res) {
 	}
 
 };
+
+// Return collection of products of a supplier, filtered
+exports.getSupplierProductsFiltered = function (req, res) {
+	console.log('Function-productsApi-getSupplierProductsFiltered');
+
+	var ordering_sort = req.body.sort,
+		ordering_order = parseInt(req.body.order) || 1,
+		ordering_currentPage = parseInt(req.body.currentPage) || 0,
+		ordering_pageSize = parseInt(req.body.pageSize) || 9,
+		filter_id_category = parseInt(req.body.categoryFilter) || -1,
+		filter_maxPrice = req.body.priceFilter ? parseInt(req.body.priceFilter) || -1 : -1,
+		filter_minRating = parseInt(req.body.ratingFilter) || 0,
+		filter_maxRating = filter_minRating==0 ? 5 : parseInt(req.body.ratingFilter) + 1 || 5,
+		filter_supplier_id = parseInt(req.body.supplier_id) || -1;
+
+	// Format sort criteria
+	if (ordering_sort == 'rating') {
+		ordering_sort = 'avgRating';
+	} else {
+		if (ordering_sort == 'price') {
+			ordering_sort = 'minPrice';
+		} else {
+			ordering_sort = 'name';
+		}
+	}
+
+	var ord_tuple = {};
+	ord_tuple[ordering_sort] = ordering_order;
+
+	if (filter_id_category != -1){
+		// CATEGORY FILTER ACTIVATED
+		BelongsTo.find({
+			'category_id': filter_id_category
+		}).select('product_id').exec(function(err, product_ids) {
+			if (err) {
+				res.status(500).json({
+					success: false,
+					message: err
+				});
+			} else {
+				// CONTINUE
+				Provide.find({supplier_id : filter_supplier_id})
+				.select({'product_id' : 1})
+				.exec(function(err, provides) {
+
+					// Concat the two ids filters (BelongsTo and ProvidesBySupplier)
+					var aux = provides.map(function(provide) { return provide.product_id; });
+					product_ids = product_ids.concat(aux);
+
+					if (filter_maxPrice != -1) {
+						// PRICE FILTER ACTIVATED
+						Product.find({
+								maxPrice: {
+									$lt: filter_maxPrice
+								},
+								avgRating: {
+									$gte: filter_minRating,
+									$lt: filter_maxRating
+								},
+								'_id': {
+									$in: product_ids
+								}
+							}).select({'_id':1, 'name':1, 'image':1, 'minPrice':1, 'maxPrice':1, 'avgRating':1})
+							.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
+							.exec(function(err, products) {
+								if (err) {
+									res.status(500).json({
+										success: false,
+										message: err
+									});
+								} else {
+									res.status(200).json(products);
+								}
+							});
+					} else {
+						// PRICE FILTER DEACTIVATED
+						Product.find({
+								avgRating: {
+									$gte: filter_minRating,
+									$lt: filter_maxRating
+								},
+								'_id': {
+									$in: product_ids
+								}
+							}).select({'_id':1, 'name':1, 'image':1, 'minPrice':1, 'maxPrice':1, 'avgRating':1})
+							.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
+							.exec(function(err, products) {
+								if (err) {
+									res.status(500).json({
+										success: false,
+										message: err
+									});
+								} else {
+									res.status(200).json(products);
+								}
+							});
+					}
+
+
+				});
+
+
+
+
+				
+			}
+		});
+	} else {
+		// CATEGORY FILTER DEACTIVATED
+
+		Provide.find({supplier_id : filter_supplier_id})
+		.select({'product_id' : 1})
+		.exec(function(err, provides) {
+
+			// Concat the two ids filters (BelongsTo and ProvidesBySupplier)
+			var product_ids = provides.map(function(provide) { return provide.product_id; });
+
+			if (filter_maxPrice != -1) {
+				// PRICE FILTER ACTIVATED
+				Product.find({
+						maxPrice: {
+							$lt: filter_maxPrice
+						},
+						avgRating: {
+							$gte: filter_minRating,
+							$lt: filter_maxRating
+						},
+						'_id': {
+							$in: product_ids
+						}
+					}).select({'_id':1, 'name':1, 'image':1, 'minPrice':1, 'maxPrice':1, 'avgRating':1})
+					.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
+					.exec(function(err, products) {
+						if (err) {
+							res.status(500).json({
+								success: false,
+								message: err
+							});
+						} else {
+							res.status(200).json(products);
+						}
+					});
+			} else {
+				// PRICE FILTER DEACTIVATED
+				Product.find({
+					avgRating: {
+						$gte: filter_minRating,
+						$lt: filter_maxRating
+					},
+					'_id': {
+						$in: product_ids
+					}
+				}).select({'_id':1, 'name':1, 'image':1, 'minPrice':1, 'maxPrice':1, 'avgRating':1})
+				.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
+				.exec(function(err, products) {
+					if (err) {
+						res.status(500).json({
+							success: false,
+							message: err
+						});
+					} else {
+						res.status(200).json(products);
+					}
+				});
+			}
+		});
+	}
+}
+
+// Count collection of products of a supplier, filtered
+exports.countSupplierProductsFiltered = function (req, res) {
+	console.log('Function-productsApi-getSupplierProductsFiltered');
+
+	var filter_id_category = parseInt(req.body.categoryFilter) || -1,
+		filter_maxPrice = req.body.priceFilter ? parseInt(req.body.priceFilter) || -1 : -1,
+		filter_minRating = parseInt(req.body.ratingFilter) || 0,
+		filter_maxRating = filter_minRating==0 ? 5 : parseInt(req.body.ratingFilter) + 1 || 5,
+		filter_supplier_id = parseInt(req.body.supplier_id) || -1;
+
+	if (filter_id_category != -1) {
+		// CATEGORY FILTER ACTIVATED
+		BelongsTo.find({
+			'category_id': filter_id_category
+		}).select('product_id').exec(function(err, product_ids) {
+			if (err) {
+				res.status(500).json({
+					success: false,
+					message: err
+				});
+			} else {
+				// CONTINUE
+				Provide.find({supplier_id : filter_supplier_id})
+				.select({'product_id' : 1})
+				.exec(function(err, provides) {
+
+					// Concat the two ids filters (BelongsTo and ProvidesBySupplier)
+					var aux = provides.map(function(provide) { return provide.product_id; });
+					//console.log(product_ids.length)
+					product_ids = product_ids.concat(aux);
+					//console.log(aux.length)
+
+					if (filter_maxPrice != -1) {
+						// PRICE FILTER ACTIVATED
+						Product.count({
+								maxPrice: {
+									$lt: filter_maxPrice
+								},
+								avgRating: {
+									$gte: filter_minRating,
+									$lt: filter_maxRating
+								},
+								'_id': {
+									$in: product_ids
+								}
+							}).exec(function(err, number) {
+								if (err) {
+									res.status(500).json({
+										success: false,
+										message: err
+									});
+								} else {
+									console.log(number)
+									res.status(200).json(number);
+								}
+							});
+					} else {
+						// PRICE FILTER DEACTIVATED
+						Product.count({
+								avgRating: {
+									$gte: filter_minRating,
+									$lt: filter_maxRating
+								},
+								'_id': {
+									$in: product_ids
+								}
+							}).exec(function(err, number) {
+								if (err) {
+									res.status(500).json({
+										success: false,
+										message: err
+									});
+								} else {
+									res.status(200).json(number);
+								}
+							});
+					}
+
+
+				});
+
+
+
+
+				
+			}
+		});
+	} else {
+		// CATEGORY FILTER DEACTIVATED
+
+		Provide.find({supplier_id : filter_supplier_id})
+		.select({'product_id' : 1})
+		.exec(function(err, provides) {
+
+			// Concat the two ids filters (BelongsTo and ProvidesBySupplier)
+			var product_ids = provides.map(function(provide) { return provide.product_id; });
+
+			if (filter_maxPrice != -1) {
+				// PRICE FILTER ACTIVATED
+				Product.count({
+						maxPrice: {
+							$lt: filter_maxPrice
+						},
+						avgRating: {
+							$gte: filter_minRating,
+							$lt: filter_maxRating
+						},
+						'_id': {
+							$in: product_ids
+						}
+					}).exec(function(err, number) {
+						if (err) {
+							res.status(500).json({
+								success: false,
+								message: err
+							});
+						} else {
+							console.log(number)
+							res.status(200).json(number);
+						}
+					});
+			} else {
+				// PRICE FILTER DEACTIVATED
+				Product.count({
+					avgRating: {
+						$gte: filter_minRating,
+						$lt: filter_maxRating
+					},
+					'_id': {
+						$in: product_ids
+					}
+				}).exec(function(err, number) {
+					if (err) {
+						res.status(500).json({
+							success: false,
+							message: err
+						});
+					} else {
+						res.status(200).json(number);
+					}
+				});
+			}
+		});
+	}
+}
 
 // Return collection of limited products: Used in home page.
 exports.getAllProductsLimit = function(req, res) {

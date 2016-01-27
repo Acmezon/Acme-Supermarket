@@ -65,7 +65,77 @@ exports.getProvidesByProductId = function(req, res) {
 	});
 };
 
-// 
+// Returns a supplier object of supplier for product identified by id
+exports.getSupplierProvidesByProductId = function(req, res) {
+	var _code = req.params.id;
+	console.log('GET /api/provide/bysupplier/byproduct/'+_code)
+
+	var cookie = req.cookies.session;
+	var jwtKey = req.app.get('superSecret');
+	// Check authenticated
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
+		if (role=='admin' || role=='customer' || role=='supplier') {
+			SupplierService.getPrincipalSupplier(cookie, jwtKey, function (supplier) {
+				if (supplier) {
+
+					Provide.find({product_id: _code, supplier_id: supplier._id}, function(err,provide){
+						if(err){
+							// Internal Server Error
+							res.status(500).json({success: false, message: err});
+						}else{
+							//console.log(provide);
+							res.status(200).json(provide);
+						}
+					});
+
+				} else {
+					// Principal supplier not found in DB
+					res.status(403).json({success: false, message: "Doesn't have permissions"});
+				}
+			});
+		} else {
+			// Not authenticated
+			res.status(401).json({success: false, message: "Not authenticated"});
+		}
+	});
+}
+
+// Deletes a supplier object of supplier for product identified by id
+exports.deleteSupplierProvidesByProductId = function(req, res) {
+	var _code = req.params.id;
+	console.log('GET /api/provide/bysupplier/byproduct/'+_code)
+
+	var cookie = req.cookies.session;
+	var jwtKey = req.app.get('superSecret');
+	// Check authenticated
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
+		if (role=='admin' || role=='customer' || role=='supplier') {
+			SupplierService.getPrincipalSupplier(cookie, jwtKey, function (supplier) {
+				if (supplier) {
+
+					Provide.remove({product_id: _code, supplier_id: supplier._id}, function(err){
+						if(err){
+							// Internal Server Error
+							res.status(500).json({success: false, message: err});
+						}else{
+							//console.log(provide);
+							res.status(200).json({success: true});
+						}
+					});
+					
+				} else {
+					// Principal supplier not found in DB
+					res.status(403).json({success: false, message: "Doesn't have permissions"});
+				}
+			});
+		} else {
+			// Not authenticated
+			res.status(401).json({success: false, message: "Not authenticated"});
+		}
+	});
+}
+
+// returns a provide identified by id
 exports.getProvide = function(req, res) {
 	var _code = req.params.id;
 	console.log('GET /api/provide/'+_code)
@@ -85,7 +155,7 @@ exports.getProvide = function(req, res) {
 				}
 			});
 		} else {
-			res.status(403).json({success: false, message: "Doesn't have permission"});
+			res.status(401).json({success: false, message: "Not authenticated"});
 		}
 	});
 };

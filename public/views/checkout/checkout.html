@@ -23,7 +23,7 @@
 			</thead>
 			<tbody>
 			  	<tr ng-repeat="product in shoppingcart">
-					<td style="width:10%"><img class="img-responsive img-thumbnail" src="img/template_bootstrap/pic5.jpg"/></td>
+					<td style="width:10%"><img class="img-responsive img-thumbnail" src="img/{{product.image}}"/></td>
 					<td>{{product.name}}</td>
 					<td>{{product.supplier}}</td>
 					<td style="width:10%">{{product.quantity}}</td>

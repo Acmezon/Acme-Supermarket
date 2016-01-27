@@ -52,7 +52,8 @@
 		"Management" : "Administración",
 		"Customers" : "Clientes",
 		"Purchases" : "Compras",
-		"CreateProduct" : "Añadir un producto"
+		"CreateProduct" : "Añadir un producto",
+		"MyProducts" : "Mis productos"
  	},
 	"Footer": {
 		"AboutUs" : "Sobre nosotros",

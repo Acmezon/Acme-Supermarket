@@ -22,7 +22,7 @@
 			</thead>
 			<tbody>
 			  	<tr ng-repeat="purchaseline in purchase_list">
-					<td style="width:10%"><img class="img-responsive img-thumbnail" src="img/template_bootstrap/pic5.jpg"/></td>
+					<td style="width:10%"><img class="img-responsive img-thumbnail" src="img/{{purchaseline.image}}"/></td>
 					<td>{{purchaseline.product.name}}</td>
 					<td>{{purchaseline.supplierName}}</td>
 					<td style="width:10%">{{purchaseline.quantity}}</td>

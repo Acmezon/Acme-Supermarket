@@ -40,3 +40,34 @@ exports.userHasPurchased = function (cookie, key, provide_id, callback) {
 		}
 	});
 };
+
+// Returns a supplier object for the principal
+exports.getPrincipalSupplier = function(cookie, jwtKey, callback) {
+	if (cookie !== undefined) {
+		var token = cookie.token;
+		// decode token
+		if (token) {
+			// verifies secret and checks exp
+			jwt.verify(token, jwtKey, function(err, decoded) {
+				if (err) {
+					callback(null);
+				} else {
+					Supplier.findOne({
+						email: decoded.email,
+						_type: 'Supplier'
+					}, function (err, supplier){
+						if (err || !supplier) {
+							callback(null);
+						} else {
+							callback(supplier);
+						}
+					});
+				}
+			});
+		} else {
+			callback(null);
+		}
+	} else {
+		callback(null);
+	}
+}

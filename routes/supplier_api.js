@@ -6,7 +6,7 @@ var db_utils = require('./db_utils'),
 	CustomerService = require('./services/service_customers'),
 	Reputation = require('../models/reputation');
 
-//Devuelve un nombre de un supplier
+// Returns the name of a supplier identified by id
 exports.getSupplierName = function (req, res) {
 	var _code = req.params.id;
 	console.log('GET /api/supplierName/'+_code)
@@ -26,7 +26,33 @@ exports.getSupplierName = function (req, res) {
 				}
 			});
 		} else {
-			res.status(401).json({success: false, message: "Doesnt have permission"});
+			res.status(401).json({success: false, message: "Not authenticated"});
+		}
+	});
+};
+
+// Returns supplier object of principal
+exports.getSupplierPrincipal = function (req, res) {
+	console.log('GET /api/supplier/principal')
+
+	var cookie = req.cookies.session;
+	var jwtKey = req.app.get('superSecret')
+	// Check authenticated
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
+		if (role=='admin' || role=='customer' | role=='supplier') {
+			if (role=='supplier') {
+				SupplierService.getPrincipalSupplier(cookie, jwtKey, function (supplier) {
+					if (supplier) {
+						res.status(200).json(supplier);
+					} else {
+						res.status(403).json({success: false, message: "Doesn't have permission"});
+					}
+				});
+			} else {
+				res.status(403).json({success: false, message: "Doesn't have permission"});
+			}
+		} else {
+			res.status(401).json({success: false, message: "Not authenticated"});
 		}
 	});
 };
@@ -38,7 +64,7 @@ exports.updateSupplierRating = function (req, res) {
 
 	CustomerService.getPrincipalCustomer(req.cookies.session, req.app.get('superSecret'), function (user) {
 		if(user == null) {
-			res.status(403).json({success: false, message: "Doesnt have permission"});
+			res.status(403).json({success: false, message: "Doesn't have permission"});
 			return;
 		} else {
 			SupplierService.userHasPurchased(req.cookies.session, req.app.get('superSecret'), provide_id, function (response) {

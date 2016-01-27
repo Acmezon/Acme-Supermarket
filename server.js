@@ -66,6 +66,8 @@ app.get('/home', routes.index);
 // Products
 app.post('/api/products/filtered', api.Products.getAllProductsFiltered);
 app.post('/api/products/filtered/count', api.Products.countProductsFiltered);
+app.post('/api/products/myproducts/filtered', api.Products.getSupplierProductsFiltered);
+app.post('/api/products/myproducts/filtered/count', api.Products.countSupplierProductsFiltered);
 app.get('/api/products/limit/:limit', api.Products.getAllProductsLimit)
 app.get('/api/product/:id', api.Products.getProduct);
 app.post('/api/product/updateProduct', api.Products.updateProduct);
@@ -82,6 +84,8 @@ app.get('/api/averageRatingByProductId/:id', api.Rates.getAverageRatingByProduct
 // Provides
 app.get('/api/provide/:id', api.Provides.getProvide);
 app.get('/api/providesByProductId/:id', api.Provides.getProvidesByProductId);
+app.get('/api/provide/bysupplier/byproduct/:id', api.Provides.getSupplierProvidesByProductId);
+app.get('/api/provide/bysupplier/byproduct/delete/:id', api.Provides.deleteSupplierProvidesByProductId);
 
 // Categories
 app.get('/api/categories', api.Categories.getCategories);
@@ -100,6 +104,7 @@ app.delete('/api/purchase', api.Purchases.deletePurchase);
 app.get('/api/purchaselines/bypurchase/:id', api.PurchaseLines.getPurchaseLinesByPurchaseId);
 
 // Suppliers
+app.get('/api/supplier/principal', api.Supplier.getSupplierPrincipal);
 app.get('/api/supplierName/:id', api.Supplier.getSupplierName);
 app.post('/api/supplier/updateSupplierRating', api.Supplier.updateSupplierRating);
 

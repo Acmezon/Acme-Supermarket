@@ -52,7 +52,8 @@
 		"Management" : "Management",
 		"Customers" : "Customers",
 		"Purchases" : "Purchases",
-		"CreateProduct" : "Add product"
+		"CreateProduct" : "Add product",
+		"MyProducts" : "My products"
 	},
 	"Footer": {
 		"AboutUs" : "About Us",
