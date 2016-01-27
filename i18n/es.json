@@ -288,7 +288,10 @@
 		"Create" : {
 			"Name" : "Name",
 			"Description" : "Description"
-		}
+		},
+		"Provide" : "Proveer este producto",
+		"ProvidePrice" : "Precio del producto",
+		"Provide error" : "No se ha podido guardar el producto. Por favor, inténtelo de nuevo más tarde"
 	},
 	"ShoppingCart": {
 		"Title" : "Carrito de la compra",

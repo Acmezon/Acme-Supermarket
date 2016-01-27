@@ -260,16 +260,16 @@ a.add-product {
 }
 
 /*Spacing under input in create product form*/
-.create_product_form .input-group, .create_product_form {
+.product_form .input-group, .product_form {
 	margin-bottom: 10px;
 }
 
-.create_product_form button.grey {
+.product_form button.grey {
 	float: none;
 	display: block;
 }
 
-.create_product_form div.input-group {
+.product_form div.input-group {
 	width: 30%;
 }
 
@@ -326,4 +326,9 @@ div.provide-rating {
 span.rating_supplier i {
 	font-size: 14px;
 	color: gold;
+}
+
+/*Reset margins in provide product form*/
+.supply-form form input {
+	margin: 0;
 }

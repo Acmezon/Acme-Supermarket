@@ -347,7 +347,7 @@ function buyProduct(product, customer_id ,callback) {
 }
 
 function loadProvides(product, callback) {
-	Provide.find({ "product_id" : product.id }, function (err, provides) {
+	Provide.find({ "product_id" : product.id, deleted: false }, function (err, provides) {
 		if(provides.length == 0) {
 			var max_suppliers = 3;
 			var min_suppliers = 1;
@@ -365,16 +365,15 @@ function loadProvides(product, callback) {
 						"supplier_id" : supplier.id
 					});
 
-					provide.save(function (err) {
+					provide.save(function (err, saved) {
 						if(err) console.log("--ERR: Error saving provide: " + err);
-						
 						callback2();
 					})
 
 				}, function (error) {
 					var supplier = rand_suppliers[Math.floor(Math.random() * rand_suppliers.length)];
 
-					Provide.findOne({ "product_id" : product.id, "supplier_id" : supplier.id }, function (err, provide) {
+					Provide.findOne({ "product_id" : product.id, "supplier_id" : supplier.id, deleted: false }, function (err, provide) {
 						if(err) console.log("--ERR: Error finding provide: " + err);
 						callback(provide);
 					});

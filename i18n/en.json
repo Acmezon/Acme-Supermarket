@@ -286,11 +286,13 @@
 		"Upload" : "Drop an image here to change the current one",
 		"RatingError" : "Error while saving your rating. Please reload the page and try again",
 		"RatingProvidePurchaseError" : "You can not rate a supplier without purchasing from him",
-
 		"Create" : {
 			"Name" : "Nombre",
 			"Description" : "Descripción"
-		}
+		},
+		"Provide" : "Provide this product",
+		"ProvidePrice" : "Product price",
+		"Provide error" : "The provide could not be saved. Please, try again later"
 	},
 	"ShoppingCart": {
 		"Title" : "Shopping cart",

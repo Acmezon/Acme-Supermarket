@@ -2,7 +2,7 @@
 
 <div class="wrap">
 	<h4 class="title">{{ 'Products.Create' | translate }}</h4>
-	<form method="post" name="createProductForm" id="submit-form" ng-submit="submitCreateProduct()" class="create_product_form" novalidate>
+	<form method="post" name="createProductForm" id="submit-form" ng-submit="submitCreateProduct()" class="product_form" novalidate>
 		<div class="input-group">
 			<input name="name" type="text" class="form-control" placeholder="{{ 'Product.Create.Name' | translate }}*" ng-model="product.name" ng-class="{'has-error': createProductForm.name.$dirty && createProductForm.name.$error.required }" required>
 		</div>

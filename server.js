@@ -81,6 +81,7 @@ app.get('/api/averageRatingByProductId/:id', api.Rates.getAverageRatingByProduct
 
 // Provides
 app.get('/api/provide/:id', api.Provides.getProvide);
+app.get('/api/existingProvide/:id', api.Provides.getProvide);
 app.get('/api/providesByProductId/:id', api.Provides.getProvidesByProductId);
 
 // Categories
@@ -102,6 +103,8 @@ app.get('/api/purchaselines/bypurchase/:id', api.PurchaseLines.getPurchaseLinesB
 // Suppliers
 app.get('/api/supplierName/:id', api.Supplier.getSupplierName);
 app.post('/api/supplier/updateSupplierRating', api.Supplier.updateSupplierRating);
+app.post('/api/supplier/provideProduct', api.Supplier.provideProduct);
+app.post('/api/supplier/checkProvides', api.Supplier.checkProvides);
 
 // Reputations
 app.get('/api/averageReputationBySupplierId/:id', api.Reputation.getAverageReputationBySupplierId);

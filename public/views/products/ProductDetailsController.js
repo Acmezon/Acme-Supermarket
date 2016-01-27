@@ -222,4 +222,41 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 			}
 		});
 	};
+
+	$scope.setPriceValid = function () {
+		$scope.provideProductForm.price.$setValidity("invalid", true);
+	};
+
+	$scope.submitProvideProduct = function () {
+		if($scope.new_provide.price <= 0.0) {
+			$scope.provideProductForm.price.$setValidity("invalid", false);
+			return false;
+		}
+
+		$http.post('/api/supplier/provideProduct',
+		{
+			product_id : id,
+			price : $scope.new_provide.price
+		}).then(function success(response) {
+			$window.location.reload();
+		}, function error (response) {
+			$translate(['Product.ProvideError']).then(function (translation) {
+				ngToast.create({
+					className: 'danger',
+					content: translation['Product.ProvideError']
+				});
+			});
+		});
+	};
+
+	$scope.supplierProvides = true;
+
+	$http.post('/api/supplier/checkProvides',
+	{
+		product_id: id
+	}).then(function success(response) {
+		$scope.supplierProvides = response.data.provides;
+	}, function error(response) {
+		$scope.supplierProvides = false;
+	});
 }]);
