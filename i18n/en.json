@@ -37,7 +37,8 @@
 			"Title" : "Account",
 			"MyProfile" : "My profile",
 			"MyPurchases" : "My purchases",
-			"ShoppingCart" : "Shopping cart"
+			"ShoppingCart" : "Shopping cart",
+			"MyProducts" : "My products"
 		},
 		"Checkout" : "Checkout",
 		"Signin" : "Sign in",
@@ -52,8 +53,7 @@
 		"Management" : "Management",
 		"Customers" : "Customers",
 		"Purchases" : "Purchases",
-		"CreateProduct" : "Add product",
-		"MyProducts" : "My products"
+		"CreateProduct" : "Add product"
 	},
 	"Footer": {
 		"AboutUs" : "About Us",
