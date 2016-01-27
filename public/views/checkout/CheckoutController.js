@@ -11,7 +11,7 @@ angular.module('acme_supermarket').registerCtrl('CheckoutCtrl', ['$scope', '$htt
 
 				$http({
 					method: 'GET',
-					url: '/api/provide/' + id
+					url: '/api/existingProvide/' + id
 				}).
 				then(function success(response1) {
 					var row = response1.data;

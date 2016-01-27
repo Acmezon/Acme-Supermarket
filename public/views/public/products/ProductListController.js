@@ -218,8 +218,7 @@ angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$
 					content: translation['Product.DeleteError']
 				});
 			});
-		});
-		
+		});		
 	}
 
 	// Clear filters

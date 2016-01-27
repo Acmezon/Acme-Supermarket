@@ -31,7 +31,7 @@ exports.updateAverageRating = function(product_id, callback) {
 
 // Update min and Max price
 exports.updateMinMaxPrice = function(product_id, callback) {
-	Provide.find({product_id: product_id}, function (err, provides) {
+	Provide.find({product_id: product_id, deleted: false}, function (err, provides) {
 		if (err) {
 			callback(false);
 		} else {
