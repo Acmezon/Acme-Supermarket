@@ -6,7 +6,7 @@ var db_utils = require('./db_utils'),
 	CustomerService = require('./services/service_customers'),
 	Reputation = require('../models/reputation');
 
-// Returns the name of a supplier identified by id
+//Devuelve un nombre de un supplier
 exports.getSupplierName = function (req, res) {
 	var _code = req.params.id;
 	console.log('GET /api/supplierName/'+_code)
