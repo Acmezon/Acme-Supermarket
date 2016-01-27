@@ -79,6 +79,7 @@ exports.newCustomer = function (customer, callback) {
 
 	// Server validation
 	var pass = CustomerService.checkFieldsCorrect(_name, _surname, _email, _password, _coordinates, _address, _country, _city, _phone);
+	console.log(pass)
 
 	if (pass) {
 		var md5Password = crypto.createHash('md5').update(_password).digest("hex");

@@ -27,7 +27,7 @@
 					<input name="address" type="text"  ng-model="customer.address" placeholder="{{ 'Signup.Address' | translate }}*" ng-blur="setValid('address')" ng-class="{'has-error': signupForm.address.$dirty && (signupForm.address.$error.required || signupForm.address.$error.invalid)}" required>
 				</div>
 				<div>
-					<select id="country" name="country" ng-model="customer.country" class="frm-field required" ng-change="validateCountry()">
+					<select id="country" name="country" ng-model="customer.country" class="frm-field required" ng-change="validateCountry()" required>
 						<option value="" disabled>Select a Country</option>         
 						<option value="Afganistan">Afghanistan</option>
 						<option value="Albania">Albania</option>

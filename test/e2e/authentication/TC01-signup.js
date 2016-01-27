@@ -1,11 +1,20 @@
+function stringGen(len) {
+    var text = " ";
+    var charset = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789";
+    for( var i=0; i < len; i++ )
+        text += charset.charAt(Math.floor(Math.random() * charset.length));
+    return text;
+}
+
 describe('Register page', function () {
+
 	it('shouldn\'t redirect nor insert customer in DB due to blank name.', function (){
 		browser.get('http://localhost:3000/signup');
 		
 		// Insert values into form inputs
 		element(by.model('customer.name')).sendKeys('');
 		element(by.model('customer.surname')).sendKeys('Doe');
-		element(by.model('customer.email')).sendKeys('newmail2@mail.com');
+		element(by.model('customer.email')).sendKeys(stringGen(6) + '@mail.com');
 		element(by.model('customer.password')).sendKeys('00000000');
 		element(by.id('coord-btn')).click();
 		element(by.model('customer.address')).sendKeys('Calle 1 Bloque A Bajo Derecha');
@@ -16,6 +25,7 @@ describe('Register page', function () {
 		// Click on submit
 		element(by.id('signup-submit')).click();
 
+		browser.sleep(1000);
 		// Check view didnt redirect
 		expect(browser.getCurrentUrl()).toEqual('http://localhost:3000/signup');
 		
@@ -28,7 +38,7 @@ describe('Register page', function () {
 		// Insert values into form inputs
 		element(by.model('customer.name')).sendKeys('John');
 		element(by.model('customer.surname')).sendKeys('');
-		element(by.model('customer.email')).sendKeys('newmail3@mail.com');
+		element(by.model('customer.email')).sendKeys(stringGen(6) + '@mail.com');
 		element(by.model('customer.password')).sendKeys('00000000');
 		element(by.id('coord-btn')).click();
 		element(by.model('customer.address')).sendKeys('Calle 1 Bloque A Bajo Derecha');
@@ -39,6 +49,7 @@ describe('Register page', function () {
 		// Click on submit
 		element(by.id('signup-submit')).click();
 
+		browser.sleep(1000);
 		// Check view didnt redirect
 		expect(browser.getCurrentUrl()).toEqual('http://localhost:3000/signup');
 	});
@@ -49,7 +60,7 @@ describe('Register page', function () {
 		// Insert values into form inputs
 		element(by.model('customer.name')).sendKeys('John');
 		element(by.model('customer.surname')).sendKeys('Doe');
-		element(by.model('customer.email')).sendKeys('newmail3mail.com');
+		element(by.model('customer.email')).sendKeys(stringGen(6));
 		element(by.model('customer.password')).sendKeys('00000000');
 		element(by.id('coord-btn')).click();
 		element(by.model('customer.address')).sendKeys('Calle 1 Bloque A Bajo Derecha');
@@ -60,6 +71,7 @@ describe('Register page', function () {
 		// Click on submit
 		element(by.id('signup-submit')).click();
 
+		browser.sleep(1000);
 		// Check view didnt redirect
 		expect(browser.getCurrentUrl()).toEqual('http://localhost:3000/signup');
 	});
@@ -70,7 +82,7 @@ describe('Register page', function () {
 		// Insert values into form inputs
 		element(by.model('customer.name')).sendKeys('John');
 		element(by.model('customer.surname')).sendKeys('Doe');
-		element(by.model('customer.email')).sendKeys('newmail@mail.com');
+		element(by.model('customer.email')).sendKeys(stringGen(6) + '@mail.com');
 		element(by.model('customer.password')).sendKeys('00');
 		element(by.id('coord-btn')).click();
 		element(by.model('customer.address')).sendKeys('Calle 1 Bloque A Bajo Derecha');
@@ -81,6 +93,7 @@ describe('Register page', function () {
 		// Click on submit
 		element(by.id('signup-submit')).click();
 
+		browser.sleep(1000);
 		// Check redirection is correct
 		expect(browser.getCurrentUrl()).toEqual('http://localhost:3000/signup');
 		
@@ -92,7 +105,7 @@ describe('Register page', function () {
 		// Insert values into form inputs
 		element(by.model('customer.name')).sendKeys('John');
 		element(by.model('customer.surname')).sendKeys('Doe');
-		element(by.model('customer.email')).sendKeys('newmail@mail.com');
+		element(by.model('customer.email')).sendKeys(stringGen(6) + '@mail.com');
 		element(by.model('customer.password')).sendKeys('');
 		element(by.id('coord-btn')).click();
 		element(by.model('customer.address')).sendKeys('Calle 1 Bloque A Bajo Derecha');
@@ -103,6 +116,7 @@ describe('Register page', function () {
 		// Click on submit
 		element(by.id('signup-submit')).click();
 
+		browser.sleep(1000);
 		// Check redirection is correct
 		expect(browser.getCurrentUrl()).toEqual('http://localhost:3000/signup');
 		
@@ -114,7 +128,7 @@ describe('Register page', function () {
 		// Insert values into form inputs
 		element(by.model('customer.name')).sendKeys('John');
 		element(by.model('customer.surname')).sendKeys('Doe');
-		element(by.model('customer.email')).sendKeys('newmail@mail.com');
+		element(by.model('customer.email')).sendKeys(stringGen(6) + '@mail.com');
 		element(by.model('customer.password')).sendKeys('00000000');
 		element(by.id('coord-btn')).click();
 		element(by.model('customer.address')).sendKeys('');
@@ -125,6 +139,7 @@ describe('Register page', function () {
 		// Click on submit
 		element(by.id('signup-submit')).click();
 
+		browser.sleep(1000);
 		// Check redirection is correct
 		expect(browser.getCurrentUrl()).toEqual('http://localhost:3000/signup');
 		
@@ -136,7 +151,7 @@ describe('Register page', function () {
 		// Insert values into form inputs
 		element(by.model('customer.name')).sendKeys('John');
 		element(by.model('customer.surname')).sendKeys('Doe');
-		element(by.model('customer.email')).sendKeys('newmail@mail.com');
+		element(by.model('customer.email')).sendKeys(stringGen(6) + '@mail.com');
 		element(by.id('coord-btn')).click();
 		element(by.model('customer.password')).sendKeys('00000000');
 		element(by.model('customer.address')).sendKeys('Calle 1 Bloque A Bajo Derecha');
@@ -146,6 +161,7 @@ describe('Register page', function () {
 		// Click on submit
 		element(by.id('signup-submit')).click();
 
+		browser.sleep(1000);
 		// Check redirection is correct
 		expect(browser.getCurrentUrl()).toEqual('http://localhost:3000/signup');
 		
@@ -157,7 +173,7 @@ describe('Register page', function () {
 		// Insert values into form inputs
 		element(by.model('customer.name')).sendKeys('John');
 		element(by.model('customer.surname')).sendKeys('Doe');
-		element(by.model('customer.email')).sendKeys('newmail@mail.com');
+		element(by.model('customer.email')).sendKeys(stringGen(6) + '@mail.com');
 		element(by.model('customer.password')).sendKeys('00000000');
 		element(by.id('coord-btn')).click();
 		element(by.model('customer.address')).sendKeys('Calle 1 Bloque A Bajo Derecha');
@@ -168,6 +184,7 @@ describe('Register page', function () {
 		// Click on submit
 		element(by.id('signup-submit')).click();
 
+		browser.sleep(1000);
 		// Check redirection is correct
 		expect(browser.getCurrentUrl()).toEqual('http://localhost:3000/signup');
 		
@@ -179,7 +196,7 @@ describe('Register page', function () {
 		// Insert values into form inputs
 		element(by.model('customer.name')).sendKeys('John');
 		element(by.model('customer.surname')).sendKeys('Doe');
-		element(by.model('customer.email')).sendKeys('newmail@mail.com');
+		element(by.model('customer.email')).sendKeys(stringGen(6) + '@mail.com');
 		element(by.model('customer.password')).sendKeys('00000000');
 		element(by.id('coord-btn')).click();
 		element(by.model('customer.address')).sendKeys('Calle 1 Bloque A Bajo Derecha');
@@ -190,6 +207,7 @@ describe('Register page', function () {
 		// Click on submit
 		element(by.id('signup-submit')).click();
 
+		browser.sleep(1000);
 		// Check redirection is correct
 		expect(browser.getCurrentUrl()).toEqual('http://localhost:3000/signup');
 		
@@ -201,7 +219,7 @@ describe('Register page', function () {
 		// Insert values into form inputs
 		element(by.model('customer.name')).sendKeys('John');
 		element(by.model('customer.surname')).sendKeys('Doe');
-		element(by.model('customer.email')).sendKeys('newmail@mail.com');
+		element(by.model('customer.email')).sendKeys(stringGen(6) + '@mail.com');
 		element(by.model('customer.password')).sendKeys('00000000');
 		element(by.id('coord-btn')).click();
 		element(by.model('customer.address')).sendKeys('Calle 1 Bloque A Bajo Derecha');
@@ -212,6 +230,7 @@ describe('Register page', function () {
 		// Click on submit
 		element(by.id('signup-submit')).click();
 
+		browser.sleep(1000);
 		// Check redirection is correct
 		expect(browser.getCurrentUrl()).toEqual('http://localhost:3000/signup');
 		
@@ -223,7 +242,7 @@ describe('Register page', function () {
 		// Insert values into form inputs
 		element(by.model('customer.name')).sendKeys('John');
 		element(by.model('customer.surname')).sendKeys('Doe');
-		element(by.model('customer.email')).sendKeys('newmail@mail.com');
+		element(by.model('customer.email')).sendKeys(stringGen(6) + '@mail.com');
 		element(by.model('customer.password')).sendKeys('00000000');
 		element(by.model('customer.address')).sendKeys('Calle 1 Bloque A Bajo Derecha');
 		element(by.cssContainingText('option', 'Congo')).click();
@@ -233,6 +252,7 @@ describe('Register page', function () {
 		// Click on submit
 		element(by.id('signup-submit')).click();
 
+		browser.sleep(1000);
 		// Check redirection is correct
 		expect(browser.getCurrentUrl()).toEqual('http://localhost:3000/signup');
 		
@@ -244,7 +264,7 @@ describe('Register page', function () {
 		// Insert values into form inputs
 		element(by.model('customer.name')).sendKeys('John');
 		element(by.model('customer.surname')).sendKeys('Doe');
-		element(by.model('customer.email')).sendKeys('newmail@mail.com');
+		element(by.model('customer.email')).sendKeys(stringGen(6) + '@mail.com');
 		element(by.model('customer.password')).sendKeys('00000000');
 		element(by.id('coord-btn')).click();
 		element(by.model('customer.address')).sendKeys('Calle 1 Bloque A Bajo Derecha');
@@ -255,7 +275,7 @@ describe('Register page', function () {
 		// Click on submit
 		element(by.id('signup-submit')).click();
 
-
+		browser.sleep(1000);
 		// Check redirection is correct
 		expect(browser.getCurrentUrl()).toEqual('http://localhost:3000/signin');
 		
