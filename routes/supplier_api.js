@@ -39,17 +39,17 @@ exports.getSupplierPrincipal = function (req, res) {
 	var jwtKey = req.app.get('superSecret')
 	// Check authenticated
 	ActorService.getUserRole(cookie, jwtKey, function (role) {
-		if (role=='admin' || role=='customer' | role=='supplier') {
+		if (role=='admin' || role=='customer' || role=='supplier') {
 			if (role=='supplier') {
 				SupplierService.getPrincipalSupplier(cookie, jwtKey, function (supplier) {
 					if (supplier) {
 						res.status(200).json(supplier);
 					} else {
-						res.status(403).json({success: false, message: "Doesn't have permission"});
+						res.status(403).json({success: false, message: "Doesn't have permissions"});
 					}
 				});
 			} else {
-				res.status(403).json({success: false, message: "Doesn't have permission"});
+				res.status(403).json({success: false, message: "Doesn't have permissions"});
 			}
 		} else {
 			res.status(401).json({success: false, message: "Not authenticated"});
