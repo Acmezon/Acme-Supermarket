@@ -40,7 +40,7 @@ function loadCategories (callback) {
 
 	async.each(categories.categories, function (category, category_callback) {
 		var new_category = new Category({
-			"name" : category.name
+			name : category.name || "No Category"
 		});
 
 		new_category.save(function (err, saved) {
@@ -281,10 +281,13 @@ function buyProduct(product, customer_id ,callback) {
 			if(err) {
 				console.log("--ERR: Error saving purchase: " + err);
 			} else {
+				var quantity = 1;
 				var purchase_line = new PurchaseLine({
-					"quantity" : 1,
+					"quantity" : quantity,
+					"price" : provide.price * quantity,
 					"purchase_id" : saved.id,
-					"provide_id" : provide.id
+					"provide_id" : provide.id,
+					"product_id" : provide.product_id
 				});
 
 				purchase_line.save(function (err) {
@@ -334,7 +337,7 @@ function buyProduct(product, customer_id ,callback) {
 
 						var reputation = new Reputation({
 							"value" : reputationValue,
-							"supplier_id" : provide.supplier_id,
+							"provide_id" : provide.id,
 							"customer_id" : customer_id
 						});
 

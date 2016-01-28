@@ -1,7 +1,8 @@
 var mongoose = require('mongoose'),
 	validators = require('mongoose-validators'),
 	extend = require('mongoose-schema-extend'),
-	Actor = require('./actor');
+	Actor = require('./actor'),
+	Provide = require('./provide');
 
 var supplierSchema = Actor.schema.extend({
 	coordinates: {
@@ -17,3 +18,16 @@ var supplierSchema = Actor.schema.extend({
 });
 
 module.exports = mongoose.model('Supplier', supplierSchema);
+
+supplierSchema.pre('remove', function (next, done) {
+	//Eliminar:
+	//	Sus provides
+
+	Provide.remove( { supplier_id: this.id } ).exec(function (err) {
+		if(err) {
+			done(err);
+		} else {
+			next();
+		}
+	});
+});

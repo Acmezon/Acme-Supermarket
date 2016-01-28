@@ -91,51 +91,24 @@ exports.checkOwnerOrAdmin = function(cookie, jwtKey, credit_card_id, callback) {
 	}
 }
 
-// Returns true if user has purchased product_id (via provides)
+// Returns true if user has purchased product_id (via purchase_line)
 exports.checkPurchasing = function (user, product_id, callback) {
 	if (user) {
 		if (user._type=='Customer') {
-			Provide.find({ product_id : product_id }, function (err, provides) {
-				if (err || provides.length == 0) {
+			Purchase.find({ customer_id: user.id}).select('_id').exec(function (err, purchases) {
+				if(err) {
 					callback(false);
-					return;
-				}
+				} else {
+					var purchases_id = purchases.map(function (purchase) { return parseInt(purchase.id); });
 
-				var provide_ids = [];
-
-				for(var i = 0; i < provides.length; i++) {
-					provide_ids.push(provides[i]._id);
-				}
-
-				PurchaseLine.find({ 'provide_id' : { $in: provide_ids } }, function (err, lines) {
-					if(err || lines.length == 0) {
-						callback(false);
-						return;
-					}
-
-					var purchase_ids = [];
-
-					for (var i = 0; i < lines.length; i++) {
-						if(purchase_ids.indexOf(lines[i].purchase_id < 0))
-							purchase_ids.push(lines[i].purchase_id);
-					}
-
-					Purchase.find({ '_id' : { $in : purchase_ids } }, function (err, purchases) {
-						if(err || purchases.length == 0) {
+					PurchaseLine.find({ product_id: product_id, purchase_id : { $in : purchases_id } }, function (err, purchase_lines) {
+						if(err){
 							callback(false);
-							return;
+						} else {
+							callback(purchase_lines.length > 0);
 						}
-
-						for(var i = 0; i < purchases.length; i++) {
-							if ( String(purchases[i].customer_id) == String(user.id)) {
-								callback(true);
-								return;
-							}
-						}
-						callback(false);
-						return;
 					});
-				});
+				}
 			});
 		} else {
 			callback(false)
@@ -156,12 +129,7 @@ exports.checkHasPurchasedProvide = function (user_id, provide_id, callback) {
 				return;
 			}
 
-			var purchase_ids = [];
-
-			for (var i = 0; i < lines.length; i++) {
-				if(purchase_ids.indexOf(lines[i].purchase_id < 0))
-					purchase_ids.push(lines[i].purchase_id);
-			}
+			var purchase_ids = lines.map(function (line) { return parseInt(line.purchase_id) });
 
 			Purchase.find({ '_id' : { $in : purchase_ids } }, function (err, purchases) {
 				if(err || purchases.length == 0) {

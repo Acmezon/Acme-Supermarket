@@ -189,7 +189,7 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 	}, function error(response) {});
 
 	$scope.rateProvide = function(provide_id, value) {
-		$http.post('/api/supplier/updateSupplierRating',
+		$http.post('/api/provide/updateProvideRating',
 		{
 			provide_id: provide_id,
 			rating: value

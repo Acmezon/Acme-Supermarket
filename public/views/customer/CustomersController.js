@@ -8,24 +8,6 @@ angular.module('acme_supermarket').registerCtrl('CustomersCtrl', ['$scope', '$ht
 	}).
 	then(function success(response) {
 		$scope.$data = response.data;
-
-		/*// Get credit cards of each customer
-		$scope.$data.forEach(function (customer) {
-			
-			$http({
-				method: 'GET',
-				url: '/api/creditcard/' + customer.credit_card_id
-			}).
-			then(function success(response2) {
-				// Paste credit card info
-
-				var creditcard = response2.data;
-				creditcard.number = hideCreditCard(creditcard.number);
-				customer.creditcard = creditcard;
-				
-			}, function error(response2) {
-			});
-		});*/
 		
 		$scope.tableParams = new ngTableParams({}, {dataset:$scope.$data});
 		$scope.copy = angular.copy($scope.$data);

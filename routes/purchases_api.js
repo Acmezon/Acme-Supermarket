@@ -323,8 +323,10 @@ exports.purchase = function (req, res) {
 									// Create  purchase line
 									var newPurchaseLine = PurchaseLine({
 										quantity: cookie[cookie_id],
+										price: provide.price * cookie[cookie_id],
 										purchase_id: newPurchase._id,
 										provide_id: provide._id,
+										product_id: provide.product_id
 									});
 
 									// Save it

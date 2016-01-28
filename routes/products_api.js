@@ -1033,7 +1033,7 @@ exports.updateProductRating = function(req, res) {
 
 // Returns true if current customer has purchased a product req.body.product
 exports.userHasPurchased = function(req, res) {
-	ActorService.getPrincipal(req.cookies.session, req.app.get('superSecret'), function(pair) {
+	ActorService.getPrincipal(req.cookies.session, req.app.get('superSecret'), function (pair) {
 		if (pair == -1) {
 			res.status(403).json({
 				success: false,
@@ -1048,7 +1048,7 @@ exports.userHasPurchased = function(req, res) {
 					res.sendStatus(503);
 					return;
 				} else {
-					CustomerService.checkPurchasing(customer, req.body.product, function(response) {
+					CustomerService.checkPurchasing(customer, req.body.product, function (response) {
 						res.status(200).json({
 							hasPurchased: response
 						});

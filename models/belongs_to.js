@@ -5,8 +5,8 @@ var Product = require('./product'),
 	autoIncrement = require('mongoose-auto-increment');
 
 var belongs_to = mongoose.Schema({
-	product_id : {type: Number, ref:'Product'},
-	category_id : {type: Number, ref:'Category'}
+	product_id : {type: Number, ref:'Product', required: true},
+	category_id : {type: Number, ref:'Category', required: true}
 }, {collection: 'belongs_to'});
 
 belongs_to.plugin(autoIncrement.plugin, 'belongs_to');

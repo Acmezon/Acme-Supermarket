@@ -1,7 +1,11 @@
 var mongoose = require('mongoose'),
 	validators = require('mongoose-validators'),
 	extend = require('mongoose-schema-extend'),
-	Actor = require('./actor');
+	Actor = require('./actor'),
+	CreditCard = require('./credit_card'),
+	PurchasingRule = require('./purchasing_rule'),
+	Reputation = require('./reputation'),
+	Rate = require('./rate');
 
 var customerSchema = Actor.schema.extend({
 	coordinates: {
@@ -13,7 +17,7 @@ var customerSchema = Actor.schema.extend({
 			}
 		}
 	},
-	credit_card_id: Number,
+	credit_card_id: {type: Number, ref: 'CreditCard'},
 	address: {type: String, required: true},
 	country: {type: String, required: true},
 	city: {type: String, required: true},
@@ -21,3 +25,37 @@ var customerSchema = Actor.schema.extend({
 });
 
 module.exports = mongoose.model('Customer', customerSchema);
+
+customerSchema.pre('remove', function (next, done) {
+	//Eliminar:
+	//	Sus tarjetas de crédito
+	//	Sus reglas de compra
+	//	Sus valoraciones a provides
+	//	Sus valoraciones a productos
+
+	CreditCard.remove( { customer_id: this.id } ).exec(function (err) {
+		if(err) {
+			done(err);
+		} else {
+			PurchasingRule.remove( { customer_id: this.id } ).exec(function (err) {
+				if(err) {
+					done(err);
+				} else {
+					Reputation.remove( { customer_id: this.id } ).exec(function (err) {
+						if(err) {
+							done(err);
+						} else {
+							Rate.remove( { customer_id: this.id } ).exec(function (err) {
+								if (err){
+									done(err);
+								} else {
+									next();
+								}
+							})
+						}
+					})
+				}
+			})
+		}
+	});
+});

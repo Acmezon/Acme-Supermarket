@@ -87,6 +87,7 @@ app.get('/api/existingProvide/:id', api.Provides.getProvide);
 app.get('/api/providesByProductId/:id', api.Provides.getProvidesByProductId);
 app.get('/api/provide/bysupplier/byproduct/:id', api.Provides.getSupplierProvidesByProductId);
 app.get('/api/provide/bysupplier/byproduct/delete/:id', api.Provides.deleteSupplierProvidesByProductId);
+app.post('/api/provide/updateProvideRating', api.Provides.updateProvideRating);
 
 // Categories
 app.get('/api/categories', api.Categories.getCategories);
@@ -107,7 +108,6 @@ app.get('/api/purchaselines/bypurchase/:id', api.PurchaseLines.getPurchaseLinesB
 // Suppliers
 app.get('/api/supplier/principal', api.Supplier.getSupplierPrincipal);
 app.get('/api/supplierName/:id', api.Supplier.getSupplierName);
-app.post('/api/supplier/updateSupplierRating', api.Supplier.updateSupplierRating);
 app.post('/api/supplier/provideProduct', api.Supplier.provideProduct);
 app.post('/api/supplier/checkProvides', api.Supplier.checkProvides);
 
