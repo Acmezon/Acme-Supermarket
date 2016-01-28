@@ -49,12 +49,12 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 				else {
 					$rootScope.loginFailed = true;
 					deferred.reject();
-					$location.url('/signin');
+					$location.url('/401');
 				}
 			}, function error(response) {
 				$rootScope.loginFailed = true;
 				deferred.reject();
-				$location.url('/signin');
+				$location.url('/401');
 			});
 			return deferred.promise;
 		};
@@ -72,11 +72,11 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 				// Not Authenticated
 				else {
 					deferred.reject();
-					$location.url('/home');
+					$location.url('/');
 				}
 			}, function error(response) {
 				deferred.reject();
-				$location.url('/home');
+				$location.url('/');
 			});
 			return deferred.promise;
 		};
@@ -95,12 +95,12 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 					// A not customer shouldn't enter in the url
 					$rootScope.loginFailed = true;
 					deferred.reject();
-					$location.url('/signin');
+					$location.url('/403');
 				}
 			}, function error(response){
 				$rootScope.loginFailed = true;
 				deferred.reject();
-				$location.url('/signin');
+				$location.url('/403');
 			});
 			return deferred.promise;
 		};
@@ -119,12 +119,12 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 					// A not customer shouldn't enter in the url
 					$rootScope.loginFailed = true;
 					deferred.reject();
-					$location.url('/signin');
+					$location.url('/403');
 				}
 			}, function error(response){
 				$rootScope.loginFailed = true;
 				deferred.reject();
-				$location.url('/signin');
+				$location.url('/403');
 			});
 
 			return deferred.promise;
@@ -144,12 +144,12 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 					// A not customer shouldn't enter in the url
 					$rootScope.loginFailed = true;
 					deferred.reject();
-					$location.url('/signin');
+					$location.url('/403');
 				}
 			}, function error(response){
 				$rootScope.loginFailed = true;
 				deferred.reject();
-				$location.url('/signin');
+				$location.url('/403');
 			});
 
 			return deferred.promise;

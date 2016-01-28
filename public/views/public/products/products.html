@@ -51,7 +51,7 @@
 				<div class="top-box">
 					<div restrict access="admin"><a class="add-product" href="/products/create"><i class="fa fa-plus"></i> {{ 'Products.Create' | translate }}</a></div>
 
-					<div class="product-list" ng-repeat="product in products">
+					<div id="{{product._id}}" class="product-list" ng-repeat="product in products">
 						<div class="col_1_of_3 span_1_of_3">
 							<a class="product" href="product/{{product._id}}">
 								<div class="inner_content clearfix">

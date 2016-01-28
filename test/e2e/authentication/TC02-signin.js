@@ -59,7 +59,6 @@ describe('Log in to the system', function () {
 		element(by.model('email')).sendKeys('ada@umbrella.com');
 		element(by.model('password')).sendKeys('administrator');
 
-		// Check view didnt redirect
 		element(by.css('.button')).click();
 
 		browser.sleep(1000);
@@ -79,7 +78,6 @@ describe('Log in to the system', function () {
 		element(by.model('email')).sendKeys('admin@mail.com');
 		element(by.model('password')).sendKeys('wrongpassword');
 
-		// Check view didnt redirect
 		element(by.css('.button')).click();
 
 		browser.sleep(1000);
@@ -99,7 +97,6 @@ describe('Log in to the system', function () {
 		element(by.model('email')).sendKeys('admin@mail.com');
 		element(by.model('password')).sendKeys('administrator');
 
-		// Check view didnt redirect
 		element(by.css('.button')).click();
 
 		browser.sleep(1000);
