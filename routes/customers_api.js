@@ -9,7 +9,7 @@ var Customer = require('../models/customer'),
 	jwt = require('jsonwebtoken'),
 	request = require('request'),
 	SocialMediaService = require('./services/service_social_media'),
-	sync = require('sync');
+	sync = require('synchronize');
 
 // Return a customer identified by id
 exports.getCustomer = function (req, res) {
