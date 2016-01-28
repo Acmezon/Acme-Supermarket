@@ -1,13 +1,44 @@
 describe('Product details page', function () {
 
 	beforeEach(function() {
-		browser.get('http://localhost:3000/');
-		element(by.css('[ng-click="signout()"]')).isPresent().then(function (result) {
-			if(result) {
-				element(by.css('[ng-click="signout()"]')).click()
-			}
-		});
+		// Mandatory visit in order to make cookies work
+		browser.driver.get('http://localhost:3000/');
+		// Logout
+		browser.manage().deleteAllCookies();
 	});
+
+	it("shouldn't let an anonymous user provide a product", function (){
+		browser.get('http://localhost:3000/product/31');
+
+		expect(browser.getCurrentUrl()).not.toBe('http://localhost:3000/product/31');
+		expect(browser.getCurrentUrl()).toBe('http://localhost:3000/401');
+	});
+
+	it("shouldn't let a customer provide a product", function (){
+		browser.get('http://localhost:3000/signin');
+
+		element(by.model('email')).sendKeys('daniel.diaz@example.com');
+		element(by.model('password')).sendKeys('customer');
+
+		element(by.css('.button')).click();
+		
+		browser.get('http://localhost:3000/product/31');
+
+		expect(element(by.model('new_provide.price')).isPresent()).toBe(false);
+	});
+
+	it("shouldn't let a admin provide a product", function (){
+		browser.get('http://localhost:3000/signin');
+
+		element(by.model('email')).sendKeys('admin@mail.com');
+		element(by.model('password')).sendKeys('administrator');
+
+		element(by.css('.button')).click();
+		
+		browser.get('http://localhost:3000/product/31');
+
+		expect(element(by.model('new_provide.price')).isPresent()).toBe(false);
+	});;
 
 	it('should let the supplier provide the product', function (){
 		browser.get('http://localhost:3000/signin');
@@ -19,8 +50,8 @@ describe('Product details page', function () {
 		
 		browser.get('http://localhost:3000/product/31');
 
-
 		element.all(by.repeater('provide in out_suppliers')).count().then(function (count) {
+			expect(element(by.model('new_provide.price')).isPresent()).toBe(true);
 			element(by.model('new_provide.price')).sendKeys(30);
 
 			$('#provideproduct-submit').click();
@@ -42,8 +73,8 @@ describe('Product details page', function () {
 		
 		browser.get('http://localhost:3000/product/31');
 
-
 		element.all(by.repeater('provide in out_suppliers')).count().then(function (count) {
+			expect($('#delete-provide').isPresent()).toBe(true);
 			$('#delete-provide').click();
 
 			browser.get('http://localhost:3000/product/31');
@@ -51,18 +82,5 @@ describe('Product details page', function () {
 				expect(new_count).toBe(count - 1);
 			});
 		});
-	});
-
-	it('shouldn\'t let a customer manage provides', function (){
-		browser.get('http://localhost:3000/signin');
-
-		element(by.model('email')).sendKeys('joan.soler@example.com');
-		element(by.model('password')).sendKeys('customer');
-
-		element(by.css('.button')).click();
-		
-		browser.get('http://localhost:3000/product/31');
-
-		expect(element(by.css('.supply-form')).isPresent()).toBe(false);
 	});
 });
