@@ -1,5 +1,5 @@
 function stringGen(len) {
-	var text = " ";
+	var text = "";
 	var charset = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789";
 	for( var i=0; i < len; i++ )
 		text += charset.charAt(Math.floor(Math.random() * charset.length));
@@ -45,7 +45,7 @@ describe('System\'s customers management view', function () {
 
 		// Only works with a different value each time.
 		// Edition redjects same-value uploads
-		var new_value = stringGen(10).trim();
+		var new_value = stringGen(10)
 		
 		// Click on first edit button
 		var editBtn = element.all(by.css('.btn-edit-customers')).first();

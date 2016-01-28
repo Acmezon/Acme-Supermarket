@@ -1,5 +1,5 @@
 function stringGen(len) {
-	var text = " ";
+	var text = "";
 	var charset = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789";
 	for (var i = 0; i < len; i++)
 		text += charset.charAt(Math.floor(Math.random() * charset.length));
@@ -130,7 +130,7 @@ describe('Edit product page', function() {
 			// Compare name values
 			nametag.getText().then(function(newname) {
 				// Expect new name to be new name
-				expect(new_name.trim().toUpperCase()).toEqual(newname);
+				expect(new_name.toUpperCase()).toEqual(newname);
 			});
 		});
 	});

@@ -1,5 +1,5 @@
 function stringGen(len) {
-	var text = " ";
+	var text = "";
 	var charset = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789";
 	for( var i=0; i < len; i++ )
 		text += charset.charAt(Math.floor(Math.random() * charset.length));
@@ -68,7 +68,7 @@ describe('Product rating and Provide rating', function () {
 
 		browser.sleep(1000);
 
-		element(by.model('email')).sendKeys(email.trim());
+		element(by.model('email')).sendKeys(email);
 		element(by.model('password')).sendKeys('00000000');
 
 		element(by.css('.button')).click();
