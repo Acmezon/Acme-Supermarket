@@ -87,15 +87,20 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 
 			$http.get('/api/getUserRole').then(function success(response) {
 				var role = response.data;
-
 				if (role=='customer') {
 					deferred.resolve();
 
 				} else {
 					// A not customer shouldn't enter in the url
-					$rootScope.loginFailed = true;
-					deferred.reject();
-					$location.url('/403');
+					if (role=='anonymous') {
+						$rootScope.loginFailed = true;
+						deferred.reject();
+						$location.url('/401');
+					} else {
+						$rootScope.loginFailed = true;
+						deferred.reject();
+						$location.url('/403');
+					}
 				}
 			}, function error(response){
 				$rootScope.loginFailed = true;
@@ -111,22 +116,26 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 
 			$http.get('/api/getUserRole').then(function success(response) {
 				var role = response.data;
-
 				if (role=='admin') {
 					deferred.resolve();
 
 				} else {
-					// A not customer shouldn't enter in the url
-					$rootScope.loginFailed = true;
-					deferred.reject();
-					$location.url('/403');
+					// A not admin shouldn't enter in the url
+					if (role=='anonymous') {
+						$rootScope.loginFailed = true;
+						deferred.reject();
+						$location.url('/401');
+					} else {
+						$rootScope.loginFailed = true;
+						deferred.reject();
+						$location.url('/403');
+					}
 				}
 			}, function error(response){
 				$rootScope.loginFailed = true;
 				deferred.reject();
 				$location.url('/403');
 			});
-
 			return deferred.promise;
 		};
 
@@ -136,22 +145,26 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 
 			$http.get('/api/getUserRole').then(function success(response) {
 				var role = response.data;
-				
 				if (role=='supplier') {
 					deferred.resolve();
 
 				} else {
 					// A not customer shouldn't enter in the url
-					$rootScope.loginFailed = true;
-					deferred.reject();
-					$location.url('/403');
+					if (role=='anonymous') {
+						$rootScope.loginFailed = true;
+						deferred.reject();
+						$location.url('/401');
+					} else {
+						$rootScope.loginFailed = true;
+						deferred.reject();
+						$location.url('/403');
+					}
 				}
 			}, function error(response){
 				$rootScope.loginFailed = true;
 				deferred.reject();
 				$location.url('/403');
 			});
-
 			return deferred.promise;
 		};
 
