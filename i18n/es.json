@@ -398,7 +398,8 @@
 			"Price" : "Precio unitario",
 			"Supplier" : "Proveedor",
 			"Quantity" : "Cantidad",
-			"Total" : "Total"
+			"Total" : "Total",
+			"MoreInfo" : "Más info"
 		},
 		"Return" : "Volver",
 		"Continue" : "Comprar",

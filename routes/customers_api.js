@@ -119,6 +119,8 @@ exports.newCustomer = function (customer, callback) {
 			phone: _phone
 		});
 
+		console.log(newCustomer)
+
 		newCustomer.save(function (err) {
 			callback(db_utils.handleInsertErrors(err));
 		});

@@ -41,10 +41,10 @@
 						<uib-rating ng-model="rate" class="rating" max="max" ng-click="rateProduct()"></uib-rating>
 					</div>
 					<!--<div class="rating" data-stars="{{product.rating}}"></div>-->
-					<h3 class="m_3" editable-text="product.name" e-form="textNameForm" e-placeholder="{{ 'Product.Create.Name' | translate }}" onbeforesave="updateProduct('name', $data)">{{product.name}}</h3>
+					<h3 class="m_3" editable-text="product.name" e-maxlength="100" e-form="textNameForm" e-placeholder="{{ 'Product.Create.Name' | translate }}" onbeforesave="updateProduct('name', $data)">{{product.name}}</h3>
 					<p class="price">{{product.minPrice}} - {{product.maxPrice}} €</p>
 					<p class="m_4">{{product.code}}</p>
-					<p class="m_text2" editable-textarea="product.description" e-form="textDescForm" e-rows="10" e-cols="70" e-placeholder="{{ 'Product.Create.Description' | translate }}" onbeforesave="updateProduct('description', $data)">{{product.description}}</p>
+					<p class="m_text2" editable-textarea="product.description" e-form="textDescForm" e-rows="10" e-cols="70" e-maxlength="1000" e-placeholder="{{ 'Product.Create.Description' | translate }}" onbeforesave="updateProduct('description', $data)">{{product.description}}</p>
 					<p class="m_3" ng-show="out_suppliers.length===0">{{'Products.Supplier.Empty' | translate}}</p>
 					<table class="table table-responsive table-bordered table-hover" ng-show="out_suppliers.length>0">
 						<thead>

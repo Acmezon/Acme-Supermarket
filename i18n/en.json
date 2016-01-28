@@ -399,7 +399,8 @@
 			"Price" : "Unit price",
 			"Supplier" : "Supplier",
 			"Quantity" : "Quantity",
-			"Total" : "Total"
+			"Total" : "Total",
+			"MoreInfo" : "More info"
 		},
 		"Return" : "Return",
 		"Continue" : "Checkout",

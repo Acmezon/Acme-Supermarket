@@ -93,7 +93,7 @@
 					</tr>
 					<tr ng-repeat="purchase in purchases">
 						<td>
-							<a ng-href="/purchase/{{purchase._id}}">
+							<a ng-href="/purchase/{{purchase._id}}" ng-model="purchase._id">
 								<button type="button" class="btn btn-info btn-sm">
 									<span class="glyphicon glyphicon-info-sign"></span>
 								</button>
