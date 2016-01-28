@@ -1,9 +1,9 @@
 function stringGen(len) {
-    var text = " ";
-    var charset = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789";
-    for( var i=0; i < len; i++ )
-        text += charset.charAt(Math.floor(Math.random() * charset.length));
-    return text;
+	var text = " ";
+	var charset = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789";
+	for( var i=0; i < len; i++ )
+		text += charset.charAt(Math.floor(Math.random() * charset.length));
+	return text;
 }
 
 describe('Register page', function () {

@@ -1,4 +1,14 @@
 describe('Get the shopping cart', function () {
+
+	beforeEach(function() {
+		browser.get('http://localhost:3000/');
+		element(by.css('[ng-click="signout()"]')).isPresent().then(function (result) {
+			if(result) {
+				element(by.css('[ng-click="signout()"]')).click()
+			}
+		});
+	});
+	
 	it('Should view the shopping cart table', function (){
 		browser.get('http://localhost:3000/signin');
 
