@@ -11,7 +11,7 @@ exports.config = {
 	},
 	seleniumAddress: 'http://localhost:4444/wd/hub',
 	specs: [
-		'e2e/products/TC03-productEdition.js'
+		'e2e/authentication/TC03-signout.js'
 		//'backend/products/TC03-rateProduct.js'
 
 	]/*,
