@@ -41,7 +41,7 @@ describe('Product creation', function () {
 		browser.get('http://localhost:3000/products/create');
 
 		expect(browser.getCurrentUrl()).not.toBe('http://localhost:3000/products/create');
-		expect(browser.getCurrentUrl()).toBe('http://localhost:3000/403');
+		expect(browser.getCurrentUrl()).toBe('http://localhost:3000/401');
 	});
 
 	it('should let the admin create a product', function (){		
@@ -68,6 +68,8 @@ describe('Product creation', function () {
 
 		browser.get('http://localhost:3000/products');
 		browser.waitForAngular();
+
+		//TODO vista de productos no disponibles
 
 		// Inverse order
 		element(by.css('img.v-middle')).click()

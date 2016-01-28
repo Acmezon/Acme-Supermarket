@@ -261,7 +261,6 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			templateUrl: 'views/public/products/products.html',
 			controller: 'ProductListCtrl',
 			resolve : {
-				loggedin: checkLoggedin,
 				supplier: checkSupplier
 			},
 			activetab: 'account'
@@ -270,7 +269,6 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			templateUrl: 'views/products/create/createProduct.html',
 			controller: 'CreateProductCtrl',
 			resolve : {
-				loggedin: checkLoggedin,
 				admin: checkAdmin
 			},
 			activetab: 'management'
@@ -286,7 +284,6 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			templateUrl: 'views/shoppingcart/shoppingcart.html',
 			controller: 'ShoppingCartCtrl',
 			resolve: {
-				loggedin: checkLoggedin,
 				customer: checkCustomer
 			},
 			activetab: 'account'
@@ -295,7 +292,6 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			templateUrl: 'views/customer/customers.html',
 			controller: 'CustomersCtrl',
 			resolve: {
-				loggedin: checkLoggedin,
 				admin: checkAdmin
 			},
 			activetab: 'management'
@@ -304,7 +300,6 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			templateUrl: 'views/dashboard/dashboard.html',
 			controller: 'DashboardCtrl',
 			resolve: {
-				loggedin: checkLoggedin,
 				admin: checkAdmin
 			},
 			activetab: 'management'
@@ -313,7 +308,6 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			templateUrl: 'views/checkout/checkout.html',
 			controller: 'CheckoutCtrl',
 			resolve: {
-				loggedin: checkLoggedin,
 				admin: checkCustomer
 			}
 		}).
@@ -321,7 +315,6 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			templateUrl: 'views/checkout/confirm.html',
 			controller: 'CheckoutConfirmCtrl',
 			resolve: {
-				loggedin: checkLoggedin,
 				admin: checkCustomer
 			}
 		}).
@@ -329,7 +322,6 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			templateUrl: 'views/checkout/confirm.html',
 			controller: 'CheckoutConfirmCtrl',
 			resolve: {
-				loggedin: checkLoggedin,
 				admin: checkCustomer
 			}
 		}).
@@ -337,7 +329,6 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			templateUrl: 'views/purchases/purchases.html',
 			controller: 'PurchasesListCtrl',
 			resolve: {
-				loggedin: checkLoggedin,
 				admin: checkCustomer
 			},
 			activetab: 'account'
@@ -346,7 +337,6 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			templateUrl: 'views/purchases/purchases.html',
 			controller: 'PurchasesListCtrl',
 			resolve: {
-				loggedin: checkLoggedin,
 				admin: checkAdmin
 			},
 			activetab: 'management'

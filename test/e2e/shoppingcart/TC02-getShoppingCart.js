@@ -16,6 +16,9 @@ describe('Get the shopping cart', function () {
 		element(by.css('.button')).click();
 
 		expect(element(by.css('div.tag-list')).isPresent()).toBe(false);
+
+		browser.get('http://localhost:3000/shoppingcart');
+		expect(browser.getCurrentUrl()).toEqual('http://localhost:3000/403')
 	});
 
 	it("Shouldn't view the shopping cart table due to user is a supplier", function (){
@@ -27,12 +30,18 @@ describe('Get the shopping cart', function () {
 		element(by.css('.button')).click();
 
 		expect(element(by.css('div.tag-list')).isPresent()).toBe(false);
+
+		browser.get('http://localhost:3000/shoppingcart');
+		expect(browser.getCurrentUrl()).toEqual('http://localhost:3000/403')
 	});
 
 	it("Shouldn't view the shopping cart table due to user is not authenticated", function (){
 		browser.get('http://localhost:3000/');
 
 		expect(element(by.css('div.tag-list')).isPresent()).toBe(false);
+
+		browser.get('http://localhost:3000/shoppingcart');
+		expect(browser.getCurrentUrl()).toEqual('http://localhost:3000/401')
 	});
 	
 	it('Should view the shopping cart table', function (){

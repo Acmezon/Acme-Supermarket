@@ -11,7 +11,7 @@ describe('My product list page', function () {
 		browser.get('http://localhost:3000/myproducts');
 
 		expect(browser.getCurrentUrl()).not.toBe('http://localhost:3000/myproducts');
-		expect(browser.getCurrentUrl()).toBe('http://localhost:3000/403');
+		expect(browser.getCurrentUrl()).toBe('http://localhost:3000/401');
 	});
 
 	it("shouldn't let customer get the /myproducts list", function (){
