@@ -7,6 +7,7 @@ var Provide = require('./product'),
 var purchasingRuleSchema = mongoose.Schema({
 	startDate: {type: Date, default: Date.now},
 	periodicity: {type: Number, required: true},
+	quantity: {type: Number, required: true, min: 0, default: 1},
 	nextRun : {type: Date},
 	customer_id: {type: Number, ref:'Customer', required: true},
 	provide_id : {type: Number, ref: 'Provide', required: true}

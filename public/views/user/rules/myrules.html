@@ -33,7 +33,7 @@
 			</div>
 			<tr ng-repeat="rule in $data" demo-tracked-table-row="rule">
 				<td data-title="'PurchasingRule.StartDate' | translate" filter="{startDate: 'text'}" sortable="'startDate'" demo-tracked-table-cell style="width:8%">
-					{{rule.startDate | date:'dd/MM/yyyy HH:MM Z'}}
+					{{rule.startDate | date:'dd-MM-yyyy'}}
 				</td>
 				<td data-title="'PurchasingRule.Periodicity' | translate" filter="{periodicity: 'number'}" sortable="'periodicity'" demo-tracked-table-cell style="width:8%">
 					{{rule.periodicity}}
@@ -44,8 +44,8 @@
 				<td data-title="'PurchasingRule.Quantity' | translate" filter="{quantity: 'number'}" sortable="'quantity'" demo-tracked-table-cell style="width:8%">
 					{{rule.quantity}}
 				</td>
-				<td data-title="'PurchasingRule.NextRun' | translate" filter="{next_run: 'text'}" sortable="'next_run'" demo-tracked-table-cell style="width:8%">
-					{{rule.next_run | date:'dd/MM/yyyy HH:MM Z'}}
+				<td data-title="'PurchasingRule.NextRun' | translate" filter="{nextRun: 'text'}" sortable="'nextRun'" demo-tracked-table-cell style="width:8%">
+					{{rule.nextRun | date:'dd-MM-yyyy'}}
 				</td>
 				<td data-title="'PurchasingRule.Remove' | translate" style="width:6%">
 					<button class="btn btn-danger btn-sm btn-delete-rules" data-toggle="modal" data-target="#delete-{{rule._id}}">

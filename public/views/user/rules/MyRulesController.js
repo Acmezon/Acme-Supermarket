@@ -7,8 +7,6 @@ angular.module('acme_supermarket').registerCtrl('MyRulesCtrl', ['$scope', '$http
 		url: '/api/mypurchasingrules'
 	}).
 	then(function success(response) {
-		console.log(response.data);
-
 		$scope.$data = response.data;
 		$scope.copy = angular.copy($scope.$data);
 		
