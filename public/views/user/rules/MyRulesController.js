@@ -9,12 +9,10 @@ angular.module('acme_supermarket').registerCtrl('MyRulesCtrl', ['$scope', '$http
 	then(function success(response) {
 		console.log(response.data);
 
-		$scope.rules = response.data;
-
-		//$scope.$data = response.data;
+		$scope.$data = response.data;
+		$scope.copy = angular.copy($scope.$data);
 		
-		//$scope.tableParams = new ngTableParams({}, {dataset:$scope.$data});
-		//$scope.copy = angular.copy($scope.$data);
+		$scope.tableParams = new ngTableParams({}, {dataset:$scope.$data});
 		
 	}, function error(response) {
 	});
