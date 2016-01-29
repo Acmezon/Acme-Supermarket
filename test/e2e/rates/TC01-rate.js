@@ -62,7 +62,7 @@ describe('Product rating and Provide rating', function () {
 		element.all(by.repeater('purchaseline in purchase_list')).last().element(by.model('purchaseline.product._id')).click();
 		browser.waitForAngular();
 
-		var ratingElement = element(by.model('rate'));
+		var ratingElement = element(by.model('value'));
 		expect(ratingElement.isPresent()).toBe(true);
 
 		var supplierRElement = element(by.model('provide.reputation'));

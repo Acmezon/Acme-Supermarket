@@ -10,7 +10,7 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 	}).
 	then(function success(response) {
 		$scope.product = response.data;
-		$scope.rate = $scope.product.avgRating;
+		$scope.value = $scope.product.avgRating;
 
 		$scope.out_suppliers = [];
 
@@ -130,7 +130,7 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 		$http.post('/api/product/updateProductRating',
 		{
 			id: id,
-			rating: $scope.rate
+			rating: $scope.value
 		}).then(
 		function success(response) {},
 		function error(response) {

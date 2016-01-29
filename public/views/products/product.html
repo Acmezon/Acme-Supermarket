@@ -34,11 +34,11 @@
 				<div class="desc1 span_3_of_2">
 					<!-- Rating Stars Box -->
 					<div ng-if="!userHasPurchased" class="rating">
-						<span ng-repeat="n in [1, 2, 3, 4, 5] track by $index" class="glyphicon" ng-class="{'glyphicon-star': rate >= $index + 1, 'glyphicon-star-empty': rate < $index + 1}"></span>
+						<span ng-repeat="n in [1, 2, 3, 4, 5] track by $index" class="glyphicon" ng-class="{'glyphicon-star': value >= $index + 1, 'glyphicon-star-empty': value < $index + 1}"></span>
 					</div>
 
 					<div ng-if="userHasPurchased">
-						<uib-rating ng-model="rate" class="rating" max="max" ng-click="rateProduct()"></uib-rating>
+						<uib-rating ng-model="value" class="rating" max="max" ng-click="rateProduct()"></uib-rating>
 					</div>
 					<!--<div class="rating" data-stars="{{product.rating}}"></div>-->
 					<h3 class="m_3" editable-text="product.name" e-maxlength="100" e-form="textNameForm" e-placeholder="{{ 'Product.Create.Name' | translate }}" onbeforesave="updateProduct('name', $data)">{{product.name}}</h3>

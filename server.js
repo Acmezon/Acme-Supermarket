@@ -96,7 +96,6 @@ app.get('/api/purchase/:id', api.Purchases.getPurchase);
 app.post('/api/purchases/filtered', api.Purchases.getPurchasesFiltered);
 app.post('/api/purchases/filtered/count', api.Purchases.countPurchasesFiltered);
 app.get('/api/purchase/process/:billingMethod', api.Purchases.purchase);
-app.get('/api/purchases/bycustomer/:id', api.Purchases.getPurchasesByCustomerId);
 app.post('/api/purchases/mypurchases/filtered', api.Purchases.getMyPurchasesFiltered);
 app.post('/api/purchases/mypurchases/filtered/count', api.Purchases.countMyPurchasesFiltered);
 app.delete('/api/purchase', api.Purchases.deletePurchase);
