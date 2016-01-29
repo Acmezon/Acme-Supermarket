@@ -7,6 +7,7 @@
     "async": "^1.5.2",
     "body-parser": "1.14.1",
     "cookie-parser": "^1.4.0",
+    "coupon-code": "^0.4.3",
     "creditcard-generator": "0.0.7",
     "errorhandler": "^1.0.1",
     "express": "4.13.3",

@@ -22,7 +22,7 @@ productSchema.plugin(autoIncrement.plugin, 'Product');
 
 module.exports = mongoose.model('Product', productSchema);
 
-customerSchema.pre('remove', function (next, done) {
+productSchema.pre('remove', function (next, done) {
 	//Eliminar:
 	//	Las valoraciones que ha recibido
 	//	Las reglas de redes sociales que le implican

@@ -1,11 +1,17 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var IsOver = require('./is_over');
+var IsOver = require('./is_over'),
+	CouponCode = require('coupon-code');
 
 var discountSchema = mongoose.Schema({
-	code: {type: String, required:true},
+	code: { type: String, required:true, unique: true, 
+			validate: {
+				validator: function(v) {
+					return CouponCode.validate(v, { parts: 4 }) != '';
+				}}
+			},
 	discount: {type: Number, required: true, min:0}
-}, {collection: 'discounts'});
+},{collection: 'discounts'});
 
 discountSchema.plugin(autoIncrement.plugin, 'Discount');
 

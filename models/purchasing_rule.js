@@ -5,8 +5,9 @@ var Provide = require('./product'),
 	autoIncrement = require('mongoose-auto-increment');
 
 var purchasingRuleSchema = mongoose.Schema({
-	startDate: {type: Date, default: Date.now, required: true},
+	startDate: {type: Date, default: Date.now},
 	periodicity: {type: Number, required: true},
+	nextRun : {type: Date},
 	customer_id: {type: Number, ref:'Customer', required: true},
 	provide_id : {type: Number, ref: 'Provide', required: true}
 }, {collection: 'purchasing_rules'});
@@ -14,3 +15,14 @@ var purchasingRuleSchema = mongoose.Schema({
 purchasingRuleSchema.plugin(autoIncrement.plugin, 'PurchasingRule');
 
 module.exports = mongoose.model('PurchasingRule', purchasingRuleSchema);
+
+purchasingRuleSchema.pre('save', function (next) {
+	var nextRun = new Date(this.startDate.getTime());
+	var periodicity = this.periodicity;
+
+	nextRun.setDate(nextRun.getDate() + parseInt(periodicity));
+	
+	this.nextRun = nextRun;
+
+	next();
+});

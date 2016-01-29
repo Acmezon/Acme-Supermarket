@@ -14,8 +14,6 @@ purchaseSchema.plugin(autoIncrement.plugin, 'Purchase');
 
 module.exports = mongoose.model('Purchase', purchaseSchema);
 
-module.exports = mongoose.model('Supplier', supplierSchema);
-
 purchaseSchema.pre('remove', function (next, done) {
 	//Eliminar:
 	//	Lineas de compra

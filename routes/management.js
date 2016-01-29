@@ -12,7 +12,12 @@ var db_utils = require('./db_utils'),
 	PurchaseLine = require('../models/purchase_line'),
 	Rate = require('../models/rate'),
 	Reputation = require('../models/reputation'),
-	crypto = require('crypto');//Necesario para encriptacion por MD,
+	Discount = require('../models/discount'),
+	IsOver = require('../models/is_over'),
+	PurchasingRule = require('../models/purchasing_rule'),
+	SocialMediaRule = require('../models/social_media_rule'),
+	SocialMediaNotification = require('../models/social_media_notification'),
+	crypto = require('crypto'),//Necesario para encriptacion por MD,
 	mongoose = require('mongoose'),
 	fs = require('fs'),
 	async = require('async'),
@@ -20,7 +25,8 @@ var db_utils = require('./db_utils'),
 	ProductService = require('./services/service_products'),
 	PurchaseService = require('./services/service_purchase'),
 	shuffle = require('shuffle-array'),
-	sync = require('synchronize');
+	sync = require('synchronize'),
+	CouponCode = require('coupon-code');
 
 
 function random(max, min) {
@@ -93,8 +99,62 @@ function loadProducts(callback) {
 		fs.writeFileSync('big_db/products_mapping.json', JSON.stringify(products_mapping));
 		console.log("--DO: Products saved");
 
-		loadBelongsTo(callback);
+		loadDiscounts(callback);
 	});
+}
+
+function loadDiscounts(callback) {
+	sync.fiber(
+		function() {
+			var products = sync.await(Product.find({}, sync.defer()));
+
+			var fixed_product = sync.await(Product.findById(1, sync.defer()));
+
+			var discount = new Discount({
+				code : 'W5PQ-PYN2-B8B4-6H8J',
+				discount : 30
+			});
+
+			var saved = sync.await(discount.save(sync.defer()));
+
+			var isOver = new IsOver({
+				product_id: fixed_product.id,
+				discount_id : saved.id
+			});
+
+			sync.await(isOver.save(sync.defer()));
+
+			for(var i = 0; i < 30; i++) {
+				var rand_products = shuffle(products);
+				var nr_products = random(30, 40);
+				var affected_products = rand_products.slice(0, nr_products);
+
+				discount = new Discount({
+					code: CouponCode.generate({ parts: 4 }),
+					discount : random(10, 60)
+				});
+
+				saved = sync.await(discount.save(sync.defer()));
+
+				for(var j = 0; j < affected_products.length; j++) {
+					isOver = new IsOver({
+						product_id: affected_products[j].id,
+						discount_id: saved.id
+					});
+
+					sync.await(isOver.save(sync.defer()));
+				}
+			} 
+	
+		},
+		function (err, data) {
+			if(err) console.log('--ERR: Error saving discounts: ' + err);
+
+			console.log("--DO: Saved all discounts");
+
+			loadBelongsTo(callback);
+		}
+	);
 }
 
 function loadBelongsTo(callback) {
@@ -242,8 +302,8 @@ function loadPurchases(callback) {
 		for (var i = 0; i < customers.length; i++){
 			var customer = customers[i];
 
-			var max_products = 300;
-			var min_products = 200;
+			var max_products = 200;
+			var min_products = 300;
 
 			var nr_products = random(max_products, min_products);
 
@@ -260,6 +320,85 @@ function loadPurchases(callback) {
 		if(err) console.log("--ERR: Error purchasing all products: " + err);
 
 		console.log("--DO: Purchased all products");
+
+		loadPurchasingRules(callback);
+	});
+}
+
+function loadPurchasingRules(callback) {
+	sync.fiber(function () {
+		var customers = sync.await(Customer.find({"_type" : "Customer"}, sync.defer()));
+
+		var provides = sync.await(Provide.find({}, sync.defer()));
+
+		for(var i = 0; i < customers.length; i++) {
+			var rules_nr = random(1, 5);
+
+			for(var j = 0; j < rules_nr; j++) {
+				var quantity = random(1, 4);
+				var provide_to_buy = provides[random(0, provides.length)];
+
+				var purchasingRule = new PurchasingRule({
+					periodicity: random(4, 10),
+					customer_id: customers[i].id,
+					provide_id : provide_to_buy.id
+				});
+
+				sync.await(purchasingRule.save(sync.defer()));
+			}
+		}
+	}, function (err, data) {
+		if(err) console.log("--ERR: Error saving purchasing rules: " + err);
+
+		console.log("--DO: Saved all purchasing rules");
+
+		loadSocialMediaRules(callback);
+	});
+}
+
+function loadSocialMediaRules(callback) {
+	sync.fiber(function () {
+		var products = sync.await(Product.find({}, sync.defer()));
+		var rules_nr = 10;
+
+		for(var j = 0; j < rules_nr; j++) {
+			var product_to_watch = products[random(0, products.length)];
+
+			var socialMediaRule = new SocialMediaRule({
+				increaseRate: 30,
+				product_id: product_to_watch.id
+			});
+
+			sync.await(socialMediaRule.save(sync.defer()));
+		}
+	}, function (err, data) {
+		if(err) console.log("--ERR: Error saving social media rules: " + err);
+
+		console.log("--DO: Saved all social media rules");
+
+		loadSocialMediaRulesNotifications(callback);
+	});
+}
+
+function loadSocialMediaRulesNotifications(callback) {
+	sync.fiber(function() {
+		var socialMediaRules = sync.await(SocialMediaRule.find({}, sync.defer()));
+
+		var chosenRules = shuffle(socialMediaRules).slice(0, random(1, socialMediaRules.length - 3)); //Not all with notifications nor all without notifications
+
+		for(var i = 0; i < chosenRules.length; i++) {
+			var socialMediaNotification = new SocialMediaNotification({
+				percentageExceeded: 40,
+				social_media_rule_id: chosenRules[i].id,
+				product_id: chosenRules[i].product_id
+			});
+
+			sync.await(socialMediaNotification.save(sync.defer()));
+		}
+	}, function (err, data) {
+		if(err) console.log("--ERR: Error saving social media notifications: " + err);
+
+		console.log("--DO: Saved all social media notifications");
 
 		clean(callback);
 	});
