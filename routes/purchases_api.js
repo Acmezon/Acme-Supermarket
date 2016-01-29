@@ -6,19 +6,6 @@ var Purchase = require('../models/purchase'),
 	PurchaseService = require('./services/service_purchase'),
 	RecommenderService = require('./services/service_recommender_server');
 
-exports.getPurchasesByCustomerId = function(req, res) {
-	var _code = req.params.id;
-	console.log('Function-purchasesApi-getPurchasesByCustomerId  --  id: ' + _code);
-
-	Purchase.find({customer_id: id}, function (err, purchases) {
-		if (err) {
-			res.status(500).json({success: false, message: err});
-		} else {
-			res.status(200).json(purchases);
-		}
-	});
-}
-
 // Returns a purchase identified by id
 exports.getPurchase = function (req, res) {
 	var _code = req.params.id;

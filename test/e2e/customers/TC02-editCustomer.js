@@ -1,5 +1,5 @@
 function stringGen(len) {
-	var text = " ";
+	var text = "";
 	var charset = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789";
 	for( var i=0; i < len; i++ )
 		text += charset.charAt(Math.floor(Math.random() * charset.length));
@@ -9,28 +9,10 @@ function stringGen(len) {
 describe('System\'s customers management view', function () {
 	
 	beforeEach(function() {
-		browser.get('http://localhost:3000/');
-		element(by.css('[ng-click="signout()"]')).isPresent().then(function (result) {
-			if(result) {
-				element(by.css('[ng-click="signout()"]')).click()
-			}
-		});
-	});
-
-	it('should load the customers', function (){
-		browser.get('http://localhost:3000/signin');
-
-		element(by.model('email')).sendKeys('admin@mail.com');
-		element(by.model('password')).sendKeys('administrator');
-
-		element(by.css('.button')).click();
-		
-		browser.get('http://localhost:3000/customers');
-
-		element(by.id('customers-length')).getText().then (function (text) {
-			var number_customers = parseInt(text);
-			expect(number_customers).toBeGreaterThan(0);
-		});
+		// Mandatory visit in order to make cookies work
+		browser.driver.get('http://localhost:3000/');
+		// Logout
+		browser.manage().deleteAllCookies();
 	});
 
 	it('should edit a customer with a new value', function (){
@@ -45,7 +27,7 @@ describe('System\'s customers management view', function () {
 
 		// Only works with a different value each time.
 		// Edition redjects same-value uploads
-		var new_value = stringGen(10).trim();
+		var new_value = stringGen(10)
 		
 		// Click on first edit button
 		var editBtn = element.all(by.css('.btn-edit-customers')).first();
@@ -68,7 +50,7 @@ describe('System\'s customers management view', function () {
 
 	});
 
-	it('should cancel edition and fields should revert', function (){
+it('should cancel edition and fields should revert', function (){
 		browser.get('http://localhost:3000/signin');
 
 		element(by.model('email')).sendKeys('admin@mail.com');
@@ -101,7 +83,7 @@ describe('System\'s customers management view', function () {
 		}); 
 	});
 
-	it('should remove a customers', function (){
+	it('should remove a customer', function (){
 		browser.get('http://localhost:3000/signin');
 
 		element(by.model('email')).sendKeys('admin@mail.com');
@@ -114,25 +96,27 @@ describe('System\'s customers management view', function () {
 		element(by.id('customers-length')).getText().then (function (text) {
 			var number_customers = parseInt(text);
 			
-			// Click on first delete button
-			var deleteBtn = element.all(by.css('.btn-delete-customers')).first();
-			deleteBtn.click().then(function() {
-				browser.waitForAngular();
-				var confirmBtn = element.all(by.css('.btn-confirm-customers')).first();
+			// Click on last delete button
+			var row = element.all(by.repeater('customer in $data')).last()
+			var deleteBtn = row.element(by.css('.btn-delete-customers'));
 
-				browser.wait(function() {
-					return confirmBtn.isPresent();
-				}, 30000);
-
-				confirmBtn.click().then(function () {
+			row.getAttribute('id').then(function (id) {
+				deleteBtn.click().then(function() {
 					browser.waitForAngular();
-					browser.sleep(500)
-					element(by.id('customers-length')).getText().then (function (text) {
-						expect(parseInt(text)).toEqual(number_customers - 1);
+					var confirmBtn = element(by.css('div#delete-'+id+'>div>div>div:nth-child(2)>button:nth-child(2)'));
+
+					var EC = protractor.ExpectedConditions;
+					browser.wait(EC.visibilityOf(confirmBtn), 5000);
+
+					confirmBtn.click().then(function () {
+						browser.waitForAngular();
+						browser.sleep(500)
+						element(by.id('customers-length')).getText().then (function (text) {
+							expect(parseInt(text)).toEqual(number_customers - 1);
+						});
 					});
-				});
-				
-			}); 
+				}); 
+			});
 		});
 	});
 });

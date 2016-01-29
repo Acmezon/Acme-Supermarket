@@ -1,5 +1,5 @@
 function stringGen(len) {
-	var text = " ";
+	var text = "";
 	var charset = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789";
 	for (var i = 0; i < len; i++)
 		text += charset.charAt(Math.floor(Math.random() * charset.length));
@@ -52,46 +52,6 @@ describe('Edit product page', function() {
 		browser.waitForAngular();
 
 		expect(element(by.id('btn-edit')).isPresent()).toBe(true);
-	});
-
-	it("shouldn't edit the name field too large", function() {
-		// Login
-		browser.get('http://localhost:3000/signin');
-
-		element(by.model('email')).sendKeys('admin@mail.com');
-		element(by.model('password')).sendKeys('administrator');
-
-		element(by.css('.button')).click();
-
-		// Visit product
-		browser.get('http://localhost:3000/');
-		element.all(by.css('div.top-box>div>div>a>div')).first().click();;
-		browser.waitForAngular();
-
-		expect(element(by.id('btn-edit')).isPresent()).toBe(true);
-
-		var nametag = element(by.css('h3.m_3'));
-		// Store old name
-		nametag.getText().then(function(name) {
-			// Click EDIT
-			element(by.id('btn-edit')).click();
-			browser.waitForAngular();
-
-			// Fill form
-			var new_name = stringGen(101);
-			element(by.css('div.desc1>form:nth-child(3)>div>input')).clear().then(function() {
-				element(by.css('div.desc1>form:nth-child(3)>div>input')).sendKeys(new_name);
-			});
-			// Click on submit
-			element(by.css('div.desc1>form:nth-child(3)>div>span>button:nth-child(1)')).click();
-			browser.waitForAngular();
-
-			// Compare name values
-			nametag.getText().then(function(newname) {
-				// Expect new name to be old name
-				expect(newname).toEqual(name);
-			});
-		});
 	});
 
 	it("shouldn't edit the name field due to click in cancel button", function() {
@@ -170,49 +130,8 @@ describe('Edit product page', function() {
 			// Compare name values
 			nametag.getText().then(function(newname) {
 				// Expect new name to be new name
-				expect(new_name.trim().toUpperCase()).toEqual(newname);
+				expect(new_name.toUpperCase()).toEqual(newname);
 			});
-		});
-	});
-
-	it("shouldn't edit the description field too large", function() {
-		// Login
-		browser.get('http://localhost:3000/signin');
-
-		element(by.model('email')).sendKeys('admin@mail.com');
-		element(by.model('password')).sendKeys('administrator');
-
-		element(by.css('.button')).click();
-
-		// Visit product
-		browser.get('http://localhost:3000/');
-		element.all(by.css('div.top-box>div>div>a>div')).first().click();;
-		browser.waitForAngular();
-
-		expect(element(by.id('btn-edit')).isPresent()).toBe(true);
-
-		var descriptiontag = element(by.css('p.m_text2'));
-		// Store old description
-		descriptiontag.getText().then(function(description) {
-			// Click EDIT
-			element(by.id('btn-edit')).click();
-			browser.waitForAngular();
-
-			// Fill form
-			var new_description = stringGen(1001);
-			element(by.css('textarea.editable-has-buttons')).clear().then(function() {
-				element(by.css('textarea.editable-has-buttons')).sendKeys(new_description);
-			});
-			// Click on submit
-			element(by.css('form.editable-textarea>div>span>button:nth-child(1)')).click();
-			browser.waitForAngular();
-
-			// Compare description values
-			descriptiontag.getText().then(function(newdescription) {
-				// Expect new description to be old description
-				expect(newdescription).toEqual(description);
-			});
-
 		});
 	});
 
@@ -245,7 +164,7 @@ describe('Edit product page', function() {
 				element(by.css('textarea.editable-has-buttons')).sendKeys(new_description);
 			});
 			// Click on cancel
-			element(by.css('form.editable-textarea>div>span>button:nth-child(1)')).click();
+			element(by.css('form.editable-textarea>div>span>button:nth-child(2)')).click();
 			browser.waitForAngular();
 
 			// Compare description values

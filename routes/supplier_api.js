@@ -57,6 +57,66 @@ exports.getSupplierPrincipal = function (req, res) {
 	});
 };
 
+// Update a supplier with a new/edited rating
+exports.updateSupplierRating = function (req, res) {
+	var provide_id = req.body.provide_id;
+	var rating_value = req.body.rating;
+
+	CustomerService.getPrincipalCustomer(req.cookies.session, req.app.get('superSecret'), function (user) {
+		if(user == null) {
+			res.status(403).json({success: false, message: "Doesn't have permission"});
+			return;
+		} else {
+			SupplierService.userHasPurchased(req.cookies.session, req.app.get('superSecret'), provide_id, function (response) {
+				if(!response) {
+					res.sendStatus(401)
+					return;
+				}
+				Provide.findOne( { _id : provide_id, deleted: false }, function (err, provide) {
+					if(err || !provide) {
+						res.sendStatus(503);
+						return;
+					}
+					Reputation.findOne({ customer_id : user.id, supplier_id : provide.supplier_id }, function (err, reputation) {
+						if(err) {
+							res.sendStatus(503);
+							return;
+						} else {
+							if(reputation) {
+								// Reputation found: Update
+								Reputation.findByIdAndUpdate(reputation.id, { $set : { value : rating_value } }, function (err, updated) {
+									if (err) {
+										res.sendStatus(503);
+										return;
+									} else {
+										res.sendStatus(200);
+									}
+								});
+							} else {
+								// Rate not found: Create new one
+								var new_reputation = new Reputation({
+									value: rating_value,
+									supplier_id : provide.supplier_id,
+									customer_id : user.id
+								});
+
+								Reputation.save(function (err) {
+									if (err) {
+										res.sendStatus(503);
+										return;
+									} else {
+										res.sendStatus(200);
+									}
+								});
+							}
+						}
+					});
+				});
+			});
+		}
+	});
+};
+
 //Creates a provide for the current logged supplier to the received product
 exports.provideProduct = function (req, res) {
 	var product_id = req.body.product_id;
