@@ -37,7 +37,7 @@
 			"Title" : "Mi cuenta",
 			"MyProfile" : "Mi perfil",
 			"MyPurchases" : "Mis compras",
-			"shoppingCart" : "Carrito de la compra",
+			"ShoppingCart" : "Carrito de la compra",
 			"MyProducts" : "Mis productos"
 		},
 		"Checkout" : "Ir al carrito",
