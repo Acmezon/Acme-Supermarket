@@ -8,7 +8,8 @@ var Customer = require('../models/customer'),
 	db_utils = require('./db_utils'),
 	jwt = require('jsonwebtoken'),
 	request = require('request'),
-	SocialMediaService = require('./services/service_social_media');
+	SocialMediaService = require('./services/service_social_media'),
+	sync = require('synchronize');
 
 // Return a customer identified by id
 exports.getCustomer = function (req, res) {
@@ -45,15 +46,36 @@ exports.getCustomers = function (req, res) {
 	ActorService.getUserRole(cookie, jwtKey, function (role) {
 		if (role=='admin') {
 			// Find no conditions
-			Customer.find({_type: 'Customer'}, function(err,customers){
+			Customer.find({_type: 'Customer'}).select('-password').exec(function (err,customers){
 				if (err) {
 					res.status(500).json({success: false, message: err});
 				} else {
-					for (var i = 0; i < customers.length; i++) {
-						customers[i].password = "";
-					}
+					var completed_customers = [];
+					sync.fiber(function () {
+						for (var i = 0; i < customers.length; i++) {
+							var customer_obj = customers[i].toObject();
 
-					res.status(200).json(customers);
+							var cc_id = customer_obj.credit_card_id;
+
+							var credit_card = sync.await(CreditCard.findById(cc_id, sync.defer()));
+							if(credit_card) {
+								customer_obj['credit_card'] = credit_card;
+							} else {
+								customer_obj['credit_card'] = undefined;
+							}
+
+							completed_customers.push(customer_obj);
+						}
+
+						return completed_customers;				
+					}, function (err, data) {
+						if(err) {
+							res.sendStatus(500);
+							return;
+						} else {
+							res.status(200).json(completed_customers);
+						}
+					});
 				}
 			});
 		} else {
@@ -79,6 +101,7 @@ exports.newCustomer = function (customer, callback) {
 
 	// Server validation
 	var pass = CustomerService.checkFieldsCorrect(_name, _surname, _email, _password, _coordinates, _address, _country, _city, _phone);
+	console.log(pass)
 
 	if (pass) {
 		var md5Password = crypto.createHash('md5').update(_password).digest("hex");
@@ -95,6 +118,8 @@ exports.newCustomer = function (customer, callback) {
 			city: _city,
 			phone: _phone
 		});
+
+		console.log(newCustomer)
 
 		newCustomer.save(function (err) {
 			callback(db_utils.handleInsertErrors(err));

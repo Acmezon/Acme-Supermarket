@@ -95,7 +95,7 @@ exports.updateSupplierRating = function (req, res) {
 							} else {
 								// Rate not found: Create new one
 								var new_reputation = new Reputation({
-									rate: rating_value,
+									value: rating_value,
 									supplier_id : provide.supplier_id,
 									customer_id : user.id
 								});

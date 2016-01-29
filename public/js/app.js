@@ -49,12 +49,12 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 				else {
 					$rootScope.loginFailed = true;
 					deferred.reject();
-					$location.url('/signin');
+					$location.url('/401');
 				}
 			}, function error(response) {
 				$rootScope.loginFailed = true;
 				deferred.reject();
-				$location.url('/signin');
+				$location.url('/401');
 			});
 			return deferred.promise;
 		};
@@ -72,11 +72,11 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 				// Not Authenticated
 				else {
 					deferred.reject();
-					$location.url('/home');
+					$location.url('/');
 				}
 			}, function error(response) {
 				deferred.reject();
-				$location.url('/home');
+				$location.url('/');
 			});
 			return deferred.promise;
 		};
@@ -87,20 +87,25 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 
 			$http.get('/api/getUserRole').then(function success(response) {
 				var role = response.data;
-
 				if (role=='customer') {
 					deferred.resolve();
 
 				} else {
 					// A not customer shouldn't enter in the url
-					$rootScope.loginFailed = true;
-					deferred.reject();
-					$location.url('/signin');
+					if (role=='anonymous') {
+						$rootScope.loginFailed = true;
+						deferred.reject();
+						$location.url('/401');
+					} else {
+						$rootScope.loginFailed = true;
+						deferred.reject();
+						$location.url('/403');
+					}
 				}
 			}, function error(response){
 				$rootScope.loginFailed = true;
 				deferred.reject();
-				$location.url('/signin');
+				$location.url('/403');
 			});
 			return deferred.promise;
 		};
@@ -111,22 +116,26 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 
 			$http.get('/api/getUserRole').then(function success(response) {
 				var role = response.data;
-
 				if (role=='admin') {
 					deferred.resolve();
 
 				} else {
-					// A not customer shouldn't enter in the url
-					$rootScope.loginFailed = true;
-					deferred.reject();
-					$location.url('/signin');
+					// A not admin shouldn't enter in the url
+					if (role=='anonymous') {
+						$rootScope.loginFailed = true;
+						deferred.reject();
+						$location.url('/401');
+					} else {
+						$rootScope.loginFailed = true;
+						deferred.reject();
+						$location.url('/403');
+					}
 				}
 			}, function error(response){
 				$rootScope.loginFailed = true;
 				deferred.reject();
-				$location.url('/signin');
+				$location.url('/403');
 			});
-
 			return deferred.promise;
 		};
 
@@ -136,22 +145,26 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 
 			$http.get('/api/getUserRole').then(function success(response) {
 				var role = response.data;
-				
 				if (role=='supplier') {
 					deferred.resolve();
 
 				} else {
 					// A not customer shouldn't enter in the url
-					$rootScope.loginFailed = true;
-					deferred.reject();
-					$location.url('/signin');
+					if (role=='anonymous') {
+						$rootScope.loginFailed = true;
+						deferred.reject();
+						$location.url('/401');
+					} else {
+						$rootScope.loginFailed = true;
+						deferred.reject();
+						$location.url('/403');
+					}
 				}
 			}, function error(response){
 				$rootScope.loginFailed = true;
 				deferred.reject();
-				$location.url('/signin');
+				$location.url('/403');
 			});
-
 			return deferred.promise;
 		};
 
@@ -248,7 +261,6 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			templateUrl: 'views/public/products/products.html',
 			controller: 'ProductListCtrl',
 			resolve : {
-				loggedin: checkLoggedin,
 				supplier: checkSupplier
 			},
 			activetab: 'account'
@@ -257,7 +269,6 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			templateUrl: 'views/products/create/createProduct.html',
 			controller: 'CreateProductCtrl',
 			resolve : {
-				loggedin: checkLoggedin,
 				admin: checkAdmin
 			},
 			activetab: 'management'
@@ -273,7 +284,6 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			templateUrl: 'views/shoppingcart/shoppingcart.html',
 			controller: 'ShoppingCartCtrl',
 			resolve: {
-				loggedin: checkLoggedin,
 				customer: checkCustomer
 			},
 			activetab: 'account'
@@ -282,7 +292,6 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			templateUrl: 'views/customer/customers.html',
 			controller: 'CustomersCtrl',
 			resolve: {
-				loggedin: checkLoggedin,
 				admin: checkAdmin
 			},
 			activetab: 'management'
@@ -291,7 +300,6 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			templateUrl: 'views/dashboard/dashboard.html',
 			controller: 'DashboardCtrl',
 			resolve: {
-				loggedin: checkLoggedin,
 				admin: checkAdmin
 			},
 			activetab: 'management'
@@ -300,7 +308,6 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			templateUrl: 'views/checkout/checkout.html',
 			controller: 'CheckoutCtrl',
 			resolve: {
-				loggedin: checkLoggedin,
 				admin: checkCustomer
 			}
 		}).
@@ -308,7 +315,6 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			templateUrl: 'views/checkout/confirm.html',
 			controller: 'CheckoutConfirmCtrl',
 			resolve: {
-				loggedin: checkLoggedin,
 				admin: checkCustomer
 			}
 		}).
@@ -316,7 +322,6 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			templateUrl: 'views/checkout/confirm.html',
 			controller: 'CheckoutConfirmCtrl',
 			resolve: {
-				loggedin: checkLoggedin,
 				admin: checkCustomer
 			}
 		}).
@@ -324,7 +329,6 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			templateUrl: 'views/purchases/purchases.html',
 			controller: 'PurchasesListCtrl',
 			resolve: {
-				loggedin: checkLoggedin,
 				admin: checkCustomer
 			},
 			activetab: 'account'
@@ -333,7 +337,6 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			templateUrl: 'views/purchases/purchases.html',
 			controller: 'PurchasesListCtrl',
 			resolve: {
-				loggedin: checkLoggedin,
 				admin: checkAdmin
 			},
 			activetab: 'management'

@@ -48,7 +48,7 @@
 			<div class="cont span_2_of_3">
 				<h2 class="head">{{ 'Home.Title' | translate }}</h2>
 				<div class="top-box">
-					<div ng-repeat="product in products | limitTo:9">
+					<div id="{{product._id}}" ng-repeat="product in products | limitTo:9">
 
 						<div class="col_1_of_3 span_1_of_3">
 							<a class="product" href="product/{{product._id}}">

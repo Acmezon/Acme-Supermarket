@@ -10,7 +10,7 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 	}).
 	then(function success(response) {
 		$scope.product = response.data;
-		$scope.rate = $scope.product.avgRating;
+		$scope.value = $scope.product.avgRating;
 
 		$scope.out_suppliers = [];
 
@@ -67,7 +67,6 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 	//Toggles edition and initializes Dropzone if it isn't yet.
 	$scope.toggleEdition = function() {
 		$scope.textNameForm.$show();
-		$scope.textPriceForm.$show();
 		$scope.textDescForm.$show();
 
 		if(!dropzoned) {
@@ -102,7 +101,6 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 	//If is something Editable the "Edit" button is hidden
 	$scope.isSomethingEditable = function() {
 		return  $scope.textNameForm.$visible ||
-				$scope.textPriceForm.$visible ||
 				$scope.textDescForm.$visible;
 	}
 
@@ -132,7 +130,7 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 		$http.post('/api/product/updateProductRating',
 		{
 			id: id,
-			rating: $scope.rate
+			rating: $scope.value
 		}).then(
 		function success(response) {},
 		function error(response) {

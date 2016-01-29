@@ -9,7 +9,7 @@ angular.module('acme_supermarket').registerCtrl('CustomersCtrl', ['$scope', '$ht
 	then(function success(response) {
 		$scope.$data = response.data;
 
-		// Get credit cards of each customer
+		/*// Get credit cards of each customer
 		$scope.$data.forEach(function (customer) {
 			
 			$http({
@@ -25,7 +25,7 @@ angular.module('acme_supermarket').registerCtrl('CustomersCtrl', ['$scope', '$ht
 				
 			}, function error(response2) {
 			});
-		});
+		});*/
 		
 		$scope.tableParams = new ngTableParams({}, {dataset:$scope.$data});
 		$scope.copy = angular.copy($scope.$data);
@@ -41,8 +41,8 @@ angular.module('acme_supermarket').registerCtrl('CustomersCtrl', ['$scope', '$ht
 	}
 
 	var setCharAt = function(str,index,chr) {
-    	if(index > str.length-1) return str;
-    	return str.substr(0,index) + chr + str.substr(index+1);
+		if(index > str.length-1) return str;
+		return str.substr(0,index) + chr + str.substr(index+1);
 	}
 	
 	$scope.edit = function (originalModel) {
@@ -113,28 +113,27 @@ angular.module('acme_supermarket').registerCtrl('CustomersCtrl', ['$scope', '$ht
 
 		// Aftter 200ms modal closed, delete from db
 		setTimeout(
-   			function() {
-				$http({ url: '/api/customer/delete', 
-	                method: 'DELETE', 
-	                data: {id: customer._id}, 
-	                headers: {"Content-Type": "application/json;charset=utf-8"}
-		        }).then(function(res) {
-		            var i = $scope.$data.indexOf(customer)
-		            if(i != -1) {
+			function() {
+				$http({ url: '/api/customer', 
+					method: 'DELETE', 
+					data: {id: customer._id}, 
+					headers: {"Content-Type": "application/json;charset=utf-8"}
+				}).then(function(res) {
+					var i = $scope.$data.indexOf(customer)
+					if(i != -1) {
 						$scope.$data.splice(i, 1);
 						$scope.copy.splice(i, 1);
 					}
 					$scope.tableParams.reload()
-		        }, function(error) {
-		        	alert(error)
-		            console.log(error);
-		        });
-    		}, 200);
-    };
+				}, function(error) {
+					console.log(error);
+				});
+			}, 200);
+	};
 
-    $scope.refresh = function() {
-    	$route.reload();
-    }
+	$scope.refresh = function() {
+		$route.reload();
+	}
 
 
 }]);

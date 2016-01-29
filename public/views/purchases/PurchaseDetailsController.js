@@ -13,7 +13,6 @@ angular.module('acme_supermarket').registerCtrl('PurchaseDetailsCtrl', ['$scope'
 	then(function success(response) {
 		$scope.purchase = response.data;
 	}, function error (response) {
-		alert(response.data);
 	});
 
 	$http({

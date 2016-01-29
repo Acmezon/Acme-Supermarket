@@ -58,7 +58,11 @@ exports.getAllProductsFiltered = function(req, res) {
 				if (filter_maxPrice != -1) {
 					// PRICE FILTER ACTIVATED
 					Product.find({
+							minPrice: {
+								$gte: 0
+							},
 							maxPrice: {
+								$gte: 0,
 								$lt: filter_maxPrice
 							},
 							avgRating: {
@@ -90,6 +94,12 @@ exports.getAllProductsFiltered = function(req, res) {
 				} else {
 					// PRICE FILTER DEACTIVATED
 					Product.find({
+							minPrice: {
+								$gte: 0
+							},
+							maxPrice: {
+								$gte: 0,
+							},
 							avgRating: {
 								$gte: filter_minRating,
 								$lt: filter_maxRating
@@ -124,7 +134,11 @@ exports.getAllProductsFiltered = function(req, res) {
 		if (filter_maxPrice != -1) {
 			// PRICE FILTER ACTIVATED
 			Product.find({
+					minPrice: {
+						$gte: 0
+					},
 					maxPrice: {
+						$gte: 0,
 						$lt: filter_maxPrice
 					},
 					avgRating: {
@@ -153,6 +167,12 @@ exports.getAllProductsFiltered = function(req, res) {
 		} else {
 			// PRICE FILTER DEACTIVATED
 			Product.find({
+					minPrice: {
+						$gte: 0
+					},
+					maxPrice: {
+						$gte: 0,
+					},
 					avgRating: {
 						$gte: filter_minRating,
 						$lt: filter_maxRating
@@ -204,7 +224,11 @@ exports.countProductsFiltered = function(req, res) {
 				if (filter_maxPrice != -1) {
 					// PRICE FILTER ACTIVATED
 					Product.count({
+						minPrice: {
+							$gte: 0
+						},
 						maxPrice: {
+							$gte: 0,
 							$lt: filter_maxPrice
 						},
 						avgRating: {
@@ -227,6 +251,12 @@ exports.countProductsFiltered = function(req, res) {
 				} else {
 					// PRICE FILTER DEACTIVATED
 					Product.count({
+						minPrice: {
+							$gte: 0
+						},
+						maxPrice: {
+							$gte: 0
+						},
 						avgRating: {
 							$gte: filter_minRating,
 							$lt: filter_maxRating
@@ -252,7 +282,11 @@ exports.countProductsFiltered = function(req, res) {
 		if (filter_maxPrice != -1) {
 			// PRICE FILTER ACTIVATED
 			Product.count({
+				minPrice: {
+					$gte: 0
+				},
 				maxPrice: {
+					$gte: 0,
 					$lt: filter_maxPrice
 				},
 				avgRating: {
@@ -272,6 +306,12 @@ exports.countProductsFiltered = function(req, res) {
 		} else {
 			// PRICE FILTER DEACTIVATED
 			Product.count({
+				minPrice: {
+					$gte: 0
+				},
+				maxPrice: {
+					$gte: 0
+				},
 				avgRating: {
 					$gte: filter_minRating,
 					$lt: filter_maxRating
@@ -930,7 +970,7 @@ exports.updateProductRating = function(req, res) {
 							// Rate found: Update
 							Rate.findByIdAndUpdate(rate._id, {
 								$set: {
-									rate: rating_value
+									value: rating_value
 								}
 							}, function(err, updated) {
 								if (err) {
@@ -957,12 +997,12 @@ exports.updateProductRating = function(req, res) {
 						} else {
 							// Rate not found: Create new one
 							var new_rate = new Rate({
-								rate: rating_value,
+								value: rating_value,
 								product_id: product_id,
 								customer_id: user.id
 							});
 
-							Rate.newRate(new_rate, function(err) {
+							new_rate.save(function(err) {
 								if (err) {
 									res.sendStatus(503);
 									return;

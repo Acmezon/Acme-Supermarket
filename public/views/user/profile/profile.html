@@ -10,18 +10,18 @@
 			<div class="row">
 				<div class="col-md-4 tabbable tabs-below">
 					<ul class="nav nav-pills nav-stacked">
-						<li ng-class="{active: selectedTab == 1}">
-							<a href="#" ng-click="selectedTab = 1;" aria-controls="personalinfo" role="tab" data-toggle="tab">
+						<li id="personal-info-tab" ng-class="{active: selectedTab == 1}">
+							<a href="" ng-click="selectedTab = 1;" aria-controls="personalinfo" role="tab" data-toggle="tab">
 								{{ 'Profile.PersonalInfo' | translate }}
 							</a>
 						</li>
-						<li ng-class="{active: selectedTab == 2}" ng-show="user._type == 'Customer'">
-							<a href="#" ng-click="selectedTab = 2;" aria-controls="ccdata" role="tab" data-toggle="tab">
+						<li id="ccdata-tab" ng-class="{active: selectedTab == 2}" ng-show="user._type == 'Customer'">
+							<a href="" ng-click="selectedTab = 2;" aria-controls="ccdata" role="tab" data-toggle="tab">
 								{{ 'Profile.CCData' | translate }}
 							</a>
 						</li>
-						<li ng-class="{active: selectedTab == 3}">
-							<a href="#" ng-click="selectedTab = 3;" aria-controls="password" role="tab" data-toggle="tab">
+						<li id="password-tab" ng-class="{active: selectedTab == 3}">
+							<a href="" ng-click="selectedTab = 3;" aria-controls="password" role="tab" data-toggle="tab">
 								{{ 'Profile.ChangePass' | translate }}
 							</a>
 						</li>
