@@ -256,7 +256,6 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			templateUrl: 'views/user/rules/myrules.html',
 			controller: 'MyRulesCtrl',
 			resolve: {
-				loggedin: checkLoggedin,
 				customer: checkCustomer
 			}
 		}).
