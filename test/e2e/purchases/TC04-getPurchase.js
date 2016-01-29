@@ -86,7 +86,7 @@ describe('Purchases list', function () {
 		element(by.css('.button')).click();
 
 		// Visit product
-		browser.get('http://localhost:3000/mypurchases');
+		browser.get('http://localhost:3000/purchases');
 		expect(browser.getCurrentUrl()).toEqual('http://localhost:3000/purchases');
 
 		element.all(by.repeater('purchase in purchases')).first().getAttribute('id').then(function (id) {
