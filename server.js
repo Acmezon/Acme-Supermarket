@@ -134,6 +134,7 @@ app.post('/api/customer', api.Customer.updateCustomer);
 app.delete('/api/customer/', api.Customer.deleteCustomer);
 app.get('/api/mycreditcard', api.Customer.getMyCreditCard);
 app.get('/api/myRecommendations', api.Customer.getMyRecommendations);
+app.get('/api/mypurchasingrules', api.Customer.getMyPurchasesRules);
 
 // Admins
 

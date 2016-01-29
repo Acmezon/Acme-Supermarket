@@ -86,3 +86,19 @@ exports.removeProductAndImage = function(product_id, image, callback) {
 		}
 	});
 }
+
+exports.getProductByProvideId = function(provide_id, callback) {
+	Provide.findById(provide_id, function (err, provide) {
+		if(err) {
+			callback(err);
+		} else {
+			Product.findById(provide.product_id, function (err, product) {
+				if(err) {
+					callback(err);
+				} else {
+					callback(null, product);
+				}
+			})
+		}
+	});
+}

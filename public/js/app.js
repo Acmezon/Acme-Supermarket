@@ -239,6 +239,14 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			},
 			activetab: 'account'
 		}).
+		when('/mypurchasingrules', {
+			templateUrl: 'views/user/rules/myrules.html',
+			controller: 'MyRulesCtrl',
+			resolve: {
+				loggedin: checkLoggedin,
+				customer: checkCustomer
+			}
+		}).
 		when('/products', {
 			templateUrl: 'views/public/products/products.html',
 			controller: 'ProductListCtrl',

@@ -9,7 +9,6 @@ var jwt = require('jsonwebtoken'),
 exports.getMyProfile = function (req, res) {
 	console.log('Function-usersApi-getMyProfile');
 	var cookie = req.cookies.session;
-	console.log(req.cookies)
 
 	if (cookie != undefined) {
 		var token = cookie.token;

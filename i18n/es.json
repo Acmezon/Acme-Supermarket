@@ -38,7 +38,8 @@
 			"MyProfile" : "Mi perfil",
 			"MyPurchases" : "Mis compras",
 			"ShoppingCart" : "Carrito de la compra",
-			"MyProducts" : "Mis productos"
+			"MyProducts" : "Mis productos",
+			"MyPurchasingRules" : "Mis reglas de compra"
 		},
 		"Checkout" : "Ir al carrito",
 		"Signin" : "Iniciar sesión",
@@ -250,7 +251,8 @@
 		"ExpYear" : "Año de caducidad",
 		"CVC" : "CVC",
 		"CCData" : "Datos de tarjeta de crédito",
-		"Cancel" : "Cancelar"
+		"Cancel" : "Cancelar",
+		"PurchasingRules" : "Mis reglas de compra"
 	},
 	"Products" : {
 		"Title" : "Productos",
@@ -466,5 +468,13 @@
 		"Remove" : "Eliminar",
 		"First" : "Primero",
 		"Last" : "Último"
+	},
+	"PurchasingRule" : {
+		"StartDate" : "Fecha de inicio",
+		"Periodicity" : "Periodicidad",
+		"Product" : "Producto",
+		"Quantity" : "Cantidad",
+		"NextRun" : "Siguiente compra el:",
+		"Remove" : "Eliminar"
 	}
 }

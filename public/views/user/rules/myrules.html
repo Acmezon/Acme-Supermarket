@@ -1,0 +1,61 @@
+<script src="views/user/rules/MyRulesController.js"></script>
+
+<div class="wrap">
+	<ul class="breadcrumb breadcrumb__t">
+		<li><a class="home" href="/">{{ 'Home.Title' | translate }}</a> / <a class="home" href="/myprofile">{{ 'Profile.PersonalInfo' | translate }}</a> / {{ 'Profile.PurchasingRules' | translate }}</li>
+	</ul>
+	<h2 class="head">{{'Profile.PurchasingRules' | translate}}</h2> 
+	
+	<div ng-if="rules.length>0" style="z-index:100000; position:relative">
+		<div ng-repeat="rule in rules">
+			<div class="modal fade" id="delete-{{rule._id}}" role="dialog" >
+				<div class="modal-dialog modal-sm">
+				<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">{{'PurchasingRule.Delete.Question' | translate}}</h4>
+						</div>
+						<div class="modal-body">
+							<button type="button" class="btn btn-primary btn-confirm-rules" data-toggle="button" ng-click="delete(rule)">
+								{{'PurchasingRule.Delete.Yes' |translate}}
+							</button>
+							<button type="button" class="btn btn-danger" data-toggle="button" data-dismiss="modal">
+								{{'PurchasingRule.Delete.No' |translate}}
+							</button>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-default" data-dismiss="modal">{{'PurchasingRule.Close' | translate}}</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<table ng-table="tableParams" class="table" show-filter="true">
+			<tr ng-repeat="rule in rules" demo-tracked-table-row="rule">
+				<td data-title="'PurchasingRule.StartDate' | translate" filter="{startDate: 'date'}" sortable="'startDate'" demo-tracked-table-cell style="width:8%">
+					{{rule.startDate}}
+				</td>
+				<td data-title="'PurchasingRule.Periodicity' | translate" filter="{periodicity: 'number'}" sortable="'periodicity'" demo-tracked-table-cell style="width:8%">
+					{{rule.periodicity}}
+				</td>				
+				<td data-title="'PurchasingRule.Product' | translate" filter="{product_name: 'text'}" sortable="'product_name'" demo-tracked-table-cell style="width:8%">
+					<a href="/product/{{rule.product_id}}">{{rule.product_name}}</a>
+				</td>				
+				<td data-title="'PurchasingRule.Quantity' | translate" filter="{quantity: 'number'}" sortable="'quantity'" demo-tracked-table-cell style="width:8%">
+					{{rule.quantity}}
+				</td>
+				<td data-title="'PurchasingRule.NextRun' | translate" filter="{next_run: 'date'}" sortable="'next_run'" demo-tracked-table-cell style="width:8%">
+					{{rule.next_run}}
+				</td>
+				<td data-title="'PurchasingRule.Remove' | translate" style="width:6%">
+					<button class="btn btn-danger btn-sm btn-delete-rules" data-toggle="modal" data-target="#delete-{{rule._id}}">
+						<span class="glyphicon glyphicon-trash"></span>
+					</button>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div class="clear" style="margin-bottom: 1%"></div>
+</div>

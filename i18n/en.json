@@ -38,7 +38,8 @@
 			"MyProfile" : "My profile",
 			"MyPurchases" : "My purchases",
 			"ShoppingCart" : "Shopping cart",
-			"MyProducts" : "My products"
+			"MyProducts" : "My products",
+			"MyPurchasingRules" : "My purchasing rules"
 		},
 		"Checkout" : "Checkout",
 		"Signin" : "Sign in",
@@ -250,7 +251,8 @@
 		"ExpYear" : "Expiration year",
 		"CVC" : "CVV",
 		"CCData" : "Credit Card data",
-		"Cancel" : "Cancel"
+		"Cancel" : "Cancel",
+		"PurchasingRules" : "My purchasing rules"
 	},
 	"Products" : {
 		"Title" : "Products",
@@ -468,5 +470,13 @@
 		"Remove" : "Remove",
 		"First" : "First",
 		"Last" : "Last"
+	},
+	"PurchasingRule" : {
+		"StartDate" : "Start date",
+		"Periodicity" : "Periodicity",
+		"Product" : "Product",
+		"Quantity" : "Quantity",
+		"NextRun" : "Next purchase will be at",
+		"Remove" : "Remove"
 	}
 }

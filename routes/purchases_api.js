@@ -58,7 +58,7 @@ exports.getPurchasesFiltered = function (req, res) {
 
 
 	var ord_tuple = {};
-    ord_tuple[sort] = order;
+	ord_tuple[sort] = order;
 
 	var cookie = req.cookies.session;
 	var jwtKey = req.app.get('superSecret');
@@ -121,7 +121,7 @@ exports.countPurchasesFiltered = function (req, res) {
 		customerFilter = parseInt(req.body.customerFilter) || null;
 
 	var ord_tuple = {};
-    ord_tuple[sort] = order;
+	ord_tuple[sort] = order;
 
 	var cookie = req.cookies.session;
 	var jwtKey = req.app.get('superSecret');
@@ -178,7 +178,7 @@ exports.getMyPurchasesFiltered = function (req, res) {
 		order = parseInt(req.body.order) || 1;
 
 	var ord_tuple = {};
-    ord_tuple[sort] = order;
+	ord_tuple[sort] = order;
 
 	var cookie = req.cookies.session;
 	var jwtKey = req.app.get('superSecret');
@@ -230,7 +230,7 @@ exports.countMyPurchasesFiltered = function (req, res) {
 		order = parseInt(req.body.order) || 1;
 
 	var ord_tuple = {};
-    ord_tuple[sort] = order;
+	ord_tuple[sort] = order;
 
 	var cookie = req.cookies.session;
 	var jwtKey = req.app.get('superSecret');
@@ -310,13 +310,13 @@ exports.purchase = function (req, res) {
 
 				// Save it
 				newPurchase.save(function (err, newPurchase) {
-			  		if (err){
-			  			// Internal error
-			  			res.status(500).send({success: false});
-			  		} else {
-			  			// CONTINUE
-			  			// For each of the provides in shopping cart
-			  			Object.keys(cookie).forEach(function(cookie_id) {
+					if (err){
+						// Internal error
+						res.status(500).send({success: false});
+					} else {
+						// CONTINUE
+						// For each of the provides in shopping cart
+						Object.keys(cookie).forEach(function(cookie_id) {
 							ProvideService.getProvideById(cookie_id, function (provide) {
 								if (provide) {
 									// CONTNUE
@@ -349,18 +349,18 @@ exports.purchase = function (req, res) {
 								}
 							});
 						});
-			  			// FINISH LOOP
-			  			// FINISH PURCHASE PROCESS
-			  			// RECALCULATE RECOMMENDATION
-			  			RecommenderService.recommendPurchases(customer.id, function (err, response){
-			  				if(err || response.statusCode == 500) {
-			  					console.log("No recommendation updated")
-			  				} else {
-			  					console.log("Recommendations updated")
-			  				}
-			  			});
-			  			res.status(200).send(newPurchase);
-			  		}
+						// FINISH LOOP
+						// FINISH PURCHASE PROCESS
+						// RECALCULATE RECOMMENDATION
+						RecommenderService.recommendPurchases(customer.id, function (err, response){
+							if(err || response.statusCode == 500) {
+								console.log("No recommendation updated")
+							} else {
+								console.log("Recommendations updated")
+							}
+						});
+						res.status(200).send(newPurchase);
+					}
 				});
 			} else {
 				// Error not a customer

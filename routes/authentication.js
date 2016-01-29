@@ -14,7 +14,6 @@ exports.authenticate = function (req, res) {
 	Actor.findOne({
 		email: req.body.email
 	}, function (err, user){
-		console.log(user);
 		if (err) {
 			res.json({success: false, message: 'Server error. Please, try again later.'});
 		}
