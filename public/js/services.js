@@ -17,7 +17,7 @@ services.service('authService', function($http){
 				url: '/api/getUserRole'
 			}).
 			then(function success(response) {
-				var role = response.data.role;
+				var role = response.data;
 
 				removeRestricted(role);
 			}, function error(response) {

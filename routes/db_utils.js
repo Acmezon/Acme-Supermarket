@@ -4,9 +4,10 @@
 
 //MongoDB
 //Declaracion de la base de datos
-var mongoose = require('mongoose');
-var extend = require('mongoose-schema-extend');//Necesario para la herencia
-var config = require('../config')
+var mongoose = require('mongoose'),
+	extend = require('mongoose-schema-extend'),//Necesario para la herencia
+	config = require('../config'),
+	autoIncrement = require('mongoose-auto-increment');
 
 exports.connect = function () {
 	mongoose.connect(config.database);
@@ -17,10 +18,10 @@ exports.connect = function () {
 	  console.log('Mongoose connection to Acme-Supermarket database successfull');
 	});
 
+	autoIncrement.initialize(db);
+
 	return db;
 };
-
-
 
 exports.disconnect = function () {
 	mongoose.disconnect();
@@ -48,3 +49,35 @@ exports.handleInsertErrors = function(err){
 	}
 	return errors;
 };
+
+/* finds the intersection of 
+ * two arrays in a simple fashion.  
+ *
+ * PARAMS
+ *  a - first array, must already be sorted
+ *  b - second array, must already be sorted
+ *
+ * NOTES
+ *
+ *  Should have O(n) operations, where n is 
+ *    n = MIN(a.length(), b.length())
+ */
+exports.intersect_safe = function(a, b)
+{
+  var ai=0, bi=0;
+  var result = new Array();
+
+  while( ai < a.length && bi < b.length )
+  {
+     if      (a[ai] < b[bi] ){ ai++; }
+     else if (a[ai] > b[bi] ){ bi++; }
+     else /* they're equal */
+     {
+       result.push(a[ai]);
+       ai++;
+       bi++;
+     }
+  }
+
+  return result;
+}

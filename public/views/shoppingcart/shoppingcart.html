@@ -2,6 +2,10 @@
 <link rel="stylesheet" href="css/shopping-cart-quantity.css"/>
 
 <div class="wrap">
+	<ul class="breadcrumb breadcrumb__t">
+		<li><a class="home" href="/">{{ 'Home.Title' | translate }}</a> / <a class="home" href="/products">{{ 'Products.Title' | translate }}</a> / {{'ShoppingCart.Title' | translate}}</li>
+	</ul>
+
 	<h2 class="head">{{'ShoppingCart.Title' | translate}}</h2>
 	<div ng-if="hasEmptyCart()">
 		<h4 class="title">{{'ShoppingCart.Empty.Title' | translate}}</h4>
@@ -14,6 +18,7 @@
 					<th>{{'ShoppingCart.Remove' | translate}}</th>
 					<th>{{'ShoppingCart.Product.Image' | translate}}</th>
 					<th>{{'ShoppingCart.Product.Name' | translate}}</th>
+					<th>{{'ShoppingCart.Product.Supplier' | translate}}</th>
 					<th>{{'ShoppingCart.Product.Code' | translate}}</th>
 					<th>{{'ShoppingCart.Product.Quantity' | translate}}</th>
 					<th>{{'ShoppingCart.Product.Price' | translate}} (€)</th>
@@ -22,9 +27,10 @@
 			</thead>
 			<tbody>
 			  	<tr ng-repeat="product in shoppingcart">
-					<td style="width:5%"><span ng-click="remove(product._id)" class="glyphicon glyphicon-remove-sign"></span></td>
-					<td style="width:10%"><a href="/product/{{product._id}}"><img class="img-responsive img-thumbnail" src="img/template_bootstrap/pic5.jpg"/></a></td>
+					<td style="width:5%"><span ng-click="remove(product._id)" class="remove-provide glyphicon glyphicon-remove-sign"></span></td>
+					<td style="width:10%"><a href="/product/{{product._id}}"><img class="img-responsive img-thumbnail" src="img/{{product.image}}"/></a></td>
 					<td>{{product.name}}</td>
+					<td>{{product.supplier}}</td>
 					<td>{{product.code}}</td>
 					<td style="width:10%">
 						<div class="display: table; margin: 0 auto;">
@@ -39,7 +45,7 @@
 			</tbody>
 			<tfoot>
 		    	<tr>
-			      <th id="total" colspan="6">{{'ShoppingCart.Product.Total' | translate}} :</th>
+			      <th id="total" colspan="7">{{'ShoppingCart.Product.Total' | translate}} :</th>
 			      <td>{{totalPrice(shoppingcart) | number:2}}</td>
 		    	</tr>
 		   	</tfoot>
@@ -49,7 +55,7 @@
 				<button type="button" class="btn btn-info btn-arrow-left" ng-click="return()">{{'ShoppingCart.Return' | translate}}</button>
 			</div>
 			<div class="col-lg-6">
-				<a href="TODO"><button type="button" class="btn btn-primary btn-arrow-right">{{'ShoppingCart.Continue' | translate}}</button></a>
+				<a href="/checkout"><button type="button" class="btn btn-primary btn-arrow-right">{{'ShoppingCart.Continue' | translate}}</button></a>
 			</div>
 		</div>
 	</div>

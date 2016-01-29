@@ -1,0 +1,18 @@
+<script src="views/products/create/CreateProductController.js"></script>
+
+<div class="wrap">
+	<h4 class="title">{{ 'Products.Create' | translate }}</h4>
+	<form method="post" name="createProductForm" id="submit-form" ng-submit="submitCreateProduct()" class="product_form" novalidate>
+		<div class="input-group">
+			<input name="name" type="text" class="form-control" placeholder="{{ 'Product.Create.Name' | translate }}*" ng-model="product.name" ng-class="{'has-error': createProductForm.name.$dirty && createProductForm.name.$error.required }" required>
+		</div>
+		<div class="input-group">
+			<textarea name="description" class="form-control" placeholder="{{ 'Product.Create.Description' | translate }}*" ng-model="product.description" ng-class="{'has-error': createProductForm.description.$dirty && createProductForm.description.$error.required}" rows="5" required></textarea>
+		</div>
+		<div class="input-group">
+			<input type="file" class="form-control" ngf-select ng-model="product.image" name="image" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100" ng-class="{'has-error': createProductForm.image.$dirty && createProductForm.image.$error.required}" required />
+		</div>
+		
+		<button id="createproduct-submit" type="submit" name="submit" class="grey" ng-disabled="createProductForm.$invalid">{{ 'Global.Submit' | translate }}</button>
+	</form>
+</div>

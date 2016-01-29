@@ -3,95 +3,176 @@
 <div class="mens">
 	<div class="main">
 		<div class="wrap">
+			<ul class="breadcrumb breadcrumb__t">
+				<li><a class="home" href="/">{{ 'Home.Title' | translate }}</a> / {{ 'Profile.PersonalInfo' | translate }}</li>
+			</ul>
+			
 			<div class="row">
-				<div class="col-md-6">
-					<h3>{{ 'Profile.PersonalInfo' | translate }}</h3>
-					<div>
-						<p class="editable-p" editable-text="user.name" onbeforesave="updateUser('name', $data)">{{user.name}}</p>
-					</div>
-					<div>
-						<p class="editable-p" editable-text="user.surname" onbeforesave="updateUser('surname', $data)">{{user.surname}}</p>
-					</div>
-					<p>{{user.email}}</p>
-					<p><button type="button" class="btn btn-default" ng-click="updateCoordinates()" ng-show="user._type == 'Customer'">{{ 'Profile.UpdateCoords' | translate }}</button></p>
-					<div>
-						<p class="editable-p" editable-textarea="user.address" ng-show="user._type == 'Customer'" onbeforesave="updateUser('address', $data)">{{user.address}}</p>
-					</div>
-					<div>
-						<p class="editable-p" editable-select="user.country" ng-show="user._type == 'Customer'" e-ng-options="c.value as c.text for c in countries" onbeforesave="updateUser('country', $data)">{{user.country}}</p>
-					</div>
-					<div>
-						<p class="editable-p" editable-text="user.city" ng-show="user._type == 'Customer'" onbeforesave="updateUser('city', $data)">{{user.city}}</p>
-					</div>
-					<div>
-						<p class="editable-p" editable-text="user.phone" ng-show="user._type == 'Customer'" onbeforesave="updateUser('phone', $data)">{{user.phone}}</p>
-					</div>
-					<div ng-show="user._type == 'Customer'" >
-						<h3>{{ 'Profile.CCData' | translate }}</h3>
-						<div ng-show="credit_card">
-							<div class="editable-p">{{ 'Profile.HolderName' | translate }}: {{credit_card.holderName}}</div>
-							<div class="editable-p">{{ 'Profile.CreditCard' | translate }}: {{credit_card.number}}</div>
-							<div class="editable-p">{{ 'Profile.ExpMonth' | translate }}: {{credit_card.expirationMonth}}</div>
-							<div class="editable-p">{{ 'Profile.ExpYear' | translate }}: {{credit_card.expirationYear}}</div>
-							<div class="editable-p">{{ 'Profile.CVC' | translate }}: {{credit_card.cvcCode}}</div>
+				<div class="col-md-4 tabbable tabs-below">
+					<ul class="nav nav-pills nav-stacked">
+						<li id="personal-info-tab" ng-class="{active: selectedTab == 1}">
+							<a href="" ng-click="selectedTab = 1;" aria-controls="personalinfo" role="tab" data-toggle="tab">
+								{{ 'Profile.PersonalInfo' | translate }}
+							</a>
+						</li>
+						<li id="ccdata-tab" ng-class="{active: selectedTab == 2}" ng-show="user._type == 'Customer'">
+							<a href="" ng-click="selectedTab = 2;" aria-controls="ccdata" role="tab" data-toggle="tab">
+								{{ 'Profile.CCData' | translate }}
+							</a>
+						</li>
+						<li id="password-tab" ng-class="{active: selectedTab == 3}">
+							<a href="" ng-click="selectedTab = 3;" aria-controls="password" role="tab" data-toggle="tab">
+								{{ 'Profile.ChangePass' | translate }}
+							</a>
+						</li>
+					</ul>
+				</div>
+				
+				<div class="col-md-8">
+					<div id="personalinfo" class="tab-content" ng-show="selectedTab==1">
+						<h3 class="heading2">
+							{{ 'Profile.PersonalInfo' | translate }}
+						</h3>
+						<div>
+							<p class="editable-p" editable-text="user.name" onbeforesave="updateUser('name', $data)">
+								{{user.name}}
+							</p>
 						</div>
-						<button type="button" class="btn btn-default" ng-click="showCCForm = !showCCForm">{{ 'Profile.UpdateCC' | translate }}</button>
+						<div>
+							<p class="editable-p" editable-text="user.surname" onbeforesave="updateUser('surname', $data)">
+								{{user.surname}}
+							</p>
+						</div>
+						<p>{{user.email}}</p>
+						<p>
+							<button type="button" class="btn btn-default" ng-click="updateCoordinates()" ng-show="user._type == 'Customer'">
+								{{ 'Profile.UpdateCoords' | translate }}
+							</button>
+						</p>
+						<div>
+							<p class="editable-p" editable-textarea="user.address" ng-show="user._type == 'Customer'" onbeforesave="updateUser('address', $data)">
+								{{user.address}}
+							</p>
+						</div>
+						<div>
+							<p class="editable-p" editable-select="user.country" ng-show="user._type == 'Customer'" e-ng-options="c.value as c.text for c in countries" onbeforesave="updateUser('country', $data)">
+								{{user.country}}
+							</p>
+						</div>
+						<div>
+							<p class="editable-p" editable-text="user.city" ng-show="user._type == 'Customer'" onbeforesave="updateUser('city', $data)">
+								{{user.city}}
+							</p>
+						</div>
+						<div>
+							<p class="editable-p" editable-text="user.phone" ng-show="user._type == 'Customer'" onbeforesave="updateUser('phone', $data)">
+								{{user.phone}}
+							</p>
+						</div>
+					</div>
+					<div id="ccdata" ng-show="user._type=='Customer' && selectedTab==2" class="tab-content">
+						<h3 class="heading2">{{ 'Profile.CCData' | translate }}</h3>
+						<div ng-show="creditcard && !ccEditing">
+							<table class="table table-responsive table-hover">
+								<tr>
+									<th>{{ 'Profile.HolderName' | translate }}</th>
+									<td>{{creditcard.holderName}}</td>
+								</tr>
+								<tr>
+									<th>{{'Profile.CreditCard' | translate }}</th>
+									<td>{{creditcard.number}}</td>
+								</tr>
+								<tr>
+									<th>{{ 'Profile.ExpMonth' | translate }}</th>
+									<td>{{creditcard.expirationMonth}}</td>
+								</tr>
+								<tr>
+									<th>{{ 'Profile.ExpYear' | translate }}</th>
+									<td>{{creditcard.expirationYear}}</td>
+								</tr>
+								<tr>
+									<th>{{ 'Profile.CVC' | translate }}</th>
+									<td>{{creditcard.cvcCode}}</td>
+								</tr>
+							</table>
+						</div>
+						<button type="button" class="btn btn-default" ng-click="showCCForm = !showCCForm; ccEditing=!ccEditing">
+							<span ng-if="!ccEditing">{{ 'Profile.UpdateCC' | translate }}</span>
+							<span ng-if="ccEditing">{{ 'Profile.Cancel' | translate }}</span>
+						</button>
 						
 						<form method="post" name="updateCCForm" id="pass-form" ng-submit="updateCC()" ng-show="showCCForm" novalidate>
-							<label for="holder_name">{{ 'Profile.HolderName' | translate }}</label>
-							<input name="holder_name" class="form-control" ng-model="new_credit_card.holderName" required/>
-							<label for="credit_card">{{ 'Profile.CreditCard' | translate }}</label>
-							<input name="credit_card" class="form-control" ng-model="new_credit_card.number" cc-number required/>
-							<div class="alert alert-danger" ng-show="updateCCForm.credit_card.$viewValue.length >= 14 && updateCCForm.credit_card.$dirty && !updateCCForm.credit_card.$valid">
-								{{ 'Profile.InvalidCC' | translate }}
-							</div>
-							<div cc-exp>
-								<label for="exp_month">{{ 'Profile.ExpMonth' | translate }}</label>
-								<input name="exp_month" class="form-control" ng-model="new_credit_card.expirationMonth" cc-exp-month required/>
-								<div class="alert alert-danger" ng-show="updateCCForm.exp_month.$dirty && !updateCCForm.exp_month.$valid">
-									{{ 'Profile.InvalidExpMonth' | translate }}
+							<p>
+								<label for="holder_name">{{ 'Profile.HolderName' | translate }}</label>
+								<input name="holder_name" class="form-control" ng-model="new_credit_card.holderName" required/>
+							</p>
+							<p>
+								<label for="credit_card">{{ 'Profile.CreditCard' | translate }}</label>
+								<input name="credit_card" class="form-control" ng-model="new_credit_card.number" cc-number required/>
+								<div class="alert alert-danger" ng-show="updateCCForm.credit_card.$viewValue.length >= 14 && updateCCForm.credit_card.$dirty && !updateCCForm.credit_card.$valid">
+									{{ 'Profile.InvalidCC' | translate }}
 								</div>
-								<label for="exp_year">{{ 'Profile.ExpYear' | translate }}</label>
-								<input name="exp_year" class="form-control" ng-model="new_credit_card.expirationYear" cc-exp-year required/>
-								<div class="alert alert-danger" ng-show="updateCCForm.exp_year.$dirty && !updateCCForm.exp_year.$valid">
-									{{ 'Profile.InvalidExpYear' | translate }}
+							</p>
+							<p>
+								<div cc-exp>
+									<label for="exp_month">{{ 'Profile.ExpMonth' | translate }}</label>
+									<input name="exp_month" class="form-control" ng-model="new_credit_card.expirationMonth" cc-exp-month required/>
+									<div class="alert alert-danger" ng-show="updateCCForm.exp_month.$dirty && !updateCCForm.exp_month.$valid">
+										{{ 'Profile.InvalidExpMonth' | translate }}
+									</div>
+									<label for="exp_year">{{ 'Profile.ExpYear' | translate }}</label>
+									<input name="exp_year" class="form-control" ng-model="new_credit_card.expirationYear" cc-exp-year required/>
+									<div class="alert alert-danger" ng-show="updateCCForm.exp_year.$dirty && !updateCCForm.exp_year.$valid">
+										{{ 'Profile.InvalidExpYear' | translate }}
+									</div>
 								</div>
-							</div>
-							<label for="cvc">{{ 'Profile.CVC' | translate }}</label>
-							<input name="cvc" class="form-control" ng-model="new_credit_card.cvcCode" cc-cvc cc-type="credit_card.$ccType" required/>
-							<div class="alert alert-danger" ng-show="updateCCForm.cvc.$dirty && !updateCCForm.cvc.$valid">
-								{{ 'Profile.InvalidCVC' | translate }}
-							</div>
-							<p><button type="submit" class="btn btn-warning" ng-disabled="updateCCForm.$invalid">{{ 'Global.Submit' | translate }}</button></p>
+							</p>
+							<p>
+								<label for="cvc">{{ 'Profile.CVC' | translate }}</label>
+								<input name="cvc" class="form-control" ng-model="new_credit_card.cvcCode" cc-cvc cc-type="credit_card.$ccType" required/>
+								<div class="alert alert-danger" ng-show="updateCCForm.cvc.$dirty && !updateCCForm.cvc.$valid">
+									{{ 'Profile.InvalidCVC' | translate }}
+								</div>
+							</p>
+							<p>
+								<button type="submit" class="btn btn-warning" ng-disabled="updateCCForm.$invalid">
+									{{ 'Global.Submit' | translate }}
+								</button>
+							</p>
 						</form>
 					</div>
-				</div>
-				<div class="col-md-6 account_form">
-					<h3>{{ 'Profile.ChangePass' | translate }}</h3>
-					<form method="post" name="changePasswordForm" id="pass-form" ng-submit="changePassword()" class="account_form">
-						<p>
-							<label>{{ 'Profile.OldPass' | translate }}</label>
-							<input type="password" name="oldPassword" class="form-control" autocomplete="off" ng-model="user.oldPassword" ng-minlength="8" ng-maxlength="32" ng-class="{'has-error': changePasswordForm.oldPassword.$dirty && (changePasswordForm.oldPassword.$error.required || changePasswordForm.oldPassword.$error.invalid || changePasswordForm.oldPassword.$error.minlength || changePasswordForm.oldPassword.$error.maxlength)}" required/>
-							<div class="alert alert-danger" ng-show="wrongPwd">
-								{{ 'Profile.PwdError' | translate }}
-							</div>
-						</p>
-						<p>
-							<label>{{ 'Profile.NewPass' | translate }}</label>
-							<input type="password" name="newPassword" class="form-control" autocomplete="off" ng-model="user.newPassword" ng-minlength="8" ng-maxlength="32" ng-class="{'has-error': changePasswordForm.newPassword.$dirty && (changePasswordForm.newPassword.$error.required || changePasswordForm.newPassword.$error.invalid || changePasswordForm.newPassword.$error.minlength || changePasswordForm.newPassword.$error.maxlength || changePasswordForm.newPassword.$error.equals)}" equals="{{user.repeatPassword}}" required/>
-							<div class="alert alert-danger" ng-show="changePasswordForm.newPassword.$error.equals">
-								{{ 'Profile.PwdMatch' | translate }}
-							</div>
-						</p>
-						<p>
-							<label>{{ 'Profile.NewPassConf' | translate }}</label>
-							<input type="password" name="repeatPassword" class="form-control"  autocomplete="off" ng-model="user.repeatPassword" ng-minlength="8" ng-maxlength="32" ng-class="{'has-error': changePasswordForm.repeatPassword.$dirty && (changePasswordForm.repeatPassword.$error.required || changePasswordForm.repeatPassword.$error.invalid || changePasswordForm.repeatPassword.$error.minlength || changePasswordForm.repeatPassword.$error.maxlength || changePasswordForm.newPassword.$error.equals)}" equals="{{user.newPassword}}" required/>
-							<div class="alert alert-danger" ng-show="changePasswordForm.repeatPassword.$error.equals">
-								{{ 'Profile.PwdMatch' | translate }}
-							</div>
-						</p>
-						<p><button type="submit" class="btn btn-warning" ng-disabled="changePasswordForm.$invalid">{{ 'Global.Submit' | translate }}</button></p>
-					</form>
+
+					<div id="password" class="account_form tab-content" ng-show="selectedTab==3">
+						<h3 class="heading2">{{ 'Profile.ChangePass' | translate }}</h3>
+						<form method="post" name="changePasswordForm" id="pass-form" ng-submit="changePassword()" class="account_form">
+							<p>
+								<label>{{ 'Profile.OldPass' | translate }}</label>
+								<input type="password" name="oldPassword" class="form-control" autocomplete="off" ng-model="user.oldPassword" ng-minlength="8" ng-maxlength="32" ng-class="{'has-error': changePasswordForm.oldPassword.$dirty && (changePasswordForm.oldPassword.$error.required || changePasswordForm.oldPassword.$error.invalid || changePasswordForm.oldPassword.$error.minlength || changePasswordForm.oldPassword.$error.maxlength)}" required/>
+								<div class="alert alert-danger" ng-show="wrongPwd">
+									{{ 'Profile.PwdError' | translate }}
+								</div>
+							</p>
+							<p>
+								<label>{{ 'Profile.NewPass' | translate }}</label>
+								<input type="password" name="newPassword" class="form-control" autocomplete="off" ng-model="user.newPassword" ng-minlength="8" ng-maxlength="32" ng-class="{'has-error': changePasswordForm.newPassword.$dirty && (changePasswordForm.newPassword.$error.required || changePasswordForm.newPassword.$error.invalid || changePasswordForm.newPassword.$error.minlength || changePasswordForm.newPassword.$error.maxlength || changePasswordForm.newPassword.$error.equals)}" equals="{{user.repeatPassword}}" required/>
+								<div class="alert alert-danger" ng-show="changePasswordForm.newPassword.$error.equals">
+									{{ 'Profile.PwdMatch' | translate }}
+								</div>
+							</p>
+							<p>
+								<label>{{ 'Profile.NewPassConf' | translate }}</label>
+								<input type="password" name="repeatPassword" class="form-control"  autocomplete="off" ng-model="user.repeatPassword" ng-minlength="8" ng-maxlength="32" ng-class="{'has-error': changePasswordForm.repeatPassword.$dirty && (changePasswordForm.repeatPassword.$error.required || changePasswordForm.repeatPassword.$error.invalid || changePasswordForm.repeatPassword.$error.minlength || changePasswordForm.repeatPassword.$error.maxlength || changePasswordForm.newPassword.$error.equals)}" equals="{{user.newPassword}}" required/>
+								<div class="alert alert-danger" ng-show="changePasswordForm.repeatPassword.$error.equals">
+									{{ 'Profile.PwdMatch' | translate }}
+								</div>
+							</p>
+							<p>
+								<button type="submit" class="btn btn-warning" ng-disabled="changePasswordForm.$invalid">
+									{{ 'Global.Submit' | translate }}
+								</button>
+							</p>
+						</form>	
+					</div>
 				</div>
 			</div>
 		</div>

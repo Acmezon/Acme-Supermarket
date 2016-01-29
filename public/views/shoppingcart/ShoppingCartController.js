@@ -8,18 +8,59 @@ angular.module('acme_supermarket').registerCtrl('ShoppingCartCtrl', ['$scope', '
 		cookie = JSON.parse(cookie);
 		if (!$.isEmptyObject(cookie)) {
 			Object.keys(cookie).forEach(function(id) {
+
+
 				$http({
 					method: 'GET',
-					url: '/api/product/' + id
+					url: '/api/existingProvide/' + id
 				}).
-				then(function success(response) {
-					var product = response.data;
-					product['quantity'] = cookie[id];
-					$scope.shoppingcart.push(product);
-				}, function error(response) {
+				then(function success(response1) {
+					var row = response1.data;
+					// Get the quantity from cookie
+					row.quantity = cookie[id];
+
+					// Get the product of provide
+					$http({
+						method: 'GET',
+						url: '/api/product/' + row.product_id
+					}).
+					then(function success(response2) {
+						// Copy fields
+						var product = response2.data;
+						Object.keys(product).forEach(function (field) {
+							if (field != "_id") {
+								row[field] = product[field];
+							}
+						});
+
+						// Get the supplier of provide
+						$http({
+							method: 'GET',
+							url: '/api/supplierName/' + row.supplier_id
+						}).
+						then(function success(response3) {
+							// Copy fields
+							row.supplier = response3.data;
+
+							// FINISH QUERYING
+							// PUSH INTO SHOPPING CART
+							$scope.shoppingcart.push(row)
+						}, function error(response3) {
+						});
+
+
+					}, function error(response2) {
+					});
+
+					
+				}, function error(response1) {
 				});
+
+
+
 			});
 
+			
 		}
 	}
 
@@ -40,7 +81,7 @@ angular.module('acme_supermarket').registerCtrl('ShoppingCartCtrl', ['$scope', '
 	}
 
 	$scope.hasEmptyCart = function () {
-		return $scope.productsInCart()===0;
+		return $scope.productsInCart()==0;
 	}
 
 	$scope.add = function(product) {
@@ -50,7 +91,7 @@ angular.module('acme_supermarket').registerCtrl('ShoppingCartCtrl', ['$scope', '
 		var index = -1;		
 		var products = eval( $scope.shoppingcart );
 		for( var i = 0; i < products.length; i++ ) {
-			if( products[i].id === id ) {
+			if( products[i].id == id ) {
 				products[i].quantity = products[i].quantity + 1
 			}
 		}
@@ -76,7 +117,7 @@ angular.module('acme_supermarket').registerCtrl('ShoppingCartCtrl', ['$scope', '
 		var index = -1;		
 		var products = eval( $scope.shoppingcart );
 		for( var i = 0; i < products.length; i++ ) {
-			if( products[i].id === id ) {
+			if( products[i].id == id ) {
 				products[i].quantity = products[i].quantity - 1
 			}
 		}
@@ -97,20 +138,24 @@ angular.module('acme_supermarket').registerCtrl('ShoppingCartCtrl', ['$scope', '
 
 
 	$scope.remove = function (product_id) {
+		console.log("To be removed "+product_id)
 		var cookie = $cookies.get("shoppingcart");
 		if (cookie) {
 			cookie = JSON.parse(cookie);
+			console.log(cookie)
 			if (!$.isEmptyObject(cookie)) {
 				for (var id in cookie) {
 					if (cookie.hasOwnProperty(id)) {
-						if (id===product_id)
+						console.log("Removing " + id)
+						if (id==product_id) {
 							delete cookie[id];
+						}
 					}
 				}
 			}
 		}
 		for (var i = 0; i<$scope.shoppingcart.length; i++) {
-			if ($scope.shoppingcart[i]._id === product_id) {
+			if ($scope.shoppingcart[i]._id == product_id) {
 				$scope.shoppingcart.splice(i, 1);
 			}
 		}

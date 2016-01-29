@@ -3,11 +3,11 @@
 <!-- Carousel
 	================================================== -->
 <div class="overlay"><h1>Texto opcional</h1></div>
-<div id="home-carousel" class="carousel slide">
+<div id="banner" class="carousel slide">
 	<!-- Indicators -->
 	<ol class="carousel-indicators">
-		<li data-target="#home-carousel" data-slide-to="0" class="active"></li>
-		<li data-target="#home-carousel" data-slide-to="1"></li>
+		<li data-target="#banner" data-slide-to="0" class="active"></li>
+		<li data-target="#banner" data-slide-to="1"></li>
 	</ol>
 	<div class="carousel-inner">
 		<div class="item active">
@@ -25,13 +25,18 @@
 				</div>
 			</div>
 		</div>
+		<script>
+			$('.carousel-control').click(function (e) {
+  				e.preventDefault();
+			});
+		</script>
 	</div>
 
 	<!-- Controls -->
-	<a class="left carousel-control" href="#home-carousel" data-slide="prev">
+	<a class="left carousel-control" href="#banner" data-slide="prev">
 		<i class="glyphicon glyphicon-chevron-left"></i>
 	</a>
-	<a class="right carousel-control" href="#home-carousel" data-slide="next">
+	<a class="right carousel-control" href="#banner" data-slide="next">
 		<i class="glyphicon glyphicon-chevron-right"></i>
 	</a>  
 </div>
@@ -43,10 +48,10 @@
 			<div class="cont span_2_of_3">
 				<h2 class="head">{{ 'Home.Title' | translate }}</h2>
 				<div class="top-box">
-					<div ng-repeat="product in products">
+					<div id="{{product._id}}" ng-repeat="product in products | limitTo:9">
 
 						<div class="col_1_of_3 span_1_of_3">
-							<a href="product/{{product._id}}">
+							<a class="product" href="product/{{product._id}}">
 								<div class="inner_content clearfix">
 									<div class="product_image">
 										<img src="img/{{product.image}}" alt=""/>
@@ -54,11 +59,11 @@
 									<div class="sale-box">
 										<span class="on_sale title_shop">{{ 'Home.New' | translate }}</span>
 									</div>
-									<div class="price">
+									<div class="product-block">
 										<div class="cart-left">
 											<p class="title">{{product.name}}</p>
 											<div class="price1">
-												<span class="actual">${{product.price}}</span>
+												<span class="actual">{{product.minPrice}} - {{product.maxPrice}} €</span>
 											</div>
 										</div>
 										<div class="cart-right"></div>
@@ -71,31 +76,34 @@
 					</div>
 					<div class="clear"></div>
 				</div>
-				<h2 class="head">{{ 'Home.NewProducts' | translate }}</h2>
+				<h2 class="head">{{ 'Home.RecommendedProducts' | translate }}</h2>
 				<div class="section group">
-					<div class="col_1_of_3 span_1_of_3">
-						<a href="single.html">
-							<div class="inner_content clearfix">
-								<div class="product_image">
-									<img src="img/template_bootstrap/pic5.jpg" alt=""/>
-								</div>
-								<div class="sale-box">
-									<span class="on_sale title_shop">{{ 'Home.New' | translate }}</span>
-								</div>
-								<div class="price">
-									<div class="cart-left">
-										<p class="title">Lorem Ipsum simply</p>
-										<div class="price1">
-											<span class="actual">$12.00</span>
-										</div>
+					<div ng-repeat="product in recommendedProducts | limitTo:3">
+
+						<div class="col_1_of_3 span_1_of_3">
+							<a class="product" href="product/{{product._id}}">
+								<div class="inner_content clearfix">
+									<div class="product_image">
+										<img src="img/{{product.image}}" alt=""/>
 									</div>
-									<div class="cart-right"></div>
-									<div class="clear"></div>
+									<div class="sale-box">
+										<span class="on_sale title_shop">{{ 'Home.Recommended' | translate }}</span>
+									</div>
+									<div class="product-block">
+										<div class="cart-left">
+											<p class="title">{{product.name}}</p>
+											<div class="price1">
+												<span class="actual">{{product.minPrice}} - {{product.maxPrice}} €</span>
+											</div>
+										</div>
+										<div class="cart-right"></div>
+										<div class="clear"></div>
+									</div>
 								</div>
-							</div>
-						</a>
+							</a>
+						</div>
+						
 					</div>
-					
 					<div class="clear"></div>
 				</div>
 			</div>
@@ -118,7 +126,7 @@
 						});						
 					</script>
 					<div class="btn">
-						<a href="single.html">{{ 'Home.CheckItOut' | translate }}</a>
+						<a href="/products">{{ 'Home.CheckItOut' | translate }}</a>
 					</div>
 				</div>
 				<div class="top-border"></div>

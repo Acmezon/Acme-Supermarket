@@ -1,170 +1,203 @@
 <script src="views/public/products/ProductListController.js"></script>
 
-<div class="mens" ng-controller="ProductListCtrl">    
-  	<div class="main">
-     	<div class="wrap">
+<div class="mens">    
+	<div class="main">
+		<div class="wrap">
+			<ul class="breadcrumb breadcrumb__t">
+				<li><a class="home" href="/">{{ 'Home.Title' | translate }}</a> / {{ 'Products.Title' | translate }}</li>
+			</ul>
+
 			<div class="cont span_2_of_3">
-			  	<h2 class="head">{{ 'Products.Products' | translate }}</h2>
-			  	<div class="mens-toolbar">
-			  		<div class="col-sm-12" ng-show="!applyFilters().length">
-			  			<h2 class="head">{{'Products.Empty' | translate}}</h4>
-			  		</div>
-	              	<div class="sort col-sm-4">
-	               		<div class="sort-by" ng-show="applyFilters().length">
-			            	<label>{{ 'Products.SortBy' | translate }}</label>
-			            	<select ng-model="sortProductsBy">
-			            		<option value="name">{{ 'Products.Name' | translate }}</option>
-			                    <option value="price">{{ 'Products.Price' | translate }}</option>
-			                    <option value="rating">{{ 'Products.Rating' | translate }}</option>
-			            	</select>
-			            	<a ng-click="invertOrder()"><img src="img/template_bootstrap/arrow2.gif" alt="" class="v-middle"></a>
+				<h2 class="head">{{ 'Products.Products' | translate }}</h2>
+				<div class="mens-toolbar">
+					<div class="col-sm-12" ng-show="!products.length">
+						<h2 class="head">{{'Products.Empty' | translate}}</h4>
+					</div>
+					<div class="sort col-sm-4">
+						<div class="sort-by" ng-show="products.length">
+							<label>{{ 'Products.SortBy' | translate }}</label>
+							<select ng-model="sortProductsBy" ng-change="reload()">
+								<option value="name">{{ 'Products.Name' | translate }}</option>
+								<option value="price">{{ 'Products.Price' | translate }}</option>
+								<option value="rating">{{ 'Products.Rating' | translate }}</option>
+							</select>
+							<a ng-click="invertOrder()"><img src="img/template_bootstrap/arrow2.gif" alt="" class="v-middle"></a>
 						</div>
 					</div>
-					<div class="col-sm-4" ng-show="applyFilters().length">
-	   					<button class="btn" ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">
-					        {{'Products.Previous' | translate}}
-					    </button>
-					    {{ 'Products.Page' | translate }} {{currentPage+1}}/{{numberOfPages()}}
-					    <button class="btn" ng-disabled="currentPage >= applyFilters().length/pageSize - 1" ng-click="currentPage=currentPage+1">
-					        {{'Products.Next' | translate}}
-					    </button>
+					<div class="col-sm-4" ng-show="products.length">
+						<button class="btn" ng-disabled="currentPage==0" ng-click="currentPage = currentPage-1; reload()">
+							{{'Products.Previous' | translate}}
+						</button>
+						{{ 'Products.Page' | translate }} {{currentPage+1}} / {{Math.ceil(numberOfProducts/pageSize)}}
+						<button class="btn" ng-disabled="currentPage>=numberOfProducts/pageSize - 1" ng-click="currentPage = currentPage+1; reload()">
+							{{'Products.Next' | translate}}
+						</button>
 					</div>
-	        		<div class="pager col-sm-4" ng-show="applyFilters().length">   
-	        			<div class="limiter visible-desktop">
-	            			<label>{{ 'Products.Show' | translate }}</label>
-	            			<select ng-model="pageSize">
-	                            <option value="10">10</option>
-	                            <option value="15">15</option>
-	                            <option value="30">30</option>
-	                        </select>
-	                        <span>{{ 'Products.PerPage' | translate }}</span>
-	             		</div>
-	    			</div>
-	     		<div class="clear"></div>
-			</div>
+					
+					<div class="sort col-sm-4" ng-show="products.length">
+						<div class="sort-by">
+							<div class="limiter visible-desktop">
+								<label>{{ 'Products.Show' | translate }}</label>
+								<select ng-model="pageSize" ng-change="reload()">
+									<option value="9">9</option>
+									<option value="15">15</option>
+									<option value="30">30</option>
+								</select>
+								<span>{{ 'Products.PerPage' | translate }}</span>
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="top-box">
-					<div ng-repeat="product in applyFilters() | orderBy:normalOrInverse(sortProductsBy) | startFrom:currentPage*pageSize | limitTo:pageSize">
-					 	<div class="col_1_of_3 span_1_of_3"> 
-					   		<a class="product" href="product/{{product._id}}">
+					<div restrict access="admin"><a class="add-product" href="/products/create"><i class="fa fa-plus"></i> {{ 'Products.Create' | translate }}</a></div>
+
+					<div id="{{product._id}}" class="product-list" ng-repeat="product in products">
+						<div class="col_1_of_3 span_1_of_3">
+							<a class="product" href="product/{{product._id}}">
 								<div class="inner_content clearfix">
 									<div class="product_image">
-										<img ng-src="{{product.image}}" alt=""/>
+										<img ng-src="img/{{product.image}}" alt=""/>
 									</div>
-		                    		<div class="price">
-							   			<div class="cart-left">
+									<div class="product-block">
+										<div class="cart-left">
 											<p class="title">
 												{{product.name}}
 											</p>
-											<div class="price1">
-									  			<span class="actual">{{product.price}} €</span>
+											<div class="price1" ng-if="view=='products'">
+												<span class="actual">{{product.minPrice}} - {{product.maxPrice}} €</span>
 											</div>
 										</div>
 										<div class="clear"></div>
-							 		</div>				
-		                   		</div>
-		                 	</a>
+									</div>				
+								</div>
+							</a>
+							<div restrict access="admin" class="delete-product" ng-click="deleteProduct(product._id)"><i class="fa fa-trash"></i></div>
+							<div restrict access="supplier" ng-if="view=='myproducts'" class="delete-product" ng-click="deleteProvide(product._id)"><i class="fa fa-trash"></i></div>
 						</div>
 					</div>
 					<div class="clear"></div>
-				</div>	
-			   	<h2 class="head">{{ 'Home.FeaturedProducts' | translate }}</h2>	
-			    <div class="section group">
-				  	<div class="col_1_of_3 span_1_of_3">
-				  	 	<a href="product/{{product._id}}">
-					 		<div class="inner_content clearfix">
-								<div class="product_image">
-									<img src="img/template_bootstrap/pic5.jpg" alt=""/>
-								</div>
-	                     		<div class="sale-box">
-	                     			<span class="on_sale title_shop">{{ 'Home.New' | translate }}</span>
-	                     		</div>	
-	                    		<div class="price">
-						   			<div class="cart-left">
-										<p class="title">Lorem Ipsum simply</p>
-										<div class="price1">
-								  			<span class="actual">$12.00</span>
-										</div>
-									</div>
-									<div class="cart-right"> </div>
-									<div class="clear"></div>
-						 		</div>				
-	                   		</div>
-	                   	</a>
-					</div>
-					<div class="clear"></div>
-				</div>			 							 			    
+				</div>
 			</div>
 			<div class="rsidebar span_1_of_left">
-	            <section  class="sky-form">
+				<section class="sky-form" style="margin-top:10%">
+					<button class="btn" ng-disabled="ratingFilterMode==0 && priceFilterMode==0 && categoryFilterMode==-1" ng-click="clearFilters()">
+						{{'Products.ClearFilters' | translate}} <span class="glyphicon glyphicon-erase"></span>
+					</button>
+				</section>
+				<section  class="sky-form">
+					<h4>{{'Products.Categories' | translate}}</h4>
+					<div id="category-pane" class="row row1 scroll-pane">
+						<label class="checkbox" ng-repeat="category in categories">
+							<input type="checkbox" ng-click="categoryFilter(category._id)">
+							<span class="glyphicon" ng-class="{'glyphicon-unchecked': $parent.categoryFilterMode != category._id, 'glyphicon-check': $parent.categoryFilterMode == category._id}"></span> {{category.name}}
+						</label>
+					</div>
+				</section>
+				<section  class="sky-form">
 					<h4>{{'Products.Price' | translate}}</h4>
 					<div id="price-pane" class="row row1 scroll-pane">
-						<label class="checkbox"><input type="checkbox" ng-click="priceFilterMode = 1"><i></i>0 - 1 €</label>
-						<label class="checkbox"><input type="checkbox" ng-click="priceFilterMode = 2"><i></i>1 - 5 €</label>
-						<label class="checkbox"><input type="checkbox" ng-click="priceFilterMode = 3"><i></i>5 - 10 €</label>
-						<label class="checkbox"><input type="checkbox" ng-click="priceFilterMode = 4"><i></i>10 - 20 €</label>
-						<label class="checkbox"><input type="checkbox" ng-click="priceFilterMode = 5"><i></i>20 - 50 €</label>
-						<label class="checkbox"><input type="checkbox" ng-click="priceFilterMode = 6"><i></i>50 - 100 €</label>
-						<label class="checkbox"><input type="checkbox" ng-click="priceFilterMode = 7"><i></i>100 - 200 €</label>
-						<label class="checkbox"><input type="checkbox" ng-click="priceFilterMode = 8"><i></i>200 - 500 €</label>
-						<label class="checkbox"><input type="checkbox" ng-click="priceFilterMode = 9"><i></i>+500 €</label>
-						<script>
-							$('#price-pane input').click(function () {
-						    	checkedState = $(this).is(':checked');
-						        $('#price-pane input').attr('checked', false);
-						    	$(this).prop('checked', checkedState);
-							});
-						</script>
+						<label class="checkbox"><input type="checkbox" ng-click="priceFilter(1)">
+							<span class="glyphicon" ng-class="{'glyphicon-unchecked': priceFilterMode != 1, 'glyphicon-check': priceFilterMode == 1}"></span> &lt; 1 €
+						</label>
+						<label class="checkbox"><input type="checkbox" ng-click="priceFilter(2)">
+							<span class="glyphicon" ng-class="{'glyphicon-unchecked': priceFilterMode != 2, 'glyphicon-check': priceFilterMode == 2}"></span> &lt; 5 €
+						</label>
+						<label class="checkbox"><input type="checkbox" ng-click="priceFilter(3)">
+							<span class="glyphicon" ng-class="{'glyphicon-unchecked': priceFilterMode != 3, 'glyphicon-check': priceFilterMode == 3}"></span> &lt; 10 €
+						</label>
+						<label class="checkbox"><input type="checkbox" ng-click="priceFilter(4)">
+							<span class="glyphicon" ng-class="{'glyphicon-unchecked': priceFilterMode != 4, 'glyphicon-check': priceFilterMode == 4}"></span> &lt; 20 €
+						</label>
+						<label class="checkbox"><input type="checkbox" ng-click="priceFilter(5)">
+							<span class="glyphicon" ng-class="{'glyphicon-unchecked': priceFilterMode != 5, 'glyphicon-check': priceFilterMode == 5}"></span> &lt; 50 €
+						</label>
+						<label class="checkbox"><input type="checkbox" ng-click="priceFilter(6)">
+							<span class="glyphicon" ng-class="{'glyphicon-unchecked': priceFilterMode != 6, 'glyphicon-check': priceFilterMode == 6}"></span> &lt; 100 €
+						</label>
+						<label class="checkbox"><input type="checkbox" ng-click="priceFilter(7)">
+							<span class="glyphicon" ng-class="{'glyphicon-unchecked': priceFilterMode != 7, 'glyphicon-check': priceFilterMode == 7}"></span> &lt; 200 €
+						</label>
+						<label class="checkbox"><input type="checkbox" ng-click="priceFilter(8)">
+							<span class="glyphicon" ng-class="{'glyphicon-unchecked': priceFilterMode != 8, 'glyphicon-check': priceFilterMode == 8}"></span> &lt; 500 €
+						</label>
+						<label class="checkbox"><input type="checkbox" ng-click="priceFilter(9)">
+							<span class="glyphicon" ng-class="{'glyphicon-unchecked': priceFilterMode != 9, 'glyphicon-check': priceFilterMode == 9}"></span> +500 €
+						</label>
 					</div>
-		        </section>
-		       	<section class="sky-form">
+				</section>
+				<section class="sky-form">
 					<h4>{{'Products.Rating' | translate}}</h4>
 					<div id="rating-pane" class="row row1 scroll-pane">
 						<label class="checkbox">
-							<input type="checkbox" name="checkbox" ng-click="ratingFilterMode = 1">
-							<i></i>
+							<input type="checkbox" name="checkbox" ng-click="ratingFilter(1)">
+							<span class="glyphicon" ng-class="{'glyphicon-unchecked': ratingFilterMode != 1, 'glyphicon-check': ratingFilterMode == 1}"></span>
 							<span class="glyphicon glyphicon-star"></span>
 						</label>
 						<label class="checkbox">
-							<input type="checkbox" name="checkbox" ng-click="ratingFilterMode = 2">
-							<i></i>
-							<span class="glyphicon glyphicon-star"></span>
-							<span class="glyphicon glyphicon-star"></span>
-						</label>
-						<label class="checkbox">
-							<input type="checkbox" name="checkbox" ng-click="ratingFilterMode = 3">
-							<i></i>
-							<span class="glyphicon glyphicon-star"></span>
+							<input type="checkbox" name="checkbox" ng-click="ratingFilter(2)">
+							<span class="glyphicon" ng-class="{'glyphicon-unchecked': ratingFilterMode != 2, 'glyphicon-check': ratingFilterMode == 2}"></span>
 							<span class="glyphicon glyphicon-star"></span>
 							<span class="glyphicon glyphicon-star"></span>
 						</label>
 						<label class="checkbox">
-							<input type="checkbox" name="checkbox" ng-click="ratingFilterMode = 4">
-							<i></i>
-							<span class="glyphicon glyphicon-star"></span>
+							<input type="checkbox" name="checkbox" ng-click="ratingFilter(3)">
+							<span class="glyphicon" ng-class="{'glyphicon-unchecked': ratingFilterMode != 3, 'glyphicon-check': ratingFilterMode == 3}"></span>
 							<span class="glyphicon glyphicon-star"></span>
 							<span class="glyphicon glyphicon-star"></span>
 							<span class="glyphicon glyphicon-star"></span>
 						</label>
 						<label class="checkbox">
-							<input type="checkbox" name="checkbox" ng-click="ratingFilterMode = 5">
-							<i></i>
+							<input type="checkbox" name="checkbox" ng-click="ratingFilter(4)">
+							<span class="glyphicon" ng-class="{'glyphicon-unchecked': ratingFilterMode != 4, 'glyphicon-check': ratingFilterMode == 4}"></span>
+							<span class="glyphicon glyphicon-star"></span>
+							<span class="glyphicon glyphicon-star"></span>
+							<span class="glyphicon glyphicon-star"></span>
+							<span class="glyphicon glyphicon-star"></span>
+						</label>
+						<label class="checkbox">
+							<input type="checkbox" name="checkbox" ng-click="ratingFilter(5)">
+							<span class="glyphicon" ng-class="{'glyphicon-unchecked': ratingFilterMode != 5, 'glyphicon-check': ratingFilterMode == 5}"></span>
 							<span class="glyphicon glyphicon-star"></span>
 							<span class="glyphicon glyphicon-star"></span>
 							<span class="glyphicon glyphicon-star"></span>
 							<span class="glyphicon glyphicon-star"></span>
 							<span class="glyphicon glyphicon-star"></span>
 						</label>	
-						<script>
-							$('#rating-pane input').click(function () {
-						    	checkedState = $(this).is(':checked');
-						        $('#rating-pane input').attr('checked', false);
-						    	$(this).prop('checked', checkedState);
-							});
-						</script>
 					</div>
-		       	</section>
-		    </div>
+				</section>
+			</div>
 			<div class="clear"></div>
+
+			<h2 class="head">{{ 'Home.RecommendedProducts' | translate }}</h2>
+			<div class="section group">
+				<div ng-repeat="product in recommendedProducts | limitTo:3">
+
+					<div class="col_1_of_3 span_1_of_3">
+						<a class="product" href="product/{{product._id}}">
+							<div class="inner_content clearfix">
+								<div class="product_image">
+									<img src="img/{{product.image}}" alt=""/>
+								</div>
+								<div class="sale-box">
+									<span class="on_sale title_shop">{{ 'Home.Recommended' | translate }}</span>
+								</div>
+								<div class="product-block">
+									<div class="cart-left">
+										<p class="title">{{product.name}}</p>
+										<div class="price1">
+											<span class="actual">{{product.minPrice}} - {{product.maxPrice}} €</span>
+										</div>
+									</div>
+									<div class="cart-right"></div>
+									<div class="clear"></div>
+								</div>
+							</div>
+						</a>
+					</div>
+					
+				</div>
+				<div class="clear"></div>
+			</div>
 		</div>
 	</div>
 </div>

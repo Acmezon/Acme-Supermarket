@@ -34,7 +34,7 @@ directives.directive('localeSelector',
 directives.directive('restrict', function(authService){
 	return{
 		restrict: 'A',
-		prioriry: 100000,
+		priority: 100000,
 		scope: false,
 		link: function(){
 			// alert('ergo sum!');

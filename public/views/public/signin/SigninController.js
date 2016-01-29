@@ -1,7 +1,6 @@
 'use strict'
 
 angular.module('acme_supermarket').registerCtrl('SigninCtrl', ['$scope', '$http', '$window', '$rootScope', function ($scope, $http, $window, $rootScope) {
-
 	$scope.loginFailed = false;
 	if($rootScope.loginFailed){
 		$scope.loginFailed = true;
@@ -22,7 +21,7 @@ angular.module('acme_supermarket').registerCtrl('SigninCtrl', ['$scope', '$http'
 			if(response.data.success == false) {
 				$scope.loginFailed = true;
 			} else {
-				$window.location.href = '/home';
+				$window.location.href = '/';
 			}
 		}, function error(response) {
 			$rootScope.loginFailed = false;

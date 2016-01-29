@@ -1,5 +1,14 @@
 describe('Add products to the shopping cart', function () {
-	it('Should create cookie and store products in it', function (){
+
+	beforeEach(function() {
+		// Mandatory visit in order to make cookies work
+		browser.driver.get('http://localhost:3000/');
+		// Logout
+		browser.manage().deleteAllCookies();
+	});
+
+	it("Shouldn't show add to cart button due to user is an admin", function (){
+		// Login
 		browser.get('http://localhost:3000/signin');
 
 		element(by.model('email')).sendKeys('admin@mail.com');
@@ -7,13 +16,52 @@ describe('Add products to the shopping cart', function () {
 
 		element(by.css('.button')).click();
 
-		browser.manage().deleteCookie("shoppingcart");
+		// Visit prodduct
+		browser.get('http://localhost:3000/products');
+		var product = element.all(by.css('.product')).first();
+		product.click();
 
+		// Expect cart button not appearing
+		var cartbtn = element(by.id('cart-btn'));
+		expect(cartbtn.isPresent()).toBe(false);
+	});
+
+	it("Shouldn't show add to cart button due to user is a supplier", function (){
+		// Login
+		browser.get('http://localhost:3000/signin');
+
+		element(by.model('email')).sendKeys('ismael.perez@example.com');
+		element(by.model('password')).sendKeys('supplier');
+
+		element(by.css('.button')).click();
+
+		// Visit product
+		browser.get('http://localhost:3000/products');
+		var product = element.all(by.css('.product')).first();
+		product.click();
+
+		// Expect cart button not appearing
+		var cartbtn = element(by.id('cart-btn'));
+		expect(cartbtn.isPresent()).toBe(false);
+
+	});
+
+	it("Should create cookie and store products in it", function (){
+		// Login
+		browser.get('http://localhost:3000/signin');
+
+		element(by.model('email')).sendKeys('daniel.diaz@example.com');
+		element(by.model('password')).sendKeys('customer');
+
+		element(by.css('.button')).click();
+
+		// Visit product
 		browser.get('http://localhost:3000/products');
 		var product = element.all(by.css('.product')).first();
 		product.click();
 
 		var cartbtn = element(by.id('cart-btn'));
+		expect(cartbtn.isPresent()).toBe(true);
 		cartbtn.click();
 		cartbtn.click();
 		cartbtn.click();

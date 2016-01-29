@@ -6,17 +6,40 @@
 	"Global" : {
 		"Submit" : "Enviar"
 	},
+	"Errors": {
+		"401" : {
+			"Description1" : "El recurso que has solicitado requiere de autenticación de usuario.",
+			"Description2" : "No has aportado los credenciales necesarios o has aportado unos credenciales que no te autorizan al acceso.",
+			"Description3" : "Serás devuelto a la página de acceso en ",
+			"Description4" : "Si no se redirige automáticamente, pulsa el siguiente enlace:",
+			"Link" : "Acceso"
+		},
+		"403" : {
+			"Description1" : "Acceso a servicio prohibido.",
+			"Description2" : "No reune los permisos adecuados."
+		},
+		"404" : "Recurso no encontrado.",
+		"500" : "Error interno del sistema",
+		"503" : "Servicio no disponible"
+	},
 	"Home": {
 		"Title": "Inicio",
-		"FeaturedProducts" : "Productos Destacados",
+		"RecommendedProducts" : "Productos Recomendados",
 		"New" : "Nuevo",
 		"NewProducts" : "Productos Nuevos",
 		"CheckItOut" : "Consíguelo",
 		"NewslettersSignup" : "Suscribirse al <br> Newsletter",
-		"Subscribe" : "Suscribirse"
+		"Subscribe" : "Suscribirse",
+		"Recommended" : "Recomendado"
 	},
 	"Header": {
-		"Account" : "Mi cuenta",
+		"Account" : {
+			"Title" : "Mi cuenta",
+			"MyProfile" : "Mi perfil",
+			"MyPurchases" : "Mis compras",
+			"shoppingCart" : "Carrito de la compra",
+			"MyProducts" : "Mis productos"
+		},
 		"Checkout" : "Ir al carrito",
 		"Signin" : "Iniciar sesión",
 		"Signout" : "Salir",
@@ -25,15 +48,159 @@
 		"Search" : "Buscar",
 		"NoProducts" : "Sin productos",
 		"Cart" : "Carrito",
-		"AdminOptions" : "Opciones de Administrador",
-		"GoShopping" : "Ir de compras"
+		"Dashboard" : "Panel de control",
+		"GoShopping" : "Ir de compras",
+		"Management" : "Administración",
+		"Customers" : "Clientes",
+		"Purchases" : "Compras",
+		"CreateProduct" : "Añadir un producto"
  	},
 	"Footer": {
 		"AboutUs" : "Sobre nosotros",
-		"DeliveryReturns" : "Envíos y Devoluciones",
+		"Cookies" : "Cookies",
 		"TermsConditions" : "Términos y Condiciones",
 		"ContactUs" : "Contacta",
-		"Information" : "Información"
+		"Delivery" : "Envíos",
+		"Information" : {
+			"Title" : "Información",
+			"Costs" : "Coste de envío",
+			"Times" : "Periodos de entrega",
+			"Locations" : "Ubicación de envíos",
+			"Responsabilities" : "Responsabilidades",
+			"Insurance" : "Seguro"
+		},
+		"Banner" : {
+			"Shipping" : "Envíos rápidos directos a tí",
+			"Contact" : "Fácil contacto con proveedores"
+		}
+	},
+	"Legal" : {
+		"Contact" : {
+			"Title" : "Contáctanos"
+		},
+		"Terms" : {
+			"Title" : "Términos y Condiciones",
+			"Section1" : {
+				"Title" : "La aceptación por parte de los usuarios",
+				"Body1" : "Acme-Supermarket, se reserva el derecho a exigir que cada usuario acepte y cumpla los términos aquí expresados como condición previa y necesaria para el acceso, y utilización de los servicios y/o contenidos brindados por el sitio.",
+				"Body2" : "Cuando un usuario accediere al Sitio y utilizare cualquiera de los servicios y/o contenidos existentes, hará presumir el conocimiento del presente texto y que ha manifestado su plena aceptación con respecto a todas y cada una de las disposiciones que lo integran.",
+				"Body3" : "El usuario que no acepte, se halle en desacuerdo, o incurriere en incumplimiento de las disposiciones fijadas por la Acme-Supermarket en estas Condiciones Generales, no contará con autorización para el uso de los servicios y contenidos que existen o puedan existir en el Sitio, debiendo retirarse del Sitio en forma inmediata, y abstenerse de ingresar nuevamente al mismo."
+			},
+			"Section2" : {
+				"Title" : "Capacidad legal de los usuarios",
+				"Body" : "Solo podrán acceder y utilizar los servicios y/o contenidos de Acme-Supermarket, quienes a tenor de la legislación vigente en su lugar de residencia puedan válidamente emitir su consentimiento para la celebración de contratos. Quienes a tenor de la legislación vigente no posean tal capacidad para acceder u obligarse válidamente a los términos y condiciones aquí establecidos, deberán obtener inexcusablemente autorización previa de sus representantes legales, quienes serán considerados responsables de todos los actos realizados por los incapaces a su cargo."
+			},
+			"Section3" : {
+				"Title" : "Registro de los Usuarios",
+				"Body1" : "Para valerse de los servicios prestados en Acme-Supermarket se establece como requisito el previo registro del usuario. Dicho registro tendrá por finalidad establecer la identidad e información de contacto del usuario.",
+				"Body2" : "Toda vez que para la registración de un usuario le sea requerida información, la misma deberá ser fidedigna, y poseerá el carácter de declaración jurada. Cuando la información suministrada no atienda a las circunstancias reales de quien la brinda, se considerara tal usuario incurso en incumplimiento de estas Condiciones Generales, siendo responsable por todos los perjuicios que derivaren para Acme-Supermarket o terceros como consecuencia de tal falta de veracidad o exactitud.",
+				"Body3" : "El usuario dispondrá, una vez registrado, de un nombre de usuario y una contraseña que le permitirá el acceso personalizado, confidencial y seguro a su cuenta personal dentro del Sitio. Los servicios sujetos a registración han sido concebidos para el uso personal del usuario requirente, por tanto el nombre de usuario y la contraseña de acceso concedidos por Acme-Supermarket solo podrán ser usados por este, estando prohibida su utilización por otra persona distinta al mismo. El usuario registrado asumirá la obligación de guarda y custodia de su nombre de usuario y contraseña de acceso, debiendo informar inmediatamente a Acme-Supermarket cuando los mismos hubieren perdido su estado de confidencialidad, y/o cuando sean objeto de uso por un tercero."
+			},
+			"Section4" : {
+				"Title" : "Notificaciones y comunicaciones",
+				"Body1" : "A los fines que los usuarios puedan tomar contacto con Acme-Supermarket, se considerarán válidas las comunicaciones dirigidas a: contact@acmesupermarket.com ",
+				"Body2" : "Las notificaciones y comunicaciones cursadas por Acme-Supermarket a la casilla de correo electrónico que surja como dirección de correo del usuario o remitente se considerarán eficaces y plenamente válidas. Asimismo se considerarán eficaces las comunicaciones que consistan en avisos y mensajes insertos en el sitio, o que se envíen durante la prestación de un servicio, que tengan por finalidad informar a los usuarios sobre determinada circunstancia."
+			},
+			"Section5" : {
+				"Title" : "LINKS hacia Acme-Supermarket",
+				"Body1" : "El establecimiento de cualquier link, hipervínculo o enlace, entre una página web ajena a Acme-Supermarket y cualquier página de este último solo podrá realizarse con expresa autorización por parte de Acme-Supermarket.",
+				"Body2" : "En ningún caso Acme-Supermarket será responsable por los contenidos o manifestaciones existentes en las páginas web desde donde se establezcan los hipervínculos hacia el sitio de Acme-Supermarket. El hecho que exista un link entre una página web y el sitio de Acme-Supermarket no implica que Acme-Supermarket tenga conocimiento de ello, o que Acme-Supermarket mantenga relación alguna con los titulares de la página web desde donde se establece el enlace.",
+				"Body3" : "Acme-Supermarket se reserva el derecho a solicitar la remoción o eliminación de cualquier enlace desde una página web ajena al Sitio, en cualquier momento, sin expresión de causa, y sin que sea necesario preaviso alguno. El responsable de la página web desde la cual se efectuare el enlace tendrá un plazo de 48hs. contados a partir del pedido de Acme-Supermarket para proceder a la remoción o eliminación del mismo. "
+			},
+			"Section6" : {
+				"Title" : "LINKS desde Acme-Supermarket",
+				"Body1" : "Los hipervínculos o enlaces a páginas web de terceros provistos por Acme-Supermarket, tienen por finalidad mejorar la experiencia de navegación del usuario por el sitio Acme-Supermarket, poniendo a su disposición canales de acceso a otros sitios.",
+				"Body2" : "En ninguno de los casos precedentemente enunciados Acme-Supermarket controla, respalda o garantiza la seguridad, calidad, licitud, veracidad e idoneidad de los servicios y contenidos a los cuales se acceda a través de un hipervículo. La inclusión del link no significa que Acme-Supermarket se encuentre en forma alguna relacionada con el sitio al que dirige el link, ni que apoye, este de acuerdo, facilite o colabore en las actividades que en ese sitio se desarrollen. La responsabilidad por los servicios o contenidos en los sitios enlazados corresponderá exclusivamente a los titulares de dichos sitios. Bajo ningún supuesto Acme-Supermarket será responsable por las irregularidades, ilicitudes o infracciones que en dichos sitios se registren, no respondiendo en tal sentido por los daños que pudieren experimentar los usuarios o terceros a partir de los contenidos allí publicados. El acceso y utilización de páginas web enlazadas desde el sitio de Acme-Supermarket será exclusiva responsabilidad del usuario, quien deberá tomar todas las medidas de precaución necesarias de acuerdo al tipo de servicio, o contenido al que acceda."
+			},
+			"Section7" : {
+				"Title" : "Finalización del Servicio",
+				"Body" : "Acme-Supermarket podrá a su sola discreción suspender temporalmente o desactivar definitivamente la cuenta de un usuario, previa notificación al mismo, y con la necesidad de invocación de causa, procediéndose en tal caso a la eliminación de toda la información relacionada con la cuenta."
+			},
+			"Section8" : {
+				"Title" : "Legislación aplicable y jurisdicción",
+				"Body" : "A todos los efectos legales en relación a los servicios y contenidos brindados o que puedan brindarse en el Sitio, será aplicable la legislación vigente en España, y será competente la justicia ordinaria con jurisdicción en la Ciudad de Sevilla."
+			}
+		},
+		"Cookies" : {
+			"Title" : "Sobre las Cookies",
+			"Description" : "Acme-Supermarket no usa cookies de terceros",
+			"Cookie1" : {
+				"Name" : "NG_TRANSLATE_LANG_KEY",
+				"Description" : "Cookie que almacena el lenguaje en el que el usuario decide visualizar la aplicación. El contenido es una cadena de carácteres identificando el idioma seleccionado (por ejemplo 'en' o 'es')."
+			},
+			"Cookie2" : {
+				"Name" : "session",
+				"Description" : "Cookie generada por el servidor para gestionar las sesiones de la aplicación."
+			},
+			"Cookie3" : {
+				"Name" : "shoppingcart",
+				"Description" : "Cookie para la gestión del carrito de la compra web. Su contenido identifica a los productos y la cantidad deseada de cada uno."
+			}
+		},
+		"About" : {
+			"Title" : "Sobre nosotros",
+			"Developer" : "Desarrollador",
+			"Context" : {
+				"Title" : "Contexto",
+				"Description1" : "Acme-Supermarket es una aplicación web creada por ",
+				"Description2" : " y ",
+				"Description3" : " en el proyecto de trabajo de la asignatura ",
+				"Description4" : "Sistemas de información",
+				"Description5" : ", del curso ",
+				"Description6" : "Máster en Ingeniería Informática",
+				"Description7" : " perteneciente a la Universidad de Sevilla."
+			},
+			"Contact" : "Contacto",
+			"Members" : {
+				"Title"  :"Desarrolladores",
+				"Daniel" : "Daniel de los Reyes es un desarrollador con un alto nivel para el diseño de front-end y aplicaciones de lado del cliente.",
+				"Alejandro" : "Alejandro Sánchez es un desarrollador con una alta capacidad para analizar los problemas y encontrar buenas soluciones."
+			},
+			"Goals" : {
+				"Title" :"Objetivos",
+				"Goal1" : "Acme-Supermarket es una tienda online que ayuda a los negocios a conseguir visibilidad y provee de fáciles herramientas para hacer que prosperen.",
+				"Goal2" : "Acme-Supermarket tambien provee de servicios al consumidor:",
+				"Goal3" : {
+					"Title" : "Recomendaciones de compra",
+					"Description" : "Basadas en estadísticas del sistema, compras y medios sociales"
+				},
+				"Goal4" : {
+					"Title" : "Comparación de precios",
+					"Description" : "Método fácil y visual de comparar precios ofrecidos por los diferentes proveedores"
+				},
+				"Goal5" : {
+					"Title" : "Sistema de opiniones",
+					"Description" : "¿No puedes decidirte? Nuestro accesible sistema de valoraciones te ayudarán a decidir que producto o proveedor prefieres"
+				},
+				"Goal6" : {
+					"Title" : "Búsqueda rápida",
+					"Description" : "Busca, filtra y ordena por múltiples métodods: Valoración media, precio, nombre, categoría...Y todo ello sin largas pantallas de carga"
+				}
+			}
+		},
+		"Delivery" : {
+			"Title" : "Información de envíos",
+			"Section1" : {
+				"Title": "Coste de envío",
+				"Body" : "Acme-Supermarket ofrece servicios libre de costes. Sin cargos adicionales o altos precios."
+			},
+			"Section2" : {
+				"Title" : "Periodos de entrega",
+				"Body" : "Como un valor agregado a nuestros servicios se envío, ofrecemos tres servicios  premium diferentes a su elección durante el proceso de compra . Ninguno de estos servicios tiene ningun coste adicional. Sin embargo, la disponibilidad puede verse restringida en determinados momentos del año."
+			},
+			"Section3" : {
+				"Title" : "Ubicación de envíos",
+				"Body" : "Actualmente ofrecemos envíos a España y a todo el mundo."
+			},
+			"Section4" : {
+				"Title" : "Responsabilidades en el envío",
+				"Body" : "Para los pedidos enviados con el servicio de envío, las empresas de mensajería solo cubren la pérdida o el daño de la mercancía durante el transporte  sujeto a la responsabilidad máxima se especifica en los términos y condiciones de su servicio. Dicha responsabilidad cesará una vez que las mercancías se entregan al destino designado. Acme-Supermarket no es responsable por las normativa mencionado o cualquier conflicto surgido con respecto a la entrega de las mercancías. Sin embargo, vamos a hacer todo lo posible para ayudarle en cualquier caso de que  necesite ponerse en contacto con el servicio de mensajería para resolver algún asunto."
+			},
+			"Section5" : {
+				"Title" : "Seguro",
+				"Body" : "Para pedidos enviados con cualquier clase de envío, Acme-Supermarket cubrirá, cualquier daño físico o daño causado durante el tránsito hasta el total del pedido. Usted puede optar por otro envio por el mismo producto como un reemplazo o el reembolso completo, sujetos a una prueba satisfactoria de la pérdida o daño físico de los productos obtenidos de la mensajería u otras partes relacionadas si se considera necesario."
+			}
+		}
 	},
 	"Signup" : {
 		"CreateAccount" : "Crear tu cuenta",
@@ -82,7 +249,8 @@
 		"ExpMonth" : "Mes de caducidad",
 		"ExpYear" : "Año de caducidad",
 		"CVC" : "CVC",
-		"CCData" : "Datos de tarjeta de crédito"
+		"CCData" : "Datos de tarjeta de crédito",
+		"Cancel" : "Cancelar"
 	},
 	"Products" : {
 		"Title" : "Productos",
@@ -93,6 +261,11 @@
 		"Name" : "Nombre",
 		"Price": "Precio",
 		"Rating": "Valoración",
+		"Supplier": {
+			"Name" : "Nombre",
+			"Reputation" : "Reputación",
+			"Empty" : "Producto no disponible"
+		},
 		"Show" : "Mostrar",
 		"PerPage" : "por página",
 		"Page" : "Página",
@@ -102,12 +275,25 @@
 		"Edit" : "Edit",
 		"Previous" : "Anterior",
 		"Next" : "Siguiente",
-		"Empty" : "No hay productos con estas características"
+		"Empty" : "No hay productos con estas características",
+		"RatingPurchaseError" : "No puedes valorar un producto si no lo has comprado previamente",
+		"ClearFilters" : "Limpiar filtros",
+		"Categories" : "Categorías",
+		"Create" : "Añadir producto",
+		"DeleteError" : "Error al eliminar el producto, inténtelo de nuevo más tarde"
 	},
 	"Product" : {
 		"Edit" : "Editar",
 		"Upload" : "Arratra una imagen aquí para cambiarla",
-		"RatingError" : "Error al guardar la puntuación, recarge la página e inténtelo de nuevo"
+		"RatingError" : "Error al guardar la puntuación, recarge la página e inténtelo de nuevo",
+		"Create" : {
+			"Name" : "Name",
+			"Description" : "Description"
+		},
+		"Provide" : "Proveer este producto",
+		"ProvidePrice" : "Precio del producto",
+		"ProvideError" : "No se ha podido guardar el producto. Por favor, inténtelo de nuevo más tarde",
+		"DeleteProvide" : "Dejar de proveer este producto"
 	},
 	"ShoppingCart": {
 		"Title" : "Carrito de la compra",
@@ -127,10 +313,159 @@
 			"Price" : "Precio unitario",
 			"Image" : "Imagen",
 			"Quantity" : "Cantidad",
+			"Supplier": "Proveedor",
 			"Total" : "Total"
 		},
 		"Remove" : "Borrar",
 		"Return" : "Volver",
-		"Continue" : "Comprar"
+		"Continue" : "Continuar"
+	},
+	"Customers": {
+		"Title" : "Administración de clientes",
+		"General" : "General",
+		"Filled" : {
+			"Description1" : "Hay ",
+			"Description2" : " clientes en el sistema."
+		},
+		"Empty" : {
+			"Title" : "Vacío",
+			"Description" : "No hay clientes registrados en este momento."
+		},
+		"Actor": {
+			"Id" : "ID",
+			"Name" : "Nombre",
+			"Surname" : "Apellidos",
+			"Email" : "Email",
+			"Password" : "Contraseña"
+		},
+		"Customer" : {
+			"Address" : "Dirección",
+			"Country" : "Pais",
+			"City" : "Ciudad",
+			"Phone" : "Teléfono",
+			"Coordinates" : "Coordenadas"
+		},
+		"CreditCard" : {
+			"Id" : "ID",
+			"Title" : "Tarjeta de crédito",
+			"HolderName" : "Propietario",
+			"Number" : "Número",
+			"Expiration" : "Expiración",
+			"CvcCode" : "CVC"
+		},
+		"Profile" : "Perfil",
+		"Manage" : "Administrar",
+		"Remove" : "Eliminar",
+		"More" : "Mas información",
+		"Close" : "Cerrar",
+		"Delete": {
+			"Question" : "¿Seguro que quieres borrar a este usuario?",
+			"Yes" : "Sí",
+			"No"  :"No"
+		}
+	},
+	"Dashboard" : {
+		"Title" : "Dashboard",
+		"Service" : "Servicio",
+		"ServiceStatus" : "Estado del servicio",
+		"SocialMedia" : {
+			"Running" : "Ejecutándose",
+			"Stopped" : "Parado",
+			"StopService" : "Parar",
+			"StartService" : "Iniciar",
+			"Service" : "Análisis de presencia en redes sociales",
+			"Started" : "El anlálisis de presencia en redes sociales se inició correctamente",
+			"StartError" : "El anlálisis de presencia en redes sociales no se pudo iniciar. Inténtelo de nuevo más tarde",
+			"Stopping" : "El anlálisis de presencia en redes sociales se está deteniendo. Puede tardar unos segundos",
+			"StopError" : "El anlálisis de presencia en redes sociales no ha podido ser detenido. Inténtelo de nuevo más tarde"
+		},
+		"Recommender" : {
+			"Server" : "Servidor del sistema de recomendación",
+			"Running" : "Online",
+			"Stopped" : "Offline",
+			"Serverstatus" : "Estado del servidor"
+		}
+	},
+	"Checkout" : {
+		"Title" : "Compra",
+		"Products" : "Productos",
+		"Product" : {
+			"Product" : "Producto",
+			"Name" : "Nombre de producto",
+			"Description" : "Descripción",
+			"Image" : "Imagen",
+			"Code" : "Código",
+			"Price" : "Precio unitario",
+			"Supplier" : "Proveedor",
+			"Quantity" : "Cantidad",
+			"Total" : "Total",
+			"MoreInfo" : "Más info"
+		},
+		"Return" : "Volver",
+		"Continue" : "Comprar",
+		"Empty" : {
+			"Title" : "Vacío",
+			"Description1" : "No tienes ítems en el carrito de la compra.",
+			"Click" : "Haz clic ",
+			"Here" : "aquí",
+			"Description2" : " para continuar con la compra."
+		},
+		"CreditCard" : {
+			"Title" : "Tarjeta de crédito",
+			"Empty" : {
+				"Title" : "Ninguna tarjeta de crédito registrada",
+				"Description1" : "Por favor ",
+				"Link" : "registre una tarjeta de crédito",
+				"Description2" : " para proceder con la compra."
+			},
+			"Type" : "Tipo",
+			"HolderName" : "Propietario",
+			"Number" : "Número",
+			"Expiration" : "Expiración",
+			"CvcCode" : "CVC"
+		},
+		"Address" : {
+			"Title" : "Dirección de envío",
+			"Address" : "Calle",
+			"Country" : "Pais",
+			"City" : "Ciudad",
+			"Phone" : "Teléfono de contacto"
+		},
+		"Days" : {
+			"Title" : "Seleccione tiempo de envío",
+			"Days" : "días"
+		},
+		"Success" : "Transacción completada",
+		"Error" : "Error",
+		"ErrorDescription" : "Ha habido un error con el proceso de compra. Por favor, inténtelo más tardes, hemos recuperado su carrito de la compra.",
+		"Purchase" : {
+			"PaymentDate" : "Fecha de pago",
+			"DeliveryDate" : "Fecha de entrega"
+		},
+		"Thanks" : "¡Gracias por comprar!"
+	},
+	"Purchases" : {
+		"Title" : "Administración de compras",
+		"Customer" : "ID Cliente",
+		"Filter" : {
+			"Title" : "Filtros",
+			"Customer" : "Filtro ID de cliente"
+		},
+		"Purchase" : "Compra",
+		"PaymentDate" : "Fecha de pago",
+		"DeliveryDate" : "Fecha de entrega",
+		"Details" : "Detalles",
+		"Empty" : "Ninguna compra en el sistema",
+		"Number" : "compras en el sistema",
+		"MyPurchases" : {
+			"Title" : "Mis compras",
+			"Empty" : {
+				"Title" : "No hay compras",
+				"Description" : "Todavía no has realizado una compra."
+			}
+		},
+		"Remove" : "Eliminar",
+		"First" : "Primero",
+		"Last" : "Último"
 	}
 }

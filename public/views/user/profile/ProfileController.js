@@ -2,13 +2,35 @@
 
 angular.module('acme_supermarket').registerCtrl('ProfileCtrl', ['$scope', '$http', '$translate', 'ngToast',
 function ($scope, $http, $translate, ngToast) {
+
+	$scope.selectedTab = 1;
+	$scope.ccEditing = false;
+
 	$http.get('/api/myprofile').then(function success(customer){
 		$scope.user = customer.data;
-		$http.get('/api/mycreditcard').then(function success(cc){
-			$scope.credit_card = cc.data;
-		}, function error(cc) {});
+		if ($scope.user._type.toLowerCase()=='customer') {
+			$http.get('/api/mycreditcard').then(function success(response){
+				$scope.creditcard = response.data;
+			    if ($scope.creditcard) {
+			        var number = hideCreditCard(response.data.number);
+					$scope.creditcard.number = number;
+			    }
+			}, function error(response) {});
+		}
 	},
 	function error(customer) { });
+
+	var hideCreditCard = function(number) {
+		for (var i = 0; i < number.length - 4; i++) {
+			number = setCharAt(number, i, '*')
+		}
+		return number
+	}
+
+	var setCharAt = function(str,index,chr) {
+    	if(index > str.length-1) return str;
+    	return str.substr(0,index) + chr + str.substr(index+1);
+	}
 
 	$scope.showEdition = function (){
 		$scope.testForm.$show();
@@ -79,6 +101,7 @@ function ($scope, $http, $translate, ngToast) {
 					content: translation['Profile.CCOk']
 				});
 			});
+			$scope.ccEditing = false;
 		}, function error(response) {
 				$translate(['Profile.ServerCCErr']).then(function (translation) {
 					ngToast.create({

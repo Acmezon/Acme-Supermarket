@@ -11,10 +11,10 @@
         <div class="cssmenu">
             <ul>
                 <li class="active" restrict access="isLogged">
-                    <a href="/myprofile">{{ 'Header.Account' | translate }}</a>
+                    <a href="/myprofile">{{ 'Header.Account.Title' | translate }}</a>
                 </li>
 
-                <li restrict access="isLogged">
+                <li restrict access="customer">
                     <a href="/shoppingcart">{{ 'Header.Checkout' | translate }}</a>
                 </li>
 
@@ -27,7 +27,7 @@
                 </li>
 
                 <li restrict access="isLogged">
-                    <a href="#" ng-click="signout()">{{ 'Header.Signout' | translate }}</a>
+                    <a id="logout" ng-click="signout()">{{ 'Header.Signout' | translate }}</a>
                 </li>                
             </ul>
         </div>
@@ -37,176 +37,41 @@
 <div class="header-bottom" ng-controller="MainCtrl">
     <div class="wrap">
         <div class="header-bottom-left">
-            <div class="logo">
-                <a href="/">
-                    <img src="img/template_bootstrap/logo.png" alt=""/>
-                </a>
-            </div>
-            <div class="menu" restrict access="anonymous">
-                <ul class="megamenu skyblue">
-                    <li class="active grid">
-                        <a href="/">{{ 'Home.Title' | translate }}</a>
-                    </li>
-                    <li>
-                        <a class="color4" href="/products">{{ 'Header.ProductList' | translate }}</a>
-                    </li>
-                    <li>
-                        <a class="color4" href="#">women</a>
-                        <div class="megapanel">
-                            <div class="row">
-                                <div class="col1">
-                                    <div class="h_nav">
-                                        <h4>Contact Lenses</h4>
-                                        <ul>
-                                            <li>
-                                                <a href="womens.html">Daily-wear soft lenses</a>
-                                            </li>
-                                            <li>
-                                                <a href="womens.html">Extended-wear</a>
-                                            </li>
-                                            <li>
-                                                <a href="womens.html">Lorem ipsum </a>
-                                            </li>
-                                            <li>
-                                                <a href="womens.html">Planned replacement</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col1">
-                                    <div class="h_nav">
-                                        <h4>Sun Glasses</h4>
-                                        <ul>
-                                            <li>
-                                                <a href="womens.html">Heart-Shaped</a>
-                                            </li>
-                                            <li>
-                                                <a href="womens.html">Square-Shaped</a>
-                                            </li>
-                                            <li>
-                                                <a href="womens.html">Round-Shaped</a>
-                                            </li>
-                                            <li>
-                                                <a href="womens.html">Oval-Shaped</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col1">
-                                    <div class="h_nav">
-                                        <h4>Eye Glasses</h4>
-                                        <ul>
-                                            <li>
-                                                <a href="womens.html">Anti Reflective</a>
-                                            </li>
-                                            <li>
-                                                <a href="womens.html">Aspheric</a>
-                                            </li>
-                                            <li>
-                                                <a href="womens.html">Bifocal</a>
-                                            </li>
-                                            <li>
-                                                <a href="womens.html">Hi-index</a>
-                                            </li>
-                                            <li>
-                                                <a href="womens.html">Progressive</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                    <li>
-                        <a class="color5" href="#">Men</a>
-                        <div class="megapanel">
-                            <div class="col1">
-                                <div class="h_nav">
-                                    <h4>Contact Lenses</h4>
-                                    <ul>
-                                        <li>
-                                            <a href="mens.html">Daily-wear soft lenses</a>
-                                        </li>
-                                        <li>
-                                            <a href="mens.html">Extended-wear</a>
-                                        </li>
-                                        <li>
-                                            <a href="mens.html">Lorem ipsum </a>
-                                        </li>
-                                        <li>
-                                            <a href="mens.html">Planned replacement</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="col1">
-                                <div class="h_nav">
-                                    <h4>Sun Glasses</h4>
-                                    <ul>
-                                        <li>
-                                            <a href="mens.html">Heart-Shaped</a>
-                                        </li>
-                                        <li>
-                                            <a href="mens.html">Square-Shaped</a>
-                                        </li>
-                                        <li>
-                                            <a href="mens.html">Round-Shaped</a>
-                                        </li>
-                                        <li>
-                                            <a href="mens.html">Oval-Shaped</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="col1">
-                                <div class="h_nav">
-                                    <h4>Eye Glasses</h4>
-                                    <ul>
-                                        <li>
-                                            <a href="mens.html">Anti Reflective</a>
-                                        </li>
-                                        <li>
-                                            <a href="mens.html">Aspheric</a>
-                                        </li>
-                                        <li>
-                                            <a href="mens.html">Bifocal</a>
-                                        </li>
-                                        <li>
-                                            <a href="mens.html">Hi-index</a>
-                                        </li>
-                                        <li>
-                                            <a href="mens.html">Progressive</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <div class="menu" restrict access="customer">
-                <ul class="megamenu skyblue">
-                    <li class="active grid">
-                        <a href="/">{{ 'Home.Title' | translate }}</a>
-                    </li>
-                    <li>
-                        <a class="color4" href="/products">{{ 'Header.ProductList' | translate }}</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="menu" restrict access="admin">
-                <ul class="megamenu skyblue">
-                    <li class="active grid">
-                        <a href="/">{{ 'Home.Title' | translate }}</a>
-                    </li>
-                    <li>
-                        <a class="color4" href="/products">{{ 'Header.ProductList' | translate }}</a>
-                    </li>
-                    <li>
-                        <a class="color4" href="#">{{ 'Header.AdminOptions' | translate }}</a>
-                    </li>
-                </ul>
-            </div>
+            <nav class="navbar navbar-default">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="/"><img src="img/template_bootstrap/logo.png" alt=""/></a>
+                    </div>
+                    <ul class="nav navbar-nav">
+                        <li ng-class="{active: $route.current.activetab == 'home'}"><a href="/">{{ 'Home.Title' | translate }}</a></li>
+                        <li ng-class="{active: $route.current.activetab == 'products'}"><a href="/products">{{ 'Header.ProductList' | translate }}</a></li>
+                        <li ng-class="{active: $route.current.activetab == 'management'}" restrict access="admin" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="">
+                                {{'Header.Management' | translate}}
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/dashboard">{{ 'Header.Dashboard' | translate }}</a></li>
+                                <li><a href="/customers">{{ 'Header.Customers' | translate }}</a></li>
+                                <li><a href="/purchases">{{ 'Header.Purchases' | translate }}</a></li>
+                                <li><a href="/products/create">{{ 'Header.CreateProduct' | translate }}</a></li>
+                            </ul>
+                        </li> 
+                        <li ng-class="{active: $route.current.activetab == 'account'}" restrict access="isLogged" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="">
+                                {{'Header.Account.Title' | translate}}
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/myprofile">{{ 'Header.Account.MyProfile' | translate }}</a></li>
+                                <li restrict access="customer"><a href="/mypurchases">{{ 'Header.Account.MyPurchases' | translate }}</a></li>
+                                <li restrict access="supplier"><a href="/myproducts">{{ 'Header.Account.MyProducts' | translate }}</a></li>
+                                <li restrict access="customer"><a href="/shoppingcart">{{ 'Header.Account.ShoppingCart' | translate }}</a></li> 
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
         </div>
         <div class="header-bottom-right">
             <div class="search">
@@ -214,7 +79,7 @@
                 <input type="submit" value="Subscribe" id="submit" name="submit">
                 <div id="response"></div>
             </div>
-            <div class="tag-list">
+            <div class="tag-list" restrict access="customer">
                 <ul class="icon1 sub-icon1 profile_img">
                     <li>
                         <a class="active-icon c2" href="/shoppingcart"></a>

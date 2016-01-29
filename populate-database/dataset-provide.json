@@ -1,0 +1,25 @@
+{"_id": ObjectId("000000000000000000000001"), "price" : 0.79, "product_id": ObjectId("000000000000000000000001"), "supplier_id" : ObjectId("000000000000000000000003") }
+{"_id": ObjectId("000000000000000000000002"), "price" : 0.7, "product_id": ObjectId("000000000000000000000002"), "supplier_id" : ObjectId("000000000000000000000003") }
+{"_id": ObjectId("000000000000000000000003"), "price" : 1, "product_id": ObjectId("000000000000000000000003"), "supplier_id" : ObjectId("000000000000000000000003") }
+{"_id": ObjectId("000000000000000000000004"), "price" : 0.3, "product_id": ObjectId("000000000000000000000004"), "supplier_id" : ObjectId("000000000000000000000003") }
+{"_id": ObjectId("000000000000000000000005"), "price" : 5.2, "product_id": ObjectId("000000000000000000000005"), "supplier_id" : ObjectId("000000000000000000000003") }
+{"_id": ObjectId("000000000000000000000006"), "price" : 6.2, "product_id": ObjectId("000000000000000000000006"), "supplier_id" : ObjectId("000000000000000000000003") }
+{"_id": ObjectId("000000000000000000000007"), "price" : 25, "product_id": ObjectId("000000000000000000000007"), "supplier_id" : ObjectId("000000000000000000000003") }
+{"_id": ObjectId("000000000000000000000008"), "price" : 128, "product_id": ObjectId("000000000000000000000008"), "supplier_id" : ObjectId("000000000000000000000003") }
+{"_id": ObjectId("000000000000000000000009"), "price" : 44.99, "product_id": ObjectId("000000000000000000000009"), "supplier_id" : ObjectId("000000000000000000000003") }
+{"_id": ObjectId("000000000000000000000010"), "price" : 599, "product_id": ObjectId("000000000000000000000010"), "supplier_id" : ObjectId("000000000000000000000003") }
+{"_id": ObjectId("000000000000000000000011"), "price" : 10.36, "product_id": ObjectId("000000000000000000000011"), "supplier_id" : ObjectId("000000000000000000000003") }
+{"_id": ObjectId("000000000000000000000012"), "price" : 1.84, "product_id": ObjectId("000000000000000000000012"), "supplier_id" : ObjectId("000000000000000000000003") }
+
+{"_id": ObjectId("000000000000000000000013"), "price" : 0.12, "product_id": ObjectId("000000000000000000000001"), "supplier_id" : ObjectId("000000000000000000000004") }
+{"_id": ObjectId("000000000000000000000014"), "price" : 0.71, "product_id": ObjectId("000000000000000000000002"), "supplier_id" : ObjectId("000000000000000000000004") }
+{"_id": ObjectId("000000000000000000000015"), "price" : 1.2, "product_id": ObjectId("000000000000000000000003"), "supplier_id" : ObjectId("000000000000000000000004") }
+{"_id": ObjectId("000000000000000000000016"), "price" : 0.1, "product_id": ObjectId("000000000000000000000004"), "supplier_id" : ObjectId("000000000000000000000004") }
+{"_id": ObjectId("000000000000000000000017"), "price" : 5.99, "product_id": ObjectId("000000000000000000000005"), "supplier_id" : ObjectId("000000000000000000000004") }
+{"_id": ObjectId("000000000000000000000018"), "price" : 9.99, "product_id": ObjectId("000000000000000000000006"), "supplier_id" : ObjectId("000000000000000000000004") }
+{"_id": ObjectId("000000000000000000000019"), "price" : 25.2, "product_id": ObjectId("000000000000000000000007"), "supplier_id" : ObjectId("000000000000000000000004") }
+{"_id": ObjectId("000000000000000000000020"), "price" : 128.01, "product_id": ObjectId("000000000000000000000008"), "supplier_id" : ObjectId("000000000000000000000004") }
+{"_id": ObjectId("000000000000000000000021"), "price" : 44.02, "product_id": ObjectId("000000000000000000000009"), "supplier_id" : ObjectId("000000000000000000000004") }
+{"_id": ObjectId("000000000000000000000022"), "price" : 720, "product_id": ObjectId("000000000000000000000010"), "supplier_id" : ObjectId("000000000000000000000004") }
+{"_id": ObjectId("000000000000000000000023"), "price" : 17, "product_id": ObjectId("000000000000000000000011"), "supplier_id" : ObjectId("000000000000000000000004") }
+{"_id": ObjectId("000000000000000000000024"), "price" : 4, "product_id": ObjectId("000000000000000000000012"), "supplier_id" : ObjectId("000000000000000000000004") }

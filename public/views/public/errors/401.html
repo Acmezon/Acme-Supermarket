@@ -1,0 +1,37 @@
+<div>
+	<p class="error-403 error-page-title">4<span class="glyphicon glyphicon-ban-circle"></span>1</p>
+	<div class="container">
+		<div class="row">
+			<div style="text-align:center" class="col-md-12">
+				<p class="error-page-label">{{'Errors.401.Description1' | translate}}</p>
+				<p class="error-page-label-lowercase">{{'Errors.401.Description2' | translate}}</p>
+				<p><strong>
+					{{'Errors.401.Description3' | translate}}<span id="seconds">15</span>.
+				</strong></p>
+				<p>
+					{{'Errors.401.Description4' | translate}} <a href="/signin">{{'Errors.401.Link' | translate}}</a>
+				</p>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+window.seconds = 15;
+window.onload = function()
+{
+	if (window.seconds != 0)
+	{
+		$('#seconds').html(window.seconds);
+		if(window.location.pathname=='/401') {
+			window.seconds--;
+		}
+		setTimeout(window.onload, 1000);
+	}
+	else
+	{
+		window.location = '/signin';
+	}
+}
+onload();
+</script>
