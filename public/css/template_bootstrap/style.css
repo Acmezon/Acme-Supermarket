@@ -358,10 +358,6 @@ ul.last li a:hover{
 .main{
 	margin:2% 0;
 }
-.cont{
-	display: block;
-	float:left;
-}
 .rsidebar{
 	display: block;
 	float:left;
@@ -2407,9 +2403,6 @@ ul.delivery-list li a:hover{
 	}
 	.span_2_of_3 {
 		width: 100%;
-	}
-	.cont {
-		float: none;
 	}
 	.span_1_of_left {
 		width:45%;
