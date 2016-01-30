@@ -86,9 +86,27 @@
 						<button id="provideproduct-submit" type="submit" name="submit" class="grey" ng-disabled="provideProductForm.$invalid">{{ 'Global.Submit' | translate }}</button>
 					</form>
 
-					<div id="delete-provide" ng-show="supplierProvides" class="delete-provide" ng-click="deleteProvide()"><i class="fa fa-trash"> {{ 'Product.DeleteProvide' | translate }}</i>
+					<div id="delete-provide" ng-show="supplierProvides" class="delete-provide" ng-click="deleteProvide()">
+						<i class="fa fa-trash"> {{ 'Product.DeleteProvide' | translate }}</i>
+					</div>
+
+					<div id="reputations" style="margin-top:3%">
+						<h4 class="title">{{ 'Reputations.Title' | translate }}</h4>
+						<div ng-if="!reputationslength" class="alert alert-info" role="alert">
+							<p>
+								{{'Reputations.Empty' | translate}}
+							</p>
+						</div>
+						<div id="chart" class="row" ng-if="reputationslength">
+							<svg></svg>
+						</div>
+					</div>
+					
+
 				</div>
-				<div>
+
+
+				<div restrict access="customer">
 					<h3 class="m_3">{{ 'Products.OtherRecommendations' | translate}}</h3>
 					<!-- Recommendations carrousel -->
 					<ul id="recommendations">

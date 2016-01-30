@@ -112,6 +112,7 @@ app.post('/api/supplier/checkProvides', api.Supplier.checkProvides);
 
 // Reputations
 app.get('/api/averageReputationBySupplierId/:id', api.Reputation.getAverageReputationBySupplierId);
+app.get('/api/reputations/byprovide/:id', api.Reputation.getReputationByProvideId);
 
 // Authentication
 app.post('/api/signup', api.Authentication.signup);

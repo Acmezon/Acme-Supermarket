@@ -79,7 +79,7 @@ exports.getSupplierProvidesByProductId = function(req, res) {
 			SupplierService.getPrincipalSupplier(cookie, jwtKey, function (supplier) {
 				if (supplier) {
 
-					Provide.find({product_id: _code, supplier_id: supplier._id}, function(err,provide){
+					Provide.findOne({product_id: _code, supplier_id: supplier._id, deleted: false}, function(err,provide){
 						if(err){
 							// Internal Server Error
 							res.status(500).json({success: false, message: err});

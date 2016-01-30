@@ -355,3 +355,13 @@ div.delete-provide {
 		display: block;
 	}
 }
+
+/*Rating chart*/
+
+#chart {
+  height: 40vh;
+}
+
+.nv-label text{
+    font-family: Droid Sans;
+}

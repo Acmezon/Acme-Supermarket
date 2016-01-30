@@ -76,35 +76,35 @@
 					</div>
 					<div class="clear"></div>
 				</div>
-				<h2 class="head">{{ 'Home.RecommendedProducts' | translate }}</h2>
-				<div class="section group">
-					<div ng-repeat="product in recommendedProducts | limitTo:3">
-
-						<div class="col_1_of_3 span_1_of_3">
-							<a class="product" href="product/{{product._id}}">
-								<div class="inner_content clearfix">
-									<div class="product_image">
-										<img src="img/{{product.image}}" alt=""/>
-									</div>
-									<div class="sale-box">
-										<span class="on_sale title_shop">{{ 'Home.Recommended' | translate }}</span>
-									</div>
-									<div class="product-block">
-										<div class="cart-left">
-											<p class="title">{{product.name}}</p>
-											<div class="price1">
-												<span class="actual">{{product.minPrice}} - {{product.maxPrice}} €</span>
-											</div>
+				<div restrict access="customer">
+					<h2 class="head">{{ 'Home.RecommendedProducts' | translate }}</h2>
+					<div class="section group">
+						<div ng-repeat="product in recommendedProducts | limitTo:3">
+							<div class="col_1_of_3 span_1_of_3">
+								<a class="product" href="product/{{product._id}}">
+									<div class="inner_content clearfix">
+										<div class="product_image">
+											<img src="img/{{product.image}}" alt=""/>
 										</div>
-										<div class="cart-right"></div>
-										<div class="clear"></div>
+										<div class="sale-box">
+											<span class="on_sale title_shop">{{ 'Home.Recommended' | translate }}</span>
+										</div>
+										<div class="product-block">
+											<div class="cart-left">
+												<p class="title">{{product.name}}</p>
+												<div class="price1">
+													<span class="actual">{{product.minPrice}} - {{product.maxPrice}} €</span>
+												</div>
+											</div>
+											<div class="cart-right"></div>
+											<div class="clear"></div>
+										</div>
 									</div>
-								</div>
-							</a>
+								</a>
+							</div>
 						</div>
-						
+						<div class="clear"></div>
 					</div>
-					<div class="clear"></div>
 				</div>
 			</div>
 			<div class="rsidebar span_1_of_left">

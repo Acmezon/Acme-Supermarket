@@ -22,7 +22,6 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 		then (function success (res_provides) {
 			var provides = res_provides.data;
 
-			// FINISH PROCESS
 			// PUT INTO OUTPUT VARIABLE
 			$http({
 				method: 'GET',
@@ -30,6 +29,120 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 			}).
 			then(function success(role) {
 				$scope.role = role.data;
+
+				if ($scope.role=='supplier') {
+					$http({
+						method: 'GET',
+						url: '/api/provide/bysupplier/byproduct/' + $scope.product._id
+					}).
+					then(function success(prov) {
+						var provide = prov.data;
+						if (provide) {
+							$http({
+								method: 'GET',
+								url: '/api/reputations/byprovide/' + provide._id
+							}).
+							then(function success(reps) {
+								var reputations = reps.data.reputations;
+								console.log(reputations)
+								if (reputations.length) {
+									$scope.avgRating = reps.data.avgRating;
+									var count1 = 0,
+										count2 = 0,
+										count3 = 0,
+										count4 = 0,
+										count5 = 0;
+									$scope.reputationslength = reputations.length;
+									reputations.forEach(function (reputation) {
+										if (reputation.value==1) {
+											count1++;
+										} else {
+											if (reputation.value==2){
+												count2++;
+											} else {
+												if (reputation.value==3){
+													count3++;
+												} else {
+													if(reputation.value==4) {
+														count4++;
+													} else {
+														if (reputation.value==5) {
+															count5++;
+														}
+													}
+												}
+											}
+										}
+									});
+									var ratingdata = [
+										{rating: 1, quantity: count1},
+										{rating: 2, quantity: count2},
+										{rating: 3, quantity: count3},
+										{rating: 4, quantity: count4},
+										{rating: 5, quantity: count5}
+									];
+									var h = 1000;
+									var r = h/2;
+									var arc = d3.svg.arc().outerRadius(r);
+									var colors = [
+									    'rgb(135,203,219)',
+									    'rgb(96,186,208)',
+									    'rgb(76,177,202)',
+									    'rgb(52,151,175)',
+									    'rgb(46,134,155)'
+									];
+									nv.addGraph(function() {
+									    var chart = nv.models.pieChart()
+									        .x(function(d) { return d.rating })
+									        .y(function(d) { return d.quantity })
+									        .color(colors)
+									        .showLabels(true)
+									        .labelType("percent")
+											//.donut(true).donutRatio(5) /* Trick to make the labels go inside the chart*/
+									    ;
+									    
+									    d3.select("#chart svg")
+									        .datum(ratingdata)
+									        .transition().duration(1200)
+									        .call(chart)
+									    ;
+
+									    d3.selectAll(".nv-label text")
+									        /* Alter SVG attribute (not CSS attributes) */
+									        .attr("transform", function(d){
+									            d.innerRadius = -450;
+									            d.outerRadius = r;
+									            return "translate(" + arc.centroid(d) + ")";}
+									        )
+									        .attr("text-anchor", "middle")
+									        /* Alter CSS attributes */
+									        .style({"font-size": "1em"})
+									    ;
+									    
+									    /* Replace bullets with blocks */
+									    d3.selectAll('.nv-series').each(function(d,i) {
+									        var group = d3.select(this),
+									            circle = group.select('circle');
+									        var color = circle.style('fill');
+									        circle.remove();
+									        var symbol = group.append('path')
+									            .attr('d', d3.svg.symbol().type('square'))
+									            .style('stroke', color)
+									            .style('fill', color)
+									            // ADJUST SIZE AND POSITION
+									            .attr('transform', 'scale(1.5) translate(-2,0)')
+									    });
+
+									        
+									    return chart;
+									});
+
+								}
+								//console.log($scope.reputations)
+							});
+						}
+					});
+				}
 			}, function error(role) {
 			});
 
@@ -275,5 +388,6 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 			});
 		});		
 	}
+
 
 }]);

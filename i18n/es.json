@@ -477,5 +477,9 @@
 		"Quantity" : "Cantidad",
 		"NextRun" : "Siguiente compra el:",
 		"Remove" : "Eliminar"
+	},
+	"Reputations" : {
+		"Title" : "Valoraciones de usuarios a su producto",
+		"Empty" : "No hay valoraciones todavía."
 	}
 }
