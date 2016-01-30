@@ -379,6 +379,6 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 		$translateProvider.useCookieStorage();
 		$translateProvider.useUrlLoader('/api/lang');
 		$translateProvider.preferredLanguage('en');
-		$translateProvider.useSanitizeValueStrategy('sanitize');
+		$translateProvider.useSanitizeValueStrategy('escape');
 	}
 ]);
