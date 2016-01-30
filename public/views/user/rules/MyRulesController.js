@@ -1,7 +1,7 @@
 'use strict'
 
-angular.module('acme_supermarket').registerCtrl('MyRulesCtrl', ['$scope', '$http', 'ngTableParams', '$route', function ($scope, $http, ngTableParams, $route) {
-
+angular.module('acme_supermarket').registerCtrl('MyRulesCtrl', ['$scope', '$http', 'ngTableParams', '$route', '$translate', 'ngToast', 
+function ($scope, $http, ngTableParams, $route, $transtale, ngToast) {
 	$http({
 		method: 'GET',
 		url: '/api/mypurchasingrules'
@@ -15,7 +15,7 @@ angular.module('acme_supermarket').registerCtrl('MyRulesCtrl', ['$scope', '$http
 	}, function error(response) {
 	});
 
-	/*
+	
 	$scope.delete = function(purchasingrule) {
 		// close pop up
 		var modalInstance = $('#delete-'+purchasingrule._id);
@@ -26,7 +26,7 @@ angular.module('acme_supermarket').registerCtrl('MyRulesCtrl', ['$scope', '$http
 			function() {
 				$http({ url: '/api/purchasingrule', 
 					method: 'DELETE', 
-					data: {id: purchasingrule._id}, 
+					data: { id: purchasingrule._id },
 					headers: {"Content-Type": "application/json;charset=utf-8"}
 				}).then(function(res) {
 					var i = $scope.$data.indexOf(purchasingrule)
@@ -35,10 +35,16 @@ angular.module('acme_supermarket').registerCtrl('MyRulesCtrl', ['$scope', '$http
 						$scope.copy.splice(i, 1);
 					}
 					$scope.tableParams.reload()
-				}, function(error) {
+				}, function (error) {
 					console.log(error);
+					$translate(['PurchasingRule.Delete.Error']).then(function (translation) {
+						ngToast.create({
+							className: 'error',
+							content: translation['PurchasingRule.Delete.Error']
+						});
+					});
 				});
 			}, 200);
-	}; */
+	};
 
 }]);

@@ -296,7 +296,17 @@
 		"Provide" : "Provide this product",
 		"ProvidePrice" : "Product price",
 		"ProvideError" : "The provide could not be saved. Please, try again later",
-		"DeleteProvide" : "Stop providing this product"
+		"DeleteProvide" : "Stop providing this product",
+		"AlreadyHasRule" : "You already have a rule to purchase this product. Maybe you want to go to",
+		"CreateRule" : {
+			"StartDate" : "Star date",
+			"StartDateError" : "The start date is required and must be in the future",
+			"Periodicity" : "Periodicity",
+			"PeriodicityError" : "The periodicity is required and must be extrictly positive",
+			"Quantity" : "Quantity",
+			"QuantityError" : "The quantity is required and must be extrictly positive",
+			"Title" : "Create Purchasing Rule"
+		}
 	},
 	"ShoppingCart": {
 		"Title" : "Shopping cart",
@@ -478,10 +488,17 @@
 		"Product" : "Product",
 		"Quantity" : "Quantity",
 		"NextRun" : "Next purchase will be at",
-		"Remove" : "Remove"
+		"Remove" : "Remove",
+		"Delete" : {
+			"Question" : "Are you sure you want to delete this purchasing rule? This can not be undone.",
+			"Yes" : "Yes",
+			"No" : "No",
+			"Close" : "Close",
+			"Error" : "Error deleting the rule. Please try again later."
+		}
 	},
 	"Reputations" : {
 		"Title" : "User rating of your product",
-		"Empty" : "No ratings yet."
+		"Empty" : "No ratings yet."		
 	}
 }

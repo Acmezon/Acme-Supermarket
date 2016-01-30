@@ -104,6 +104,10 @@ app.delete('/api/purchase', api.Purchases.deletePurchase);
 // Purchase lines
 app.get('/api/purchaselines/bypurchase/:id', api.PurchaseLines.getPurchaseLinesByPurchaseId);
 
+//Purchasing rules
+app.post('/api/createPurchasingRule', api.PurchasingRules.createPurchasingRule);
+app.delete('/api/purchasingrule', api.PurchasingRules.removePurchasingRule);
+
 // Suppliers
 app.get('/api/supplier/principal', api.Supplier.getSupplierPrincipal);
 app.get('/api/supplierName/:id', api.Supplier.getSupplierName);
