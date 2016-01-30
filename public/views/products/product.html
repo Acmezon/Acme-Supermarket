@@ -9,72 +9,118 @@
 			<ul class="breadcrumb breadcrumb__t">
 				<li><a class="home" href="/">{{ 'Home.Title' | translate }}</a> / <a href="products">{{ 'Products.Title' | translate }}</a> / {{product.name}}</li>
 			</ul>
-			<div class="cont span_2_of_3">
+			<div class="cont">
 				<button id="btn-edit" class="btn btn-default" ng-click="toggleEdition()" ng-hide="isSomethingEditable()" restrict access="admin">
 					{{ 'Product.Edit' | translate }}
 				</button>
-				<div class="grid images_3_of_2">
-					<script src="js/lib/imagezoom.js"></script>
-					<div class="flexslider">
-						<ul class="slides">
-							<li data-thumb="img/template_bootstrap/pic5.jpg">
-								<div class="thumb-image">
-									<img src="img/{{product.image}}" data-imagezoom="true" class="img-responsive">
+				<div class="row">
+					<div class="grid col-md-4">
+						<script src="js/lib/imagezoom.js"></script>
+						<div class="flexslider">
+							<ul class="slides">
+								<li data-thumb="img/template_bootstrap/pic5.jpg">
+									<div class="thumb-image">
+										<img src="img/{{product.image}}" data-imagezoom="true" class="img-responsive">
+									</div>
+									<form action="/api/product/updateProductImage" method="post" enctype="multipart/form-data" id="upload-img-form" class="dropzone" restrict access="admin">
+										<div class="fallback">
+											<input type="file" />
+										</div>
+									</form>
+								</li>
+							</ul>
+							<div class="clearfix"></div>
+						</div>
+					</div>
+					<div class="desc1 col-md-8">
+						<!-- Rating Stars Box -->
+						<div ng-if="!userHasPurchased" class="rating">
+							<span ng-repeat="n in [1, 2, 3, 4, 5] track by $index" class="glyphicon" ng-class="{'glyphicon-star': value >= $index + 1, 'glyphicon-star-empty': value < $index + 1}"></span>
+						</div>
+
+						<div ng-if="userHasPurchased">
+							<uib-rating ng-model="value" class="rating" max="max" ng-click="rateProduct()"></uib-rating>
+						</div>
+						<!--<div class="rating" data-stars="{{product.rating}}"></div>-->
+						<h3 class="m_3" editable-text="product.name" e-maxlength="100" e-form="textNameForm" e-placeholder="{{ 'Product.Create.Name' | translate }}" onbeforesave="updateProduct('name', $data)">{{product.name}}</h3>
+						<p class="price">{{product.minPrice}} - {{product.maxPrice}} €</p>
+						<p class="m_4">{{product.code}}</p>
+						<p class="m_text2" editable-textarea="product.description" e-form="textDescForm" e-rows="10" e-cols="70" e-maxlength="1000" e-placeholder="{{ 'Product.Create.Description' | translate }}" onbeforesave="updateProduct('description', $data)">{{product.description}}</p>
+
+						<div ng-if="out_suppliers.length > 0">
+							<div ng-repeat="provide in out_suppliers">
+								<div ng-if="!provide.customerHasRule" id="create-rule-{{provide._id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createRule" z-index="10000000">
+									<div class="modal-dialog modal-sm">
+										<div class="modal-content">
+											<form method="post" name="createRuleForm" id="submit-form" ng-submit="submitCreateRule(provide._id, createRuleForm)" class="product_form create-rule_form">
+												<div class="input-group">
+													<label for="startDate">{{ 'Product.CreateRule.StartDate' | translate }}*</label>
+													<input id="startDate" name="startDate" type="date" class="form-control" ng-model="rule.startDate" min="{{date | date:'yyyy-MM-dd'}}" required>
+												</div>
+												<div class="alert alert-danger" ng-show="createRuleForm{{provide._id}}.startDate.$dirty && (createRuleForm{{provide._id}}.startDate.$error.required || createRuleForm{{provide._id}}.startDate.$error.min)">
+													{{ 'Product.CreateRule.StartDateError' | translate }}
+												</div>
+												<div class="input-group">
+													<label for="periodicity">{{ 'Product.CreateRule.Periodicity' | translate }}*</label>
+													<input id="periodicity" name="periodicity" type="number" class="form-control" ng-model="rule.periodicity" min="1" required>
+												</div>
+												<div class="alert alert-danger" ng-show="createRuleForm{{provide._id}}.periodicity.$dirty && (createRuleForm{{provide._id}}.periodicity.$error.required || createRuleForm{{provide._id}}.periodicity.$error.min)">
+													{{ 'Product.CreateRule.PeriodicityError' | translate }}
+												</div>
+												<div class="input-group">
+													<label for="quantity">{{ 'Product.CreateRule.Quantity' | translate }}*</label>
+													<input id="quantity" name="quantity" type="number" class="form-control" ng-model="rule.quantity" min="1" required>
+												</div>
+												<div class="alert alert-danger" ng-show="createRuleForm{{provide._id}}.quantity.$dirty && (createRuleForm{{provide._id}}.quantity.$error.required || createRuleForm{{provide._id}}.quantity.$error.min)">
+													{{ 'Product.CreateRule.QuantityError' | translate }}
+												</div>
+
+												<button id="createrule-submit" type="submit" name="submit" class="grey">{{ 'Global.Submit' | translate }}</button>
+											</form>
+										</div>
+									</div>
 								</div>
-								<form action="/api/product/updateProductImage" method="post" enctype="multipart/form-data" id="upload-img-form" class="dropzone" restrict access="admin">
-									<div class="fallback">
-										<input type="file" />
-									</div>
-								</form>
-							</li>
-						</ul>
-						<div class="clearfix"></div>
-					</div>		
-				</div>
-				<div class="desc1 span_3_of_2">
-					<!-- Rating Stars Box -->
-					<div ng-if="!userHasPurchased" class="rating">
-						<span ng-repeat="n in [1, 2, 3, 4, 5] track by $index" class="glyphicon" ng-class="{'glyphicon-star': value >= $index + 1, 'glyphicon-star-empty': value < $index + 1}"></span>
-					</div>
+							</div>
+						</div>
 
-					<div ng-if="userHasPurchased">
-						<uib-rating ng-model="value" class="rating" max="max" ng-click="rateProduct()"></uib-rating>
+						<p class="m_3" ng-show="out_suppliers.length===0">{{'Products.Supplier.Empty' | translate}}</p>
+						<table class="table table-responsive table-bordered table-hover table-provides" ng-show="out_suppliers.length>0">
+							<thead>
+								<th>{{'Products.Supplier.Name' | translate}}</th>
+								<th>{{'Products.Supplier.Reputation' | translate}}</th>
+								<th>{{'Products.Price' | translate}}</th>
+							</thead>
+							<tbody>
+								<tr ng-repeat="provide in out_suppliers">
+									<td class="name">
+										{{provide.supplierName}}
+									</td>
+									<td title="{{provide.reputation}}" class="reputation">
+										<span ng-if="!provide.userHasPurchased" ng-repeat="n in [1, 2, 3, 4, 5] track by $index" class="glyphicon" ng-class="{'glyphicon-star': provide.reputation >= $index + 1, 'glyphicon-star-empty': provide.reputation < $index + 1}"></span>
+										<div ng-if="provide.userHasPurchased" class="provide-rating">
+											<uib-rating ng-model="provide.reputation" class="rating_supplier" max="max" ng-click="rateProvide(provide._id, provide.reputation)"></uib-rating>
+										</div>
+									</td>
+									<td class="row-price">
+										{{provide.price | number:2}} €
+									</td>
+									<td ng-if="role=='customer'" class="add-to-cart">
+										<div class="btn_form" >
+											<form class="btn_form">
+												<input id="cart-btn" type="submit" ng-click="addToCart(provide._id)" value="{{ 'Products.AddToCart' | translate }}" title="" />
+											</form>
+										</div>
+									</td>
+									<td ng-if="role=='customer'" class="create-rule">
+										<p ng-show="provide.customerHasRule">{{ 'Product.AlreadyHasRule' | translate }} <a href="/mypurchasingrules">{{ 'Header.Account.MyPurchasingRules' | translate }}</a></p>
+										<button ng-if="!provide.customerHasRule" type="button" class="btn btn-primary" data-toggle="modal" data-target="#create-rule-{{provide._id}}">{{ 'Product.CreateRule.Title' | translate }}</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
-					<!--<div class="rating" data-stars="{{product.rating}}"></div>-->
-					<h3 class="m_3" editable-text="product.name" e-maxlength="100" e-form="textNameForm" e-placeholder="{{ 'Product.Create.Name' | translate }}" onbeforesave="updateProduct('name', $data)">{{product.name}}</h3>
-					<p class="price">{{product.minPrice}} - {{product.maxPrice}} €</p>
-					<p class="m_4">{{product.code}}</p>
-					<p class="m_text2" editable-textarea="product.description" e-form="textDescForm" e-rows="10" e-cols="70" e-maxlength="1000" e-placeholder="{{ 'Product.Create.Description' | translate }}" onbeforesave="updateProduct('description', $data)">{{product.description}}</p>
-					<p class="m_3" ng-show="out_suppliers.length===0">{{'Products.Supplier.Empty' | translate}}</p>
-					<table class="table table-responsive table-bordered table-hover" ng-show="out_suppliers.length>0">
-						<thead>
-							<th>{{'Products.Supplier.Name' | translate}}</th>
-							<th>{{'Products.Supplier.Reputation' | translate}}</th>
-							<th>{{'Products.Price' | translate}}</th>
-						</thead>
-						<tbody>
-							<tr ng-repeat="provide in out_suppliers">
-								<td>{{provide.supplierName}}</td>
-								<td title="{{provide.reputation}}" style="width:17%">
-									<span ng-if="!provide.userHasPurchased" ng-repeat="n in [1, 2, 3, 4, 5] track by $index" class="glyphicon" ng-class="{'glyphicon-star': provide.reputation >= $index + 1, 'glyphicon-star-empty': provide.reputation < $index + 1}"></span>
-									<div ng-if="provide.userHasPurchased" class="provide-rating">
-										<uib-rating ng-model="provide.reputation" class="rating_supplier" max="max" ng-click="rateProvide(provide._id, provide.reputation)"></uib-rating>
-									</div>
-								</td>
-								<td>{{provide.price | number:2}} €</td>
-								<td style="width:10%" ng-if="role=='customer'">
-									<div class="btn_form" >
-										<form class="btn_form">
-											<input id="cart-btn" type="submit" ng-click="addToCart(provide._id)" value="{{ 'Products.AddToCart' | translate }}" title="" />
-										</form>
-									</div>
-								</td>
-							</tr>
-						</tbody>
-					</table>
 				</div>
 
-				<div class="clear"></div>	
 				<div class="supply-form account_form" restrict access="supplier">
 					<h4 class="title">{{ 'Product.Provide' | translate }}</h4>
 					<form method="post" name="provideProductForm" id="submit-form" ng-submit="submitProvideProduct()" class="product_form" ng-show="!supplierProvides" novalidate>

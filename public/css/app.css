@@ -356,6 +356,37 @@ div.delete-provide {
 	}
 }
 
+/*Provides table in product details*/
+table.table-provides td.name{
+	width: 20%;
+}
+
+table.table-provides td.reputation{
+	width: 14%;
+}
+
+table.table-provides td.row-price{
+	width: 13%;
+}
+
+table.table-provides td.create-rule{
+	width: 35%;
+}
+
+.modal {
+	z-index: 10000;
+}
+
+/*Create rule form style*/ 
+form.create-rule_form {
+	padding: 20px;	
+}
+
+form.create-rule_form div.input-group {
+	width: auto;
+}
+
+
 /*Rating chart*/
 
 #chart {
@@ -364,4 +395,3 @@ div.delete-provide {
 
 .nv-label text{
     font-family: Droid Sans;
-}

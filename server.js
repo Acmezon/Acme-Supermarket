@@ -49,6 +49,10 @@ if (env === 'production') {
 //Database connection
 db_utils.connect();
 
+//Automatic purchases
+var scheduledTasks = require('./routes/scheduled_tasks');
+scheduledTasks.scheduleAutomaticPurchases();
+
 var api = require('./routes/api');
 
 /**
@@ -104,6 +108,10 @@ app.delete('/api/purchase', api.Purchases.deletePurchase);
 // Purchase lines
 app.get('/api/purchaselines/bypurchase/:id', api.PurchaseLines.getPurchaseLinesByPurchaseId);
 
+//Purchasing rules
+app.post('/api/createPurchasingRule', api.PurchasingRules.createPurchasingRule);
+app.delete('/api/purchasingrule', api.PurchasingRules.removePurchasingRule);
+
 // Suppliers
 app.get('/api/supplier/principal', api.Supplier.getSupplierPrincipal);
 app.get('/api/supplierName/:id', api.Supplier.getSupplierName);
@@ -157,6 +165,9 @@ app.get('/api/socialMedia/stop', api.SocialMedia.stopTwitterScrapper);
 
 //Recommender server
 app.get('/api/recommender/checkStatus', api.RecommenderServer.checkStatus);
+
+//Test
+app.get('/logs/test', scheduledTasks.loggerTest);
 
 // redirect all others to the index (HTML5 history) Use in production only
 app.get('*', routes.index);
