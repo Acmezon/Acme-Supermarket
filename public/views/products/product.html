@@ -113,7 +113,7 @@
 									</td>
 									<td ng-if="role=='customer'" class="create-rule">
 										<p ng-show="provide.customerHasRule">{{ 'Product.AlreadyHasRule' | translate }} <a href="/mypurchasingrules">{{ 'Header.Account.MyPurchasingRules' | translate }}</a></p>
-										<button ng-show="!provide.customerHasRule" type="button" class="btn btn-primary" data-toggle="modal" data-target="#create-rule-{{provide._id}}">{{ 'Product.CreateRule.Title' | translate }}</button>
+										<button ng-if="!provide.customerHasRule" type="button" class="btn btn-primary" data-toggle="modal" data-target="#create-rule-{{provide._id}}">{{ 'Product.CreateRule.Title' | translate }}</button>
 									</td>
 								</tr>
 							</tbody>
