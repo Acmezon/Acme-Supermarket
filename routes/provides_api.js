@@ -2,6 +2,7 @@ var db_utils = require('./db_utils'),
 	Provide = require('../models/provide'),
 	SupplierService = require('./services/service_suppliers'),
 	ReputationService = require('./services/service_reputation'),
+	PurchasingRuleService = require('./services/service_purchasing_rules'),
 	ActorService = require('./services/service_actors'),
 	CustomerService = require('./services/service_customers'),
 	async = require('async');
@@ -44,8 +45,12 @@ exports.getProvidesByProductId = function(req, res) {
 									SupplierService.userHasPurchased(cookie, jwtKey, provide.id, function (hasPurchased) {
 										provide_obj['userHasPurchased'] = hasPurchased;
 										
-										final_provides.push(provide_obj);
-										callback();
+										PurchasingRuleService.customerHasRule(cookie, jwtKey, provide.id, function (hasRule) {
+											provide_obj['customerHasRule'] = hasRule;
+
+											final_provides.push(provide_obj);
+											callback();
+										});
 									});
 								});
 							}

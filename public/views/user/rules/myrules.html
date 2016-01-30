@@ -7,10 +7,10 @@
 	<h2 class="head">{{'Profile.PurchasingRules' | translate}}</h2> 
 	
 	<div ng-if="$data.length>0" style="z-index:100000; position:relative">
-
-		<table ng-table="tableParams" class="table" show-filter="true">
+		<div ng-repeat="rule in $data">
+			<!-- Modal content-->
 			<div class="modal fade" id="delete-{{rule._id}}" role="dialog" >
-				<div class="modal-dialog modal-sm">
+				<div class="modal-dialog modal-lg">
 				<!-- Modal content-->
 					<div class="modal-content">
 						<div class="modal-header">
@@ -26,11 +26,14 @@
 							</button>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">{{'PurchasingRule.Close' | translate}}</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">{{'PurchasingRule.Delete.Close' | translate}}</button>
 						</div>
 					</div>
 				</div>
 			</div>
+		</div>
+
+		<table ng-table="tableParams" class="table" show-filter="true">		
 			<tr ng-repeat="rule in $data" demo-tracked-table-row="rule">
 				<td data-title="'PurchasingRule.StartDate' | translate" filter="{startDate: 'text'}" sortable="'startDate'" demo-tracked-table-cell style="width:8%">
 					{{rule.startDate | date:'dd-MM-yyyy'}}

@@ -295,7 +295,17 @@
 		"Provide" : "Proveer este producto",
 		"ProvidePrice" : "Precio del producto",
 		"ProvideError" : "No se ha podido guardar el producto. Por favor, inténtelo de nuevo más tarde",
-		"DeleteProvide" : "Dejar de proveer este producto"
+		"DeleteProvide" : "Dejar de proveer este producto",
+		"AlreadyHasRule" : "Ya tienes una regla para comprar este producto. Quizás quieres ir a",
+		"CreateRule" : {
+			"StartDate" : "Fecha de inicio",
+			"StartDateError" : "La fecha de inicio es obligatoria y debe ser futura",
+			"Periodicity" : "Periodicidad",
+			"PeriodicityError" : "La periodicidad es obligatoria y debe ser extrictamente positiva",
+			"Quantity" : "Cantidad",
+			"QuantityError" : "La cantidad es obligatoria y debe ser extrictamente positiva",
+			"Title" : "Crear regla de compra"
+		}
 	},
 	"ShoppingCart": {
 		"Title" : "Carrito de la compra",
@@ -476,6 +486,13 @@
 		"Product" : "Producto",
 		"Quantity" : "Cantidad",
 		"NextRun" : "Siguiente compra el:",
-		"Remove" : "Eliminar"
+		"Remove" : "Eliminar",
+		"Delete" : {
+			"Question" : "¿Está seguro de que desea borrar esta regla? Esto no se puede deshacer.",
+			"Yes" : "Sí",
+			"No" : "No",
+			"Close" : "Cerrar",
+			"Error" : "Se produjo un error al eliminar la regla. Por favor inténtelo de nuevo más tarde."
+		}
 	}
 }

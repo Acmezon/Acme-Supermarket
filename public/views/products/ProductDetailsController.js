@@ -276,4 +276,42 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 		});		
 	}
 
+	$scope.date = new Date();
+
+	$scope.submitCreateRule = function (provide_id, form) {
+		if(form.$invalid) {
+			return false;
+		}
+
+		// close pop up
+		var modalInstance = $('#create-rule-'+provide_id);
+		modalInstance.modal('hide');
+
+		// Aftter 200ms modal closed, delete from db
+		setTimeout(
+			function() {
+				$http({ url: '/api/createPurchasingRule', 
+					method: 'POST', 
+					data: { 
+						rule: {
+							periodicity: form.periodicity.$viewValue,
+							quantity: form.quantity.$viewValue,
+							startDate: new Date(Date.parse(form.startDate.$viewValue))
+						},
+						provide_id: provide_id
+					},
+				}).then(function success(response) {
+					$window.location.reload();
+				}, function error (response) {
+					console.log(response);
+					$translate(['Product.CreateRule.Error']).then(function (translation) {
+						ngToast.create({
+							className: 'error',
+							content: translation['Product.CreateRule.Error']
+						});
+					});
+				});
+			}, 200
+		);
+	};
 }]);
