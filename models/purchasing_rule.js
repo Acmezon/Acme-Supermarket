@@ -19,9 +19,6 @@ module.exports = mongoose.model('PurchasingRule', purchasingRuleSchema);
 
 purchasingRuleSchema.pre('save', function (next) {
 	var nextRun = new Date(this.startDate.getTime());
-	var periodicity = this.periodicity;
-
-	nextRun.setDate(nextRun.getDate() + parseInt(periodicity));
 	
 	this.nextRun = nextRun;
 
