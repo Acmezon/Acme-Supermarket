@@ -49,6 +49,10 @@ if (env === 'production') {
 //Database connection
 db_utils.connect();
 
+//Automatic purchases
+var scheduledTasks = require('./routes/scheduled-tasks');
+scheduledTasks.scheduleAutomaticPurchases();
+
 var api = require('./routes/api');
 
 /**
