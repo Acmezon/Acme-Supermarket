@@ -44,6 +44,7 @@ exports.getCustomers = function (req, res) {
 
 	var cookie = req.cookies.session;
 	var jwtKey = req.app.get('superSecret');
+
 	// Check principal is an admin
 	ActorService.getUserRole(cookie, jwtKey, function (role) {
 		if (role=='admin') {
@@ -119,8 +120,6 @@ exports.newCustomer = function (customer, callback) {
 			city: _city,
 			phone: _phone
 		});
-
-		console.log(newCustomer)
 
 		newCustomer.save(function (err) {
 			callback(db_utils.handleInsertErrors(err));

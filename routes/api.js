@@ -16,7 +16,8 @@ var Customer = require('./customers_api'),
 	RecommenderServer = require('./recommender_server_api'),
 	Management = require('./management'),
 	db_utils = require('./db_utils'),
-	i18n = require('./i18n');
+	i18n = require('./i18n'),
+	Tests = require('./test');
 
 exports.Customer = Customer;
 exports.Admin = Admin;
@@ -37,3 +38,4 @@ exports.db_utils = db_utils;
 exports.i18n = i18n;
 exports.SocialMedia = SocialMedia;
 exports.RecommenderServer = RecommenderServer;
+exports.Tests = Tests;

@@ -168,6 +168,7 @@ app.get('/api/recommender/checkStatus', api.RecommenderServer.checkStatus);
 
 //Test
 app.get('/logs/test', scheduledTasks.loggerTest);
+app.get('/api/testCookie', api.Tests.testCookie);
 
 // redirect all others to the index (HTML5 history) Use in production only
 app.get('*', routes.index);

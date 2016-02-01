@@ -738,6 +738,8 @@ exports.getProduct = function(req, res) {
 
 	var jwtKey = req.app.get('superSecret');
 	var cookie = req.cookies.session;
+
+	console.log(cookie);
 	// Check authenticated
 	ActorService.getUserRole(cookie, jwtKey, function(role) {
 		if (role == 'customer' || role == 'admin' || role == 'supplier') {
