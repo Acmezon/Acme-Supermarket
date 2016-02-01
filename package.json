@@ -27,6 +27,7 @@
     "shuffle-array": "^0.1.2",
     "supertest": ">=1.1.0",
     "synchronize": "^0.9.14",
-    "validator": "^4.5.0"
+    "validator": "^4.5.0",
+    "winston": "^2.1.1"
   }
 }
