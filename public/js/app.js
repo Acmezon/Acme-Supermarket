@@ -322,14 +322,14 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			templateUrl: 'views/checkout/confirm.html',
 			controller: 'CheckoutConfirmCtrl',
 			resolve: {
-				customer: checkCustomer
+				loggedin: checkLoggedin
 			}
 		}).
 		when('/checkout/error', {
 			templateUrl: 'views/checkout/confirm.html',
 			controller: 'CheckoutConfirmCtrl',
 			resolve: {
-				customer: checkCustomer
+				loggedin: checkLoggedin
 			}
 		}).
 		when('/mypurchases', {

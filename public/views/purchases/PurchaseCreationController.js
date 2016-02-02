@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('acme_supermarket').registerCtrl('PurchaseCreationCtrl', ['$scope', '$http', '$translate', 'ngToast', function ($scope, $http, $translate, ngToast) {
+angular.module('acme_supermarket').registerCtrl('PurchaseCreationCtrl', ['$scope', '$http', '$translate', 'ngToast', '$window', function ($scope, $http, $translate, ngToast, $window) {
 
 	$scope.shoppingcart = [];
 	$scope.product_id = 1;
@@ -103,8 +103,11 @@ angular.module('acme_supermarket').registerCtrl('PurchaseCreationCtrl', ['$scope
 				shoppingcart : shoppingcart
 			}
 		}).
-		then (function success (response) {
-
+		then(function success(response) {
+			var purchase = response.data;
+			$window.location.href = '/checkout/success/' + purchase._id;
+		}, function error(response) {
+			$window.location.href = '/checkout/error';
 		});
 
 	}
