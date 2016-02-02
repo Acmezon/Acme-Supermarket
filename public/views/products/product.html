@@ -141,13 +141,13 @@
 											</div>
 										</td>
 										<td>
-											<button class="btn btn-primary" ng-disabled="!price || !supplier_id" ng-click="adminCreateProvide()"><span class="glyphicon glyphicon-ok"></span></button>
+											<button id="add-provide" class="btn btn-primary" ng-disabled="!price || !supplier_id" ng-click="adminCreateProvide()"><span class="glyphicon glyphicon-ok"></span></button>
 										</td>
 									</tr>
 								</form>
 								<tr ng-show="!isAdding">
 									<td colspan="3">
-										<button class="btn btn-primary" ng-click="isAdding=true">
+										<button id="new-provide-admin" class="btn btn-primary" ng-click="isAdding=true">
 											<span class="glyphicon glyphicon-plus"></span>
 										</button>
 									</td>
