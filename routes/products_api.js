@@ -14,7 +14,8 @@ var Authentication = require('./authentication'),
 	CustomerService = require('./services/service_customers'),
 	ProductService = require('./services/service_products'),
 	RecommenderService = require('./services/service_recommender_server'),
-	async = require('async');
+	async = require('async'),
+	mongoose = require('mongoose');
 
 // Returns all objects of the system, filtered
 exports.getAllProductsFiltered = function(req, res) {
@@ -166,7 +167,8 @@ exports.getAllProductsFiltered = function(req, res) {
 					'avgRating': 1
 				})
 				.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
-				.exec(function(err, products) {
+				.exec(function (err, products) {
+					console.log(products);
 					if (err) {
 						res.status(500).json({
 							success: false,
@@ -699,7 +701,6 @@ exports.getProduct = function(req, res) {
 	var jwtKey = req.app.get('superSecret');
 	var cookie = req.cookies.session;
 
-	console.log(cookie);
 	// Check authenticated
 	ActorService.getUserRole(cookie, jwtKey, function(role) {
 		if (role == 'customer' || role == 'admin' || role == 'supplier') {
@@ -837,6 +838,7 @@ exports.createProduct = function(req, res) {
 
 	var jwtKey = req.app.get('superSecret');
 	var cookie = req.cookies.session;
+
 	// Check is admin
 	ActorService.getUserRole(cookie, jwtKey, function(role) {
 		if (role == 'admin') {
@@ -846,7 +848,7 @@ exports.createProduct = function(req, res) {
 				'description': "tmp",
 				'avgRating': 0
 			});
-			product.save(function(err, saved) {
+			product.save(function (err, saved) {
 				if (err) {
 					console.log(err);
 					res.sendStatus(500);
@@ -874,13 +876,19 @@ exports.createProduct = function(req, res) {
 						return;
 					}
 
+					//Check if fields are present
+					if(req.body.name == undefined || req.body.description == undefined) {
+						res.sendStatus(500);
+						return;
+					}
+
 					Product.findByIdAndUpdate(saved.id, {
 						$set: {
 							"name": req.body.name,
 							"description": req.body.description,
 							"image": filename
 						}
-					}, function(err, product) {
+					}, function (err, product) {
 						if (err) {
 							console.log(err);
 
@@ -915,7 +923,7 @@ exports.updateProductRating = function(req, res) {
 			});
 			return;
 		} else {
-			CustomerService.checkPurchasing(user, product_id, function(response) {
+			CustomerService.checkPurchasing(user, product_id, function (response) {
 				if (!response) {
 					res.sendStatus(401)
 					return;
@@ -923,7 +931,7 @@ exports.updateProductRating = function(req, res) {
 				Rate.findOne({
 					customer_id: user.id,
 					product_id: product_id
-				}, function(err, rate) {
+				}, function (err, rate) {
 					if (err) {
 						res.sendStatus(503);
 						return;
@@ -934,23 +942,24 @@ exports.updateProductRating = function(req, res) {
 								$set: {
 									value: rating_value
 								}
-							}, function(err, updated) {
+							}, function (err, updated) {
 								if (err) {
 									res.sendStatus(503);
 									return;
 								} else {
 									// Update average rating and recalculate recommendations
-									ProductService.updateAverageRating(product_id, function(success) {
+									ProductService.updateAverageRating(product_id, function (success) {
 										if (!success) {
 											console.log("Ratings not updated");
+											res.sendStatus(503);
 										} else {
-											RecommenderService.recommendRates(user.id, function(err, response) {
+											RecommenderService.recommendRates(user.id, function (err, response) {
 												if (err || response.statusCode == 500) {
 													console.log("No recommendations updated");
-												} else {
-													res.sendStatus(200);
-													return;
 												}
+
+												res.sendStatus(200);
+												return;
 											});
 										}
 									});
@@ -972,14 +981,15 @@ exports.updateProductRating = function(req, res) {
 									ProductService.updateAverageRating(product_id, function(success) {
 										if (!success) {
 											console.log("Ratings not updated");
+											res.sendStatus(503);
 										} else {
 											RecommenderService.recommendRates(user.id, function(err, response) {
 												if (err || response.statusCode == 500) {
 													console.log("No recommendation updated")
-												} else {
-													res.sendStatus(200);
-													return;
 												}
+
+												res.sendStatus(200);
+												return;
 											});
 										}
 									});
@@ -1059,7 +1069,7 @@ exports.deleteProduct = function(req, res) {
 			if (product_id != undefined) {
 				Product.findOne({
 					_id: product_id
-				}, function(err, product) {
+				}, function (err, product) {
 					if (err) {
 						console.log(err);
 						res.sendStatus(500);

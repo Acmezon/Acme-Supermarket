@@ -488,13 +488,11 @@
 		"Product" : "Product",
 		"Quantity" : "Quantity",
 		"NextRun" : "Next purchase will be at",
-<<<<<<< HEAD
 		"Remove" : "Remove"
 	},
 	"Reputations" : {
 		"Title" : "User rating of your product",
-		"Empty" : "No ratings yet."
-=======
+		"Empty" : "No ratings yet.",
 		"Remove" : "Remove",
 		"Delete" : {
 			"Question" : "Are you sure you want to delete this purchasing rule? This can not be undone.",
@@ -503,6 +501,5 @@
 			"Close" : "Close",
 			"Error" : "Error deleting the rule. Please try again later."
 		}
->>>>>>> 6ca6255b9ec1d6f36414c05c1604af2bc9f44eb0
 	}
 }
