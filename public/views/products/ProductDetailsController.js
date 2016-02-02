@@ -138,7 +138,6 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 									});
 
 								}
-								//console.log($scope.reputations)
 							});
 						}
 					});

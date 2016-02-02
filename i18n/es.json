@@ -374,7 +374,9 @@
 			"Question" : "¿Seguro que quieres borrar a este usuario?",
 			"Yes" : "Sí",
 			"No"  :"No"
-		}
+		},
+		"NotFound" : "Cliente no encontrado",
+		"CreditCardNotFound" : "Tarjeta de crédito no encontrada"
 	},
 	"Dashboard" : {
 		"Title" : "Dashboard",

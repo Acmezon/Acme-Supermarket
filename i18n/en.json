@@ -375,7 +375,9 @@
 			"Question" : "Are you sure you want to remove this customer",
 			"Yes" : "Sí",
 			"No"  :"no"
-		}
+		},
+		"NotFound" : "Customer not found",
+		"CreditCardNotFound" : "Credit card not found"
 	},
 	"Dashboard" : {
 		"Title" : "Dashboard",

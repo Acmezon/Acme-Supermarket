@@ -357,6 +357,112 @@ exports.purchase = function (req, res) {
 	}
 };
 
+exports.purchaseAdmin = function (req, res) {
+	console.log('Function-purchasesApi-purchaseProcessAdmin');
+	var session = req.cookies.session;
+	var jwtKey = req.app.get('superSecret');
+
+	var billingMethod = parseInt(req.body.billingMethod) || -1,
+		customer_id = req.body.customer_id,
+		shoppingcart = req.body.shoppingcart;
+	
+
+	ActorService.getUserRole(session, jwtKey, function (role) {
+		if (role=='customer' || role=='supplier' || role=='admin') {
+			if (role=='admin') {
+				if (billingMethod != 1 && billingMethod != 2 && billingMethod != 3) {
+					// Error bad params
+					res.status(403).send({success: false})
+				} else {
+					// CONTINUE
+					var time;
+					switch (billingMethod) {
+						case 1: 
+							time = 5;
+							break;
+						case 2:
+							time = 15;
+							break;
+						case 3:
+							time = 30;
+							break;
+					}
+
+					var day = new Date();
+					day.setDate(day.getDate() + time); 
+
+					// Create purchase
+					var newPurchase = Purchase({
+						deliveryDate : day,
+						customer_id : customer_id
+					});
+
+					// Save it
+					newPurchase.save(function (err, newPurchase) {
+						if (err){
+							// Internal error
+							res.status(500).send({success: false});
+						} else {
+							// CONTINUE
+							// For each of the provides in shopping cart
+							Object.keys(shoppingcart).forEach(function(cookie_id) {
+								ProvideService.getProvideById(cookie_id, function (provide) {
+									if (provide) {
+										// CONTNUE
+										// Create  purchase line
+										var newPurchaseLine = PurchaseLine({
+											quantity: shoppingcart[cookie_id],
+											price: provide.price * shoppingcart[cookie_id],
+											purchase_id: newPurchase._id,
+											provide_id: provide._id,
+											product_id: provide.product_id
+										});
+
+										// Save it
+										newPurchaseLine.save(function (err) {
+											if (err) {
+												res.status(500).send({success: false});
+											} else {
+												// CONTINUE
+												// Next loop: Next provide
+											}
+										});
+
+										PurchaseService.storePurchaseInRecommendation(customer_id, provide.product_id);
+									} else {
+										// Internal error: Provide no longer exists
+										res.status(503).send({success: false, message: 'Product by supplier no longer exists'});
+										// Error: Rollback the purchase saved
+										Purchase.remove({ _id: newPurchase._id });
+
+									}
+								});
+							});
+							// FINISH LOOP
+							// FINISH PURCHASE PROCESS
+							// RECALCULATE RECOMMENDATION
+							RecommenderService.recommendPurchases(customer_id, function (err, response){
+								if(err || response.statusCode == 500) {
+									console.log("No recommendation updated")
+								} else {
+									console.log("Recommendations updated")
+								}
+							});
+							res.status(200).send(newPurchase);
+						}
+					});
+				}
+			} else {
+				// Doesn't have permissions
+				res.status(403).json({success: false})
+			}
+		} else {
+			// Not authenticated
+			res.status(401).json({success: false})
+		}
+	});
+}
+
 // Delete a purchase
 exports.deletePurchase = function (req, res) {
 	var _code = req.body.id;

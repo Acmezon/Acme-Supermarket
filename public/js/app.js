@@ -348,6 +348,14 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			},
 			activetab: 'management'
 		}).
+		when('/purchase/create', {
+			templateUrl: 'views/purchases/purchase-creation.html',
+			controller: 'PurchaseCreationCtrl',
+			resolve: {
+				admin: checkAdmin
+			},
+			activetab: 'management'
+		}).
 		when('/purchase/:id', {
 			templateUrl: 'views/purchases/purchase.html',
 			controller: 'PurchaseDetailsCtrl',

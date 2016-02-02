@@ -7,7 +7,7 @@ var db_utils = require('./db_utils'),
 	CustomerService = require('./services/service_customers'),
 	async = require('async');
 
-// Devuelve una lista de Provides que tienen un producto con id
+// Returns a provides list by product id. Includes the supplier name.
 exports.getProvidesByProductId = function(req, res) {
 	var _code = req.params.id;
 
@@ -16,7 +16,7 @@ exports.getProvidesByProductId = function(req, res) {
 	var jwtKey = req.app.get('superSecret')
 	// Check authenticated
 	ActorService.getUserRole(cookie, jwtKey, function (role) {
-		if (role=='admin' || role=='customer' | role=='supplier') {
+		if (role=='admin' || role=='customer' || role=='supplier') {
 			// Get product's provides
 			Provide.find({product_id: _code, deleted: false },function (err,provides){
 				if(err){
