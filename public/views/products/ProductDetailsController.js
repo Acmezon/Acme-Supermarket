@@ -374,8 +374,8 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 	// Supplier deletes a provide
 	$scope.deleteProvide = function (){
 		$http({
-			method: 'GET',
-			url: '/api/provide/bysupplier/byproduct/delete/' + id
+			method: 'DELETE',
+			url: '/api/provide/bysupplier/byproduct/' + id
 		}).
 		then(function success(response) {
 			$window.location.reload();

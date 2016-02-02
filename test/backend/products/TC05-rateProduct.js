@@ -4,6 +4,7 @@ var assert = require('assert');
 
 describe("Edit product rate API url", function (){
 	var browser = request.agent();
+	var product_name = "000000000000000AAA";
 
 	beforeEach(function (done) {
 		browser
@@ -16,7 +17,7 @@ describe("Edit product rate API url", function (){
 
 	it("should't let an anonymous user edit a product rate", function (done){
 		browser
-		.get("http://localhost:3000/api/products/limit/" + 30)
+		.post("http://localhost:3000/api/products/filtered")
 		.end(function (err, res){
 			res.status.should.be.equal(200);
 
@@ -24,13 +25,15 @@ describe("Edit product rate API url", function (){
 
 			for(var i = 0; i < L; i++) {
 				var product = res.body[i];
-				if(product.name == "0000AAA") {
+				if(product.name == product_name) {
+					var product_id = product._id;
+
 					browser
 					.get('http://localhost:3000/api/signout')
 					.end(function (err, res) {
 						browser
 						.post('http://localhost:3000/api/product/updateProductRating')
-						send({ id : product._id, rate : 1})
+						.send({ id : product_id, rating : 1})
 						.end(function (err, res) {
 							res.status.should.be.equal(403);
 							res.body.success.should.be.false;
@@ -44,7 +47,7 @@ describe("Edit product rate API url", function (){
 
 	it("should't let customer edit a product rate due to not have purchased it", function (done){
 		browser
-		.get("http://localhost:3000/api/products/limit/" + 30)
+		.post("http://localhost:3000/api/products/filtered")
 		.end(function (err, res){
 			res.status.should.be.equal(200);
 
@@ -52,14 +55,16 @@ describe("Edit product rate API url", function (){
 
 			for(var i = 0; i < L; i++) {
 				var product = res.body[i];
-				if(product.name == "0000AAA") {
+				if(product.name == product_name) {
+					var product_id = product._id;
+
 					browser
 					.post('http://localhost:3000/api/signin')
 					.send({ email : 'alex.gallardo@example.com', password: 'customer'})
 					.end(function (err, res) {
 						browser
 						.post('http://localhost:3000/api/product/updateProductRating')
-						send({ id : product._id, rate : 1})
+						.send({ id : product_id, rating : 1})
 						.end(function (err, res) {
 							res.status.should.be.equal(401);
 							done();
@@ -72,7 +77,7 @@ describe("Edit product rate API url", function (){
 
 	it("should't let a supplier edit a product rate", function (done){
 		browser
-		.get("http://localhost:3000/api/products/limit/" + 30)
+		.post("http://localhost:3000/api/products/filtered")
 		.end(function (err, res){
 			res.status.should.be.equal(200);
 
@@ -80,16 +85,18 @@ describe("Edit product rate API url", function (){
 
 			for(var i = 0; i < L; i++) {
 				var product = res.body[i];
-				if(product.name == "0000AAA") {
+				if(product.name == product_name) {
+					var product_id = product._id;
+
 					browser
 					.post('http://localhost:3000/api/signin')
 					.send({ email : 'ismael.perez@example.com', password: 'supplier'})
 					.end(function (err, res) {
 						browser
 						.post('http://localhost:3000/api/product/updateProductRating')
-						send({ id : product._id, rate : 1})
+						.send({ id : product_id, rating : 1})
 						.end(function (err, res) {
-							res.status.should.be.equal(401);
+							res.status.should.be.equal(403);
 							done();
 						});
 					});
@@ -100,7 +107,7 @@ describe("Edit product rate API url", function (){
 
 	it("should't let an admin edit a product rate", function (done){
 		browser
-		.get("http://localhost:3000/api/products/limit/" + 30)
+		.post("http://localhost:3000/api/products/filtered")
 		.end(function (err, res){
 			res.status.should.be.equal(200);
 
@@ -108,12 +115,14 @@ describe("Edit product rate API url", function (){
 
 			for(var i = 0; i < L; i++) {
 				var product = res.body[i];
-				if(product.name == "0000AAA") {					
+				if(product.name == product_name) {
+					var product_id = product._id;
+
 					browser
 					.post('http://localhost:3000/api/product/updateProductRating')
-					send({ id : product._id, rate : 1})
+					.send({ id : product_id, rating : 1})
 					.end(function (err, res) {
-						res.status.should.be.equal(401);
+						res.status.should.be.equal(403);
 						done();
 					});
 				}
@@ -133,7 +142,7 @@ describe("Edit product rate API url", function (){
 
 				browser
 				.get("http://localhost:3000/api/purchaselines/bypurchase/" + purchase._id)
-				end(function (err, res) {
+				.end(function (err, res) {
 					var purchase_line = res.body[0];
 
 					browser
@@ -143,7 +152,7 @@ describe("Edit product rate API url", function (){
 
 						browser
 						.post('http://localhost:3000/api/product/updateProductRating')
-						send({ id : product_id, rate : 1})
+						.send({ id : product_id, rating : 1})
 						.end(function (err, res) {
 							res.status.should.be.equal(200);
 

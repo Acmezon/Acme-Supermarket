@@ -1,37 +1,41 @@
+var request = require('superagent');
+var should = require('should');
+var assert = require('assert');
+
 describe('My profile page', function () {
+	var browser = request.agent();
 
-	beforeEach(function() {
-		// Mandatory visit in order to make cookies work
-		browser.driver.get('http://localhost:3000/');
-		// Logout
-		browser.manage().deleteAllCookies();
+	it("shouldn't let an anonymous user view its profile", function (done) {
+		browser
+		.get('http://localhost:3000/api/signout')
+		.end(function (err, res) {
+			browser
+			.get('http://localhost:3000/api/myprofile')
+			.end(function (err, res) {
+				res.status.should.be.equal(401);
+				done();
+			});
+		});
 	});
 
-	it("shouldn't let an anonymous user view its profile", function() {
-		browser.get('http://localhost:3000/myprofile');
+	it("should let a user view its profile", function (done) {
+		browser
+		.post('http://localhost:3000/api/signin')
+		.send( { email : 'ismael.perez@example.com', password : 'supplier' } )
+		.end(function (err, res) {
+			should.not.exist(err);
 
-		expect(element(by.css('div#personalinfo')).isPresent()).toBe(false)
-		// Expect not being in the same site
-		expect(browser.getCurrentUrl()).not.toEqual('http://localhost:3000/myprofile');
-		// Redirecting... Expect being in signin page
-		expect(browser.getCurrentUrl()).toEqual('http://localhost:3000/401');
-	});
+			browser
+			.get('http://localhost:3000/api/myprofile')
+			.end(function (err, res) {
+				should.not.exist(err);
+				
+				res.status.should.be.equal(200);
+				res.body.email.should.be.equal("ismael.perez@example.com");
 
-	it("should let a user view its profile", function() {
-		// Login
-		browser.get('http://localhost:3000/signin');
-
-		element(by.model('email')).sendKeys('ismael.perez@example.com');
-		element(by.model('password')).sendKeys('supplier');
-
-		element(by.css('.button')).click();
-
-		browser.get('http://localhost:3000/myprofile');
-
-		expect(browser.getCurrentUrl()).toEqual('http://localhost:3000/myprofile');
-
-		expect(element(by.css('div#personalinfo')).isPresent()).toBe(true)
-		expect(element(by.css('div#personalinfo>p:nth-child(4)')).getText()).toEqual('ismael.perez@example.com')
+				done();
+			});
+		});
 	});
 
 });

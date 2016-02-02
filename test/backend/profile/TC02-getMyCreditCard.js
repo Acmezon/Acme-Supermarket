@@ -1,38 +1,41 @@
+var request = require('superagent');
+var should = require('should');
+var assert = require('assert');
+
 describe('My profile page', function () {
+	var browser = request.agent();
 
-	beforeEach(function() {
-		// Mandatory visit in order to make cookies work
-		browser.driver.get('http://localhost:3000/');
-		// Logout
-		browser.manage().deleteAllCookies();
+	it("shouldn't let an anonymous user view its credit card", function (done) {
+		browser
+		.get('http://localhost:3000/api/signout')
+		.end(function (err, res) {
+			browser
+			.get('http://localhost:3000/api/mycreditcard')
+			.end(function (err, res) {
+				res.status.should.be.equal(403);
+				done();
+			});
+		});
 	});
 
-	it("shouldn't let an anonymous user view its credit card", function() {
-		browser.get('http://localhost:3000/myprofile');
+	it("should let a customer view its credit card", function (done) {
+		browser
+		.post('http://localhost:3000/api/signin')
+		.send( { email : 'alex.gallardo@example.com', password : 'customer' } )
+		.end(function (err, res) {
+			should.not.exist(err);
 
-		// Expect not being in the same site
-		expect(browser.getCurrentUrl()).not.toEqual('http://localhost:3000/myprofile');
-		// Redirecting... Expect being in signin page
-		expect(browser.getCurrentUrl()).toEqual('http://localhost:3000/401');
-	});
+			browser
+			.get('http://localhost:3000/api/mycreditcard')
+			.end(function (err, res) {
+				should.not.exist(err);
+				
+				res.status.should.be.equal(200);
+				should.exist(res.body.number);
 
-	it("should let a customer view its credit card", function() {
-		// Login
-		browser.get('http://localhost:3000/signin');
-
-		element(by.model('email')).sendKeys('daniel.diaz@example.com');
-		element(by.model('password')).sendKeys('customer');
-
-		element(by.css('.button')).click();
-
-		browser.get('http://localhost:3000/myprofile');
-
-		expect(browser.getCurrentUrl()).toEqual('http://localhost:3000/myprofile');
-
-		expect(element(by.css('div#personalinfo')).isPresent()).toBe(true)
-		expect(element(by.css('div#personalinfo>p:nth-child(4)')).getText()).toEqual('daniel.diaz@example.com')
-		expect(element(by.id('ccdata-tab')).isPresent()).toBe(true);
-		expect(element(by.id('ccdata')).isPresent()).toBe(true);
+				done();
+			});
+		});
 	});
 
 });

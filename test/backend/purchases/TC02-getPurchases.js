@@ -1,56 +1,72 @@
+var request = require('superagent');
+var should = require('should');
+var assert = require('assert');
+
 describe('Purchases list', function () {
+	var browser = request.agent();
 
-	beforeEach(function() {
-		// Mandatory visit in order to make cookies work
-		browser.driver.get('http://localhost:3000/');
-		// Logout
-		browser.manage().deleteAllCookies();
+	it("shouldn't let an anonymous user get the /purchases list", function (done){
+		browser
+		.get('http://localhost:3000/api/signout')
+		.end(function (err, res) {
+			browser
+			.post('http://localhost:3000/api/purchases/filtered')
+			.send({ sort: 'paymentDate', order : -1 })
+			.end(function (err, res) {
+
+				res.status.should.be.equal(401);
+				done();
+			});
+		});
 	});
 
-	it("shouldn't let an anonymous user get the /purchases list", function (){
-		browser.get('http://localhost:3000/purchases');
+	it("shouldn't let a customer get the /purchases list", function (done){
+		browser
+		.post('http://localhost:3000/api/signin')
+		.send( { email : 'alex.gallardo@example.com', password : 'customer' } )
+		.end(function (err, res) {
 
-		expect(browser.getCurrentUrl()).toEqual('http://localhost:3000/401');
+			browser
+			.post('http://localhost:3000/api/purchases/filtered')
+			.send({ sort: 'paymentDate', order : -1 })
+			.end(function (err, res) {
+				res.status.should.be.equal(403);
+				done();
+			});
+		});
 	});
 
-	it("shouldn't let a customer get the /purchases list", function (){
-		browser.get('http://localhost:3000/signin');
+	it("shouldn't let a supplier get the /purchases list", function (done){
+		browser
+		.post('http://localhost:3000/api/signin')
+		.send( { email : 'ismael.perez@example.com', password : 'supplier' } )
+		.end(function (err, res) {
 
-		element(by.model('email')).sendKeys('daniel.diaz@example.com');
-		element(by.model('password')).sendKeys('customer');
-
-		element(by.css('.button')).click();
-
-		browser.get('http://localhost:3000/purchases');
-		
-		expect(browser.getCurrentUrl()).toEqual('http://localhost:3000/403');
+			browser
+			.post('http://localhost:3000/api/purchases/filtered')
+			.send({ sort: 'paymentDate', order : -1 })
+			.end(function (err, res) {
+				res.status.should.be.equal(403);
+				done();
+			});
+		});
 	});
 
-	it("shouldn't let a supplier get the /purchases list", function (){
-		browser.get('http://localhost:3000/signin');
+	it("should let an admin get the /purchases list", function (done){
+		browser
+		.post('http://localhost:3000/api/signin')
+		.send( { email : 'admin@mail.com', password : 'administrator' } )
+		.end(function (err, res) {
 
-		element(by.model('email')).sendKeys('ismael.perez@example.com');
-		element(by.model('password')).sendKeys('supplier');
+			browser
+			.post('http://localhost:3000/api/purchases/filtered')
+			.send({ sort: 'paymentDate', order : -1 })
+			.end(function (err, res) {
+				res.status.should.be.equal(200);
 
-		element(by.css('.button')).click();
-
-		browser.get('http://localhost:3000/purchases');
-		
-		expect(browser.getCurrentUrl()).toEqual('http://localhost:3000/403');
-	});
-
-	it("should let an admin get the /purchases list", function (){
-		browser.get('http://localhost:3000/signin');
-
-		element(by.model('email')).sendKeys('admin@mail.com');
-		element(by.model('password')).sendKeys('administrator');
-
-		element(by.css('.button')).click();
-
-		// Visit product
-		browser.get('http://localhost:3000/purchases');
-		expect(browser.getCurrentUrl()).toEqual('http://localhost:3000/purchases');
-
-		expect(element.all(by.repeater('purchase in purchases')).count()).toEqual(20)
+				res.body.length.should.be.equal(20);
+				done();
+			});
+		});
 	});
 });

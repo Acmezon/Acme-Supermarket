@@ -19,10 +19,10 @@ exports.getPurchase = function (req, res) {
 			console.log('---ERROR finding Purchase: '+_code);
 			res.status(500).json({success: false, message: err});
 		} else {
-			// If customer&purchased OR admin OR supplier: PASS
+			// If customer&purchased OR admin: PASS
 			ActorService.getUserRole(cookie, jwtKey, function (role){
 				CustomerService.checkHasPurchasedPurchase(cookie, jwtKey, purchase, function (hasPurchased){
-					if ( (role=='customer' && hasPurchased) || role=='admin' || role=='supplier') {
+					if ( (role=='customer' && hasPurchased) || role=='admin') {
 						res.status(200).json(purchase);
 					} else {
 						res.status(403).json({success: false});
@@ -258,7 +258,15 @@ exports.countMyPurchasesFiltered = function (req, res) {
 
 exports.purchase = function (req, res) {
 	console.log('Function-purchasesApi-purchaseProcess');
-	var cookie = JSON.parse(req.cookies.shoppingcart);
+	
+	var cookie = undefined;
+	try {
+		cookie = JSON.parse(req.cookies.shoppingcart);
+	} catch (error) {
+		res.sendStatus(500);
+		return;
+	}
+
 	var session = req.cookies.session;
 	var jwtKey = req.app.get('superSecret');
 	var billingMethod = parseInt(req.params.billingMethod);

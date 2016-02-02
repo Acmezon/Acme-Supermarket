@@ -23,17 +23,17 @@ describe("Edit product API url", function (){
 
 			for(var i = 0; i < L; i++) {
 				var product = res.body[i];
-				console.log(product.name);
 
 				if(product.name == product_name) {
 					var description = 'This is the new description';
+					var product_id = product._id;
 
 					browser
 					.post("http://localhost:3000/api/product/updateProduct")
-					.send({ field: 'description', data: description })
+					.send({ id : product_id, field: 'description', data: description })
 					.end(function (err, res){
 						browser
-						.get("http://localhost:3000/api/product/" + product._id)
+						.get("http://localhost:3000/api/product/" + product_id)
 						.end(function (err, res){
 							res.status.should.be.equal(200);
 							res.body.description.should.be.equal(description);
@@ -55,11 +55,11 @@ describe("Edit product API url", function (){
 				res.status.should.be.equal(200);
 
 				var product = res.body[0];
-				product.name = "This is the new name";
+				var description = 'This is the new description';
 
 				browser
 				.post("http://localhost:3000/api/product/updateProduct")
-				.send(product)
+				.send({ id : product._id, field: 'description', data: description })
 				.end(function (err, res){
 					res.status.should.be.equal(403);
 					res.body.success.should.be.false;
@@ -80,11 +80,11 @@ describe("Edit product API url", function (){
 				res.status.should.be.equal(200);
 
 				var product = res.body[0];
-				product.name = "This is the new name";
+				var description = 'This is the new description';
 
 				browser
 				.post("http://localhost:3000/api/product/updateProduct")
-				.send(product)
+				.send({ id : product._id, field: 'description', data: description })
 				.end(function (err, res){
 					res.status.should.be.equal(403);
 					res.body.success.should.be.false;
@@ -105,11 +105,11 @@ describe("Edit product API url", function (){
 				res.status.should.be.equal(200);
 
 				var product = res.body[0];
-				product.name = "This is the new name";
+				var description = 'This is the new description';
 
 				browser
 				.post("http://localhost:3000/api/product/updateProduct")
-				.send(product)
+				.send({ id : product._id, field: 'description', data: description })
 				.end(function (err, res){
 					res.status.should.be.equal(403);
 					res.body.success.should.be.false;
