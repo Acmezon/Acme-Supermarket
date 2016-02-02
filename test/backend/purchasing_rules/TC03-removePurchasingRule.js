@@ -1,116 +1,103 @@
+var request = require('superagent');
+var should = require('should');
+var assert = require('assert');
+
 describe('Remove purchasing rule', function () {
+	var browser = request.agent();
 
-	beforeEach(function() {
-		// Mandatory visit in order to make cookies work
-		browser.driver.get('http://localhost:3000/');
-		// Logout
-		browser.manage().deleteAllCookies();
-	});
+	it("shouldn't let an anonymous user delete purchasing rules", function (done){
+		browser
+		.get('http://localhost:3000/api/signout')
+		.end(function (err, res) {
+			browser
+			.delete('http://localhost:3000/api/purchasingrule')
+			.send({id : 1})
+			.end(function (err, res) {
+				res.status.should.be.equal(401);
 
-	it('shouldn\'t remove a purchasing rule when clicking "No" button', function (){
-		browser.get('http://localhost:3000/signin');
-
-		element(by.model('email')).sendKeys('margarita.medina@example.com');
-		element(by.model('password')).sendKeys('customer');
-
-		element(by.css('.button')).click();
-		
-		browser.get('http://localhost:3000/mypurchasingrules');
-
-		// Click on last delete button
-		element.all(by.repeater('rule in $data')).count().then(function (count) {
-			var row = element.all(by.repeater('rule in $data')).last()
-			var deleteBtn = row.element(by.css('.btn-delete-rules'));
-
-			deleteBtn.getAttribute('data-target').then(function (data_target) {
-				deleteBtn.click().then(function() {
-					browser.waitForAngular();
-					var cancelBtn = element(by.css('div' + data_target + ' button.btn-danger'));
-
-					var EC = protractor.ExpectedConditions;
-					browser.wait(EC.visibilityOf(cancelBtn), 5000);
-
-					cancelBtn.click().then(function () {
-						browser.waitForAngular();
-						browser.sleep(500)
-						browser.get('http://localhost:3000/mypurchasingrules');
-						element.all(by.repeater('rule in $data')).count().then(function (new_count) {
-							expect(count).toBe(new_count);
-						});
-					});
-				}); 
+				done();
 			});
 		});
 	});
 
-	it('shouldn\'t remove a purchasing rule when clicking "Cancel" button', function (){
-		browser.get('http://localhost:3000/signin');
+	it("shouldn't let a supplier delete purchasing rules", function (done){
+		browser
+		.post('http://localhost:3000/api/signin')
+		.send( { email : 'ismael.perez@example.com', password : 'supplier' } )
+		.end(function (err, res) {
+			browser
+			.delete('http://localhost:3000/api/purchasingrule')
+			.send({id : 1})
+			.end(function (err, res) {
+				res.status.should.be.equal(401);
 
-		element(by.model('email')).sendKeys('margarita.medina@example.com');
-		element(by.model('password')).sendKeys('customer');
-
-		element(by.css('.button')).click();
-		
-		browser.get('http://localhost:3000/mypurchasingrules');
-
-		// Click on last delete button
-		element.all(by.repeater('rule in $data')).count().then(function (count) {
-			var row = element.all(by.repeater('rule in $data')).last()
-			var deleteBtn = row.element(by.css('.btn-delete-rules'));
-
-			deleteBtn.getAttribute('data-target').then(function (data_target) {
-				deleteBtn.click().then(function() {
-					browser.waitForAngular();
-					var cancelBtn = element(by.css('div' + data_target + ' button.btn-default'));
-
-					var EC = protractor.ExpectedConditions;
-					browser.wait(EC.visibilityOf(cancelBtn), 5000);
-
-					cancelBtn.click().then(function () {
-						browser.waitForAngular();
-						browser.sleep(500)
-						browser.get('http://localhost:3000/mypurchasingrules');
-						element.all(by.repeater('rule in $data')).count().then(function (new_count) {
-							expect(count).toBe(new_count);
-						});
-					});
-				}); 
+				done();
 			});
 		});
 	});
 
-	it('should remove a purchasing rule when clicking "Yes" button', function (){
-		browser.get('http://localhost:3000/signin');
+	it("shouldn't let a customer delete other's customer purchasing rule ", function (done){
+		browser
+		.post('http://localhost:3000/api/signin')
+		.send( { email : 'alex.gallardo@example.com', password : 'customer' } )
+		.end(function (err, res) {
+			browser
+			.get('http://localhost:3000/api/mypurchasingrules')
+			.end(function (err, res) {
+				var rule = res.body[0];
 
-		element(by.model('email')).sendKeys('margarita.medina@example.com');
-		element(by.model('password')).sendKeys('customer');
+				browser
+				.post('http://localhost:3000/api/signin')
+				.send( { email : 'salvador.saez@example.com', password : 'customer' } )
+				.end(function (err, res) {
+					browser
+					.delete('http://localhost:3000/api/purchasingrule')
+					.send({id : rule._id})
+					.end(function (err, res) {
+						res.status.should.be.equal(403);
 
-		element(by.css('.button')).click();
-		
-		browser.get('http://localhost:3000/mypurchasingrules');
-
-		// Click on last delete button
-		element.all(by.repeater('rule in $data')).count().then(function (count) {
-			var row = element.all(by.repeater('rule in $data')).last()
-			var deleteBtn = row.element(by.css('.btn-delete-rules'));
-
-			deleteBtn.getAttribute('data-target').then(function (data_target) {
-				deleteBtn.click().then(function() {
-					browser.waitForAngular();
-					var confirmBtn = element(by.css('div' + data_target + ' button.btn-confirm-rules'));
-
-					var EC = protractor.ExpectedConditions;
-					browser.wait(EC.visibilityOf(confirmBtn), 5000);
-
-					confirmBtn.click().then(function () {
-						browser.waitForAngular();
-						browser.sleep(500)
-						browser.get('http://localhost:3000/mypurchasingrules');
-						element.all(by.repeater('rule in $data')).count().then(function (new_count) {
-							expect(new_count).toBe(count - 2);
-						});
+						done();
 					});
-				}); 
+				});
+			});
+		});
+	});
+
+	it("should let a customer delete it's own purchasing rule ", function (done){
+		browser
+		.post('http://localhost:3000/api/signin')
+		.send( { email : 'alex.gallardo@example.com', password : 'customer' } )
+		.end(function (err, res) {
+			browser
+			.get('http://localhost:3000/api/mypurchasingrules')
+			.end(function (err, res) {
+				var rule = res.body[res.body.length - 1];
+
+				browser
+				.delete('http://localhost:3000/api/purchasingrule')
+				.send({id : rule._id})
+				.end(function (err, res) {
+					res.status.should.be.equal(200);
+
+					done();
+				});
+			});
+		});
+	});
+
+	it("should let an admin delete a purchasing rule ", function (done){
+		browser
+		.post('http://localhost:3000/api/signin')
+		.send( { email : 'alex.gallardo@example.com', password : 'customer' } )
+		.end(function (err, res) {
+			browser
+			.delete('http://localhost:3000/api/purchasingrule')
+			//TODO: Get one from the all purchasing rules list
+			.send({id : 1})
+			.end(function (err, res) {
+				res.status.should.be.equal(200);
+
+				done();
 			});
 		});
 	});

@@ -14,8 +14,8 @@ exports.createPurchasingRule = function(req, res) {
 				if(!customer) {
 					res.status(403).json({success: false, message: "Doesnt have permission"});
 				} else {
-					PurchasingRuleService.customerHasRule(cooke, jwtKey, req.body.provide_id, function (res) {
-						if(!res) {
+					PurchasingRuleService.customerHasRule(cookie, jwtKey, req.body.provide_id, function (result) {
+						if(!result) {
 							var rule_data = req.body.rule;
 
 							if (rule_data != undefined) {
@@ -58,21 +58,57 @@ exports.removePurchasingRule = function(req, res) {
 	// Check principal is customer or administrator
 	ActorService.getUserRole(cookie, jwtKey, function (role) {
 		if (role == 'admin' || role == 'customer') {
-			var purchasing_rule_id = req.body.id;
-			if (purchasing_rule_id != undefined) {
-				PurchasingRule.remove({_id: purchasing_rule_id}, function (err) {
-					if(err) {
-						res.sendStatus(500);
+			if(role == 'customer') {
+				CustomerService.getPrincipalCustomer(cookie, jwtKey, function (customer) {
+					if(!customer) {
+						res.status(403).json({success: false, message: "Doesnt have permission"});
 					} else {
-						res.sendStatus(200);
+						var purchasing_rule_id = req.body.id;
+						
+						if (purchasing_rule_id == undefined) {
+							console.log("No rule");
+							res.sendStatus(500);
+							return;
+						}
+
+						PurchasingRule.find({ customer_id: customer.id, _id: purchasing_rule_id}).limit(1).exec(function (err, results) {
+							if(results.length == 0) {
+								res.status(403).json({success: false, message: "Doesnt have permission"});
+								return;
+							} else {
+								PurchasingRule.remove({_id: purchasing_rule_id}, function (err) {
+									if(err) {
+										res.sendStatus(500);
+										return;
+									} else {
+										res.sendStatus(200);
+										return;
+									}
+								});
+							}
+						});
 					}
 				});
 			} else {
-				console.log("No rule");
-				res.sendStatus(500);
+				var purchasing_rule_id = req.body.id;
+				if (purchasing_rule_id != undefined) {
+					PurchasingRule.remove({_id: purchasing_rule_id}, function (err) {
+						if(err) {
+							res.sendStatus(500);
+							return;
+						} else {
+							res.sendStatus(200);
+							return;
+						}
+					});
+				} else {
+					console.log("No rule");
+					res.sendStatus(500);
+					return;
+				}
 			}
 		} else {
-			res.status(403).json({
+			res.status(401).json({
 				success: false,
 				message: "Doesnt have permission"
 			});
