@@ -1,8 +1,10 @@
 'use strict'
 
-angular.module('acme_supermarket').registerCtrl('ProductDetailsCtrl', ['$scope', '$http', '$routeParams', '$translate', '$window', 'ngToast', '$cookies', '$cookieStore', '$location' , '$rootScope', 
-function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $cookieStore, $location, $rootScope) {
+angular.module('acme_supermarket').registerCtrl('ProductDetailsCtrl', ['$scope', '$http', '$routeParams', '$translate', '$window', 'ngToast', '$cookies', '$cookieStore', '$location' , '$rootScope', '$route', 
+function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $cookieStore, $location, $rootScope, $route) {
 	var id = $routeParams.id;
+
+	$scope.Math = Math;
 
 	$http({
 		method: 'GET',
@@ -369,6 +371,20 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 	}, function error(response) {
 		$scope.supplierProvides = false;
 	});
+
+	$scope.adminCreateProvide = function() {
+		if ($scope.price > 0 && $scope.supplier_id >=0){
+			$http.post('/api/provide/admin/create',
+			{
+				product_id: $scope.product._id,
+				supplier_id: $scope.supplier_id,
+				price : $scope.price
+			}).then(function success(response) {
+				$scope.isAdding = false;
+				$route.reload();
+			});
+		}
+	}
 
 	// Supplier deletes a provide
 	$scope.deleteProvide = function (){

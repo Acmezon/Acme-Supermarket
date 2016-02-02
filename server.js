@@ -88,6 +88,7 @@ app.get('/api/providesByProductId/:id', api.Provides.getProvidesByProductId);
 app.get('/api/provide/bysupplier/byproduct/:id', api.Provides.getSupplierProvidesByProductId);
 app.get('/api/provide/bysupplier/byproduct/delete/:id', api.Provides.deleteSupplierProvidesByProductId);
 app.post('/api/provide/updateProvideRating', api.Provides.updateProvideRating);
+app.post('/api/provide/admin/create', api.Provides.adminProvide);
 
 // Categories
 app.get('/api/categories', api.Categories.getCategories);

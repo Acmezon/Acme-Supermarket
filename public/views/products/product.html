@@ -117,6 +117,42 @@
 									</td>
 								</tr>
 							</tbody>
+							<tfoot restrict access="admin">
+								<form name="addProvide">
+									<tr ng-show="isAdding">
+										<td>
+											<div class="input-group spinner">
+												<input ng-model="supplier_id" id="supplier_id" type="text" class="form-control" placeholder="ID" ng-class="{'has-error': addProvide.supplier_id.$dirty && (addProvide.supplier_id.$error.required || addProvide.supplier_id.$invalid)}" value="1" min="0" required>
+												<div class="input-group-btn-vertical">
+													<button class="btn btn-default" type="button" ng-click="supplier_id = supplier_id+1"><i class="fa fa-caret-up"></i></button>
+													<button class="btn btn-default" type="button" ng-click="supplier_id = Math.max(1, supplier_id-1)"><i class="fa fa-caret-down"></i></button>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="input-group spinner">
+												<input ng-model="price" id="price" type="text" class="form-control" ng-class="{'has-error': addProvide.price.$dirty && (addProvide.price.$error.required || addProvide.price.$invalid)}" value="1" min="0" required>
+
+												<div class="input-group-btn-vertical">
+													<button class="btn btn-default" type="button" ng-click="price = Math.min(9999, price+1)"><i class="fa fa-caret-up"></i></button>
+													<button class="btn btn-default" type="button" ng-click="price = Math.max(1,price-1)"><i class="fa fa-caret-down"></i></button>
+												</div>
+												<span class="input-group-addon" id="basic-addon2">€</span>
+											</div>
+										</td>
+										<td>
+											<button class="btn btn-primary" ng-disabled="!price || !supplier_id" ng-click="adminCreateProvide()"><span class="glyphicon glyphicon-ok"></span></button>
+										</td>
+									</tr>
+								</form>
+								<tr ng-show="!isAdding">
+									<td colspan="3">
+										<button class="btn btn-primary" ng-click="isAdding=true">
+											<span class="glyphicon glyphicon-plus"></span>
+										</button>
+									</td>
+								</tr>
+							</tfoot>
 						</table>
 					</div>
 				</div>

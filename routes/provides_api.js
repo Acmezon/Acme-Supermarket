@@ -1,5 +1,6 @@
 var db_utils = require('./db_utils'),
 	Provide = require('../models/provide'),
+	Supplier = require('../models/supplier'),
 	SupplierService = require('./services/service_suppliers'),
 	ReputationService = require('./services/service_reputation'),
 	PurchasingRuleService = require('./services/service_purchasing_rules'),
@@ -254,3 +255,67 @@ exports.updateProvideRating = function (req, res) {
 		}
 	});
 };
+
+// Administrator creates provide
+exports.adminProvide = function (req, res) {
+	var cookie = req.cookies.session;
+	var jwtKey = req.app.get('superSecret');
+
+	var price = req.body.price,
+		supplier_id = req.body.supplier_id,
+		product_id = req.body.product_id;
+
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
+		if (role=='admin' || role=='supplier' || role=='customer') {
+			if (role=='admin') {
+				Supplier.findById(supplier_id, function (err, supplier) {
+					if (err){
+						res.status(500).json({success: false})
+					} else {
+						if (supplier._type=='Supplier') {
+							Provide.findOne({product_id: product_id, supplier_id: supplier_id, deleted: false}).exec (function (err, provide) {
+								if (err) {
+									res.status(500).json({success: false})
+								} else {
+									if (provide) {
+										// FOUND provide
+										Provide.update({_id: provide._id}, {$set: {price: price}}, function (err, provideSaved) {
+											if (err) {
+												res.status(500).json({success: false});
+											} else {
+												res.status(200).json(provideSaved);
+											}
+										});
+
+									} else {
+										// NOT FOUND provide
+										var newProvide = new Provide({
+											supplier_id: supplier_id,
+											product_id: product_id,
+											price: price,
+											deleted: false
+										});
+
+										newProvide.save(function (err, provideSaved) {
+											if (err) {
+												res.status(500).json({success: false});
+											} else {
+												res.status(200).json(provideSaved);
+											}
+										});
+									}
+								}
+							});
+						} else {
+							res.status(500).json({success: false})
+						}
+					}
+				});
+			} else {
+				res.status(403).json({success: false});
+			}
+		} else {
+			res.status(401).json({success: false});
+		}
+	});
+}

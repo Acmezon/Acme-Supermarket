@@ -264,7 +264,8 @@
 		"Price": "Price",
 		"Rating": "Rating",
 		"Supplier": {
-			"Name" : "Name",
+			"Id" : "Supplier ID",
+			"Name" : "Supplier name",
 			"Reputation" : "Reputation",
 			"Empty" : "Product not available"
 		},
