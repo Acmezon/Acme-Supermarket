@@ -80,6 +80,7 @@ app.delete('/api/products/:id', api.Products.deleteProduct);
 
 // Rates
 app.get('/api/averageRatingByProductId/:id', api.Rates.getAverageRatingByProductId);
+app.post('/api/ratings/manage', api.Rates.manageRating);
 
 // Provides
 app.get('/api/provide/:id', api.Provides.getProvide);

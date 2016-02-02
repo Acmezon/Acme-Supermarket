@@ -48,7 +48,7 @@
 					{{'ShoppingCart.Title' | translate}}
 				</div>
 				<div class="panel-body" ng-if="!shoppingcart.length">
-					<p>VACIO</p>
+					<p>{{'ShoppingCart.Empty.Title' | translate}}</p>
 				</div>
 
 				<table ng-if="shoppingcart.length" class="table table-bordered table-hover">
@@ -124,7 +124,7 @@
 								<input ng-model="product_id" id="product_id" type="text" class="form-control">
 								<div class="input-group-btn-vertical">
 									<button class="btn btn-default" type="button" ng-click="product_id = product_id+1"><i class="fa fa-caret-up"></i></button>
-									<button class="btn btn-default" type="button" ng-click="product_id = Math.max(1, product_id-1)"><i class="fa fa-caret-down"></i></button>
+									<button class="btn btn-default" type="button" ng-click="product_id = Math.max(0, product_id-1)"><i class="fa fa-caret-down"></i></button>
 								</div>
 							</div>
 						</fieldset>
@@ -136,7 +136,7 @@
 				</div>
 			</div>
 			<div style="margin-bottom: 5%"> 
-  				<button id="submit" type="submit" class="btn btn-lg btn-primary" ng-disabled="!customer || !customer.credit_card_id || (billingMethod!=1 && billingMethod!=2 && billingMethod!=3) || !shoppingcart.length || isEditing" ng-click="submit()">Submit</button>
+  				<button id="submit" type="submit" class="btn btn-lg btn-primary" ng-disabled="!customer || !customer.credit_card_id || (billingMethod!=1 && billingMethod!=2 && billingMethod!=3) || !shoppingcart.length || isEditing" ng-click="submit()">{{'PurchasesCreation.Submit' | translate}}</button>
   			</div>
 		</form>
 	</div>

@@ -54,7 +54,9 @@
 		"Management" : "Administración",
 		"Customers" : "Clientes",
 		"Purchases" : "Compras",
-		"CreateProduct" : "Añadir un producto"
+		"CreateProduct" : "Añadir un producto",
+		"Purchase" : "Comprar por un cliente",
+		"CreateRating" : "Valorar por un cliente"
  	},
 	"Footer": {
 		"AboutUs" : "Sobre nosotros",
@@ -500,5 +502,24 @@
 	"Reputations" : {
 		"Title" : "Valoraciones de usuarios a su producto",
 		"Empty" : "No hay valoraciones todavía."
+	},
+	"PurchasesCreation" : {
+		"Customer" : {
+			"Email" : "Email",
+			"EmailText" : "Los clientes están identificados por correos únicos."
+		},
+		"Submit" : "Enviar"
+	},
+	"Management" : {
+		"Title" : "Administración",
+		"Rating" : {
+			"Create" : "Crear una valoración",
+			"CustomerId" : "ID Cliente",
+			"ProductId" : "ID Producto",
+			"Value" : "Valor"
+		},
+		"Submit" : "Enviar",
+		"RatingError" : "El cliente seleccionado no ha sido encontrado o no puede valorar este producto",
+		"ServerError" : "Ha habido un error interno en la transacción. Inténtelo de nuevo más tarde"
 	}
 }

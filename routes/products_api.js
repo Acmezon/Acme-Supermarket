@@ -944,6 +944,8 @@ exports.createProduct = function(req, res) {
 exports.updateProductRating = function(req, res) {
 	var product_id = req.body.id;
 	var rating_value = req.body.rating;
+	console.log(product_id)
+	console.log(rating_value)
 
 	CustomerService.getPrincipalCustomer(req.cookies.session, req.app.get('superSecret'), function(user) {
 		if (user == null) {

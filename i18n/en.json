@@ -54,7 +54,9 @@
 		"Management" : "Management",
 		"Customers" : "Customers",
 		"Purchases" : "Purchases",
-		"CreateProduct" : "Add product"
+		"CreateProduct" : "Add product",
+		"Purchase" : "Purchase for a customer",
+		"CreateRating" : "Rate for a customer"
 	},
 	"Footer": {
 		"AboutUs" : "About Us",
@@ -502,5 +504,24 @@
 	"Reputations" : {
 		"Title" : "User rating of your product",
 		"Empty" : "No ratings yet."		
+	},
+	"PurchasesCreation" : {
+		"Customer" : {
+			"Email" : "Email",
+			"EmailText" : "Customers are identified by unique emails."
+		},
+		"Submit" : "Submit"
+	},
+	"Management" : {
+		"Title" : "Management",
+		"Rating" : {
+			"Create" : "Rating creation",
+			"CustomerId" : "Customer ID",
+			"ProductId" : "Product ID",
+			"Value" : "Value"
+		},
+		"Submit" : "Submit",
+		"RatingError" : "The selected customer was not found or it is unable to rate the product",
+		"ServerError" : "Internal server error. Try again later"
 	}
 }

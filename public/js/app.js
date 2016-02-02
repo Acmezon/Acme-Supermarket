@@ -363,6 +363,14 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 				loggedin: checkLoggedin
 			}
 		}).
+		when('/management/rating', {
+			templateUrl: 'views/ratings/rating-create.html',
+			controller: 'RatingCtrl',
+			resolve: {
+				admin: checkAdmin
+			},
+			activetab : 'management'
+		}).
 		when('/401', {
 			templateUrl: 'views/public/errors/401.html'
 		}).
