@@ -80,8 +80,8 @@ describe('Purchases list', function () {
 	it("should let admin get a purchase", function (){
 		browser.get('http://localhost:3000/signin');
 
-		element(by.model('email')).sendKeys('daniel.diaz@example.com');
-		element(by.model('password')).sendKeys('customer');
+		element(by.model('email')).sendKeys('admin@mail.com');
+		element(by.model('password')).sendKeys('administrator');
 
 		element(by.css('.button')).click();
 

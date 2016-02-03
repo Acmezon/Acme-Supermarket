@@ -63,7 +63,7 @@ describe('Remove purchasing rule', function () {
 		});
 	});
 
-	it("should let a customer delete it's own purchasing rule ", function (done){
+	it("should let a customer delete an owned purchasing rule ", function (done){
 		browser
 		.post('http://localhost:3000/api/signin')
 		.send( { email : 'alex.gallardo@example.com', password : 'customer' } )
@@ -85,7 +85,9 @@ describe('Remove purchasing rule', function () {
 		});
 	});
 
-	it("should let an admin delete a purchasing rule ", function (done){
+
+	//TODO
+	/*it("should let an admin delete a purchasing rule ", function (done){
 		browser
 		.post('http://localhost:3000/api/signin')
 		.send( { email : 'alex.gallardo@example.com', password : 'customer' } )
@@ -100,5 +102,5 @@ describe('Remove purchasing rule', function () {
 				done();
 			});
 		});
-	});
+	});*/
 });

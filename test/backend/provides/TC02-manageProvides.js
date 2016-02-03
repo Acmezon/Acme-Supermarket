@@ -49,10 +49,11 @@ describe('Product details page', function () {
 		});
 	});;
 
+	//Supplier with no provides yet.
 	it('should let the supplier provide the product', function (done){
 		browser
 		.post('http://localhost:3000/api/signin')
-		.send( { email : 'ismael.perez@example.com', password : 'supplier' } )
+		.send( { email : 'no.provides@mail.com', password : 'supplier' } )
 		.end(function (err, res) {
 			should.not.exist(err);
 
@@ -136,10 +137,11 @@ describe('Product details page', function () {
 		});
 	});
 
+	//Special user with just one provide
 	it('should let the supplier remove the provide from the product', function (done){
 		browser
 		.post('http://localhost:3000/api/signin')
-		.send( { email : 'ismael.perez@example.com', password : 'supplier' } )
+		.send( { email : 'no.provides@mail.com', password : 'supplier' } )
 		.end(function (err, res) {
 			should.not.exist(err);
 			

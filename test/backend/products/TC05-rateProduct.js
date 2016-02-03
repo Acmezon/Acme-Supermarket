@@ -6,15 +6,6 @@ describe("Edit product rate API url", function (){
 	var browser = request.agent();
 	var product_name = "000000000000000AAA";
 
-	beforeEach(function (done) {
-		browser
-		.post('http://localhost:3000/api/signin')
-		.send( { email : 'admin@mail.com', password : 'administrator' } )
-		.end(function (err, res) {
-			done();
-		});
-	});
-
 	it("should't let an anonymous user edit a product rate", function (done){
 		browser
 		.post("http://localhost:3000/api/products/filtered")
@@ -107,26 +98,31 @@ describe("Edit product rate API url", function (){
 
 	it("should't let an admin edit a product rate", function (done){
 		browser
-		.post("http://localhost:3000/api/products/filtered")
-		.end(function (err, res){
-			res.status.should.be.equal(200);
+		.post('http://localhost:3000/api/signin')
+		.send( { email : 'admin@mail.com', password : 'administrator' } )
+		.end(function (err, res) {
+			browser
+			.post("http://localhost:3000/api/products/filtered")
+			.end(function (err, res){
+				res.status.should.be.equal(200);
 
-			var L = res.body.length;
+				var L = res.body.length;
 
-			for(var i = 0; i < L; i++) {
-				var product = res.body[i];
-				if(product.name == product_name) {
-					var product_id = product._id;
+				for(var i = 0; i < L; i++) {
+					var product = res.body[i];
+					if(product.name == product_name) {
+						var product_id = product._id;
 
-					browser
-					.post('http://localhost:3000/api/product/updateProductRating')
-					.send({ id : product_id, rating : 1})
-					.end(function (err, res) {
-						res.status.should.be.equal(403);
-						done();
-					});
+						browser
+						.post('http://localhost:3000/api/product/updateProductRating')
+						.send({ id : product_id, rating : 1})
+						.end(function (err, res) {
+							res.status.should.be.equal(403);
+							done();
+						});
+					}
 				}
-			}
+			});
 		});
 	});
 

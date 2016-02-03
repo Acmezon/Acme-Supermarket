@@ -7,14 +7,26 @@ describe('Purchase api', function () {
 
 	it("shouldn't let an anonymous user get a purchase", function (done){
 		browser
-		.get('http://localhost:3000/api/signout')
+		.post('http://localhost:3000/api/signin')
+		.send( { email : 'alex.gallardo@example.com', password : 'customer' } )
 		.end(function (err, res) {
 			browser
-			.get('http://localhost:3000/api/purchase/1')
+			.post('http://localhost:3000/api/purchases/mypurchases/filtered')
+			.send({ sort: 'paymentDate', order : -1 })
 			.end(function (err, res) {
-				res.status.should.be.equal(403);
+				var purchase = res.body[0];
 
-				done();
+				browser
+				.get('http://localhost:3000/api/signout')
+				.end(function (err, res) {
+					browser
+					.get('http://localhost:3000/api/purchase/'+purchase._id)
+					.end(function (err, res) {
+						res.status.should.be.equal(403);
+
+						done();
+					});
+				});
 			});
 		});
 	});
@@ -22,14 +34,26 @@ describe('Purchase api', function () {
 	it("shouldn't let a supplier get purchase", function (done){
 		browser
 		.post('http://localhost:3000/api/signin')
-		.send( { email : 'ismael.perez@example.com', password : 'supplier' } )
+		.send( { email : 'alex.gallardo@example.com', password : 'customer' } )
 		.end(function (err, res) {
 			browser
-			.get('http://localhost:3000/api/purchase/1')
+			.post('http://localhost:3000/api/purchases/mypurchases/filtered')
+			.send({ sort: 'paymentDate', order : -1 })
 			.end(function (err, res) {
-				res.status.should.be.equal(403);
+				var purchase = res.body[0];
+				
+				browser
+				.post('http://localhost:3000/api/signin')
+				.send( { email : 'ismael.perez@example.com', password : 'supplier' } )
+				.end(function (err, res) {
+					browser
+					.get('http://localhost:3000/api/purchase/' + purchase._id)
+					.end(function (err, res) {
+						res.status.should.be.equal(403);
 
-				done();
+						done();
+					});
+				});
 			});
 		});
 	});
@@ -83,18 +107,31 @@ describe('Purchase api', function () {
 		});
 	});
 
-	it("should let admin get a purchase", function (done){
+	it("should let admin get any customer's purchase", function (done){
 		browser
 		.post('http://localhost:3000/api/signin')
-		.send( { email : 'admin@mail.com', password : 'administrator' } )
+		.send( { email : 'alex.gallardo@example.com', password : 'customer' } )
 		.end(function (err, res) {
 			browser
-			.get('http://localhost:3000/api/purchase/1')
+			.post('http://localhost:3000/api/purchases/mypurchases/filtered')
+			.send({ sort: 'paymentDate', order : -1 })
 			.end(function (err, res) {
-				res.status.should.be.equal(200);
+				var purchase = res.body[0];
 
-				done();
+				browser
+				.post('http://localhost:3000/api/signin')
+				.send( { email : 'admin@mail.com', password : 'administrator' } )
+				.end(function (err, res) {
+					browser
+					.get('http://localhost:3000/api/purchase/'+purchase._id)
+					.end(function (err, res) {
+						res.status.should.be.equal(200);
+
+						done();
+					});
+				});
 			});
 		});
+
 	});
 });

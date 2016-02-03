@@ -11,8 +11,8 @@ exports.config = {
 	},
 	seleniumAddress: 'http://localhost:4444/wd/hub',
 	specs: [
-		//'e2e/purchasing_rules/TC03-*.js'
-		'backend/purchasing_rules/TC03-*.js'
+		'e2e/*/*.js',
+		'backend/*/*.js'
 
 	]/*,
 	beforeLaunch: function() {

@@ -57,7 +57,7 @@ describe('Get the shopping cart', function () {
 		product.click();
 
 		// Add 3 products
-		var cartbtn = element(by.id('cart-btn'));
+		var cartbtn = element.all(by.id('cart-btn')).first();
 		cartbtn.click();
 		cartbtn.click();
 		cartbtn.click();

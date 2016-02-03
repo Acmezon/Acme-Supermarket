@@ -56,15 +56,15 @@ describe('Create purchasing rule', function () {
 					browser.waitForAngular();
 					var confirmBtn = element(by.css('div'+data_target+' button'));
 
+					browser.wait(function() {
+						return confirmBtn.isPresent();
+					}, 5000);
+
 					var form = element.all(by.css('form#submit-form')).first();
 
 					form.element(by.css('input[name=startDate]')).sendKeys("30-01-2015");
 					form.element(by.css('input[name=periodicity]')).sendKeys(1);
 					form.element(by.css('input[name=quantity]')).sendKeys(1);
-
-					browser.wait(function() {
-						return confirmBtn.isPresent();
-					}, 5000);
 
 					confirmBtn.click().then(function () {
 						browser.waitForAngular();
@@ -107,15 +107,15 @@ describe('Create purchasing rule', function () {
 					browser.waitForAngular();
 					var confirmBtn = element(by.css('div'+data_target+' button'));
 
+					browser.wait(function() {
+						return confirmBtn.isPresent();
+					}, 5000);
+
 					var form = element.all(by.css('form#submit-form')).first();
 
 					form.element(by.css('input[name=startDate]')).sendKeys("30-01-2017");
 					form.element(by.css('input[name=periodicity]')).sendKeys(1);
 					form.element(by.css('input[name=quantity]')).sendKeys(-1);
-
-					browser.wait(function() {
-						return confirmBtn.isPresent();
-					}, 5000);
 
 					confirmBtn.click().then(function () {
 						browser.waitForAngular();
@@ -158,15 +158,15 @@ describe('Create purchasing rule', function () {
 					browser.waitForAngular();
 					var confirmBtn = element(by.css('div'+data_target+' button'));
 
+					browser.wait(function() {
+						return confirmBtn.isPresent();
+					}, 5000);
+
 					var form = element.all(by.css('form#submit-form')).first();
 
 					form.element(by.css('input[name=startDate]')).sendKeys("30-01-2017");
 					form.element(by.css('input[name=periodicity]')).sendKeys(-1);
 					form.element(by.css('input[name=quantity]')).sendKeys(1);
-
-					browser.wait(function() {
-						return confirmBtn.isPresent();
-					}, 5000);
 
 					confirmBtn.click().then(function () {
 						browser.waitForAngular();
@@ -182,7 +182,7 @@ describe('Create purchasing rule', function () {
 		});
 	});
 
-	it("shouldn create a new purchasing rule", function (){
+	it("should create a new purchasing rule", function (){
 		// Login
 		browser.get('http://localhost:3000/signin');
 
@@ -209,19 +209,19 @@ describe('Create purchasing rule', function () {
 					browser.waitForAngular();
 					var confirmBtn = element(by.css('div'+data_target+' button'));
 
+					browser.wait(function() {
+						return confirmBtn.isPresent();
+					}, 5000);
+
 					var form = element.all(by.css('form#submit-form')).first();
 
 					form.element(by.css('input[name=startDate]')).sendKeys("30-01-2017");
 					form.element(by.css('input[name=periodicity]')).sendKeys(1);
 					form.element(by.css('input[name=quantity]')).sendKeys(1);
 
-					browser.wait(function() {
-						return confirmBtn.isPresent();
-					}, 5000);
-
 					confirmBtn.click().then(function () {
-						browser.waitForAngular();
-						browser.sleep(500)
+						browser.sleep(1000);
+
 						browser.get('http://localhost:3000/mypurchasingrules');
 						element.all(by.repeater("rule in $data")).count().then(function (new_count) {
 							//+2 because there are two ng-repeat and adding one element results in one more per repeater

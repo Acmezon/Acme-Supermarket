@@ -3,10 +3,9 @@ var should = require('should'),
 	request = require('superagent');
 
 describe('Customers management api', function () {
+	var browser = request.agent();
 
 	it("shouldn't return a customer to a non-authenticated user", function (done){
-		var browser = request.agent();
-
 		browser
 		.get('http://localhost:3000/api/signout')
 		.end(function (err, res) {
@@ -21,8 +20,6 @@ describe('Customers management api', function () {
 	});
 
 	it("shouldn't load the customers to a customer", function (done){
-		var browser = request.agent();
-
 		browser
 		.post('http://localhost:3000/api/signin')
 		.send( { email : 'alex.gallardo@example.com', password : 'customer' } )
@@ -39,8 +36,6 @@ describe('Customers management api', function () {
 
 
 	it("shouldn't load the customers to a supplier", function (done){
-		var browser = request.agent();
-
 		browser
 		.post('http://localhost:3000/api/signin')
 		.send( { email : 'german.cruz@example.com', password : 'supplier' } )
@@ -57,8 +52,6 @@ describe('Customers management api', function () {
 
 
 	it('should load the customers', function (done){
-		var browser = request.agent();
-
 		browser
 		.post('http://localhost:3000/api/signin')
 		.send( { email : 'admin@mail.com', password : 'administrator' } )

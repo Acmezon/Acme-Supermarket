@@ -346,7 +346,8 @@ exports.getSupplierProductsFiltered = function(req, res) {
 
 							Provide
 							.find({
-								supplier_id: filter_supplier_id
+								supplier_id: filter_supplier_id,
+								deleted: false
 							})
 							.select({
 								'product_id': 1
@@ -433,14 +434,16 @@ exports.getSupplierProductsFiltered = function(req, res) {
 
 				Provide
 				.find({
-					supplier_id: filter_supplier_id
+					supplier_id: filter_supplier_id,
+					deleted: false
 				})
 				.select({
-					'product_id': 1
+					'product_id': 1,
+					'supplier_id' : 1
 				})
-				.exec(function(err, provides) {
+				.exec(function (err, provides) {
 
-					var product_ids = provides.map(function(provide) {
+					var product_ids = provides.map(function (provide) {
 						return provide.product_id;
 					});
 
@@ -848,7 +851,7 @@ exports.createProduct = function(req, res) {
 	var cookie = req.cookies.session;
 
 	// Check is admin
-	ActorService.getUserRole(cookie, jwtKey, function(role) {
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
 		if (role == 'admin') {
 			var product = new Product({
 				'code': mongoose.Types.ObjectId(),

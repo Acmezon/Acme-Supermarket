@@ -60,7 +60,7 @@ describe('Add products to the shopping cart', function () {
 		var product = element.all(by.css('.product')).first();
 		product.click();
 
-		var cartbtn = element(by.id('cart-btn'));
+		var cartbtn = element.all(by.id('cart-btn')).first();
 		expect(cartbtn.isPresent()).toBe(true);
 		cartbtn.click();
 		cartbtn.click();

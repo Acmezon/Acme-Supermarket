@@ -15,7 +15,7 @@ exports.getPurchase = function (req, res) {
 	var jwtKey = req.app.get('superSecret');
 
 	Purchase.findById(_code, function (err, purchase) {
-		if (err) {
+		if (err || !purchase) {
 			console.log('---ERROR finding Purchase: '+_code);
 			res.status(500).json({success: false, message: err});
 		} else {

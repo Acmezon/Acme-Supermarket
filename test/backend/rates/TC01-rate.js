@@ -1,72 +1,233 @@
+var request = require('superagent');
+var should = require('should');
+var assert = require('assert');
+
 describe('Product rating and Provide rating', function () {
-	
-	beforeEach(function() {
-		// Mandatory visit in order to make cookies work
-		browser.driver.get('http://localhost:3000/');
-		// Logout
-		browser.manage().deleteAllCookies();
-	});
+	var browser = request.agent();
 
-	it("shouldn't let an user rate due to non authenticated", function (){
-		// Visit product
-		browser.get('http://localhost:3000/');
-		element.all(by.css('div.top-box>div>div>a>div')).first().click();;
-		browser.waitForAngular();
+	it("shouldn't let an anonymous user rate", function (done){
+		browser
+		.get('http://localhost:3000/api/signout')
+		.end(function (err, res) {
+			browser
+			.post('http://localhost:3000/api/product/updateProductRating')
+			.send({id : 1, rating: 4})
+			.end(function (err, res) {
+				res.status.should.be.equal(403);
 
-		var ratingElement = element(by.model('rate'));
-		expect(ratingElement.isPresent()).toBe(false);
-		expect(browser.getCurrentUrl()).toEqual('http://localhost:3000/401');
+				done();
+			});
+		});
 	});
 	
-	it("shouldn't let an user rate due not a customer", function (){
-		browser.get('http://localhost:3000/signin');
+	it("shouldn't let a supplier rate", function (done){
+		browser
+		.post('http://localhost:3000/api/signin')
+		.send( { email : 'ismael.perez@example.com', password : 'supplier' } )
+		.end(function (err, res) {
+			browser
+			.post('http://localhost:3000/api/product/updateProductRating')
+			.send({id : 1, rating: 4})
+			.end(function (err, res) {
+				res.status.should.be.equal(403);
 
-		element(by.model('email')).sendKeys('admin@mail.com');
-		element(by.model('password')).sendKeys('administrator');
-
-		element(by.css('.button')).click();
-
-		// Visit product
-		browser.get('http://localhost:3000/');
-		element.all(by.css('div.top-box>div>div>a>div')).first().click();;
-		browser.waitForAngular();
-
-		var ratingElement = element(by.model('rate'));
-		expect(ratingElement.isPresent()).toBe(false);
-
-		var supplierRElement = element(by.model('provide.reputation'));
-		expect(ratingElement.isPresent()).toBe(false);
+				done();
+			});
+		});
 	});
 
-	it("should let an user rate.", function () {
+	it("shouldn't let a admin rate in the customers way", function (done){
+		browser
+		.post('http://localhost:3000/api/signin')
+		.send( { email : 'admin@mail.com', password : 'administrator' } )
+		.end(function (err, res) {
+			browser
+			.post('http://localhost:3000/api/product/updateProductRating')
+			.send({id : 1, rating: 4})
+			.end(function (err, res) {
+				res.status.should.be.equal(403);
 
-		browser.get('http://localhost:3000/signin');
-
-		element(by.model('email')).sendKeys('daniel.diaz@example.com');
-		element(by.model('password')).sendKeys('customer');
-
-		element(by.css('.button')).click();
-
-		browser.sleep(1000);
-
-		// Visit purchase
-		browser.get('http://localhost:3000/mypurchases');
-
-		// Expect not redirected
-		expect(browser.getCurrentUrl()).not.toEqual('http://localhost:3000/401');
-
-		element.all(by.repeater('purchase in purchases')).last().element(by.model('purchase._id')).click();
-		browser.waitForAngular();
-
-		// Visit product
-		element.all(by.repeater('purchaseline in purchase_list')).last().element(by.model('purchaseline.product._id')).click();
-		browser.waitForAngular();
-
-		var ratingElement = element(by.model('value'));
-		expect(ratingElement.isPresent()).toBe(true);
-
-		var supplierRElement = element(by.model('provide.reputation'));
-		expect(ratingElement.isPresent()).toBe(true);
+				done();
+			});
+		});
 	});
 
+	//Customer with no purchases
+	it("shouldn't let a customer rate a non purchased product", function (done){
+		browser
+		.post('http://localhost:3000/api/signin')
+		.send( { email : 'no.purchases@mail.com', password : 'customer' } )
+		.end(function (err, res) {
+			browser
+			.post('http://localhost:3000/api/product/updateProductRating')
+			.send({id : 1, rating: 4})
+			.end(function (err, res) {
+				res.status.should.be.equal(401);
+
+				done();
+			});
+		});
+	});
+
+	it("shouldn't let a customer rate due to missing parameters in body", function (done){
+		browser
+		.post('http://localhost:3000/api/signin')
+		.send( { email : 'alex.gallardo@example.com', password : 'customer' } )
+		.end(function (err, res) {
+			browser
+			.post('http://localhost:3000/api/product/updateProductRating')
+			.end(function (err, res) {
+				res.status.should.be.equal(500);
+
+				done();
+			});
+		});
+	});
+
+	it("should let a customer rate a purchased product", function (done){
+		browser
+		.post('http://localhost:3000/api/signin')
+		.send( { email : 'alex.gallardo@example.com', password : 'customer' } )
+		.end(function (err, res) {
+			browser
+			.post('http://localhost:3000/api/purchases/mypurchases/filtered')
+			.send({ sort: 'paymentDate', order : 1 })
+			.end(function (err, res) {
+				var purchase = res.body[0];
+
+				browser
+				.get('http://localhost:3000/api/purchaselines/bypurchase/' + purchase._id)
+				.end(function (err, res) {
+					var provide_id = res.body[0].provide_id;
+
+					browser
+					.get('http://localhost:3000/api/provide/' + provide_id)
+					.end(function (err, res) {
+						var product_id = res.body.product_id;
+
+						browser
+						.post('http://localhost:3000/api/product/updateProductRating')
+						.send({ id: product_id, rating: 4})
+						.end(function (err, res) {
+							should.not.exist(err);
+
+							res.status.should.be.equal(200);
+
+							done();
+						});
+					});
+				});
+			});
+		});
+	});
+
+	it("shouldn't let an anonymous user rate a provide", function (done){
+		browser
+		.get('http://localhost:3000/api/signout')
+		.end(function (err, res) {
+			browser
+			.post('http://localhost:3000/api/provide/updateProvideRating')
+			.send({provide_id : 1, rating: 4})
+			.end(function (err, res) {
+				res.status.should.be.equal(403);
+
+				done();
+			});
+		});
+	});
+
+	it("shouldn't let a supplier rate a provide", function (done){
+		browser
+		.post('http://localhost:3000/api/signin')
+		.send( { email : 'ismael.perez@example.com', password : 'supplier' } )
+		.end(function (err, res) {
+			browser
+			.post('http://localhost:3000/api/provide/updateProvideRating')
+			.send({provide_id : 1, rating: 4})
+			.end(function (err, res) {
+				res.status.should.be.equal(403);
+
+				done();
+			});
+		});
+	});
+
+	it("shouldn't let a admin rate a provide in the customers way", function (done){
+		browser
+		.post('http://localhost:3000/api/signin')
+		.send( { email : 'admin@mail.com', password : 'administrator' } )
+		.end(function (err, res) {
+			browser
+			.post('http://localhost:3000/api/provide/updateProvideRating')
+			.send({provide_id : 1, rating: 4})
+			.end(function (err, res) {
+				res.status.should.be.equal(403);
+
+				done();
+			});
+		});
+	});
+
+	//Customer with no purchases
+	it("shouldn't let a customer rate a provide from a non purchased product", function (done){
+		browser
+		.post('http://localhost:3000/api/signin')
+		.send( { email : 'no.purchases@mail.com', password : 'customer' } )
+		.end(function (err, res) {
+			browser
+			.post('http://localhost:3000/api/provide/updateProvideRating')
+			.send({provide_id : 6000, rating: 4})
+			.end(function (err, res) {
+				res.status.should.be.equal(401);
+
+				done();
+			});
+		});
+	});
+
+	it("shouldn't let a customer rate a provide due to missing parameters in body", function (done){
+		browser
+		.post('http://localhost:3000/api/signin')
+		.send( { email : 'alex.gallardo@example.com', password : 'customer' } )
+		.end(function (err, res) {
+			browser
+			.post('http://localhost:3000/api/provide/updateProvideRating')
+			.end(function (err, res) {
+				res.status.should.be.equal(500);
+
+				done();
+			});
+		});
+	});
+
+	it("should let a customer rate a provide from a purchased product", function (done){
+		browser
+		.post('http://localhost:3000/api/signin')
+		.send( { email : 'alex.gallardo@example.com', password : 'customer' } )
+		.end(function (err, res) {
+			browser
+			.post('http://localhost:3000/api/purchases/mypurchases/filtered')
+			.send({ sort: 'paymentDate', order : 1 })
+			.end(function (err, res) {
+				var purchase = res.body[0];
+
+				browser
+				.get('http://localhost:3000/api/purchaselines/bypurchase/' + purchase._id)
+				.end(function (err, res) {
+					var provide_id = res.body[0].provide_id;
+
+					browser
+					.post('http://localhost:3000/api/provide/updateProvideRating')
+					.send({provide_id : provide_id, rating: 4})
+					.end(function (err, res) {
+						should.not.exist(err);
+
+						res.status.should.be.equal(200);
+
+						done();
+					});
+				});
+			});
+		});
+	});
 });

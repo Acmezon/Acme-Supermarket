@@ -53,7 +53,7 @@ describe('Checkout page', function () {
 		product.click();
 
 		// Add to shopping cart
-		var cartbtn = element(by.id('cart-btn'));
+		var cartbtn = element.all(by.id('cart-btn')).first();
 		expect(cartbtn.isPresent()).toBe(true);
 		cartbtn.click();
 		cartbtn.click();

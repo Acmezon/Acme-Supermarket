@@ -5,6 +5,7 @@ var db_utils = require('./db_utils'),
 	PurchasingRuleService = require('./services/service_purchasing_rules'),
 	ActorService = require('./services/service_actors'),
 	CustomerService = require('./services/service_customers'),
+	Reputation = require('../models/reputation'),
 	async = require('async');
 
 // Devuelve una lista de Provides que tienen un producto con id
@@ -71,7 +72,7 @@ exports.getProvidesByProductId = function(req, res) {
 	});
 };
 
-// Returns a supplier object of supplier for product identified by id
+// Returns a provide object of supplier for product identified by id
 exports.getSupplierProvidesByProductId = function(req, res) {
 	var _code = req.params.id;
 	console.log('GET /api/provide/bysupplier/byproduct/'+_code)
@@ -199,6 +200,11 @@ exports.getExistingProvide = function(req, res) {
 exports.updateProvideRating = function (req, res) {
 	var provide_id = req.body.provide_id;
 	var rating_value = req.body.rating;
+
+	if(provide_id == undefined || rating_value == undefined) {
+		res.sendStatus(500);
+		return;
+	}
 
 	CustomerService.getPrincipalCustomer(req.cookies.session, req.app.get('superSecret'), function (user) {
 		if(user == null) {

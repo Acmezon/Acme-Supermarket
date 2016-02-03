@@ -6,42 +6,38 @@ describe("Edit product API url", function (){
 	var browser = request.agent();
 	var product_name = "000000000000000AAA";
 
-	beforeEach(function (done) {
+	it("should let an admin edit a product", function (done){
 		browser
 		.post('http://localhost:3000/api/signin')
 		.send( { email : 'admin@mail.com', password : 'administrator' } )
 		.end(function (err, res) {
-			done();
-		});
-	});
+			browser
+			.post("http://localhost:3000/api/products/filtered")
+			.end(function (err, res){
+				var L = res.body.length;
 
-	it("should let an admin edit a product", function (done){
-		browser
-		.post("http://localhost:3000/api/products/filtered")
-		.end(function (err, res){
-			var L = res.body.length;
+				for(var i = 0; i < L; i++) {
+					var product = res.body[i];
 
-			for(var i = 0; i < L; i++) {
-				var product = res.body[i];
+					if(product.name == product_name) {
+						var description = 'This is the new description';
+						var product_id = product._id;
 
-				if(product.name == product_name) {
-					var description = 'This is the new description';
-					var product_id = product._id;
-
-					browser
-					.post("http://localhost:3000/api/product/updateProduct")
-					.send({ id : product_id, field: 'description', data: description })
-					.end(function (err, res){
 						browser
-						.get("http://localhost:3000/api/product/" + product_id)
+						.post("http://localhost:3000/api/product/updateProduct")
+						.send({ id : product_id, field: 'description', data: description })
 						.end(function (err, res){
-							res.status.should.be.equal(200);
-							res.body.description.should.be.equal(description);
-							done();
+							browser
+							.get("http://localhost:3000/api/product/" + product_id)
+							.end(function (err, res){
+								res.status.should.be.equal(200);
+								res.body.description.should.be.equal(description);
+								done();
+							});
 						});
-					});
+					}
 				}
-			}
+			});
 		});
 	});
 
