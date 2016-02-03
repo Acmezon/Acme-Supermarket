@@ -61,7 +61,7 @@ exports.getNumberOfProductsAffected = function (req, res) {
 // Updates a discount
 exports.updateDiscount = function (req, res) {
 	var id = req.body.discount_id;
-	var value = parseInt(req.body.value) || 0;
+	var value = parseInt(req.body.value);
 	console.log("Function-discountsApi-updateDiscount  --id: " + id);
 
 	var cookie = req.cookies.session;
@@ -70,7 +70,7 @@ exports.updateDiscount = function (req, res) {
 	ActorService.getUserRole(cookie, jwtKey, function (role) {
 		if (role=='admin' || role=='supplier' || role=='customer') {
 			if (role=='admin') {
-				Discount.update({ _id: id }, {$set: {value: value}}, function(err) {
+				Discount.update({ _id: id }, {$set: {value: value}},{ runValidators: true }, function(err) {
 					    if (!err) {
 					    	res.status(200).json({success: true});
 					    }

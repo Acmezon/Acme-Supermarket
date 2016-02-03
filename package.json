@@ -24,6 +24,7 @@
     "request": "^2.67.0",
     "should": ">=7.1.1",
     "shuffle-array": "^0.1.2",
+    "superagent": "^1.7.2",
     "supertest": ">=1.1.0",
     "synchronize": "^0.9.14",
     "validator": "^4.5.0"
