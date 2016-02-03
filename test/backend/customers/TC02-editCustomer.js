@@ -144,7 +144,7 @@ describe('System\'s customers management view', function () {
 				if(res.body[i].email == "randmail@mail.com") {
 					var id = res.body[i]._id;
 					browser
-					.delete("http://localhost:3000/api/customer")
+					.del("http://localhost:3000/api/customer")
 					.send({ id : id })
 					.end(function (err, res){
 						res.status.should.be.equal(200);

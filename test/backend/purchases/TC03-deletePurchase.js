@@ -10,7 +10,7 @@ describe('Purchases list', function () {
 		.get('http://localhost:3000/api/signout')
 		.end(function (err, res) {
 			browser
-			.delete('http://localhost:3000/api/purchase')
+			.del('http://localhost:3000/api/purchase')
 			.send({ id: 1 })
 			.end(function (err, res) {
 				res.status.should.be.equal(401);
@@ -26,7 +26,7 @@ describe('Purchases list', function () {
 		.send( { email : 'alex.gallardo@example.com', password : 'customer' } )
 		.end(function (err, res) {
 			browser
-			.delete('http://localhost:3000/api/purchase')
+			.del('http://localhost:3000/api/purchase')
 			.send({ id: 1 })
 			.end(function (err, res) {
 				res.status.should.be.equal(403);
@@ -42,7 +42,7 @@ describe('Purchases list', function () {
 		.send( { email : 'ismael.perez@example.com', password : 'supplier' } )
 		.end(function (err, res) {
 			browser
-			.delete('http://localhost:3000/api/purchase')
+			.del('http://localhost:3000/api/purchase')
 			.send({ id: 1 })
 			.end(function (err, res) {
 				res.status.should.be.equal(403);
@@ -64,7 +64,7 @@ describe('Purchases list', function () {
 				var purchase = res.body[0];
 
 				browser
-				.delete('http://localhost:3000/api/purchase')
+				.del('http://localhost:3000/api/purchase')
 				.send({ id: purchase._id })
 				.end(function (err, res) {
 					res.status.should.be.equal(200);

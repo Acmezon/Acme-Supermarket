@@ -92,7 +92,7 @@ describe('Product details page', function () {
 				.send( { email : 'alex.gallardo@example.com', password : 'customer' } )
 				.end(function (err, res) {
 					browser
-					.delete('http://localhost:3000/api/provide/bysupplier/byproduct/' + product._id)
+					.del('http://localhost:3000/api/provide/bysupplier/byproduct/' + product._id)
 					.end(function (err, res) {
 
 						res.status.should.be.equal(403);
@@ -124,7 +124,7 @@ describe('Product details page', function () {
 				.send( { email : 'admin@mail.com', password : 'administrator' } )
 				.end(function (err, res) {
 					browser
-					.delete('http://localhost:3000/api/provide/bysupplier/byproduct/' + product._id)
+					.del('http://localhost:3000/api/provide/bysupplier/byproduct/' + product._id)
 					.end(function (err, res) {
 
 						res.status.should.be.equal(403);
@@ -153,7 +153,7 @@ describe('Product details page', function () {
 				var product = res.body[0];
 
 				browser
-				.delete('http://localhost:3000/api/provide/bysupplier/byproduct/' + product._id)
+				.del('http://localhost:3000/api/provide/bysupplier/byproduct/' + product._id)
 				.end(function (err, res) {
 					should.not.exist(err);
 

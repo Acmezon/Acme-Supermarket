@@ -10,7 +10,7 @@ describe('Remove purchasing rule', function () {
 		.get('http://localhost:3000/api/signout')
 		.end(function (err, res) {
 			browser
-			.delete('http://localhost:3000/api/purchasingrule')
+			.del('http://localhost:3000/api/purchasingrule')
 			.send({id : 1})
 			.end(function (err, res) {
 				res.status.should.be.equal(401);
@@ -26,7 +26,7 @@ describe('Remove purchasing rule', function () {
 		.send( { email : 'ismael.perez@example.com', password : 'supplier' } )
 		.end(function (err, res) {
 			browser
-			.delete('http://localhost:3000/api/purchasingrule')
+			.del('http://localhost:3000/api/purchasingrule')
 			.send({id : 1})
 			.end(function (err, res) {
 				res.status.should.be.equal(401);
@@ -51,7 +51,7 @@ describe('Remove purchasing rule', function () {
 				.send( { email : 'salvador.saez@example.com', password : 'customer' } )
 				.end(function (err, res) {
 					browser
-					.delete('http://localhost:3000/api/purchasingrule')
+					.del('http://localhost:3000/api/purchasingrule')
 					.send({id : rule._id})
 					.end(function (err, res) {
 						res.status.should.be.equal(403);
@@ -74,7 +74,7 @@ describe('Remove purchasing rule', function () {
 				var rule = res.body[res.body.length - 1];
 
 				browser
-				.delete('http://localhost:3000/api/purchasingrule')
+				.del('http://localhost:3000/api/purchasingrule')
 				.send({id : rule._id})
 				.end(function (err, res) {
 					res.status.should.be.equal(200);
@@ -93,7 +93,7 @@ describe('Remove purchasing rule', function () {
 		.send( { email : 'alex.gallardo@example.com', password : 'customer' } )
 		.end(function (err, res) {
 			browser
-			.delete('http://localhost:3000/api/purchasingrule')
+			.del('http://localhost:3000/api/purchasingrule')
 			//TODO: Get one from the all purchasing rules list
 			.send({id : 1})
 			.end(function (err, res) {

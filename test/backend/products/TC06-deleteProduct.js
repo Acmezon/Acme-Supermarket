@@ -34,7 +34,7 @@ describe('Product delete', function () {
 					.send( { email : 'alex.gallardo@example.com', password : 'customer' } )
 					.end(function (err, res) {
 						browser
-						.delete('http://localhost:3000/api/products/' + product_id)
+						.del('http://localhost:3000/api/products/' + product_id)
 						.end(function (err, res) {
 							res.status.should.be.equal(403);
 							res.body.success.should.be.false;
@@ -65,7 +65,7 @@ describe('Product delete', function () {
 					.send( { email : 'ismael.perez@example.com', password : 'supplier' } )
 					.end(function (err, res) {
 						browser
-						.delete('http://localhost:3000/api/products/' + product_id)
+						.del('http://localhost:3000/api/products/' + product_id)
 						.end(function (err, res) {
 							res.status.should.be.equal(403);
 							res.body.success.should.be.false;
@@ -94,7 +94,7 @@ describe('Product delete', function () {
 					.get('http://localhost:3000/api/signout')
 					.end(function (err, res) {
 						browser
-						.delete('http://localhost:3000/api/products/' + product_id)
+						.del('http://localhost:3000/api/products/' + product_id)
 						.end(function (err, res) {
 							res.status.should.be.equal(403);
 							res.body.success.should.be.false;
@@ -119,7 +119,7 @@ describe('Product delete', function () {
 				if(product.name == product_name) {	
 
 					browser
-					.delete('http://localhost:3000/api/products/999999')
+					.del('http://localhost:3000/api/products/999999')
 					.end(function (err, res) {
 						res.status.should.be.equal(404);
 						done();
@@ -143,7 +143,7 @@ describe('Product delete', function () {
 					var product_id = product._id;
 
 					browser
-					.delete('http://localhost:3000/api/products/' + product_id)
+					.del('http://localhost:3000/api/products/' + product_id)
 					.end(function (err, res) {
 						res.status.should.be.equal(200);
 						done();
