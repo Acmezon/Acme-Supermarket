@@ -4,11 +4,11 @@ var CustomerService = require('./service_customers'),
 exports.customerHasRule = function(cookie, key, provide_id, callback) {
 	CustomerService.getPrincipalCustomer(cookie, key, function (customer) {
 		if(!customer) {
-			callback(false);
+			callback(true);
 		} else {
 			PurchasingRule.find({ customer_id : customer.id, provide_id: provide_id }).limit(1).exec(function (err, results) {
 				if(err) {
-					callback(false)
+					callback(true)
 				} else {
 					callback(results.length > 0);
 				}

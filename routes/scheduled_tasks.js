@@ -6,7 +6,7 @@ var schedule = require('node-schedule'),
 
 exports.scheduleAutomaticPurchases = function() {
 											//Every day at 17:00
-	var autoPurchase = schedule.scheduleJob({hour: 10, minute: 16}, function(){
+	var autoPurchase = schedule.scheduleJob({hour: 08, minute: 00}, function(){
 		var start = new Date();
 		start.setHours(0,0,0,0);
 

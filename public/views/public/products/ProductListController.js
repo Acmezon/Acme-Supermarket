@@ -30,31 +30,20 @@ angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$
 
 		if ($scope.view=='myproducts') {
 
-			$http({
-				method: 'GET',
-				url: '/api/supplier/principal'
-			}).
-			then(function success(response) {
-				var supplier = response.data
-
-				$http.post('/api/products/myproducts/filtered',
-				{
-					sort : $scope.sortProductsBy,
-					order : $scope.inverseOrder ? -1 : 1,
-					currentPage : $scope.currentPage,
-					pageSize : $scope.pageSize,
-					categoryFilter : $scope.categoryFilterMode,
-					priceFilter : translatePriceFilter($scope.priceFilterMode),
-					ratingFilter : $scope.ratingFilterMode,
-					supplier_id : supplier._id
-				}
-				).then(function success(response2) {
-					callback(response2.data);
-					return;
-				});
-
+			$http.post('/api/products/myproducts/filtered',
+			{
+				sort : $scope.sortProductsBy,
+				order : $scope.inverseOrder ? -1 : 1,
+				currentPage : $scope.currentPage,
+				pageSize : $scope.pageSize,
+				categoryFilter : $scope.categoryFilterMode,
+				priceFilter : translatePriceFilter($scope.priceFilterMode),
+				ratingFilter : $scope.ratingFilterMode
+			}
+			).then(function success(response2) {
+				callback(response2.data);
+				return;
 			});
-
 
 		} else {
 
@@ -80,28 +69,16 @@ angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$
 	$scope.refreshCount = function(callback) {
 
 		if ($scope.view=='myproducts') {
-
-			$http({
-				method: 'GET',
-				url: '/api/supplier/principal'
-			}).
-			then(function success(response) {
-				var supplier = response.data
-
-				$http.post('/api/products/myproducts/filtered/count',
-				{
-					categoryFilter : $scope.categoryFilterMode,
-					priceFilter : translatePriceFilter($scope.priceFilterMode),
-					ratingFilter : $scope.ratingFilterMode,
-					supplier_id : supplier._id
-				}
-				).then(function success(response2) {
-					callback(response2.data);
-					return;
-				});
-
+			$http.post('/api/products/myproducts/filtered/count',
+			{
+				categoryFilter : $scope.categoryFilterMode,
+				priceFilter : translatePriceFilter($scope.priceFilterMode),
+				ratingFilter : $scope.ratingFilterMode
+			}
+			).then(function success(response2) {
+				callback(response2.data);
+				return;
 			});
-
 		} else {
 
 			$http.post('/api/products/filtered/count', 
@@ -202,8 +179,8 @@ angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$
 	$scope.deleteProvide = function (product_id){
 		console.log(product_id)
 		$http({
-			method: 'GET',
-			url: '/api/provide/bysupplier/byproduct/delete/' + product_id
+			method: 'DELETE',
+			url: '/api/provide/bysupplier/byproduct/' + product_id
 		}).
 		then(function success(response) {
 			for (var i = 0; i < $scope.products.length; i++) {

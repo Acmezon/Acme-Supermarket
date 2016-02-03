@@ -264,7 +264,8 @@
 		"Price": "Precio",
 		"Rating": "Valoración",
 		"Supplier": {
-			"Name" : "Nombre",
+			"Id" : "ID de proveedor",
+			"Name" : "Nombre de proveedor",
 			"Reputation" : "Reputación",
 			"Empty" : "Producto no disponible"
 		},
@@ -374,7 +375,9 @@
 			"Question" : "¿Seguro que quieres borrar a este usuario?",
 			"Yes" : "Sí",
 			"No"  :"No"
-		}
+		},
+		"NotFound" : "Cliente no encontrado",
+		"CreditCardNotFound" : "Tarjeta de crédito no encontrada"
 	},
 	"Dashboard" : {
 		"Title" : "Dashboard",
@@ -486,6 +489,18 @@
 		"Product" : "Producto",
 		"Quantity" : "Cantidad",
 		"NextRun" : "Siguiente compra el:",
+		"Remove" : "Eliminar",
+		"Delete" : {
+			"Question" : "¿Está seguro de que desea borrar esta regla? Esto no se puede deshacer.",
+			"Yes" : "Sí",
+			"No" : "No",
+			"Close" : "Cerrar",
+			"Error" : "Se produjo un error al eliminar la regla. Por favor inténtelo de nuevo más tarde."
+		}
+	},
+	"Reputations" : {
+		"Title" : "Valoraciones de usuarios a su producto",
+		"Empty" : "No hay valoraciones todavía.",
 		"Remove" : "Eliminar",
 		"Delete" : {
 			"Question" : "¿Está seguro de que desea borrar esta regla? Esto no se puede deshacer.",

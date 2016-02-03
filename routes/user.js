@@ -26,8 +26,8 @@ exports.getMyProfile = function (req, res) {
 					var email = decoded.email;
 					var password = decoded.password;
 
-					Actor.findOne({email: email}, function(err, actor){
-						if(err){
+					Actor.findOne({email: email}, function (err, actor){
+						if(err || !actor){
 							res.status(401).send({
 								success: false
 							});

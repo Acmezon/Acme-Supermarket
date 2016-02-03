@@ -1,13 +1,15 @@
 var db_utils = require('./db_utils'),
 	Provide = require('../models/provide'),
+	Supplier = require('../models/supplier'),
 	SupplierService = require('./services/service_suppliers'),
 	ReputationService = require('./services/service_reputation'),
 	PurchasingRuleService = require('./services/service_purchasing_rules'),
 	ActorService = require('./services/service_actors'),
 	CustomerService = require('./services/service_customers'),
+	Reputation = require('../models/reputation'),
 	async = require('async');
 
-// Devuelve una lista de Provides que tienen un producto con id
+// Returns a provides list by product id. Includes the supplier name.
 exports.getProvidesByProductId = function(req, res) {
 	var _code = req.params.id;
 
@@ -16,7 +18,7 @@ exports.getProvidesByProductId = function(req, res) {
 	var jwtKey = req.app.get('superSecret')
 	// Check authenticated
 	ActorService.getUserRole(cookie, jwtKey, function (role) {
-		if (role=='admin' || role=='customer' | role=='supplier') {
+		if (role=='admin' || role=='customer' || role=='supplier') {
 			// Get product's provides
 			Provide.find({product_id: _code, deleted: false },function (err,provides){
 				if(err){
@@ -71,7 +73,7 @@ exports.getProvidesByProductId = function(req, res) {
 	});
 };
 
-// Returns a supplier object of supplier for product identified by id
+// Returns a provide object of supplier for product identified by id
 exports.getSupplierProvidesByProductId = function(req, res) {
 	var _code = req.params.id;
 	console.log('GET /api/provide/bysupplier/byproduct/'+_code)
@@ -84,7 +86,7 @@ exports.getSupplierProvidesByProductId = function(req, res) {
 			SupplierService.getPrincipalSupplier(cookie, jwtKey, function (supplier) {
 				if (supplier) {
 
-					Provide.find({product_id: _code, supplier_id: supplier._id}, function(err,provide){
+					Provide.findOne({product_id: _code, supplier_id: supplier._id, deleted: false}, function(err,provide){
 						if(err){
 							// Internal Server Error
 							res.status(500).json({success: false, message: err});
@@ -200,6 +202,11 @@ exports.updateProvideRating = function (req, res) {
 	var provide_id = req.body.provide_id;
 	var rating_value = req.body.rating;
 
+	if(provide_id == undefined || rating_value == undefined) {
+		res.sendStatus(500);
+		return;
+	}
+
 	CustomerService.getPrincipalCustomer(req.cookies.session, req.app.get('superSecret'), function (user) {
 		if(user == null) {
 			res.status(403).json({success: false, message: "Doesn't have permission"});
@@ -254,3 +261,67 @@ exports.updateProvideRating = function (req, res) {
 		}
 	});
 };
+
+// Administrator creates provide
+exports.adminProvide = function (req, res) {
+	var cookie = req.cookies.session;
+	var jwtKey = req.app.get('superSecret');
+
+	var price = req.body.price,
+		supplier_id = req.body.supplier_id,
+		product_id = req.body.product_id;
+
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
+		if (role=='admin' || role=='supplier' || role=='customer') {
+			if (role=='admin') {
+				Supplier.findById(supplier_id, function (err, supplier) {
+					if (err){
+						res.status(500).json({success: false})
+					} else {
+						if (supplier._type=='Supplier') {
+							Provide.findOne({product_id: product_id, supplier_id: supplier_id, deleted: false}).exec (function (err, provide) {
+								if (err) {
+									res.status(500).json({success: false})
+								} else {
+									if (provide) {
+										// FOUND provide
+										Provide.update({_id: provide._id}, {$set: {price: price}}, function (err, provideSaved) {
+											if (err) {
+												res.status(500).json({success: false});
+											} else {
+												res.status(200).json(provideSaved);
+											}
+										});
+
+									} else {
+										// NOT FOUND provide
+										var newProvide = new Provide({
+											supplier_id: supplier_id,
+											product_id: product_id,
+											price: price,
+											deleted: false
+										});
+
+										newProvide.save(function (err, provideSaved) {
+											if (err) {
+												res.status(500).json({success: false});
+											} else {
+												res.status(200).json(provideSaved);
+											}
+										});
+									}
+								}
+							});
+						} else {
+							res.status(500).json({success: false})
+						}
+					}
+				});
+			} else {
+				res.status(403).json({success: false});
+			}
+		} else {
+			res.status(401).json({success: false});
+		}
+	});
+}

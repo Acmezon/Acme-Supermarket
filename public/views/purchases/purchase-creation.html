@@ -1,0 +1,143 @@
+<script src="views/purchases/PurchaseCreationController.js"></script>
+<link rel="stylesheet" href="css/shopping-cart-quantity.css"/>
+
+<div class="wrap">
+	<ul class="breadcrumb breadcrumb__t">
+		<li><a class="home" href="/">{{ 'Home.Title' | translate }}</a> / 
+			<a href="/purchases">{{'Purchases.Title' | translate}}</a> / {{'Purchases.Purchase' | translate}}
+		</li>
+	</ul>
+
+	<div>
+		<h2 class="head" >{{'Purchases.Purchase' | translate}}</h2>
+		<form name="createPurchase">
+			<fieldset class="form-group">
+				<label for="customerEmail">{{'PurchasesCreation.Customer.Email' | translate}}</label>
+				<div class="input-group" ng-class="{'has-error': createPurchase.customerEmail.$dirty && customer && !customer.credit_card_id, 'has-warning': createPurchase.customerEmail.$dirty && !customer, 'has-success': createPurchase.customerEmail.$dirty && customer && customer.credit_card_id}">
+					<span class="input-group-btn">
+						<button class="btn btn-default check" type="button" ng-click="check(customerEmail)" ng-disabled="createPurchase.$invalid">Check</button>
+					</span>
+					<input ng-model="customerEmail" name="customerEmail" type="email" class="form-control" id="customerEmail" placeholder="email@mail.com" required>
+				</div>
+				<small class="text-muted">{{'PurchasesCreation.Customer.EmailText' | translate}}</small>
+				<div class="alert alert-success" role="alert" ng-if="customer && customer.credit_card_id">BUENA</div>
+			</fieldset>
+
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					{{'Checkout.Days.Title' | translate}}
+				</div>
+				<div class="list-group">
+					<a class="list-group-item" ng-class="{active: billingMethod==1}" ng-click="billingMethod=1">
+   						<h4 class="list-group-item-heading">Acme-Supermarket Premium</h4>
+    					<p class="list-group-item-text">5 {{'Checkout.Days.Days' | translate}}</p>
+  					</a>
+  					<a class="list-group-item" ng-class="{active: billingMethod==2}" ng-click="billingMethod=2">
+   						<h4 class="list-group-item-heading">Acme-Supermarket Express</h4>
+    					<p class="list-group-item-text">15 {{'Checkout.Days.Days' | translate}}</p>
+  					</a>
+  					<a class="list-group-item" ng-class="{active: billingMethod==3}" ng-click="billingMethod=3">
+   						<h4 class="list-group-item-heading">Acme-Supermarket Basic</h4>
+    					<p class="list-group-item-text">30 {{'Checkout.Days.Days' | translate}}</p>
+  					</a>
+				</div>
+			</div>
+
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					{{'ShoppingCart.Title' | translate}}
+				</div>
+				<div class="panel-body" ng-if="!shoppingcart.length">
+					<p>VACIO</p>
+				</div>
+
+				<table ng-if="shoppingcart.length" class="table table-bordered table-hover">
+					<thead>
+						<tr>
+							<th>{{'ShoppingCart.Remove' | translate}}</th>
+							<th>{{'ShoppingCart.Product.Image' | translate}}</th>
+							<th>{{'ShoppingCart.Product.Name' | translate}}</th>
+							<th>{{'ShoppingCart.Product.Supplier' | translate}}</th>
+							<th>{{'ShoppingCart.Product.Code' | translate}}</th>
+							<th>{{'ShoppingCart.Product.Quantity' | translate}}</th>
+							<th>{{'ShoppingCart.Product.Price' | translate}} (€)</th>
+							<th>{{'ShoppingCart.Product.Total' | translate}} (€)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="product in shoppingcart">
+							<td style="width:5%"><span ng-click="remove(product._id)" class="remove-provide glyphicon glyphicon-remove-sign"></span></td>
+							<td style="width:10%"><img class="img-responsive img-thumbnail" src="img/{{product.image}}"/></td>
+							<td>{{product.name}}</td>
+							<td>{{product.supplier}}</td>
+							<td>{{product.code}}</td>
+							<td style="width:10%">
+								<div class="display: table; margin: 0 auto;">
+									<span class="input-number-decrement" ng-click="substract(product)">–</span>
+									<input ng-model="product.quantity" pattern="\d*" class="input-number" type="text" value="{{product.quantity}}" maxlength="3" min="1" max="999" step="1" disabled/>
+									<span class="input-number-increment" ng-click="add(product)">+</span>
+								</div>
+							</td>
+							<td style="width:10%">{{product.price | number:2}}</td>
+							<td style="width:10%">{{product.quantity * product.price | number:2}}</td>
+					  	</tr>	
+					</tbody>
+				</table>
+			</div>
+
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					{{'Products.AddToCart' | translate}} <a ng-click="isEditing=false"><span class="glyphicon glyphicon-remove-sign pull-right"></span></a>
+				</div>
+				<table class="table table-responsive table-bordered table-hover table-provides" ng-if="isEditing">
+					<thead>
+						<th>{{'Products.Supplier.Name' | translate}}</th>
+						<th>{{'Products.Supplier.Reputation' | translate}}</th>
+						<th>{{'Products.Price' | translate}}</th>
+					</thead>
+					<tbody>
+						<tr ng-repeat="provide in provides">
+							<td>
+								{{provide.supplierName}}
+							</td>
+							<td title="{{provide.reputation}}">
+								<span ng-if="!provide.userHasPurchased" ng-repeat="n in [1, 2, 3, 4, 5] track by $index" class="glyphicon" ng-class="{'glyphicon-star': provide.reputation >= $index + 1, 'glyphicon-star-empty': provide.reputation < $index + 1}"></span>
+							</td>
+							<td>
+								{{provide.price | number:2}} €
+							</td>
+							<td>
+								<div class="btn_form" >
+									<form class="btn_form">
+										<input id="cart-btn" type="submit" ng-click="addToCart(provide)" value="{{ 'Products.AddToCart' | translate }}" title="" />
+									</form>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="panel-body" ng-if="!isEditing">
+					<div style="margin: 2% 2% 2% 2%" ng-if="!isEditing">
+						<fieldset class="form-group">
+							<label for="product_id">{{'PurchasesCreation.Customer.Email' | translate}}</label>
+							<div class="input-group spinner">
+								<input ng-model="product_id" id="product_id" type="text" class="form-control">
+								<div class="input-group-btn-vertical">
+									<button class="btn btn-default" type="button" ng-click="product_id = product_id+1"><i class="fa fa-caret-up"></i></button>
+									<button class="btn btn-default" type="button" ng-click="product_id = Math.max(1, product_id-1)"><i class="fa fa-caret-down"></i></button>
+								</div>
+							</div>
+						</fieldset>
+
+						<button id="add" ng-click="load(product_id)" class="btn btn-primary btn-lg" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<span class="glyphicon glyphicon-plus"></span>
+						</button>
+					</div>
+				</div>
+			</div>
+			<div style="margin-bottom: 5%"> 
+  				<button id="submit" type="submit" class="btn btn-lg btn-primary" ng-disabled="!customer || !customer.credit_card_id || (billingMethod!=1 && billingMethod!=2 && billingMethod!=3) || !shoppingcart.length || isEditing" ng-click="submit()">Submit</button>
+  			</div>
+		</form>
+	</div>
+</div>

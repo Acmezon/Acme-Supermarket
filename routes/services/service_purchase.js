@@ -1,4 +1,5 @@
 var request = require('request'),
+	ActorService = require('./service_actors'),
 	CustomerService = require('./service_customers'),
 	Customer = require('../../models/customer'),
 	Purchase = require('../../models/purchase'),
@@ -38,18 +39,24 @@ exports.storePurchaseInRecommendation = storePurchaseInRecommendation;
 exports.purchaseStandard = function (billingMethod, cookie, session, jwtKey, callback) {
 	if (billingMethod != 1 && billingMethod != 2 && billingMethod != 3) {
 		// Error bad GET params
-		callback(403, null);
+		callback(503, null);
 	} else {
-		// CONTINUE
-		// Check principal is customer
-		CustomerService.getPrincipalCustomer(session, jwtKey, function (customer) {
-			if (customer) {
-				purchase(billingMethod, customer.id, cookie, function (code, purchase) {
-					callback(code, purchase);
+		ActorService.getUserRole(session, jwtKey, function (role) {
+			// CONTINUE
+			// Check principal is customer
+			if (role=='admin' || role=='customer' || role=='supplier') { 
+				CustomerService.getPrincipalCustomer(session, jwtKey, function (customer) {
+					if (customer) {
+						purchase(billingMethod, customer.id, cookie, function (code, purchase) {
+							callback(code, purchase);
+						});
+					} else {
+						// Error not a customer
+						callback(401, null);
+					}
 				});
 			} else {
-				// Error not a customer
-				callback(401, null);
+				callback(403, null);
 			}
 		});
 	}
@@ -103,6 +110,11 @@ function purchase(billingMethod, customer_id, provide_list, callback) {
 			break;
 	}
 
+	if(!provide_list) {
+		res.sendStatus(500);
+		return;
+	}
+
 	var day = new Date();
 	day.setDate(day.getDate() + time); 
 
@@ -152,7 +164,6 @@ function purchase(billingMethod, customer_id, provide_list, callback) {
 				RecommenderService.recommendPurchases(customer_id, function (err, response){
 					if(err || response.statusCode == 500) {
 						console.log(err);
-						console.log(response.statusCode);
 						console.log("No recommendation updated")
 					} else {
 						console.log("Recommendations updated")

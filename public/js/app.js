@@ -69,7 +69,7 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 				if (!response.data.success) {
 					deferred.resolve();
 				}
-				// Not Authenticated
+				// Authenticated
 				else {
 					deferred.reject();
 					$location.url('/');
@@ -241,7 +241,7 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			templateUrl: 'views/public/signup/signup.html',
 			controller: 'SignupCtrl',
 			resolve : {
-				loggedin : notLoggedin
+				notloggedin : notLoggedin
 			}
 		}).
 		when('/myprofile', {
@@ -315,34 +315,42 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			templateUrl: 'views/checkout/checkout.html',
 			controller: 'CheckoutCtrl',
 			resolve: {
-				admin: checkCustomer
+				customer: checkCustomer
 			}
 		}).
 		when('/checkout/success/:id', {
 			templateUrl: 'views/checkout/confirm.html',
 			controller: 'CheckoutConfirmCtrl',
 			resolve: {
-				admin: checkCustomer
+				loggedin: checkLoggedin
 			}
 		}).
 		when('/checkout/error', {
 			templateUrl: 'views/checkout/confirm.html',
 			controller: 'CheckoutConfirmCtrl',
 			resolve: {
-				admin: checkCustomer
+				loggedin: checkLoggedin
 			}
 		}).
 		when('/mypurchases', {
 			templateUrl: 'views/purchases/purchases.html',
 			controller: 'PurchasesListCtrl',
 			resolve: {
-				admin: checkCustomer
+				customer: checkCustomer
 			},
 			activetab: 'account'
 		}).
 		when('/purchases', {
 			templateUrl: 'views/purchases/purchases.html',
 			controller: 'PurchasesListCtrl',
+			resolve: {
+				admin: checkAdmin
+			},
+			activetab: 'management'
+		}).
+		when('/purchase/create', {
+			templateUrl: 'views/purchases/purchase-creation.html',
+			controller: 'PurchaseCreationCtrl',
 			resolve: {
 				admin: checkAdmin
 			},
