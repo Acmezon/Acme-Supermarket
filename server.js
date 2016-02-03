@@ -111,6 +111,8 @@ app.delete('/api/purchase', api.Purchases.deletePurchase);
 app.get('/api/purchaselines/bypurchase/:id', api.PurchaseLines.getPurchaseLinesByPurchaseId);
 
 // Purchasing rules
+app.post('/api/purchasingrules/filtered', api.PurchasingRules.getPurchasingRulesFiltered);
+app.post('/api/purchasingrules/filtered/count', api.PurchasingRules.countPurchasingRulesFiltered);
 app.post('/api/createPurchasingRule', api.PurchasingRules.createPurchasingRule);
 app.delete('/api/purchasingrule', api.PurchasingRules.removePurchasingRule);
 
@@ -170,8 +172,6 @@ app.get('/api/socialMedia/stop', api.SocialMedia.stopTwitterScrapper);
 app.get('/api/recommender/checkStatus', api.RecommenderServer.checkStatus);
 
 //Test
-app.get('/logs/test', scheduledTasks.loggerTest);
-app.get('/api/cookietest', api.cookieTest);
 
 // redirect all others to the index (HTML5 history) Use in production only
 app.get('*', routes.index);

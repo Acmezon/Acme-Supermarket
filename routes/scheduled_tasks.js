@@ -2,11 +2,11 @@ var schedule = require('node-schedule'),
 	sync = require('synchronize'),
 	PurchasingRule = require('../models/purchasing_rule'),
 	PurchaseService = require('./services/service_purchase'),
-	Winston = require('winston');
+	log = require('../logger');
 
 exports.scheduleAutomaticPurchases = function() {
 											//Every day at 17:00
-	var autoPurchase = schedule.scheduleJob({hour: 08, minute: 00}, function(){
+	var autoPurchase = schedule.scheduleJob({hour: 17, minute: 17}, function(){
 		var start = new Date();
 		start.setHours(0,0,0,0);
 
@@ -20,6 +20,7 @@ exports.scheduleAutomaticPurchases = function() {
 
 			sync.fiber(function () {
 				for(var i = 0; i < results.length; i++) {
+					console.log("Purchasing rule " + i + " of " + results.length);
 					var rule = results[i];
 
 					var result = sync.await(PurchaseService.purchaseScheduled(rule.customer_id, rule.provide_id, rule.quantity, sync.defer()));
@@ -34,17 +35,12 @@ exports.scheduleAutomaticPurchases = function() {
 				}				
 			}, function (err, data){
 				if(err) {
-					console.log(err);
+					log.info('Error executing automatic purchasing rule. Error %s', err);
 				}
+				console.log("Finished");
 			})
 		});
 	});
 
 	console.log("Automatic purchases task successfuly scheduled")
-}
-
-exports.loggerTest = function(req, res) {
-	Winston.add(Winston.transports.File, { filename: 'logs/scheduled-tasks.log' });
-	Winston.level = 'info';
-	Winston.info('Testing log');
 }

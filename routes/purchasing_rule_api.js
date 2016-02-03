@@ -1,7 +1,9 @@
 var PurchasingRule = require('../models/purchasing_rule'),
 	ActorService = require('./services/service_actors'),
 	CustomerService = require('./services/service_customers'),
-	PurchasingRuleService = require('./services/service_purchasing_rules');
+	ProductService = require('./services/service_products'),
+	PurchasingRuleService = require('./services/service_purchasing_rules'),
+	sync = require('synchronize');
 
 exports.createPurchasingRule = function(req, res) {
 	// Check principal is customer or administrator
@@ -112,6 +114,131 @@ exports.removePurchasingRule = function(req, res) {
 				success: false,
 				message: "Doesnt have permission"
 			});
+		}
+	});
+};
+
+exports.getPurchasingRulesFiltered = function (req, res) {
+	console.log('Function-pruchasingRulesApi-purchasingRulesFiltered');
+
+	var currentPage = parseInt(req.body.currentPage) || 0,
+		pageSize = parseInt(req.body.pageSize) || 20,
+		sort = req.body.sort,
+		order = parseInt(req.body.order) || 1,
+		customerFilter = parseInt(req.body.customerFilter) || null;
+
+
+	var ord_tuple = {};
+	ord_tuple[sort] = order;
+
+	var cookie = req.cookies.session;
+	var jwtKey = req.app.get('superSecret');
+
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
+		if (role=='admin' || role=='customer' || role=='supplier') { 
+			if (role=='admin') {
+				var query;
+
+				if (customerFilter) {
+					query = PurchasingRule.find({ customer_id: customerFilter});
+				} else {
+					query = PurchasingRule.find();
+				}
+
+				query
+				.sort(ord_tuple)
+				.skip(pageSize * currentPage)
+				.limit(pageSize)
+				.exec(function (err, rules) {
+					if (err) {
+						// Internal server error
+						res.status(500).json({success: false, message: err});
+					} else {
+						var completed_rules = [];
+
+						sync.fiber(function () {
+							for(var i = 0; i < rules.length; i++) {
+								var rule_obj = rules[i].toObject();
+
+								var provide_id = rule_obj.provide_id;
+
+								var product = sync.await(ProductService.getProductByProvideId(provide_id, sync.defer()));
+
+								if(product) {
+									rule_obj['product_name'] = product.name;
+									rule_obj['product_id'] = product.id;
+								} else {
+									rule_obj['product_name'] = undefined;
+									rule_obj['product_id'] = undefined;
+								}
+
+								completed_rules.push(rule_obj);
+							}
+
+							return completed_rules;
+						}, function (err, data) {
+							if(err) {
+								console.log(err);
+								res.sendStatus(500);
+							} else {
+								res.status(200).json(data);
+							}
+						});
+					}
+				});
+			} else {
+				// Not admin should not be requesting this
+				res.status(403).json({success: false});
+			}
+		} else {
+			// Not authenticated
+			res.status(401).json({success: false});
+		}
+	});
+};
+
+exports.countPurchasingRulesFiltered = function (req, res) {
+	console.log('Function-pruchasingRulesApi-countPurchasingRulesFiltered');
+
+	var currentPage = parseInt(req.body.currentPage) || 0,
+		pageSize = parseInt(req.body.pageSize) || 20,
+		sort = req.body.sort,
+		order = parseInt(req.body.order) || 1,
+		customerFilter = parseInt(req.body.customerFilter) || null;
+
+	var ord_tuple = {};
+	ord_tuple[sort] = order;
+
+	var cookie = req.cookies.session;
+	var jwtKey = req.app.get('superSecret');
+
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
+		if (role=='admin' || role=='customer' || role=='supplier') { 
+			if (role=='admin') {
+				var query;
+
+				if (customerFilter) {
+					query = PurchasingRule.count({ customer_id: customerFilter});
+				} else {
+					query = PurchasingRule.count();
+				}
+
+				query
+				.exec(function (err, number) {
+					if (err) {
+						// Internal server error
+						res.status(500).json({success: false, message: err});
+					} else {
+						res.status(200).json(number);
+					}
+				});
+			} else {
+				// Not admin should not be requesting this
+				res.status(403).json({success: false});
+			}
+		} else {
+			// Not authenticated
+			res.status(401).json({success: false});
 		}
 	});
 };

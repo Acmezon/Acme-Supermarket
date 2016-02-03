@@ -54,7 +54,8 @@
 		"Management" : "Management",
 		"Customers" : "Customers",
 		"Purchases" : "Purchases",
-		"CreateProduct" : "Add product"
+		"CreateProduct" : "Add product",
+		"PurchasingRules" : "Reglas de compra"
 	},
 	"Footer": {
 		"AboutUs" : "About Us",
@@ -499,6 +500,17 @@
 			"Close" : "Close",
 			"Error" : "Error deleting the rule. Please try again later."
 		}
+	},
+	"PurchasingRules" : {
+		"Title" : "Purchasing Rules",
+		"Empty" : "No purchases rules found",
+		"Filter" : {
+			"Title" : "Filters",
+			"Customer" : "Customer ID"
+		},
+		"First" : "First",
+		"Last" : "Last",
+		"Customer" : "Customer ID"
 	},
 	"Reputations" : {
 		"Title" : "User rating of your product",
