@@ -212,51 +212,13 @@ exports.updateProvideRating = function (req, res) {
 			res.status(403).json({success: false, message: "Doesn't have permission"});
 			return;
 		} else {
-			SupplierService.userHasPurchased(req.cookies.session, req.app.get('superSecret'), provide_id, function (response) {
-				if(!response) {
-					res.sendStatus(401)
-					return;
+			ReputationService.saveReputationForCustomer(req.cookies.session, req.app.get('superSecret'), user.id, provide_id, rating_value, function (err, saved) {
+				if(err) {
+					console.log(err.message);
+					res.sendStatus(parseInt(err.code));
+				} else {
+					res.sendStatus(200);
 				}
-				Provide.findOne( { _id : provide_id, deleted: false }, function (err, provide) {
-					if(err || !provide) {
-						res.sendStatus(503);
-						return;
-					}
-					Reputation.findOne({ customer_id : user.id, provide_id : provide.id }, function (err, reputation) {
-						if(err) {
-							res.sendStatus(503);
-							return;
-						} else {
-							if(reputation) {
-								// Reputation found: Update
-								Reputation.findByIdAndUpdate(reputation.id, { $set : { value : rating_value } }, function (err, updated) {
-									if (err) {
-										res.sendStatus(503);
-										return;
-									} else {
-										res.sendStatus(200);
-									}
-								});
-							} else {
-								// Rate not found: Create new one
-								var new_reputation = new Reputation({
-									value: rating_value,
-									provide_id : provide.id,
-									customer_id : user.id
-								});
-
-								Reputation.save(function (err) {
-									if (err) {
-										res.sendStatus(503);
-										return;
-									} else {
-										res.sendStatus(200);
-									}
-								});
-							}
-						}
-					});
-				});
 			});
 		}
 	});

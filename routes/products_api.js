@@ -16,7 +16,8 @@ var Authentication = require('./authentication'),
 	RecommenderService = require('./services/service_recommender_server'),
 	async = require('async'),
 	mongoose = require('mongoose'),
-	SupplierService = require('./services/service_suppliers');
+	SupplierService = require('./services/service_suppliers')
+	RateService = require('./services/service_rates');
 
 // Returns all objects of the system, filtered
 exports.getAllProductsFiltered = function(req, res) {
@@ -939,85 +940,14 @@ exports.updateProductRating = function(req, res) {
 			});
 			return;
 		} else {
-			CustomerService.checkPurchasing(user, product_id, function (response) {
-				if (!response) {
-					res.sendStatus(401)
-					return;
+			RateService.rateProductForCustomer(user, product_id, rating_value, function (err, saved) {
+				if(err) {
+					console.log(err.message);
+					res.sendStatus(parseInt(err.code));
+				} else {
+					res.sendStatus(200);
 				}
-				Rate.findOne({
-					customer_id: user.id,
-					product_id: product_id
-				}, function (err, rate) {
-					if (err) {
-						res.sendStatus(503);
-						return;
-					} else {
-						if (rate) {
-							// Rate found: Update
-							Rate.findByIdAndUpdate(rate.id, {
-								$set: {
-									value: rating_value
-								}
-							}, function (err, updated) {
-								if (err) {
-									res.sendStatus(503);
-									return;
-								} else {
-									// Update average rating and recalculate recommendations
-									ProductService.updateAverageRating(product_id, function (success) {
-										if (!success) {
-											console.log("Ratings not updated");
-											res.sendStatus(503);
-										} else {
-											RecommenderService.recommendRates(user.id, function (err, response) {
-												if (err || response.statusCode == 500) {
-													console.log("No recommendations updated");
-												}
-
-												res.sendStatus(200);
-												return;
-											});
-										}
-									});
-								}
-							});
-						} else {
-							// Rate not found: Create new one
-							var new_rate = new Rate({
-								value: rating_value,
-								product_id: product_id,
-								customer_id: user.id
-							});
-
-							new_rate.save(function(err) {
-								if (err) {
-									res.sendStatus(503);
-									return;
-								} else {
-									ProductService.updateAverageRating(product_id, function(success) {
-										console.log("Llega 4");
-										if (!success) {
-											console.log("Ratings not updated");
-											res.sendStatus(503);
-										} else {
-											console.log("Llega 5");
-											RecommenderService.recommendRates(user.id, function(err, response) {
-												if (err || response.statusCode == 500) {
-													console.log("No recommendation updated")
-												}
-
-												console.log("Llega 6");
-												res.sendStatus(200);
-												return;
-											});
-										}
-									});
-								}
-							});
-						}
-					}
-				});
-			});
+			})
 		}
 	});
 };

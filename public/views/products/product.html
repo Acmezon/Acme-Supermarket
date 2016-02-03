@@ -39,7 +39,7 @@
 						</div>
 
 						<div ng-if="userHasPurchased">
-							<uib-rating ng-model="value" class="rating" max="max" ng-click="rateProduct()"></uib-rating>
+							<uib-rating ng-model="product_rating" class="rating" max="max" ng-click="rateProduct(product_rating)"></uib-rating>
 						</div>
 						<!--<div class="rating" data-stars="{{product.rating}}"></div>-->
 						<h3 class="m_3" editable-text="product.name" e-maxlength="100" e-form="textNameForm" e-placeholder="{{ 'Product.Create.Name' | translate }}" onbeforesave="updateProduct('name', $data)">{{product.name}}</h3>
