@@ -300,13 +300,17 @@
 		"DeleteProvide" : "Dejar de proveer este producto",
 		"AlreadyHasRule" : "Ya tienes una regla para comprar este producto. Quizás quieres ir a",
 		"CreateRule" : {
+			"CustomerID" : "ID del cliente",
+			"CustomerIDError" : "El ID del cliente es obligatorio y debe ser positivo",
 			"StartDate" : "Fecha de inicio",
 			"StartDateError" : "La fecha de inicio es obligatoria y debe ser futura",
 			"Periodicity" : "Periodicidad",
 			"PeriodicityError" : "La periodicidad es obligatoria y debe ser extrictamente positiva",
 			"Quantity" : "Cantidad",
 			"QuantityError" : "La cantidad es obligatoria y debe ser extrictamente positiva",
-			"Title" : "Crear regla de compra"
+			"Title" : "Crear regla de compra",
+			"Error" : "Error al crear la regla. Inténtelo de nuevo más tarde",
+			"AdminError" : "Error al crear la regla. Asegúrese de que el cliente existe y no tiene ya una regla para este producto y proveedor"
 		}
 	},
 	"ShoppingCart": {

@@ -168,7 +168,7 @@ angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$
 		}, function error(response) {
 			$translate(['Product.DeleteError']).then(function (translation) {
 				ngToast.create({
-					className: 'error',
+					className: 'danger',
 					content: translation['Product.DeleteError']
 				});
 			});
@@ -191,7 +191,7 @@ angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$
 		}, function error (response) {
 			$translate(['Product.DeleteError']).then(function (translation) {
 				ngToast.create({
-					className: 'error',
+					className: 'danger',
 					content: translation['Product.DeleteError']
 				});
 			});

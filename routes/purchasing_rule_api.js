@@ -12,41 +12,55 @@ exports.createPurchasingRule = function(req, res) {
 
 	ActorService.getUserRole(cookie, jwtKey, function (role) {
 		if (role=='admin' || role=='customer') { 
-			CustomerService.getPrincipalCustomer(req.cookies.session, req.app.get('superSecret'), function (customer) {
-				if(!customer) {
-					res.status(403).json({success: false, message: "Doesnt have permission"});
-				} else {
-					PurchasingRuleService.customerHasRule(cookie, jwtKey, req.body.provide_id, function (result) {
+			var rule_data = req.body.rule;
+
+			if (rule_data != undefined) {
+				var purchasing_rule = {
+					startDate: rule_data.startDate,
+					periodicity: rule_data.periodicity,
+					quantity: rule_data.quantity,
+					provide_id: req.body.provide_id
+				};
+
+				if(role == 'admin') {
+					PurchasingRuleService.customerIdHasRule(rule_data.customer_id, req.body.provide_id, function (result) {
 						if(!result) {
-							var rule_data = req.body.rule;
-
-							if (rule_data != undefined) {
-								var purchasing_rule = new PurchasingRule({
-									startDate: rule_data.startDate,
-									periodicity: rule_data.periodicity,
-									quantity: rule_data.quantity,
-									provide_id: req.body.provide_id,
-									customer_id: customer.id
-								});
-
-								purchasing_rule.save(function (err) {
-									if(err) {
-										console.log(err);
-										res.sendStatus(500);
-									} else {
-										res.sendStatus(200);
-									}
-								});
-							} else {
-								console.log("No rule");
-								res.sendStatus(500);
-							}
+							PurchasingRuleService.saveRule(purchasing_rule, rule_data.customer_id, function (err, saved){
+								if(err) {
+									res.sendStatus(503);
+								} else {
+									res.sendStatus(200);
+								}
+							});
 						} else {
-							res.sendStatus(503);
+							res.status(200).json({success: false});
+						}
+					});
+				} else {
+					CustomerService.getPrincipalCustomer(req.cookies.session, req.app.get('superSecret'), function (customer) {
+						if(!customer) {
+							res.status(403).json({success: false, message: "Doesnt have permission"});							
+						} else {
+							PurchasingRuleService.customerHasRule(cookie, jwtKey, req.body.provide_id, function (result) {
+								if(!result) {
+									PurchasingRuleService.saveRule(purchasing_rule, customer.id, function (err, saved){
+										if(err) {
+											res.sendStatus(503);
+										} else {
+											res.sendStatus(200);
+										}
+									});
+								} else {
+									res.sendStatus(503);
+								} 
+							});
 						}
 					});
 				}
-			});
+			} else {
+				console.log("No rule");
+				res.sendStatus(500);
+			}
 		} else {
 			res.status(401).json({success: false});
 		}

@@ -26,7 +26,7 @@ function ($scope, $http, $translate, ngToast, $location) {
 					case 503:
 						$translate(['Dashboard.SocialMedia.StartError']).then(function (translation) {
 							ngToast.create({
-								className: 'error',
+								className: 'danger',
 								content: translation['Dashboard.SocialMedia.StartError']
 							});
 						});
@@ -60,7 +60,7 @@ function ($scope, $http, $translate, ngToast, $location) {
 					case 503:
 						$translate(['Dashboard.SocialMedia.StopError']).then(function (translation) {
 							ngToast.create({
-								className: 'error',
+								className: 'danger',
 								content: translation['Dashboard.SocialMedia.StopError']
 							});
 						});
