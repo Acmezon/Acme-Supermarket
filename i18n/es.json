@@ -500,6 +500,14 @@
 	},
 	"Reputations" : {
 		"Title" : "Valoraciones de usuarios a su producto",
-		"Empty" : "No hay valoraciones todavía."
+		"Empty" : "No hay valoraciones todavía.",
+		"Remove" : "Eliminar",
+		"Delete" : {
+			"Question" : "¿Está seguro de que desea borrar esta regla? Esto no se puede deshacer.",
+			"Yes" : "Sí",
+			"No" : "No",
+			"Close" : "Cerrar",
+			"Error" : "Se produjo un error al eliminar la regla. Por favor inténtelo de nuevo más tarde."
+		}
 	}
 }

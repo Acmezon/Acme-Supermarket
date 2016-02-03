@@ -73,8 +73,6 @@ describe('Reputation rating section from /product page', function () {
 		browser.waitForAngular();
 
 		expect(element(by.id('reputations')).isPresent()).toEqual(true);
-
-		expect(element(by.css('svg')).isPresent()).toEqual(true)
 	});
 
 });

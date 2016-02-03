@@ -53,13 +53,13 @@ exports.authenticate = function (req, res) {
 exports.disconnect = function (req, res) {
 	console.log('Function-authenticationApi-disconnecting');
 	res.clearCookie('session');
-	res.clearCookie('shoppingcart')
+	res.clearCookie('shoppingcart');
 	res.sendStatus(200);
 };
 
 // Register a customer into the system
 exports.signup = function (req, res) {
-	console.log('Function-authenticationApi-signingup -- email:' + req.body.name);
+	console.log('Function-authenticationApi-signingup -- email:' + req.body.email);
 
 	var customer = {
 		name : req.body.name,
@@ -77,7 +77,6 @@ exports.signup = function (req, res) {
 	customers_api.newCustomer(customer, 
 		function (errors) {
 			if(errors.length > 0) {
-				console.log(errors);
 				res.status(500).json({success: false, message: errors});
 			} else {
 				res.status(200).json({success: true});

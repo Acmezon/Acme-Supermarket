@@ -59,7 +59,7 @@ describe('Product creation', function () {
 		var product_name = 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz';
 		element(by.model('product.name')).sendKeys(product_name);
 		element(by.model('product.description')).sendKeys('Prueba descripción');
-		var fileToUpload = '../resources/images/img-thing.jpg',
+		var fileToUpload = '../../resources/images/img-thing.jpg',
 		absolutePath = path.resolve(__dirname, fileToUpload);
 
 		$('form#submit-form>div:nth-child(3)>input[type="file"]').sendKeys(absolutePath);

@@ -49,6 +49,10 @@ if (env === 'production') {
 //Database connection
 db_utils.connect();
 
+//Automatic purchases
+var scheduledTasks = require('./routes/scheduled_tasks');
+scheduledTasks.scheduleAutomaticPurchases();
+
 var api = require('./routes/api');
 
 /**
@@ -86,7 +90,7 @@ app.get('/api/provide/:id', api.Provides.getProvide);
 app.get('/api/existingProvide/:id', api.Provides.getProvide);
 app.get('/api/providesByProductId/:id', api.Provides.getProvidesByProductId);
 app.get('/api/provide/bysupplier/byproduct/:id', api.Provides.getSupplierProvidesByProductId);
-app.get('/api/provide/bysupplier/byproduct/delete/:id', api.Provides.deleteSupplierProvidesByProductId);
+app.delete('/api/provide/bysupplier/byproduct/:id', api.Provides.deleteSupplierProvidesByProductId);
 app.post('/api/provide/updateProvideRating', api.Provides.updateProvideRating);
 app.post('/api/provide/admin/create', api.Provides.adminProvide);
 
@@ -164,6 +168,10 @@ app.get('/api/socialMedia/stop', api.SocialMedia.stopTwitterScrapper);
 
 //Recommender server
 app.get('/api/recommender/checkStatus', api.RecommenderServer.checkStatus);
+
+//Test
+app.get('/logs/test', scheduledTasks.loggerTest);
+app.get('/api/cookietest', api.cookieTest);
 
 // redirect all others to the index (HTML5 history) Use in production only
 app.get('*', routes.index);

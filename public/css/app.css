@@ -396,3 +396,14 @@ form.create-rule_form {
 form.create-rule_form div.input-group {
 	width: auto;
 }
+
+
+/*Rating chart*/
+
+#chart {
+  height: 40vh;
+}
+
+.nv-label text{
+    font-family: Droid Sans;
+}

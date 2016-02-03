@@ -58,7 +58,7 @@ describe('Product details page', function () {
 
 			browser.get('http://localhost:3000/product/31');
 			element.all(by.repeater('provide in out_suppliers')).count().then(function (new_count) {
-				expect(new_count).toBe(count + 1);
+				expect(new_count).toBe(count + 2);//2 ng-repeat over out_suppliers -> +-2 when added / removed
 			});
 		});
 	});
@@ -79,7 +79,7 @@ describe('Product details page', function () {
 
 			browser.get('http://localhost:3000/product/31');
 			element.all(by.repeater('provide in out_suppliers')).count().then(function (new_count) {
-				expect(new_count).toBe(count - 1);
+				expect(new_count).toBe(count - 2);//2 ng-repeat over out_suppliers -> +-2 when added / removed
 			});
 		});
 	});
