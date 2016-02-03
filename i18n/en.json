@@ -54,7 +54,8 @@
 		"Management" : "Management",
 		"Customers" : "Customers",
 		"Purchases" : "Purchases",
-		"CreateProduct" : "Add product"
+		"CreateProduct" : "Add product",
+		"Discounts" : "Discounts"
 	},
 	"Footer": {
 		"AboutUs" : "About Us",
@@ -518,8 +519,9 @@
 			"Description2" : " discounts registered"
 		},
 		"Error" : {
-			"Value" : "",
-			"Code" : ""
+			"Value" : "The value of the discount is invalid.",
+			"Code" : "The discount code is invalid. Click 'Generate' again to generate a new one.",
+			"Server" : "Internal server error"
 		},
 		"Value" : "Discount (%)",
 		"Code" : "Code",

@@ -11,7 +11,7 @@ exports.config = {
 	},
 	seleniumAddress: 'http://localhost:4444/wd/hub',
 	specs: [
-		'e2e/provides/TC03-adminCreateProvide.js'
+		'e2e/discounts/TC03-editDiscount.js'
 		//'backend/products/TC03-rateProduct.js'
 
 	]/*,

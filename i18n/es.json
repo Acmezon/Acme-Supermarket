@@ -54,7 +54,8 @@
 		"Management" : "Administración",
 		"Customers" : "Clientes",
 		"Purchases" : "Compras",
-		"CreateProduct" : "Añadir un producto"
+		"CreateProduct" : "Añadir un producto",
+		"Discounts" : "Descuentos"
  	},
 	"Footer": {
 		"AboutUs" : "Sobre nosotros",
@@ -516,8 +517,9 @@
 			"Description2" : " descuentos registrados"
 		},
 		"Error" : {
-			"Value" : "",
-			"Code" : ""
+			"Value" : "El valor de descuento es inválido",
+			"Code" : "El código de descuento es inválido. Pulse 'Generar' para generar uno nuevo.",
+			"Server" : "Error interno del servidor"
 		},
 		"Value" : "Descuento (%)",
 		"Code" : "Código",

@@ -118,24 +118,41 @@ angular.module('acme_supermarket').registerCtrl('DiscountListCtrl', ['$scope', '
 
 		// Will not query server until a discount has changed
 		if (hasChanged) {
-			$http.post('/api/discount',
+			if(parseInt(discount.value) < 0 || parseInt(discount.value) > 100 || !discount.value) {
+				$translate(['Discounts.Error.Value']).then(function (translation) {
+					ngToast.create({
+						className: 'danger',
+						content: translation['Discounts.Error.Value'],
+						timeout: 10000
+					});
+				});
+			} else {
+				$http.post('/api/discount',
 				{
 					discount_id: discount._id,
 					value : discount.value
 				}
-			).
-			then(function success(response) {
-				// Make a copy
-				for (var i = 0; i < $scope.copy.length; i++) {
-					if ($scope.copy[i]._id == discount._id) {
-						discount.isEditing = false;
-						$scope.copy[i] = angular.copy(discount);
-						form.$setPristine();
-						break;
+				).
+				then(function success(response) {
+					// Make a copy
+					for (var i = 0; i < $scope.copy.length; i++) {
+						if ($scope.copy[i]._id == discount._id) {
+							discount.isEditing = false;
+							$scope.copy[i] = angular.copy(discount);
+							form.$setPristine();
+							break;
+						}
 					}
-				}
-			}, function error(response) {
-			});
+				}, function error(response) {
+					$translate(['Discounts.Error.Server']).then(function (translation) {
+						ngToast.create({
+							className: 'danger',
+							content: translation['Discounts.Error.Server'],
+							timeout: 10000
+						});
+					});
+				});
+			}
 		}
 	};
 
