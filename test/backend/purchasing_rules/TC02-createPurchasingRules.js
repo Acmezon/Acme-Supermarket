@@ -69,6 +69,7 @@ describe('Create purchasing rule', function () {
 		.end(function (err, res) {
 			browser
 			.post("http://localhost:3000/api/products/filtered")
+			.send( { ordering_sort: 'price', priceFilter : 500} )
 			.end(function (err, res){
 
 				var product = res.body[0];

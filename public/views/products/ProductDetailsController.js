@@ -12,7 +12,7 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 	}).
 	then(function success(response) {
 		$scope.product = response.data;
-		$scope.value = $scope.product.avgRating;
+		$scope.product_rating = response.data.avgRating;
 
 		$scope.out_suppliers = [];
 
@@ -240,11 +240,11 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 	//Sets the maximun rating 
 	$scope.max = 5; 
 	//Watches the "rate" and when it changes, submit the new rating to the server
-	$scope.rateProduct = function () {
+	$scope.rateProduct = function (value) {
 		$http.post('/api/product/updateProductRating',
 		{
 			id: id,
-			rating: $scope.value
+			rating: value
 		}).then(
 		function success(response) {},
 		function error(response) {
