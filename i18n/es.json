@@ -501,5 +501,29 @@
 	"Reputations" : {
 		"Title" : "Valoraciones de usuarios a su producto",
 		"Empty" : "No hay valoraciones todavía."
+	},
+	"Management" : {
+		"Discounts" : "Administrar descuentos",
+		"Submit" : "Enviar"
+	},
+	"Discounts" : {
+		"Empty" : {
+			"Title" : "Vacío",
+			"Description" : "No existen descuentos en el sistema."
+		},
+		"Filled" : {
+			"Description1" : "Hay ",
+			"Description2" : " descuentos registrados"
+		},
+		"Error" : {
+			"Value" : "",
+			"Code" : ""
+		},
+		"Value" : "Descuento (%)",
+		"Code" : "Código",
+		"ProductsNumber" : "Número de productos",
+		"Remove" : "Eliminar",
+		"Create" : "Añadir un descuento",
+		"Generate" : "Generar"
 	}
 }

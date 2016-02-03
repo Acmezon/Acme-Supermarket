@@ -503,5 +503,29 @@
 	"Reputations" : {
 		"Title" : "User rating of your product",
 		"Empty" : "No ratings yet."		
+	},
+	"Management" : {
+		"Discounts" : "Manage discounts",
+		"Submit" : "Submit"
+	},
+	"Discounts" : {
+		"Empty" : {
+			"Title" : "Empty",
+			"Description" : "No discounts in the system"
+		},
+		"Filled" : {
+			"Description1" : "There are ",
+			"Description2" : " discounts registered"
+		},
+		"Error" : {
+			"Value" : "",
+			"Code" : ""
+		},
+		"Value" : "Discount (%)",
+		"Code" : "Code",
+		"ProductsNumber" : "Number of products",
+		"Remove" : "Remove",
+		"Create" : "Add a discount",
+		"Generate" : "Generate"
 	}
 }

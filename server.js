@@ -148,6 +148,14 @@ app.get('/api/mypurchasingrules', api.Customer.getMyPurchasesRules);
 // Credit cards
 app.get('/api/creditcard/:id', api.CreditCard.getCreditCard);
 
+// Discounts
+app.get('/api/discounts', api.Discounts.getDiscounts);
+app.get('/api/generatecode', api.Discounts.generateCode);
+app.get('/api/discounts/numberproducts/:id', api.Discounts.getNumberOfProductsAffected);
+app.post('/api/discount/create', api.Discounts.createDiscount);
+app.post('/api/discount', api.Discounts.updateDiscount);
+app.delete('/api/discount', api.Discounts.deleteDiscount);
+
 // Management
 app.get('/api/resetDataset', api.Management.resetDataset);
 app.get('/api/loadBigDataset', api.Management.loadBigDataset);

@@ -363,6 +363,13 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 				loggedin: checkLoggedin
 			}
 		}).
+		when('/management/discounts', {
+			templateUrl: 'views/discounts/discounts.html',
+			controller: 'DiscountListCtrl',
+			resolve: {
+				admin: checkAdmin
+			}
+		}).
 		when('/401', {
 			templateUrl: 'views/public/errors/401.html'
 		}).

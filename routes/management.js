@@ -112,7 +112,7 @@ function loadDiscounts(callback) {
 
 			var discount = new Discount({
 				code : 'W5PQ-PYN2-B8B4-6H8J',
-				discount : 30
+				value : 30
 			});
 
 			var saved = sync.await(discount.save(sync.defer()));
@@ -131,7 +131,7 @@ function loadDiscounts(callback) {
 
 				discount = new Discount({
 					code: CouponCode.generate({ parts: 4 }),
-					discount : random(10, 60)
+					value : random(10, 60)
 				});
 
 				saved = sync.await(discount.save(sync.defer()));
