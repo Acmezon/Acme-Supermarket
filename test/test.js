@@ -11,7 +11,7 @@ exports.config = {
 	},
 	seleniumAddress: 'http://localhost:4444/wd/hub',
 	specs: [
-		'e2e/discounts/TC06-redeemCode.js'
+		'backend/provides/TC04-adminProvide.js'
 
 	]/*,
 	beforeLaunch: function() {
