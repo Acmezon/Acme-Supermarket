@@ -11,7 +11,7 @@ exports.config = {
 	},
 	seleniumAddress: 'http://localhost:4444/wd/hub',
 	specs: [
-		'backend/discounts/TC05-applyDiscount.js'
+		'backend/discounts/TC06-canRedeemDiscount.js'
 		//'backend/products/TC03-rateProduct.js'
 
 	]/*,
