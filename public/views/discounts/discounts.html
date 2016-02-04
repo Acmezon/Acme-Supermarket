@@ -60,47 +60,60 @@
 			</div>
 		</div>
 
-		<p>
-			{{'Discounts.Filled.Description1' | translate}}<span id="discounts-length">{{$data.length}}</span>{{'Discounts.Filled.Description2' | translate}}
-		</p>
+		<div class="row">
+			<div class="col-md-5 col-md-offset-3">
+				<p>
+					{{'Discounts.Filled.Description1' | translate}}<span id="discounts-length">{{$data.length}}</span>{{'Discounts.Filled.Description2' | translate}}
+				</p>
 
-		<table ng-table="tableParams" class="table table-bordered table-hover table-condensed editable-table" ng-form="tableForm" show-filter="true">
-			<tr id="{{discount._id}}" ng-repeat="discount in $data" ng-form="rowForm" demo-tracked-table-row="discount">
-				<td title="'Discounts.Code' | translate" filter="{ code: 'text'}" sortable="'code'">
-            		{{discount.code}}
-            	</td>
 
-				<td title="'Discounts.Value' | translate" filter="{value: 'number'}" sortable="'value'" ng-switch="discount.isEditing" ng-class="value.$dirty ? 'bg-warning' : ''" ng-form="value" demo-tracked-table-cell>
-					<span id="discount-value" ng-switch-default class="editable-text">{{discount.value}}</span>
-					<div class="controls" ng-class="value.$invalid && value.$dirty ? 'has-error' : ''" ng-switch-when="true">
-						<input type="text" name="value" ng-model="discount.value" class="editable-input form-control input-sm" ng-minlength="1" ng-maxlength="3" min="0" max="100" ng-pattern="/^\d*$/" required />
-					</div>
-				</td>
+				<table ng-table="tableParams" class="table table-bordered table-hover table-condensed editable-table" ng-form="tableForm" show-filter="true">
 
-				<td title="'Discounts.ProductsNumber' | translate" filter="{ numberOfProducts: 'text'}" sortable="'numberOfProducts'">
-            		{{discount.numberOfProducts}}
-            	</td>
+					<colgroup>
+						<col width="40%" />
+						<col width="20%" />
+						<col width="20%" />
+						<col width="20%" />
+					</colgroup>
 
-				
-				<td>
-					<button class="btn btn-primary btn-sm btn-save-discount" ng-click="save(discount, rowForm)" ng-if="discount.isEditing" ng-disabled="rowForm.$pristine || rowForm.$invalid">
-						<span class="glyphicon glyphicon-ok"></span>
-					</button>
+					<tr id="{{discount._id}}" ng-repeat="discount in $data" ng-form="rowForm" demo-tracked-table-row="discount">
+						<td title="'Discounts.Code' | translate" filter="{ code: 'text'}" sortable="'code'">
+		            		{{discount.code}}
+		            	</td>
 
-		            <button class="btn btn-default btn-sm btn-cancel-discount" ng-click="cancel(discount, rowForm)" ng-if="discount.isEditing">
-		            	<span class="glyphicon glyphicon-remove"></span>
-		            </button>
+						<td title="'Discounts.Value' | translate" filter="{value: 'number'}" sortable="'value'" ng-switch="discount.isEditing" ng-class="value.$dirty ? 'bg-warning' : ''" ng-form="value" demo-tracked-table-cell>
+							<span id="discount-value" ng-switch-default class="editable-text">{{discount.value}}</span>
+							<div class="controls" ng-class="value.$invalid && value.$dirty ? 'has-error' : ''" ng-switch-when="true">
+								<input type="text" name="value" ng-model="discount.value" class="editable-input form-control input-sm" ng-minlength="1" ng-maxlength="3" min="0" max="100" ng-pattern="/^\d*$/" required />
+							</div>
+						</td>
 
-		            <button class="btn btn-default btn-sm btn-edit-discount" ng-click="edit(discount, rowForm)" ng-if="!discount.isEditing">
-		            	<span class="glyphicon glyphicon-pencil"></span>
-		            </button>
+						<td title="'Discounts.ProductsNumber' | translate" filter="{ numberOfProducts: 'text'}" sortable="'numberOfProducts'">
+		            		{{discount.numberOfProducts}}
+		            	</td>
 
-		            <button class="btn btn-danger btn-sm btn-delete-discount" ng-if="!discount.isEditing" data-toggle="modal" ng-click="delete(discount)">
-		            	<span class="glyphicon glyphicon-trash"></span>
-		            </button>
-				</td>
-			</tr>
-		</table>
+						
+						<td>
+							<button class="btn btn-primary btn-sm btn-save-discount" ng-click="save(discount, rowForm)" ng-if="discount.isEditing" ng-disabled="rowForm.$pristine || rowForm.$invalid">
+								<span class="glyphicon glyphicon-ok"></span>
+							</button>
+
+				            <button class="btn btn-default btn-sm btn-cancel-discount" ng-click="cancel(discount, rowForm)" ng-if="discount.isEditing">
+				            	<span class="glyphicon glyphicon-remove"></span>
+				            </button>
+
+				            <button class="btn btn-default btn-sm btn-edit-discount" ng-click="edit(discount, rowForm)" ng-if="!discount.isEditing">
+				            	<span class="glyphicon glyphicon-pencil"></span>
+				            </button>
+
+				            <button class="btn btn-danger btn-sm btn-delete-discount" ng-if="!discount.isEditing" data-toggle="modal" ng-click="delete(discount)">
+				            	<span class="glyphicon glyphicon-trash"></span>
+				            </button>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
 	</div>
 
 </div>

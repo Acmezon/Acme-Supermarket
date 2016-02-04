@@ -528,6 +528,9 @@
 		"ProductsNumber" : "Number of products",
 		"Remove" : "Remove",
 		"Create" : "Add a discount",
-		"Generate" : "Generate"
+		"Apply" : "Apply",
+		"Generate" : "Generate",
+		"Applied" : "Applied discounts",
+		"Available" : "Available discounts"
 	}
 }

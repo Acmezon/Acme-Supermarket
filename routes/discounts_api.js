@@ -30,6 +30,47 @@ exports.getDiscounts = function (req, res) {
 	});
 };
 
+// Returns all discounts over a product
+exports.getDiscountsByProduct = function (req, res) {
+	var product_id = req.params.id;
+	console.log("Function-discountsApi-getDiscountsByProduct --id: " + product_id);
+
+	var cookie = req.cookies.session;
+	var jwtKey = req.app.get('superSecret');
+
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
+		if (role=='admin' || role=='supplier' || role=='customer') {
+			if (role=='admin') {
+				IsOver.find({product_id: product_id}).select('discount_id')
+					.exec(function (err, isovers) {
+					if (err) {
+						res.status(500).json({success: false});
+					} else {
+
+						var discounts_ids = isovers.map(function(isover) {
+							return isover.discount_id;
+						});
+
+						Discount.find({'_id': {$in: discounts_ids}})
+						.exec( function (err, discounts) {
+							if (err) {
+								res.status(500).json({success: false});
+							} else {
+								res.status(200).json(discounts);
+							}
+						});
+						
+					}
+				});
+			} else {
+				res.status(403).json({success: false});
+			}
+		} else {
+			res.status(401).json({success: false});
+		}
+	});
+};
+
 // Return number of products affected by discount id
 exports.getNumberOfProductsAffected = function (req, res) {
 	var id = req.params.id;
@@ -175,7 +216,82 @@ exports.createDiscount = function (req, res) {
 		} else {
 		res.status(401).json({success: false});
 		}
-	});
+	});	
+};
 
-	
-}
+// Apply a discount
+exports.applyDiscount = function (req, res) {
+	var discount_id = req.body.discount_id,
+		product_id = req.body.product_id;
+	console.log("Function-discountsApi-applyDiscount --discount_id: " + discount_id + " --product_id: " + product_id);
+
+	var cookie = req.cookies.session;
+	var jwtKey = req.app.get('superSecret');
+
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
+		if (role=='admin' || role=='supplier' || role=='customer') {
+			if (role=='admin') {
+
+				IsOver.findOne({product_id: product_id, discount_id: discount_id}).exec(function (err, isover) {
+					if (err) {
+						res.status(500).json({success: false});
+					} else {
+						if (isover) {
+							// Already applied
+							res.status(500).json({success: false});
+						} else {
+
+							var new_isover = new IsOver({
+								product_id: product_id,
+								discount_id: discount_id
+							});
+
+							new_isover.save(function (err) {
+								if (err) {
+									res.status(500).json({success: false});
+								} else {
+									res.status(200).json({success: true});
+								}
+							});
+						}
+					}
+				});
+				
+			} else {
+				res.status(403).json({success: false});
+			}
+		} else {
+		res.status(401).json({success: false});
+		}
+	});	
+};
+
+// Disapply a discount
+exports.clearDiscount = function (req, res) {
+	var discount_id = req.body.discount_id,
+		product_id = req.body.product_id;
+	console.log("Function-discountsApi-applyDiscount --discount_id: " + discount_id + " --product_id: " + product_id);
+
+	var cookie = req.cookies.session;
+	var jwtKey = req.app.get('superSecret');
+
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
+		if (role=='admin' || role=='supplier' || role=='customer') {
+			if (role=='admin') {
+
+				IsOver.remove({product_id: product_id, discount_id: discount_id}, function (err) {
+					if (err) {
+						res.status(500).json({success: false});
+					} else {
+						res.status(200).json({success: true});
+					}
+				});
+				
+			} else {
+				res.status(403).json({success: false});
+			}
+		} else {
+		res.status(401).json({success: false});
+		}
+	});	
+};

@@ -525,7 +525,10 @@
 		"Code" : "Código",
 		"ProductsNumber" : "Número de productos",
 		"Remove" : "Eliminar",
+		"Apply" : "Aplicar",
 		"Create" : "Añadir un descuento",
-		"Generate" : "Generar"
+		"Generate" : "Generar",
+		"Applied" : "Descuentos aplicados",
+		"Available" : "Descuentos disponibles"
 	}
 }

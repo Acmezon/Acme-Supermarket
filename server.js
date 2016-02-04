@@ -155,6 +155,9 @@ app.get('/api/discounts/numberproducts/:id', api.Discounts.getNumberOfProductsAf
 app.post('/api/discount/create', api.Discounts.createDiscount);
 app.post('/api/discount', api.Discounts.updateDiscount);
 app.delete('/api/discount', api.Discounts.deleteDiscount);
+app.get('/api/discounts/ofproduct/:id', api.Discounts.getDiscountsByProduct);
+app.post('/api/discount/apply', api.Discounts.applyDiscount);
+app.post('/api/discount/clear', api.Discounts.clearDiscount);
 
 // Management
 app.get('/api/resetDataset', api.Management.resetDataset);
