@@ -253,7 +253,6 @@ function loadCustomers(callback) {
 			customer1.save(function (err, saved) {
 				if (err) console.log("--ERR: Error saving customer: " + err);
 
-				console.log(saved.email);
 				callback();
 			});
 		});
@@ -435,6 +434,22 @@ function loadSpeacialUsers(callback) {
 		});
 
 		sync.await(customer1.save(sync.defer()));
+		
+		//Customer with no rules
+		var customer2 = new Customer({
+			"_type" : "Customer",
+			"name" : "No Rules",
+			"surname" : "Customer",
+			"email" : "no.rules@mail.com",
+			"password" : "91ec1f9324753048c0096d036a694f86", //customer
+			"coordinates":"37.358716;-5.987814",
+			"country":"Spain",
+			"city":"La Coruña",
+			"address":"3481 Calle Del Prado",
+			"phone":"949705177"
+		});
+
+		sync.await(customer2.save(sync.defer()));
 
 	}, function (err, data) {
 		if(err) console.log("--ERR: Error saving special users: " + err);

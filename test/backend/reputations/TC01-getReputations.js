@@ -78,7 +78,10 @@ describe('Reputation api', function () {
 				browser
 				.get('http://localhost:3000/api/provide/bysupplier/byproduct/' + product._id)
 				.end(function (err, res) {
-						var provide_id = res.body._id;
+					should.not.exist(err);
+					res.status.should.be.equal(200);
+
+					var provide_id = res.body._id;
 
 					browser
 					.get('http://localhost:3000/api/reputations/byprovide/' + provide_id)

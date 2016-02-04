@@ -404,7 +404,7 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 		}, function error (response) {
 			$translate(['Product.DeleteError']).then(function (translation) {
 				ngToast.create({
-					className: 'error',
+					className: 'danger',
 					content: translation['Product.DeleteError']
 				});
 			});
@@ -429,6 +429,7 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 					method: 'POST', 
 					data: { 
 						rule: {
+							customer_id: $scope.role == "admin" ? form.customerid.$viewValue : -1,
 							periodicity: form.periodicity.$viewValue,
 							quantity: form.quantity.$viewValue,
 							startDate: new Date(Date.parse(form.startDate.$viewValue))
@@ -436,12 +437,21 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 						provide_id: provide_id
 					},
 				}).then(function success(response) {
-					$window.location.reload();
+					if(response.data.success == false) {
+						$translate(['Product.CreateRule.AdminError']).then(function (translation) {
+							ngToast.create({
+								className: 'danger',
+								content: translation['Product.CreateRule.AdminError']
+							});
+						});
+					} else {
+						$window.location.reload();
+					}
 				}, function error (response) {
 					console.log(response);
 					$translate(['Product.CreateRule.Error']).then(function (translation) {
 						ngToast.create({
-							className: 'error',
+							className: 'danger',
 							content: translation['Product.CreateRule.Error']
 						});
 					});

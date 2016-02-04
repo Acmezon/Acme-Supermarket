@@ -55,7 +55,8 @@
 		"Customers" : "Clientes",
 		"Purchases" : "Compras",
 		"CreateProduct" : "Añadir un producto",
-		"Discounts" : "Descuentos"
+		"Discounts" : "Descuentos",
+		"PurchasingRules" : "Reglas de compra"
  	},
 	"Footer": {
 		"AboutUs" : "Sobre nosotros",
@@ -300,13 +301,17 @@
 		"DeleteProvide" : "Dejar de proveer este producto",
 		"AlreadyHasRule" : "Ya tienes una regla para comprar este producto. Quizás quieres ir a",
 		"CreateRule" : {
+			"CustomerID" : "ID del cliente",
+			"CustomerIDError" : "El ID del cliente es obligatorio y debe ser positivo",
 			"StartDate" : "Fecha de inicio",
 			"StartDateError" : "La fecha de inicio es obligatoria y debe ser futura",
 			"Periodicity" : "Periodicidad",
 			"PeriodicityError" : "La periodicidad es obligatoria y debe ser extrictamente positiva",
 			"Quantity" : "Cantidad",
 			"QuantityError" : "La cantidad es obligatoria y debe ser extrictamente positiva",
-			"Title" : "Crear regla de compra"
+			"Title" : "Crear regla de compra",
+			"Error" : "Error al crear la regla. Inténtelo de nuevo más tarde",
+			"AdminError" : "Error al crear la regla. Asegúrese de que el cliente existe y no tiene ya una regla para este producto y proveedor"
 		}
 	},
 	"ShoppingCart": {
@@ -502,6 +507,17 @@
 			"Close" : "Cerrar",
 			"Error" : "Se produjo un error al eliminar la regla. Por favor inténtelo de nuevo más tarde."
 		}
+	},
+	"PurchasingRules" : {
+		"Title" : "Reglas de compra",
+		"Empty" : "No se han encontrado reglas de compra",
+		"Filter" : {
+			"Title" : "Filtros",
+			"Customer" : "ID de cliente"
+		},
+		"First" : "Primera",
+		"Last" : "Última",
+		"Customer" : "ID de cliente"
 	},
 	"Reputations" : {
 		"Title" : "Valoraciones de usuarios a su producto",

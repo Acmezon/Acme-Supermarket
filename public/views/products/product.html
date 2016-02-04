@@ -35,7 +35,7 @@
 					<div class="desc1 col-md-8">
 						<!-- Rating Stars Box -->
 						<div ng-if="!userHasPurchased" class="rating">
-							<span ng-repeat="n in [1, 2, 3, 4, 5] track by $index" class="glyphicon" ng-class="{'glyphicon-star': value >= $index + 1, 'glyphicon-star-empty': value < $index + 1}"></span>
+							<span ng-repeat="n in [1, 2, 3, 4, 5] track by $index" class="glyphicon" ng-class="{'glyphicon-star': product_rating >= $index + 1, 'glyphicon-star-empty': product_rating < $index + 1}"></span>
 						</div>
 
 						<div ng-if="userHasPurchased">
@@ -49,10 +49,17 @@
 
 						<div ng-if="out_suppliers.length > 0">
 							<div ng-repeat="provide in out_suppliers">
-								<div ng-if="!provide.customerHasRule" id="create-rule-{{provide._id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createRule" z-index="10000000">
+								<div ng-if="!provide.customerHasRule || role=='admin'" id="create-rule-{{provide._id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createRule" z-index="10000000">
 									<div class="modal-dialog modal-sm">
 										<div class="modal-content">
 											<form method="post" name="createRuleForm" id="submit-form" ng-submit="submitCreateRule(provide._id, createRuleForm)" class="product_form create-rule_form">
+												<div ng-if="role=='admin'" class="input-group">
+													<label for="customerid">{{ 'Product.CreateRule.CustomerID' | translate }}*</label>
+													<input id="customerid" name="customerid" type="number" class="form-control" ng-model="rule.customer_id" min="0" required>
+												</div>
+												<div ng-if="role=='admin'" class="alert alert-danger" ng-show="createRuleForm{{provide._id}}.customerid.$dirty && (createRuleForm{{provide._id}}.customerid.$error.required || createRuleForm{{provide._id}}.customerid.$error.min)">
+													{{ 'Product.CreateRule.CustomerIDError' | translate }}
+												</div>
 												<div class="input-group">
 													<label for="startDate">{{ 'Product.CreateRule.StartDate' | translate }}*</label>
 													<input id="startDate" name="startDate" type="date" class="form-control" ng-model="rule.startDate" min="{{date | date:'yyyy-MM-dd'}}" required>
@@ -114,6 +121,9 @@
 									<td ng-if="role=='customer'" class="create-rule">
 										<p ng-show="provide.customerHasRule">{{ 'Product.AlreadyHasRule' | translate }} <a href="/mypurchasingrules">{{ 'Header.Account.MyPurchasingRules' | translate }}</a></p>
 										<button ng-if="!provide.customerHasRule" type="button" class="btn btn-primary" data-toggle="modal" data-target="#create-rule-{{provide._id}}">{{ 'Product.CreateRule.Title' | translate }}</button>
+									</td>
+									<td ng-if="role=='admin'" class="create-rule">
+										<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create-rule-{{provide._id}}">{{ 'Product.CreateRule.Title' | translate }}</button>
 									</td>
 								</tr>
 							</tbody>

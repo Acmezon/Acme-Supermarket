@@ -1,6 +1,7 @@
 var request = require('superagent');
 var should = require('should');
 var assert = require('assert');
+var path = require('path');
 
 describe("Edit product API url", function (){
 	var browser = request.agent();
@@ -34,6 +35,40 @@ describe("Edit product API url", function (){
 								res.body.description.should.be.equal(description);
 								done();
 							});
+						});
+					}
+				}
+			});
+		});
+	});
+
+	it("should let an admin edit a product image", function (done){
+		browser
+		.post('http://localhost:3000/api/signin')
+		.send( { email : 'admin@mail.com', password : 'administrator' } )
+		.end(function (err, res) {
+			browser
+			.post("http://localhost:3000/api/products/filtered")
+			.end(function (err, res){
+				var L = res.body.length;
+
+				for(var i = 0; i < L; i++) {
+					var product = res.body[i];
+
+					if(product.name == product_name) {
+						var product_id = product._id;
+
+						var fileToUpload = '../../resources/images/img-thing.jpg',
+							absolutePath = path.resolve(__dirname, fileToUpload);
+
+						browser
+						.post("http://localhost:3000/api/product/updateProductImage")
+						.attach('file', absolutePath)
+						.field('p_id', product_id)
+						.end(function (err, res){
+							res.status.should.be.equal(200);
+
+							done();
 						});
 					}
 				}

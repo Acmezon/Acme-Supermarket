@@ -370,6 +370,14 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 				admin: checkAdmin
 			}
 		}).
+		when('/purchasingrules', {
+			templateUrl: 'views/purchasing_rules/purchasing-rules.html',
+			controller: 'PurchasingRulesCtrl',
+			resolve: {
+				admin: checkAdmin
+			},
+			activetab: 'management'
+		}).
 		when('/401', {
 			templateUrl: 'views/public/errors/401.html'
 		}).

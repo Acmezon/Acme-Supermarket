@@ -166,7 +166,7 @@ exports.newCustomer = function (customer, callback) {
 // Update/Save a credit card. Check id_cc
 exports.updateCC = function(req, res){
 	console.log('Function-customersApi-updateCC');
-
+	
 	var cc = new CreditCard({
 		holderName : req.body.cc.holderName,
 		number : req.body.cc.number,
@@ -176,14 +176,19 @@ exports.updateCC = function(req, res){
 	});
 	// If id not set, Save
 	if(!req.body.id_cc){
+		if(!req.body.customer_id) {
+			res.sendStatus(503);
+			return;
+		}
+
 		credit_card_api.newCreditCard(cc, 
-			function (errors) {
-				if(errors.length > 0) {
+			function (errors, saved) {
+				if(errors) {
 					res.status(500).json({success: false, message: errors});
 				} else {
-					Customer.findByIdAndUpdate(req.body.customer_id, { $set : { credit_card: cc._id } }, function (err, customer) {
+					Customer.findByIdAndUpdate(req.body.customer_id, { $set : { credit_card: saved.id } }, function (err, customer) {
 						if(err) {
-							CreditCard.find(cc._id).remove().exec();
+							CreditCard.find(saved.id).remove().exec();
 							res.sendStatus(503);
 						} else {
 							res.status(200).json({success: true});

@@ -29,7 +29,11 @@ exports.checkPrincipalOrAdmin = function(cookie, jwtKey, customer_id, callback) 
 					});
 				}
 			});
+		} else {
+			callback(false);
 		}
+	} else {
+		callback(false);
 	}
 }
 
