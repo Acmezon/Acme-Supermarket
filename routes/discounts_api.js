@@ -96,7 +96,7 @@ exports.canRedeemCode = function (req, res) {
 					});
 
 				} else {
-					res.status(500).json({success: false});
+					res.status(200).json(null);
 				}
 			} else {
 				res.status(403).json({success: false});

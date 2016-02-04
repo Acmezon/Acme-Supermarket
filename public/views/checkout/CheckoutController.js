@@ -200,7 +200,12 @@ angular.module('acme_supermarket').registerCtrl('CheckoutCtrl', ['$scope', '$htt
 			if (!$.isEmptyObject(cookie)) {
 				for (var i = 0; i < shoppingcart.length; i++) {
 					quantity = cookie[shoppingcart[i]._id];
-					r += quantity * shoppingcart[i].price;
+
+					if ($scope.discount && $scope.discountRedeemed) {
+						r += quantity * (shoppingcart[i].price * ($scope.discount.value/100));
+					} else {
+						r += quantity * shoppingcart[i].price;
+					}
 				}
 			}
 		}

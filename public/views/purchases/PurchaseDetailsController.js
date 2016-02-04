@@ -33,11 +33,9 @@ angular.module('acme_supermarket').registerCtrl('PurchaseDetailsCtrl', ['$scope'
 			then(function success(response2) {
 				var provide = response2.data;
 
-				// Add a field
-				purchaseline.price = provide.price;
+				$scope.totalPrice += purchaseline.quantity * purchaseline.price;
 
-				// Calculate totalPrice
-				$scope.totalPrice += purchaseline.price * purchaseline.quantity
+				purchaseline.oldprice = provide.price;
 
 				// Get supplier name
 				$http({

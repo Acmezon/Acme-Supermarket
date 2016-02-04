@@ -30,8 +30,14 @@
 							<td>{{product.name}}</td>
 							<td>{{product.supplier}}</td>
 							<td style="width:10%">{{product.quantity}}</td>
-							<td style="width:10%">{{product.price | number:2}}</td>
-							<td style="width:10%">{{product.quantity * product.price | number:2}}</td>
+							<td style="width:10%">
+								<span ng-if="!discountRedeemed">{{product.price | number:2}}</span>
+								<span ng-if="discountRedeemed" class="red-text">{{product.price*(discount.value/100) | number:2}}</span>
+							</td>
+							<td style="width:10%">
+								<span ng-if="!discountRedeemed">{{product.quantity * product.price | number:2}}</span>
+								<span ng-if="discountRedeemed" class="red-text">{{product.quantity * (product.price*(discount.value/100)) | number:2}}</span>
+							</td>
 					  	</tr>		    
 					</tbody>
 					<tfoot>

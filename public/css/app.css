@@ -396,3 +396,7 @@ form.create-rule_form {
 form.create-rule_form div.input-group {
 	width: auto;
 }
+
+.red-text {
+	color: red;
+}
