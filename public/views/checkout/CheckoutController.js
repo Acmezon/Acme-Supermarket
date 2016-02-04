@@ -93,8 +93,12 @@ angular.module('acme_supermarket').registerCtrl('CheckoutCtrl', ['$scope', '$htt
 					if (!$.isEmptyObject(cookie)) {
 						// Purchase
 						$http({
-							method: 'GET',
-							url: '/api/purchase/process/' + billingmethod
+							method: 'POST',
+							url: '/api/purchase/process',
+							data: {
+								billingMethod : billingmethod,
+								discountCode : $scope.discount.code
+							}
 						}).
 						then(function success(response) {
 							var purchase = response.data;
@@ -201,5 +205,39 @@ angular.module('acme_supermarket').registerCtrl('CheckoutCtrl', ['$scope', '$htt
 			}
 		}
 		return r;
+	}
+
+	// DISCOUNT CODES
+
+	$scope.applyDiscount = function (discountCode) {
+		if (discountCode) {
+			if(/^[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(discountCode)) {
+
+				$scope.discountRedeemed = false;
+
+				$scope.shoppingcart.forEach( function (provide) {
+					$http({
+						method: 'POST',
+						url: '/api/discount/canredeem/',
+						data: {
+							code: discountCode,
+							product_id: provide.product_id
+						}
+					}).
+					then(function success(response) {
+						var discount = response.data;
+						if (discount) {
+							$scope.discountRedeemed = true;
+							$scope.discount = discount;
+						}
+					});
+				});
+				
+			} else {
+				$scope.discountRedeemed = false;
+			}
+		} else {
+			$scope.discountRedeemed = false;
+		}
 	}
 }]);

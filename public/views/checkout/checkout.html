@@ -9,41 +9,81 @@
 		<h4 class="title">{{'Checkout.Empty.Title' | translate}}</h4>
 		<p class="cart">{{'Checkout.Empty.Description1' | translate}}<br>{{'Checkout.Empty.Click' | translate}}<a href="/products">{{'Checkout.Empty.Here' | translate}}</a>{{'Checkout.Empty.Description2' | translate}}</p>
 	</div>
+
 	<div ng-if="!hasEmptyCart()">
-		<table class="table table-bordered">
-		  	<thead>
-			  	<tr>
-					<th>{{'Checkout.Product.Image' | translate}}</th>
-					<th>{{'Checkout.Product.Name' | translate}}</th>
-					<th>{{'Checkout.Product.Supplier' | translate}}</th>
-					<th>{{'Checkout.Product.Quantity' | translate}}</th>
-					<th>{{'Checkout.Product.Price' | translate}} (€)</th>
-					<th>{{'Checkout.Product.Total' | translate}} (€)</th>
-			  	</tr>
-			</thead>
-			<tbody>
-			  	<tr ng-repeat="product in shoppingcart">
-					<td style="width:10%"><img class="img-responsive img-thumbnail" src="img/{{product.image}}"/></td>
-					<td>{{product.name}}</td>
-					<td>{{product.supplier}}</td>
-					<td style="width:10%">{{product.quantity}}</td>
-					<td style="width:10%">{{product.price | number:2}}</td>
-					<td style="width:10%">{{product.quantity * product.price | number:2}}</td>
-			  	</tr>		    
-			</tbody>
-			<tfoot>
-		    	<tr>
-			      <th id="total" colspan="5">{{'Checkout.Product.Total' | translate}} :</th>
-			      <td>{{totalPrice(shoppingcart) | number:2}}</td>
-		    	</tr>
-		   	</tfoot>
-		</table>
+		<div class="row" style="margin-top:2%">
+			<div class="col-md-12">
+				<table class="table table-bordered">
+				  	<thead>
+					  	<tr>
+							<th>{{'Checkout.Product.Image' | translate}}</th>
+							<th>{{'Checkout.Product.Name' | translate}}</th>
+							<th>{{'Checkout.Product.Supplier' | translate}}</th>
+							<th>{{'Checkout.Product.Quantity' | translate}}</th>
+							<th>{{'Checkout.Product.Price' | translate}} (€)</th>
+							<th>{{'Checkout.Product.Total' | translate}} (€)</th>
+					  	</tr>
+					</thead>
+					<tbody>
+					  	<tr ng-repeat="product in shoppingcart">
+							<td style="width:10%"><img class="img-responsive img-thumbnail" src="img/{{product.image}}"/></td>
+							<td>{{product.name}}</td>
+							<td>{{product.supplier}}</td>
+							<td style="width:10%">{{product.quantity}}</td>
+							<td style="width:10%">{{product.price | number:2}}</td>
+							<td style="width:10%">{{product.quantity * product.price | number:2}}</td>
+					  	</tr>		    
+					</tbody>
+					<tfoot>
+				    	<tr>
+					      <th id="total" colspan="5">{{'Checkout.Product.Total' | translate}} :</th>
+					      <td>{{totalPrice(shoppingcart) | number:2}}</td>
+				    	</tr>
+				   	</tfoot>
+				</table>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						{{'Checkout.Discount' | translate}} <span class="glyphicon glyphicon-tags pull-right"></span>
+					</div>
+					<div class="panel-body">
+						<div class="col-md-3">
+							<div class="input-group">
+								<input type="text" class="form-control" ng-model="discountCode" placeholder="{{'Discounts.DiscountCode' | translate}}" ng-readonly="discountRedeemed">
+								<span class="input-group-btn">
+									<button class="btn btn-default" type="button" ng-click="applyDiscount(discountCode)" ng-disabled="discountRedeemed">
+										<span class="glyphicon glyphicon-play"></span>
+									</button>
+								</span>
+							</div>
+						</div>
+						<div class="col-md-9" ng-switch="discountRedeemed">
+							<div class="alert alert-danger" role="alert" ng-switch-when="false">
+								<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 
+								<strong>{{'Checkout.Error' | translate}}:</strong>
+								{{'Checkout.DiscountError' | translate}}
+							</div>
+							<div class="alert alert-success" role="alert" ng-switch-when="true">
+								<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 
+								<strong>{{'Checkout.Success' | translate}}:</strong>
+								{{'Checkout.DiscountRedeemed' | translate}}
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<div class="row" style="margin-bottom: 2%">
 			<div class="col-md-6" ng-if="creditcard">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						{{'Checkout.CreditCard.Title' | translate}}
+						{{'Checkout.CreditCard.Title' | translate}} <span class="pull-right glyphicon glyphicon-credit-card"></span>
 					</div>
 					<table class="table table-responsive table-hover">
 						<tr>
@@ -68,7 +108,7 @@
 			<div class="col-md-6" ng-if="!creditcard">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						{{'Checkout.CreditCard.Empty.Title' | translate}}
+						{{'Checkout.CreditCard.Empty.Title' | translate}} <span class="pull-right glyphicon glyphicon-credit-card"></span>
 					</div>
 					<div class="panel-body">
 						<p>{{'Checkout.CreditCard.Empty.Description1' | translate}}<a href="/myprofile">{{'Checkout.CreditCard.Empty.Link' | translate}}</a>{{'Checkout.CreditCard.Empty.Description2' | translate}}</p>
@@ -78,7 +118,7 @@
 			<div class="col-md-6">
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						{{'Checkout.Address.Title' | translate}}
+						{{'Checkout.Address.Title' | translate}} <span class="pull-right glyphicon glyphicon-map-marker"></span>
 					</div>
 					<table class="table table-responsive table-hover">
 						<tr>
@@ -103,23 +143,25 @@
 		</div>
 
 		<div class="row">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					{{'Checkout.Days.Title' | translate}}
-				</div>
-				<div class="list-group">
-					<a href="#" class="list-group-item" ng-class="{active: billingMethod==1}" ng-click="billingMethod=1">
-   						<h4 class="list-group-item-heading">Acme-Supermarket Premium</h4>
-    					<p class="list-group-item-text">5 {{'Checkout.Days.Days' | translate}}</p>
-  					</a>
-  					<a href="#" class="list-group-item" ng-class="{active: billingMethod==2}" ng-click="billingMethod=2">
-   						<h4 class="list-group-item-heading">Acme-Supermarket Express</h4>
-    					<p class="list-group-item-text">15 {{'Checkout.Days.Days' | translate}}</p>
-  					</a>
-  					<a href="#" class="list-group-item" ng-class="{active: billingMethod==3}" ng-click="billingMethod=3">
-   						<h4 class="list-group-item-heading">Acme-Supermarket Basic</h4>
-    					<p class="list-group-item-text">30 {{'Checkout.Days.Days' | translate}}</p>
-  					</a>
+			<div class="col-md-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						{{'Checkout.Days.Title' | translate}} <span class="pull-right glyphicon glyphicon-time"></span>
+					</div>
+					<div class="list-group">
+						<a href="#" class="list-group-item" ng-class="{active: billingMethod==1}" ng-click="billingMethod=1">
+	   						<h4 class="list-group-item-heading">Acme-Supermarket Premium</h4>
+	    					<p class="list-group-item-text">5 {{'Checkout.Days.Days' | translate}}</p>
+	  					</a>
+	  					<a href="#" class="list-group-item" ng-class="{active: billingMethod==2}" ng-click="billingMethod=2">
+	   						<h4 class="list-group-item-heading">Acme-Supermarket Express</h4>
+	    					<p class="list-group-item-text">15 {{'Checkout.Days.Days' | translate}}</p>
+	  					</a>
+	  					<a href="#" class="list-group-item" ng-class="{active: billingMethod==3}" ng-click="billingMethod=3">
+	   						<h4 class="list-group-item-heading">Acme-Supermarket Basic</h4>
+	    					<p class="list-group-item-text">30 {{'Checkout.Days.Days' | translate}}</p>
+	  					</a>
+					</div>
 				</div>
 			</div>
 		</div>

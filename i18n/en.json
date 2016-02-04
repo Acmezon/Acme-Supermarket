@@ -427,6 +427,10 @@
 			"Here" : "here",
 			"Description2" : " to continue shopping"
 		},
+		"Discount" : "Redeem discount code",
+		"DiscountError" : "Discount code not valid.",
+		"DiscountRedeemed" : "Discount code successfuly redeemed.",
+		"DiscountSuccess" : "Success",
 		"CreditCard" : {
 			"Empty" : {
 				"Title" : "No credit card registered",
@@ -525,6 +529,7 @@
 		},
 		"Value" : "Discount (%)",
 		"Code" : "Code",
+		"DiscountCode" : "Discount code",
 		"ProductsNumber" : "Number of products",
 		"Remove" : "Remove",
 		"Create" : "Add a discount",

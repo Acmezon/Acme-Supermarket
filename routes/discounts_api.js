@@ -1,6 +1,7 @@
 var Discount = require('../models/discount'),
 	IsOver = require('../models/is_over'),
 	ActorService = require('./services/service_actors'),
+	DiscountService = require('./services/service_discounts'),
 	CouponCode = require('coupon-code');
 
 // Returns all discount objects
@@ -70,6 +71,43 @@ exports.getDiscountsByProduct = function (req, res) {
 		}
 	});
 };
+
+// Returns if a discount is possible for a product
+exports.canRedeemCode = function (req, res) {
+	var code = req.body.code,
+		product_id = req.body.product_id;
+	console.log("Function-discountsApi-canRedeemCode --code: " + code + " --product_id: " + product_id)
+
+	var cookie = req.cookies.session;
+	var jwtKey = req.app.get('superSecret');
+
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
+		if (role=='admin' || role=='supplier' || role=='customer') {
+			if (role=='admin' || role=='customer') {
+				if(/^[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(code) &&
+					CouponCode.validate(code, {parts: 4}).length){
+
+					DiscountService.canRedeemCode(cookie, jwtKey, code, product_id, function (discount) {
+						if (discount) {
+							res.status(200).json(discount);
+						} else {
+							res.status(200).json(null);
+						}
+					});
+
+				} else {
+					res.status(500).json({success: false});
+				}
+			} else {
+				res.status(403).json({success: false});
+			}
+		} else {
+			res.status(401).json({success: false});
+		}
+	});
+}
+
+
 
 // Return number of products affected by discount id
 exports.getNumberOfProductsAffected = function (req, res) {

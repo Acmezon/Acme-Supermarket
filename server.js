@@ -97,7 +97,7 @@ app.get('/api/categories', api.Categories.getCategories);
 app.get('/api/purchase/:id', api.Purchases.getPurchase);
 app.post('/api/purchases/filtered', api.Purchases.getPurchasesFiltered);
 app.post('/api/purchases/filtered/count', api.Purchases.countPurchasesFiltered);
-app.get('/api/purchase/process/:billingMethod', api.Purchases.purchase);
+app.post('/api/purchase/process', api.Purchases.purchase);
 app.post('/api/purchase/admin', api.Purchases.purchaseAdmin);
 app.post('/api/purchases/mypurchases/filtered', api.Purchases.getMyPurchasesFiltered);
 app.post('/api/purchases/mypurchases/filtered/count', api.Purchases.countMyPurchasesFiltered);
@@ -150,6 +150,7 @@ app.get('/api/creditcard/:id', api.CreditCard.getCreditCard);
 
 // Discounts
 app.get('/api/discounts', api.Discounts.getDiscounts);
+app.post('/api/discount/canredeem', api.Discounts.canRedeemCode);
 app.get('/api/generatecode', api.Discounts.generateCode);
 app.get('/api/discounts/numberproducts/:id', api.Discounts.getNumberOfProductsAffected);
 app.post('/api/discount/create', api.Discounts.createDiscount);

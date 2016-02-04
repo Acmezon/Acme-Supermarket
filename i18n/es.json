@@ -426,6 +426,10 @@
 			"Here" : "aquí",
 			"Description2" : " para continuar con la compra."
 		},
+		"Discount" : "Canjear código de descuento",
+		"DiscountError" : "Código de descuento no válido.",
+		"DiscountRedeemed" : "Código de descuento canjeado ćon éxito.",
+		"DiscountSuccess" : "Éxito",
 		"CreditCard" : {
 			"Title" : "Tarjeta de crédito",
 			"Empty" : {
@@ -523,6 +527,7 @@
 		},
 		"Value" : "Descuento (%)",
 		"Code" : "Código",
+		"DiscountCode" : "Código de descuento",
 		"ProductsNumber" : "Número de productos",
 		"Remove" : "Eliminar",
 		"Apply" : "Aplicar",
