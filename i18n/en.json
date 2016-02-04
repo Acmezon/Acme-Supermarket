@@ -54,7 +54,8 @@
 		"Management" : "Management",
 		"Customers" : "Customers",
 		"Purchases" : "Purchases",
-		"CreateProduct" : "Add product"
+		"CreateProduct" : "Add product",
+		"Discounts" : "Discounts"
 	},
 	"Footer": {
 		"AboutUs" : "About Us",
@@ -426,6 +427,10 @@
 			"Here" : "here",
 			"Description2" : " to continue shopping"
 		},
+		"Discount" : "Redeem discount code",
+		"DiscountError" : "Discount code not valid.",
+		"DiscountRedeemed" : "Discount code successfuly redeemed.",
+		"DiscountSuccess" : "Success",
 		"CreditCard" : {
 			"Empty" : {
 				"Title" : "No credit card registered",
@@ -511,5 +516,34 @@
 			"Close" : "Close",
 			"Error" : "Error deleting the rule. Please try again later."
 		}
+	},
+	"Management" : {
+		"Discounts" : "Manage discounts",
+		"Submit" : "Submit"
+	},
+	"Discounts" : {
+		"Empty" : {
+			"Title" : "Empty",
+			"Description" : "No discounts in the system"
+		},
+		"Filled" : {
+			"Description1" : "There are ",
+			"Description2" : " discounts registered"
+		},
+		"Error" : {
+			"Value" : "The value of the discount is invalid.",
+			"Code" : "The discount code is invalid. Click 'Generate' again to generate a new one.",
+			"Server" : "Internal server error"
+		},
+		"Value" : "Discount (%)",
+		"Code" : "Code",
+		"DiscountCode" : "Discount code",
+		"ProductsNumber" : "Number of products",
+		"Remove" : "Remove",
+		"Create" : "Add a discount",
+		"Apply" : "Apply",
+		"Generate" : "Generate",
+		"Applied" : "Applied discounts",
+		"Available" : "Available discounts"
 	}
 }

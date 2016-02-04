@@ -10,7 +10,7 @@ var discountSchema = mongoose.Schema({
 					return CouponCode.validate(v, { parts: 4 }) != '';
 				}}
 			},
-	discount: {type: Number, required: true, min:0}
+	value: {type: Number, required: true, min:0, max:100}
 },{collection: 'discounts'});
 
 discountSchema.plugin(autoIncrement.plugin, 'Discount');

@@ -8,6 +8,7 @@ var Purchase = require('./purchase'),
 var purchaseLineSchema = mongoose.Schema({
 	quantity: {type: Number, required:true, min:1, max:999, required:true},
 	price: {type: Number, required:true, min:0},
+	discounted: {type: Boolean, default: false},
 	purchase_id: {type: Number, ref:'Purchase', required:true},
 	provide_id: {type: Number, ref:'Provide', required:true},
 	product_id: {type: Number, ref: 'Product', required:true}

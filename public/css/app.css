@@ -397,7 +397,6 @@ form.create-rule_form div.input-group {
 	width: auto;
 }
 
-
 /*Rating chart*/
 
 #chart {
@@ -406,4 +405,8 @@ form.create-rule_form div.input-group {
 
 .nv-label text{
     font-family: Droid Sans;
+}
+
+.red-text {
+	color: red;
 }

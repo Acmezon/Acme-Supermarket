@@ -4,7 +4,8 @@ var Purchase = require('../models/purchase'),
 	ProvideService = require('./services/service_provides'),
 	ActorService = require('./services/service_actors'),
 	PurchaseService = require('./services/service_purchase'),
-	RecommenderService = require('./services/service_recommender_server');
+	RecommenderService = require('./services/service_recommender_server'),
+	DiscountService = require('./services/service_discounts');
 
 // Returns a purchase identified by id
 exports.getPurchase = function (req, res) {
@@ -269,9 +270,11 @@ exports.purchase = function (req, res) {
 
 	var session = req.cookies.session;
 	var jwtKey = req.app.get('superSecret');
-	var billingMethod = parseInt(req.params.billingMethod);
+	var billingMethod = parseInt(req.body.billingMethod);
+	// Optional param
+	var discountCode = req.body.discountCode;
 
-	PurchaseService.purchaseStandard(billingMethod, cookie, session, jwtKey, function (code, purchase) {
+	PurchaseService.purchaseStandard(discountCode, billingMethod, cookie, session, jwtKey, function (code, purchase) {
 		switch(code) {
 			case 401:
 				res.status(401).send({success: false});
@@ -300,8 +303,8 @@ exports.purchaseAdmin = function (req, res) {
 
 	var billingMethod = parseInt(req.body.billingMethod) || -1,
 		customer_id = req.body.customer_id,
-		shoppingcart = req.body.shoppingcart;
-	
+		shoppingcart = req.body.shoppingcart,
+		discountCode = req.body.discountCode;
 
 	ActorService.getUserRole(session, jwtKey, function (role) {
 		if (role=='customer' || role=='supplier' || role=='admin') {
@@ -345,26 +348,77 @@ exports.purchaseAdmin = function (req, res) {
 								ProvideService.getProvideById(cookie_id, function (provide) {
 									if (provide) {
 										// CONTNUE
-										// Create  purchase line
-										var newPurchaseLine = PurchaseLine({
-											quantity: shoppingcart[cookie_id],
-											price: provide.price * shoppingcart[cookie_id],
-											purchase_id: newPurchase._id,
-											provide_id: provide._id,
-											product_id: provide.product_id
-										});
 
-										// Save it
-										newPurchaseLine.save(function (err) {
-											if (err) {
-												res.status(500).send({success: false});
-											} else {
-												// CONTINUE
-												// Next loop: Next provide
-											}
-										});
+										if (discountCode) {
+											// DISCOUNT ACTIVATED
+											var sub = 0;
+											DiscountService.canRedeemCode(session, jwtKey, discountCode, provide.product_id, function (discount) {
 
-										PurchaseService.storePurchaseInRecommendation(customer_id, provide.product_id);
+												if (discount) {
+													sub = ((discount.value/100) * provide.price) * shoppingcart[cookie_id];
+
+													var newPurchaseLine = PurchaseLine({
+														quantity: shoppingcart[cookie_id],
+														price: provide.price * shoppingcart[cookie_id] - sub,
+														discounted : true,
+														purchase_id: newPurchase._id,
+														provide_id: provide._id,
+														product_id: provide.product_id
+													});
+
+												} else {
+
+													var newPurchaseLine = PurchaseLine({
+														quantity: shoppingcart[cookie_id],
+														price: provide.price * shoppingcart[cookie_id],
+														discounted : false,
+														purchase_id: newPurchase._id,
+														provide_id: provide._id,
+														product_id: provide.product_id
+													});
+
+												}
+
+												// Save it
+												newPurchaseLine.save(function (err) {
+													if (err) {
+														res.status(500).send({success: false});
+													} else {
+														// CONTINUE
+														// Next loop: Next provide
+													}
+												});
+
+												PurchaseService.storePurchaseInRecommendation(customer_id, provide.product_id);
+												
+											});
+
+										} else {
+											// DISCOUNT CODE DEACTIVATED
+											// Create  purchase line
+											var newPurchaseLine = PurchaseLine({
+												quantity: shoppingcart[cookie_id],
+												price: provide.price * shoppingcart[cookie_id],
+												discounted: false,
+												purchase_id: newPurchase._id,
+												provide_id: provide._id,
+												product_id: provide.product_id
+											});
+
+											// Save it
+											newPurchaseLine.save(function (err) {
+												if (err) {
+													res.status(500).send({success: false});
+												} else {
+													// CONTINUE
+													// Next loop: Next provide
+												}
+											});
+
+											PurchaseService.storePurchaseInRecommendation(customer_id, provide.product_id);
+										}
+
+										
 									} else {
 										// Internal error: Provide no longer exists
 										res.status(503).send({success: false, message: 'Product by supplier no longer exists'});

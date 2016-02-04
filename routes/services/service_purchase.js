@@ -6,6 +6,7 @@ var request = require('request'),
 	ProvideService = require('./service_provides'),
 	PurchaseLine = require('../../models/purchase_line'),
 	RecommenderService = require('./service_recommender_server'),
+	DiscountService = require('./service_discounts'),
 	sync = require('synchronize');
 
 var storePurchaseInRecommendation = function(customer, product) {
@@ -36,7 +37,7 @@ var storePurchaseInRecommendation = function(customer, product) {
 exports.storePurchaseInRecommendation = storePurchaseInRecommendation;
 
 //Called by the standard purchase method. Performs all the checks and call the purchase method
-exports.purchaseStandard = function (billingMethod, cookie, session, jwtKey, callback) {
+exports.purchaseStandard = function (discountCode, billingMethod, cookie, session, jwtKey, callback) {
 	if (billingMethod != 1 && billingMethod != 2 && billingMethod != 3) {
 		// Error bad GET params
 		callback(503, null);
@@ -47,7 +48,7 @@ exports.purchaseStandard = function (billingMethod, cookie, session, jwtKey, cal
 			if (role=='admin' || role=='customer' || role=='supplier') { 
 				CustomerService.getPrincipalCustomer(session, jwtKey, function (customer) {
 					if (customer) {
-						purchase(billingMethod, customer.id, cookie, function (code, purchase) {
+						purchase(discountCode, billingMethod, customer.id, cookie, session, jwtKey, function (code, purchase) {
 							callback(code, purchase);
 						});
 					} else {
@@ -80,7 +81,7 @@ exports.purchaseScheduled = function(customer_id, provide_id, quantity, callback
 				var provide_list = {};
 				provide_list[provide_id] = quantity;
 
-				purchase(1, customer.id, provide_list, function (code, purchase) {
+				purchase(null, 1, customer.id, provide_list, null, null, function (code, purchase) {
 					if(code == 200) {
 						callback(null, purchase);
 					} else {
@@ -96,7 +97,7 @@ exports.purchaseScheduled = function(customer_id, provide_id, quantity, callback
 }
 
 //Purchases the requested provide list with the received billing method for the received customer
-function purchase(billingMethod, customer_id, provide_list, callback) {
+function purchase(discountCode, billingMethod, customer_id, provide_list, session, jwtKey, callback) {
 	var time;
 	switch (billingMethod) {
 		case 1: 
@@ -137,19 +138,67 @@ function purchase(billingMethod, customer_id, provide_list, callback) {
 					var provide = sync.await(ProvideService.getProvideById(provide_id, sync.defer()));
 					if (provide) {
 						// CONTNUE
-						// Create  purchase line
-						var newPurchaseLine = PurchaseLine({
-							quantity: provide_list[provide_id],
-							price: provide.price * provide_list[provide_id],
-							purchase_id: newPurchase._id,
-							provide_id: provide._id,
-							product_id: provide.product_id
-						});
 
-						// Save it
-						sync.await(newPurchaseLine.save(sync.defer()));
+						if (discountCode) {
+							// DISCOUNT ACTIVATED
+							var sub = 0;
+							DiscountService.canRedeemCode(session, jwtKey, discountCode, provide.product_id, function (discount) {
 
-						storePurchaseInRecommendation(customer_id, provide.product_id);
+								if (discount) {
+									sub = (discount.value/100) * provide.price;
+
+									// Create  purchase line with discount
+									var newPurchaseLine = PurchaseLine({
+										quantity: provide_list[provide_id],
+										price: provide.price - sub,
+										discounted: true,
+										purchase_id: newPurchase._id,
+										provide_id: provide._id,
+										product_id: provide.product_id
+									});
+								} else {
+
+									var newPurchaseLine = PurchaseLine({
+										quantity: provide_list[provide_id],
+										price: provide.price,
+										discounted: false,
+										purchase_id: newPurchase._id,
+										provide_id: provide._id,
+										product_id: provide.product_id
+									});
+
+								}
+
+								// Save it
+								newPurchaseLine.save(function (err) {
+									if (err) {
+										callback(500, null);
+									}
+								});
+
+								storePurchaseInRecommendation(customer_id, provide.product_id);
+
+							});
+						} else {
+
+							// Create  purchase line
+							var newPurchaseLine = PurchaseLine({
+								quantity: provide_list[provide_id],
+								price: provide.price,
+								discounted: false,
+								purchase_id: newPurchase._id,
+								provide_id: provide._id,
+								product_id: provide.product_id
+							});
+
+							// Save it
+							sync.await(newPurchaseLine.save(sync.defer()));
+
+							storePurchaseInRecommendation(customer_id, provide.product_id);
+						}
+
+
+						
 					} else {
 						// Error: Rollback the purchase saved
 						sync.await(Purchase.remove({ _id: newPurchase._id }, sync.defer()));

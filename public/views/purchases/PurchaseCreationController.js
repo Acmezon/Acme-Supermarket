@@ -100,7 +100,8 @@ angular.module('acme_supermarket').registerCtrl('PurchaseCreationCtrl', ['$scope
 			data : {
 				billingMethod : $scope.billingMethod,
 				customer_id: $scope.customer._id,
-				shoppingcart : shoppingcart
+				shoppingcart : shoppingcart,
+				discountCode : $scope.discount.code
 			}
 		}).
 		then(function success(response) {
@@ -132,6 +133,40 @@ angular.module('acme_supermarket').registerCtrl('PurchaseCreationCtrl', ['$scope
 			}
 		}
 		return r;
+	}
+
+	// DISCOUNT CODES
+
+	$scope.applyDiscount = function (discountCode) {
+		if (discountCode) {
+			if(/^[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(discountCode)) {
+
+				$scope.discountRedeemed = false;
+
+				$scope.shoppingcart.forEach( function (product) {
+					$http({
+						method: 'POST',
+						url: '/api/discount/canredeem/',
+						data: {
+							code: discountCode,
+							product_id: product._id
+						}
+					}).
+					then(function success(response) {
+						var discount = response.data;
+						if (discount) {
+							$scope.discountRedeemed = true;
+							$scope.discount = discount;
+						}
+					});
+				});
+				
+			} else {
+				$scope.discountRedeemed = false;
+			}
+		} else {
+			$scope.discountRedeemed = false;
+		}
 	}
 
 }])

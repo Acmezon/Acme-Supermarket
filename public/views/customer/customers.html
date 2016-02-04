@@ -9,11 +9,11 @@
 			<span class="glyphicon glyphicon-refresh"></span>
 		</button>
 	</h2> 
-	<div ng-if="$data.length===0">
+	<div ng-if="!$data.length">
 		<h4 class="title">{{'Customers.Empty.Title' | translate}}</h4>
 		<p>{{'Customers.Empty.Description' | translate}}</p>
 	</div>
-	<div ng-if="$data.length>0" style="z-index:100000; position:relative">
+	<div ng-if="$data.length" style="z-index:100000; position:relative">
 		<p>{{'Customers.Filled.Description1' | translate}}<span id="customers-length">{{$data.length}}</span>{{'Customers.Filled.Description2' | translate}}</p>
 		<div ng-repeat="customer in $data">
 			<div class="modal fade" id="delete-{{customer._id}}" role="dialog" >

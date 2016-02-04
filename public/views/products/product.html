@@ -187,6 +187,70 @@
 
 				</div>
 
+				<div id="discounts" restrict access="admin">
+					<h4 class="title">{{ 'Management.Discounts' | translate }}</h4>
+					<div class="row">
+						<div class="col-md-6">
+							<table id="table-available-discounts" ng-table="tableParams" class="table table-bordered table-hover table-condensed editable-table" show-filter="true">
+								<caption>{{'Discounts.Available' | translate}}: <span>{{tableParams.data.length}}</span></caption>
+
+								<colgroup>
+									<col width="75%" />
+									<col width="20%" />
+									<col width="5%" />
+								</colgroup>
+
+								<tr id="{{discount._id}}" ng-repeat="discount in tableParams.data track by discount._id" demo-tracked-table-row="discount">
+									<td title="'Discounts.Code' | translate" filter="{ code: 'text'}" sortable="'code'">
+					            		{{discount.code}}
+					            	</td>
+
+					            	<td title="'Discounts.Value' | translate" filter="{ value: 'number'}" sortable="'value'">
+					            		{{discount.value}}
+					            	</td>
+
+					            	<td title="'Discounts.Apply' | translate">
+					            		<button class="btn btn-success btn-sm" ng-click="addDiscount(discount._id)">
+					            			<span class="glyphicon glyphicon-plus"></span>
+					            		</button>
+					            	</td>
+								</tr>
+							</table>
+						</div>
+
+						<div class="col-md-6">
+
+							<table id="table-applied-discounts" ng-table="tableParams2" class="table table-bordered table-hover table-condensed editable-table" show-filter="true">
+								<caption>{{'Discounts.Applied' | translate}}: <span>{{tableParams2.data.length}}</span></caption>
+
+								<colgroup>
+									<col width="75%" />
+									<col width="20%" />
+									<col width="5%" />
+								</colgroup>
+
+								<tr id="{{discount._id}}" ng-repeat="discount in tableParams2.data track by discount._id" demo-tracked-table-row="discount">
+									<td title="'Discounts.Code' | translate" filter="{ code: 'text'}" sortable="'code'">
+					            		{{discount.code}}
+					            	</td>
+
+					            	<td title="'Discounts.Value' | translate" filter="{ value: 'number'}" sortable="'value'">
+					            		{{discount.value}}
+					            	</td>
+
+					            	<td title="'Discounts.Remove' | translate">
+					            		<button class="btn btn-danger btn-sm" ng-click="removeDiscount(discount._id)">
+					            			<span class="glyphicon glyphicon-minus"></span>
+					            		</button>
+					            	</td>
+								</tr>
+							</table>
+						</div>
+
+					
+					</div>
+				</div>
+
 
 				<div restrict access="customer">
 					<h3 class="m_3">{{ 'Products.OtherRecommendations' | translate}}</h3>

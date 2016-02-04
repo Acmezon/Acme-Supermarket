@@ -1,7 +1,7 @@
 'use strict'
 
-angular.module('acme_supermarket').registerCtrl('ProductDetailsCtrl', ['$scope', '$http', '$routeParams', '$translate', '$window', 'ngToast', '$cookies', '$cookieStore', '$location' , '$rootScope', '$route', 
-function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $cookieStore, $location, $rootScope, $route) {
+angular.module('acme_supermarket').registerCtrl('ProductDetailsCtrl', ['$scope', '$http', '$routeParams', '$translate', '$window', 'ngToast', '$cookies', '$cookieStore', '$location' , '$rootScope', '$route', 'ngTableParams', 
+function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $cookieStore, $location, $rootScope, $route, ngTableParams) {
 	var id = $routeParams.id;
 
 	$scope.Math = Math;
@@ -143,6 +143,13 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 							});
 						}
 					});
+				} else {
+
+					if ($scope.role=='admin') {
+
+						$scope.resetDiscounts();
+
+					}
 				}
 			}, function error(role) {
 			});
@@ -442,4 +449,100 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 			}, 200
 		);
 	};
+
+	$scope.resetDiscounts = function () {
+		$http({
+			method: 'GET',
+			url: '/api/discounts/ofproduct/' + $scope.product._id
+		}).
+		then(function success(response2) {
+			var discounts_yes = response2.data;
+
+			$scope.tableParams2 = new ngTableParams({ count: 10 }, {counts: [5, 10, 20], dataset:discounts_yes, total: discounts_yes.length});
+
+			$http({
+				method: 'GET',
+				url: '/api/discounts'
+			}).
+			then(function success(response3) {
+				var discounts = response3.data;
+
+				for (var i = 0; i < discounts.length; i++) {
+					var discount = discounts[i];
+					if(discountInArray(discount, discounts_yes)) {
+						discounts.splice(i, 1);
+					}
+				}
+				
+				$scope.tableParams = new ngTableParams({ count: 10 }, {counts: [5, 10, 20], dataset:discounts, total: discounts.length});
+			
+			});
+
+		});
+	}
+
+	var discountInArray = function (discount, array) {
+		for (var i = 0; i < array.length; i++) {
+			if (array[i]._id === discount._id) {
+				return true;
+			}
+	    }
+
+		return false;
+	}
+
+	$scope.addDiscount = function(discount_id) {
+		$http({
+			method: 'POST',
+			url: '/api/discount/apply',
+			data: {
+				product_id: $scope.product._id,
+				discount_id: discount_id
+			}
+		}).
+		then(function success(response) {
+			// Manual tables fixing
+			$scope.tableParams.data.forEach(function (discount) {
+				if (discount._id==discount_id){
+					$scope.tableParams.data.splice($scope.tableParams.data.indexOf(discount), 1);
+					$scope.tableParams2.data.push(discount);
+				}
+			});
+		}, function error (response) {
+			$translate(['Discounts.Error.Server']).then(function (translation) {
+				ngToast.create({
+					className: 'error',
+					content: translation['Discounts.Error.Server']
+				});
+			});
+		});
+	};
+
+	$scope.removeDiscount = function(discount_id) {
+		$http({
+			method: 'POST',
+			url: '/api/discount/clear',
+			data: {
+				product_id: $scope.product._id,
+				discount_id: discount_id
+			}
+		}).
+		then(function success(response) {
+			// Manual tables fixing
+			$scope.tableParams2.data.forEach(function (discount) {
+				if (discount._id==discount_id){
+					$scope.tableParams2.data.splice($scope.tableParams2.data.indexOf(discount), 1);
+					$scope.tableParams.data.push(discount);
+				}
+			});
+		}, function error (response) {
+			$translate(['Discounts.Error.Server']).then(function (translation) {
+				ngToast.create({
+					className: 'error',
+					content: translation['Discounts.Error.Server']
+				});
+			});
+		});
+	};
+
 }]);
