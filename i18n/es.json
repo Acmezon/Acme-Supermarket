@@ -543,6 +543,7 @@
 		"Submit" : "Enviar",
 		"Discounts" : "Administrar descuentos",
 		"RatingError" : "El cliente seleccionado no ha sido encontrado o no puede valorar este producto",
+		"RatingSuccess" : "Valoración actualizada con éxito",
 		"ServerError" : "Ha habido un error interno en la transacción. Inténtelo de nuevo más tarde"
 	},
 	"Discounts" : {

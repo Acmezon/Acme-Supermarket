@@ -99,7 +99,7 @@ exports.checkOwnerOrAdmin = function(cookie, jwtKey, credit_card_id, callback) {
 exports.checkPurchasing = function (user, product_id, callback) {
 	if (user) {
 		if (user._type=='Customer') {
-			Purchase.find({ customer_id: user.id}).select('_id').exec(function (err, purchases) {
+			Purchase.find({ customer_id: user._id}).select('_id').exec(function (err, purchases) {
 				if(err) {
 					callback(false);
 				} else {

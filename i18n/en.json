@@ -545,6 +545,7 @@
 		"Submit" : "Submit",
 		"Discounts" : "Manage discounts",
 		"RatingError" : "The selected customer was not found or it is unable to rate the product",
+		"RatingSuccess" : "Rating updated successdully",
 		"ServerError" : "Internal server error. Try again later"
 	},
 	"Discounts" : {
