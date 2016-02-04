@@ -92,7 +92,7 @@
 					{{rule.customer_id}}
 				</td>
 				<td>
-					{{rule.startDate | date:'dd-MM-yyyy'}}
+					{{rule.startDate | date:'dd/MM/yyyy HH:mm'}}
 				</td>
 				<td>
 					{{rule.periodicity}}
@@ -104,7 +104,7 @@
 					{{rule.quantity}}
 				</td>
 				<td>
-					{{rule.nextRun | date:'dd-MM-yyyy'}}
+					{{rule.nextRun | date:'dd/MM/yyyy HH:mm'}}
 				</td>
 				<td>
 					<button class="btn btn-danger btn-sm" ng-click="remove(rule._id)">
