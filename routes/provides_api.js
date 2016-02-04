@@ -175,7 +175,7 @@ exports.getProvide = function(req, res) {
 
 exports.getExistingProvide = function(req, res) {
 	var _code = req.params.id;
-	onsole.log('GET /api/existingProvide/'+_code)
+	console.log('GET /api/existingProvide/'+_code)
 
 	var cookie = req.cookies.session;
 	var jwtKey = req.app.get('superSecret');

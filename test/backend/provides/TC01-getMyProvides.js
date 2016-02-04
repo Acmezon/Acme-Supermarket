@@ -67,4 +67,31 @@ describe('My product list page', function () {
 			});
 		});
 	});
+
+	it("should return true for the current supplier and one of the products provided", function (done){
+		browser
+		.post('http://localhost:3000/api/signin')
+		.send( { email : 'ismael.perez@example.com', password : 'supplier' } )
+		.end(function (err, res) {
+			should.not.exist(err);
+			
+			browser
+			.post('http://localhost:3000/api/products/myproducts/filtered')
+			.end(function (err, res) {
+				res.status.should.be.equal(200);
+
+				var product = res.body[0];
+				browser
+				.post('http://localhost:3000/api/supplier/checkProvides')
+				.send({product_id: product._id})
+				.end(function (err, res) {
+					should.not.exist(err);
+					res.status.should.be.equal(200);
+
+					res.body.provides.should.be.true;
+					done();
+				});
+			});
+		});
+	});
 });

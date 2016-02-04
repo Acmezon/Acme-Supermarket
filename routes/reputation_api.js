@@ -15,7 +15,7 @@ exports.getAverageReputationBySupplierId = function (req, res) {
 	// Check authenticated
 	ActorService.getUserRole(cookie, jwtKey, function (role) {
 		if (role=='admin' || role=='customer' || role=='supplier') {
-			ReputationService.averageReputation(function (err, results) {
+			ReputationService.averageReputation(_code, function (err, results) {
 				if(err){
 					console.log(err);
 					res.sendStatus(500);

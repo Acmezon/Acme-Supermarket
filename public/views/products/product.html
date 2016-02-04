@@ -35,7 +35,7 @@
 					<div class="desc1 col-md-8">
 						<!-- Rating Stars Box -->
 						<div ng-if="!userHasPurchased" class="rating">
-							<span ng-repeat="n in [1, 2, 3, 4, 5] track by $index" class="glyphicon" ng-class="{'glyphicon-star': value >= $index + 1, 'glyphicon-star-empty': value < $index + 1}"></span>
+							<span ng-repeat="n in [1, 2, 3, 4, 5] track by $index" class="glyphicon" ng-class="{'glyphicon-star': product_rating >= $index + 1, 'glyphicon-star-empty': product_rating < $index + 1}"></span>
 						</div>
 
 						<div ng-if="userHasPurchased">
@@ -53,11 +53,11 @@
 									<div class="modal-dialog modal-sm">
 										<div class="modal-content">
 											<form method="post" name="createRuleForm" id="submit-form" ng-submit="submitCreateRule(provide._id, createRuleForm)" class="product_form create-rule_form">
-												<div restrict access="admin" class="input-group">
+												<div ng-if="role=='admin'" class="input-group">
 													<label for="customerid">{{ 'Product.CreateRule.CustomerID' | translate }}*</label>
 													<input id="customerid" name="customerid" type="number" class="form-control" ng-model="rule.customer_id" min="0" required>
 												</div>
-												<div restrict access="admin" class="alert alert-danger" ng-show="createRuleForm{{provide._id}}.customerid.$dirty && (createRuleForm{{provide._id}}.customerid.$error.required || createRuleForm{{provide._id}}.customerid.$error.min)">
+												<div ng-if="role=='admin'" class="alert alert-danger" ng-show="createRuleForm{{provide._id}}.customerid.$dirty && (createRuleForm{{provide._id}}.customerid.$error.required || createRuleForm{{provide._id}}.customerid.$error.min)">
 													{{ 'Product.CreateRule.CustomerIDError' | translate }}
 												</div>
 												<div class="input-group">

@@ -87,7 +87,7 @@ app.get('/api/averageRatingByProductId/:id', api.Rates.getAverageRatingByProduct
 
 // Provides
 app.get('/api/provide/:id', api.Provides.getProvide);
-app.get('/api/existingProvide/:id', api.Provides.getProvide);
+app.get('/api/existingProvide/:id', api.Provides.getExistingProvide);
 app.get('/api/providesByProductId/:id', api.Provides.getProvidesByProductId);
 app.get('/api/provide/bysupplier/byproduct/:id', api.Provides.getSupplierProvidesByProductId);
 app.delete('/api/provide/bysupplier/byproduct/:id', api.Provides.deleteSupplierProvidesByProductId);

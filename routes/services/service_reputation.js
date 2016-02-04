@@ -5,6 +5,10 @@ var	Reputation = require('../../models/reputation'),
 //Devuelve la reputacion media para un supplier
 exports.averageReputation = function (supplier_id, callback) {
 	Provide.find({ supplier_id: supplier_id}, function (err, provides) {
+		if(err){
+			callback(err, null);
+		}
+		
 		var provide_ids = provides.map(function (provide) { return parseInt(provide.id); });
 		
 		Reputation.aggregate([

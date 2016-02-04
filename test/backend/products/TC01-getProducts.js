@@ -14,4 +14,46 @@ describe("Get products from the API", function (){
 			done();
 		});
 	});
+
+	it("should get filtered products from the products API", function (done){
+		var browser = request.agent();
+
+		browser
+		.post("http://localhost:3000/api/products/filtered/")
+		.end(function(err, res){
+			res.status.should.be.equal(200);
+			res.body.length.should.be.above(0);
+			done();
+		});
+	});
+
+	it("should get filtered products count from the products API", function (done){
+		var browser = request.agent();
+
+		browser
+		.post("http://localhost:3000/api/products/filtered/count")
+		.end(function(err, res){
+			res.status.should.be.equal(200);
+
+			res.body.should.be.above(0);
+			done();
+		});
+	});
+
+	it("should get products by a list of IDs", function (done){
+		var browser = request.agent();
+
+		browser
+		.post("http://localhost:3000/api/product/getByIdList")
+		.send({
+			products : {
+				data: [3, 4, 5]
+			}
+		})
+		.end(function (err, res){
+			res.status.should.be.equal(200);
+			res.body.length.should.be.above(0);
+			done();
+		});
+	});
 });

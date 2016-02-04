@@ -23,6 +23,11 @@ exports.createPurchasingRule = function(req, res) {
 				};
 
 				if(role == 'admin') {
+					if(rule_data.customer_id == undefined) {
+						res.sendStatus(503);
+						return;
+					}
+
 					PurchasingRuleService.customerIdHasRule(rule_data.customer_id, req.body.provide_id, function (result) {
 						if(!result) {
 							PurchasingRuleService.saveRule(purchasing_rule, rule_data.customer_id, function (err, saved){
@@ -37,6 +42,11 @@ exports.createPurchasingRule = function(req, res) {
 						}
 					});
 				} else {
+					if(rule_data.customer_id) {
+						res.sendStatus(403);
+						return;
+					}
+
 					CustomerService.getPrincipalCustomer(req.cookies.session, req.app.get('superSecret'), function (customer) {
 						if(!customer) {
 							res.status(403).json({success: false, message: "Doesnt have permission"});							

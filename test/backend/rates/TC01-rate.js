@@ -98,11 +98,17 @@ describe('Product rating and Provide rating', function () {
 				browser
 				.get('http://localhost:3000/api/purchaselines/bypurchase/' + purchase._id)
 				.end(function (err, res) {
+					should.not.exist(err);
+					res.status.should.be.equal(200);
+					
 					var provide_id = res.body[0].provide_id;
 
 					browser
-					.get('http://localhost:3000/api/provide/' + provide_id)
+					.get('http://localhost:3000/api/existingProvide/' + provide_id)
 					.end(function (err, res) {
+						should.not.exist(err);
+						res.status.should.be.equal(200);
+						
 						var product_id = res.body.product_id;
 
 						browser
@@ -214,6 +220,9 @@ describe('Product rating and Provide rating', function () {
 				browser
 				.get('http://localhost:3000/api/purchaselines/bypurchase/' + purchase._id)
 				.end(function (err, res) {
+					should.not.exist(err);
+					res.status.should.be.equal(200);
+					
 					var provide_id = res.body[0].provide_id;
 
 					browser

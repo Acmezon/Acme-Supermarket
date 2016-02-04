@@ -139,11 +139,17 @@ describe("Edit product rate API url", function (){
 				browser
 				.get("http://localhost:3000/api/purchaselines/bypurchase/" + purchase._id)
 				.end(function (err, res) {
+					should.not.exist(err);
+					res.status.should.be.equal(200);
+					
 					var purchase_line = res.body[0];
 
 					browser
-					.get("http://localhost:3000/api/provide/" + purchase_line.provide_id)
+					.get("http://localhost:3000/api/existingProvide/" + purchase_line.provide_id)
 					.end(function (err, res) {
+						should.not.exist(err);
+						res.status.should.be.equal(200);
+						
 						var product_id = res.body.product_id;
 
 						browser

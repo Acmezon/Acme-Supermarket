@@ -38,4 +38,24 @@ describe('My profile page', function () {
 		});
 	});
 
+	it("should let an admin view a credit card", function (done) {
+		browser
+		.post('http://localhost:3000/api/signin')
+		.send( { email : 'admin@mail.com', password : 'administrator' } )
+		.end(function (err, res) {
+			should.not.exist(err);
+
+			browser
+			.get('http://localhost:3000/api/creditcard/1')
+			.end(function (err, res) {
+				should.not.exist(err);
+				
+				res.status.should.be.equal(200);
+				should.exist(res.body.number);
+
+				done();
+			});
+		});
+	});
+
 });

@@ -22,25 +22,24 @@ describe('System\'s customers management view', function () {
 		});
 	});
 
-	it('should let an admin edit a customer with a new value', function (done){
+	it('should let an admin edit a user with a new value', function (done){
 		browser
 		.get('http://localhost:3000/api/customers')
 		.end(function (err, res) {
 			var customer = res.body[0];
 
 			var customer_id = customer._id;
-			var new_phone = '123456789';
+			var new_surname = 'Surname';
 
-			customer.phone = new_phone;
 			browser
-			.post('http://localhost:3000/api/customer')
-			.send(customer)
+			.post('http://localhost:3000/api/user/updateUser')
+			.send({ id: customer_id, field: 'surname', data: new_surname})
 			.end(function (err, res) {
 				browser
 				.get('http://localhost:3000/api/customer/'+customer_id)
 				.end(function (err, res) {
 					res.status.should.be.equal(200);
-					res.body.phone.should.be.equal(new_phone);
+					res.body.surname.should.be.equal(new_surname);
 					done();
 				});
 			});
@@ -54,24 +53,23 @@ describe('System\'s customers management view', function () {
 			var customer = res.body[0];
 
 			var customer_id = customer._id;
-			var new_phone = '987654321';
+			var new_surname = 'Surname';
 			var email = customer.email;
 			var password = "customer";
-
-			customer.phone = new_phone;
+			
 			browser
 			.post('http://localhost:3000/api/signin')
 			.send( { email : email, password : password } )
 			.end(function (err, res) {
 				browser
-				.post('http://localhost:3000/api/customer')
-				.send(customer)
+				.post('http://localhost:3000/api/user/updateUser')
+				.send({ id: customer_id, field: 'surname', data: new_surname})
 				.end(function (err, res) {
 					browser
 					.get('http://localhost:3000/api/customer/'+customer_id)
 					.end(function (err, res) {
 						res.status.should.be.equal(200);
-						res.body.phone.should.be.equal(new_phone);
+						res.body.surname.should.be.equal(new_surname);
 						done();
 					});
 				});
@@ -86,17 +84,16 @@ describe('System\'s customers management view', function () {
 			var customer = res.body[0];
 
 			var customer_id = customer._id;
-			var new_phone = '987654321';
+			var new_surname = '987654321';
 
-			customer.phone = new_phone;
 			browser
 			.get('http://localhost:3000/api/signout')
 			.end(function (err, res) {
 				browser
-				.post('http://localhost:3000/api/customer')
-				.send(customer)
+				.post('http://localhost:3000/api/user/updateUser')
+				.send({ id: customer_id, field: 'surname', data: new_surname})
 				.end(function (err, res) {
-					res.status.should.be.equal(403);
+					res.status.should.be.equal(401);
 					done();
 				});
 			});
@@ -111,81 +108,85 @@ describe('System\'s customers management view', function () {
 			var customer_editor = res.body[1];
 
 			var customer_id = customer_to_edit._id;
-			var new_phone = '987654321';
+			var new_surname = '987654321';
 
 			var email = customer_editor.email;
 			var password = "customer";
 
-			customer_to_edit.phone = new_phone;
 			browser
 			.post('http://localhost:3000/api/signin')
 			.send( { email : email, password : password } )
 			.end(function (err, res) {
 				browser
-				.post('http://localhost:3000/api/customer')
-				.send(customer_to_edit)
+				.post('http://localhost:3000/api/user/updateUser')
+				.send({ id: customer_id, field: 'surname', data: new_surname})
 				.end(function (err, res) {
-					res.status.should.be.equal(403);
+					res.status.should.be.equal(401);
 					done();					
 				});
 			});
 		});
 	});
 
-	it('should remove a customer', function (done){
+	it('should let a user edit self password', function (done){
 		browser
-		.get("http://localhost:3000/api/customers")
-		.end(function (err, res){
-			var L = res.body.length;
-			for (var i = 0; i < L; i++) {
-				if(res.body[i].email == "randmail@mail.com") {
-					var id = res.body[i]._id;
+		.get('http://localhost:3000/api/customers')
+		.end(function (err, res) {
+			var customer = res.body[0];
+
+			var customer_id = customer._id;
+			var email = customer.email;
+			var password = "customer";
+			var newPass = "newpassword"
+
+			browser
+			.post('http://localhost:3000/api/signin')
+			.send( { email : email, password : password } )
+			.end(function (err, res) {
+				browser
+				.post('http://localhost:3000/api/api/user/changePassword')
+				.send({ id: customer_id, oldPass: password, newPass: newPass })
+				.end(function (err, res) {
 					browser
-					.del("http://localhost:3000/api/customer")
-					.send({ id : id })
-					.end(function (err, res){
+					.post('http://localhost:3000/api/signin')
+					.send( { email : email, password : newPass } )
+					.end(function (err, res) {
 						res.status.should.be.equal(200);
-						res.body.success.should.be.exactly(true);
+
+						res.body.success.should.be.true;
 						done();
 					});
-				}
-			}
+				});
+			});
 		});
 	});
 
-	it('should let a customer edit it\'s own credit card', function (done) {
+	it('should let a user edit back self password', function (done){
 		browser
-		.post('http://localhost:3000/api/signin')
-		.send( { email : 'alex.gallardo@example.com', password : 'customer' } )
+		.get('http://localhost:3000/api/customers')
 		.end(function (err, res) {
+			var customer = res.body[0];
+
+			var customer_id = customer._id;
+			var email = customer.email;
+			var password = "newpassword";
+			var newPass = "customer"
+
 			browser
-			.get('http://localhost:3000/api/mycreditcard')
+			.post('http://localhost:3000/api/signin')
+			.send( { email : email, password : password } )
 			.end(function (err, res) {
-				should.not.exist(err);
-				
-				res.status.should.be.equal(200);
-				var id = res.body._id;
-
-				var number = "4485077908662";
-
-				var cc = {
-					holderName : "Alex Gallardo",
-					number : number,
-					expirationMonth: 09,
-					expirationYear: 2021,
-					cvcCode: 385,
-				}
-
 				browser
-				.post('http://localhost:3000/api/customer/updateCC')
-				.send( { cc : cc, id_cc : id} )
+				.post('http://localhost:3000/api/api/user/changePassword')
+				.send({ id: customer_id, oldPass: password, newPass: newPass })
 				.end(function (err, res) {
 					browser
-					.get('http://localhost:3000/api/mycreditcard')
+					.post('http://localhost:3000/api/signin')
+					.send( { email : email, password : newPass } )
 					.end(function (err, res) {
-						should.not.exist(err);
+						res.status.should.be.equal(200);
 
-						res.body.number.should.be.equal(number);
+						res.body.success.should.be.true;
 						done();
 					});
 				});

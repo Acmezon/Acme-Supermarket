@@ -68,12 +68,24 @@
 				<th>
 					{{'PurchasingRules.Customer' | translate}} <span style="float:right" class="glyphicon" ng-class="{'glyphicon-triangle-top' : !inverseOrder, 'glyphicon-triangle-bottom' : inverseOrder, 'order-selected' : sortBy=='customer_id'}" ng-click="sort('customer_id')"></span>
 				</th>
-				<th>{{'PurchasingRule.StartDate' | translate}} <span style="float:right" class="glyphicon" ng-class="{'glyphicon-triangle-top' : !inverseOrder, 'glyphicon-triangle-bottom' : inverseOrder, 'order-selected' : sortBy=='startDate'}" ng-click="sort('startDate')"></span></th>
-				<th>{{'PurchasingRule.Periodicity' | translate}} <span style="float:right" class="glyphicon" ng-class="{'glyphicon-triangle-top' : !inverseOrder, 'glyphicon-triangle-bottom' : inverseOrder, 'order-selected' : sortBy=='periodicity'}" ng-click="sort('periodicity')"></span></th>
-				<th>{{'PurchasingRule.Product' | translate}} <span style="float:right" class="glyphicon" ng-class="{'glyphicon-triangle-top' : !inverseOrder, 'glyphicon-triangle-bottom' : inverseOrder, 'order-selected' : sortBy=='product'}" ng-click="sort('product')"></span></th>
-				<th>{{'PurchasingRule.Quantity' | translate}} <span style="float:right" class="glyphicon" ng-class="{'glyphicon-triangle-top' : !inverseOrder, 'glyphicon-triangle-bottom' : inverseOrder, 'order-selected' : sortBy=='quantity'}" ng-click="sort('quantity')"></span></th>
-				<th>{{'PurchasingRule.NextRun' | translate}} <span style="float:right" class="glyphicon" ng-class="{'glyphicon-triangle-top' : !inverseOrder, 'glyphicon-triangle-bottom' : inverseOrder, 'order-selected' : sortBy=='nextRun'}" ng-click="sort('nextRun')"></span></th>
-				<th style="width:5%">{{'PurchasingRule.Remove' | translate}}</th>
+				<th>
+					{{'PurchasingRule.StartDate' | translate}} <span style="float:right" class="glyphicon" ng-class="{'glyphicon-triangle-top' : !inverseOrder, 'glyphicon-triangle-bottom' : inverseOrder, 'order-selected' : sortBy=='startDate'}" ng-click="sort('startDate')"></span>
+				</th>
+				<th>
+					{{'PurchasingRule.Periodicity' | translate}} <span style="float:right" class="glyphicon" ng-class="{'glyphicon-triangle-top' : !inverseOrder, 'glyphicon-triangle-bottom' : inverseOrder, 'order-selected' : sortBy=='periodicity'}" ng-click="sort('periodicity')"></span>
+				</th>
+				<th>
+					{{'PurchasingRule.Product' | translate}} <span style="float:right" class="glyphicon" ng-class="{'glyphicon-triangle-top' : !inverseOrder, 'glyphicon-triangle-bottom' : inverseOrder, 'order-selected' : sortBy=='product'}" ng-click="sort('product')"></span>
+				</th>
+				<th>
+					{{'PurchasingRule.Quantity' | translate}} <span style="float:right" class="glyphicon" ng-class="{'glyphicon-triangle-top' : !inverseOrder, 'glyphicon-triangle-bottom' : inverseOrder, 'order-selected' : sortBy=='quantity'}" ng-click="sort('quantity')"></span>
+				</th>
+				<th>
+					{{'PurchasingRule.NextRun' | translate}} <span style="float:right" class="glyphicon" ng-class="{'glyphicon-triangle-top' : !inverseOrder, 'glyphicon-triangle-bottom' : inverseOrder, 'order-selected' : sortBy=='nextRun'}" ng-click="sort('nextRun')"></span>
+				</th>
+				<th style="width:5%">
+					{{'PurchasingRule.Remove' | translate}}
+				</th>
 			</tr>
 			<tr id="{{rule._id}}" ng-repeat="rule in purchasing_rules">
 				<td>
@@ -86,7 +98,7 @@
 					{{rule.periodicity}}
 				</td>
 				<td>
-					{{rule.product_name}}
+					<a href="product/{{rule.product_id}}">{{rule.product_name}}</a>
 				</td>
 				<td>
 					{{rule.quantity}}
