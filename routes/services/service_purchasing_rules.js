@@ -45,3 +45,13 @@ exports.saveRule = function(rule, customer_id, callback) {
 		}
 	});
 }
+
+exports.deleteAllByProvide = function(provide, callback) {
+	PurchasingRule.remove({ provide_id: provide._id }, function (err) {
+		if (err) {
+			callback(false);
+		} else {
+			callback(true);
+		}
+	});
+}

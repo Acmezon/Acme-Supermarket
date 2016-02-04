@@ -74,4 +74,14 @@ exports.saveReputationForCustomer = function (cookie, key, customer_id, provide_
 			});
 		});
 	});
+};
+
+exports.deleteAllByProvide = function (provide, callback) {
+	Reputation.remove({ provide_id: provide._id }, function (err) {
+		if (err) {
+			callback(false);
+		} else {
+			callback(true);
+		}
+	});
 }

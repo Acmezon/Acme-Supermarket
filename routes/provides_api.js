@@ -121,16 +121,29 @@ exports.deleteSupplierProvidesByProductId = function(req, res) {
 			SupplierService.getPrincipalSupplier(cookie, jwtKey, function (supplier) {
 				if (supplier) {
 
-					Provide.findOne({product_id: _code, supplier_id: supplier._id, deleted : false}, function (err, result){
-						if(err || !result){
+					Provide.findOne({product_id: _code, supplier_id: supplier._id, deleted : false}, function (err, provide){
+						if(err || !provide){
 							// Internal Server Error
 							res.status(500).json({success: false, message: err});
 						}else{
-							Provide.findByIdAndUpdate(result.id, { $set : { deleted: true } }, function (err) {
+							Provide.findByIdAndUpdate(provide.id, { $set : { deleted: true } }, function (err) {
 								if (err) {
 									res.status(500).json({success: false, message: err});
 								} else {
-									res.status(200).json({success: true});
+									ReputationService.deleteAllByProvide(provide, function (done) {
+										if (done) {
+											PurchasingRuleService.deleteAllByProvide(provide, function (done) {
+												if (done) {
+													res.status(200).json({success: true});
+												} else {
+													res.status(500).json({success: false})
+												}
+											});
+										} else {
+											res.status(500).json({success: false})
+										}
+									});
+									
 								}
 							});
 						}
