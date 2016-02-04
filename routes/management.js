@@ -112,7 +112,7 @@ function loadDiscounts(callback) {
 
 			var discount = new Discount({
 				code : 'W5PQ-PYN2-B8B4-6H8J',
-				discount : 30
+				value : 30
 			});
 
 			var saved = sync.await(discount.save(sync.defer()));
@@ -131,7 +131,7 @@ function loadDiscounts(callback) {
 
 				discount = new Discount({
 					code: CouponCode.generate({ parts: 4 }),
-					discount : random(10, 60)
+					value : random(10, 60)
 				});
 
 				saved = sync.await(discount.save(sync.defer()));
@@ -250,7 +250,7 @@ function loadCustomers(callback) {
 				"credit_card_id" : card.id
 			});
 
-			customer1.save(function (err) {
+			customer1.save(function (err, saved) {
 				if (err) console.log("--ERR: Error saving customer: " + err);
 
 				callback();
@@ -400,9 +400,66 @@ function loadSocialMediaRulesNotifications(callback) {
 
 		console.log("--DO: Saved all social media notifications");
 
+		loadSpeacialUsers(callback);
+	});
+}
+
+function loadSpeacialUsers(callback) {
+	sync.fiber(function() {
+		//Supplier with no provides
+		var supplier1 = new Supplier({
+			"_type" : "Supplier",
+			"name" : "No Provides",
+			"surname" : "Supplier",
+			"email" : "no.provides@mail.com",
+			"password" : "99b0e8da24e29e4ccb5d7d76e677c2ac", //supplier
+			"coordinates" : "37.358716;-5.987814",
+			"address" : "1471 Calle De Toledo"
+		});
+
+		sync.await(supplier1.save(sync.defer()));
+
+		//Customer with no purchases
+		var customer1 = new Customer({
+			"_type" : "Customer",
+			"name" : "No purchases",
+			"surname" : "Customer",
+			"email" : "no.purchases@mail.com",
+			"password" : "91ec1f9324753048c0096d036a694f86", //customer
+			"coordinates":"37.358716;-5.987814",
+			"country":"Spain",
+			"city":"La Coruña",
+			"address":"3481 Calle Del Prado",
+			"phone":"949705177"
+		});
+
+		sync.await(customer1.save(sync.defer()));
+		
+		//Customer with no rules
+		var customer2 = new Customer({
+			"_type" : "Customer",
+			"name" : "No Rules",
+			"surname" : "Customer",
+			"email" : "no.rules@mail.com",
+			"password" : "91ec1f9324753048c0096d036a694f86", //customer
+			"coordinates":"37.358716;-5.987814",
+			"country":"Spain",
+			"city":"La Coruña",
+			"address":"3481 Calle Del Prado",
+			"phone":"949705177"
+		});
+
+		sync.await(customer2.save(sync.defer()));
+
+	}, function (err, data) {
+		if(err) console.log("--ERR: Error saving special users: " + err);
+
+		console.log("--DO: Saved special users");
+
 		clean(callback);
 	});
 }
+
 
 function buyProduct(product, customer_id ,callback) {
 	loadProvides(product, 

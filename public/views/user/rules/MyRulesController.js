@@ -39,7 +39,7 @@ function ($scope, $http, ngTableParams, $route, $transtale, ngToast) {
 					console.log(error);
 					$translate(['PurchasingRule.Delete.Error']).then(function (translation) {
 						ngToast.create({
-							className: 'error',
+							className: 'danger',
 							content: translation['PurchasingRule.Delete.Error']
 						});
 					});

@@ -33,7 +33,7 @@
 			</div>
 		</div>
 
-		<table ng-table="tableParams" class="table" show-filter="true">		
+		<table ng-table="tableParams" class="table" show-filter="true">
 			<tr ng-repeat="rule in $data" demo-tracked-table-row="rule">
 				<td data-title="'PurchasingRule.StartDate' | translate" filter="{startDate: 'text'}" sortable="'startDate'" demo-tracked-table-cell style="width:8%">
 					{{rule.startDate | date:'dd-MM-yyyy'}}

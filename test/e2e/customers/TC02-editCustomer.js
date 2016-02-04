@@ -110,7 +110,7 @@ it('should cancel edition and fields should revert', function (){
 
 					confirmBtn.click().then(function () {
 						browser.waitForAngular();
-						browser.sleep(500)
+						browser.sleep(3000)
 						element(by.id('customers-length')).getText().then (function (text) {
 							expect(parseInt(text)).toEqual(number_customers - 1);
 						});

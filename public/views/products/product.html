@@ -35,11 +35,11 @@
 					<div class="desc1 col-md-8">
 						<!-- Rating Stars Box -->
 						<div ng-if="!userHasPurchased" class="rating">
-							<span ng-repeat="n in [1, 2, 3, 4, 5] track by $index" class="glyphicon" ng-class="{'glyphicon-star': value >= $index + 1, 'glyphicon-star-empty': value < $index + 1}"></span>
+							<span ng-repeat="n in [1, 2, 3, 4, 5] track by $index" class="glyphicon" ng-class="{'glyphicon-star': product_rating >= $index + 1, 'glyphicon-star-empty': product_rating < $index + 1}"></span>
 						</div>
 
 						<div ng-if="userHasPurchased">
-							<uib-rating ng-model="value" class="rating" max="max" ng-click="rateProduct()"></uib-rating>
+							<uib-rating ng-model="product_rating" class="rating" max="max" ng-click="rateProduct(product_rating)"></uib-rating>
 						</div>
 						<!--<div class="rating" data-stars="{{product.rating}}"></div>-->
 						<h3 class="m_3" editable-text="product.name" e-maxlength="100" e-form="textNameForm" e-placeholder="{{ 'Product.Create.Name' | translate }}" onbeforesave="updateProduct('name', $data)">{{product.name}}</h3>
@@ -49,10 +49,17 @@
 
 						<div ng-if="out_suppliers.length > 0">
 							<div ng-repeat="provide in out_suppliers">
-								<div ng-if="!provide.customerHasRule" id="create-rule-{{provide._id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createRule" z-index="10000000">
+								<div ng-if="!provide.customerHasRule || role=='admin'" id="create-rule-{{provide._id}}" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="createRule" z-index="10000000">
 									<div class="modal-dialog modal-sm">
 										<div class="modal-content">
 											<form method="post" name="createRuleForm" id="submit-form" ng-submit="submitCreateRule(provide._id, createRuleForm)" class="product_form create-rule_form">
+												<div ng-if="role=='admin'" class="input-group">
+													<label for="customerid">{{ 'Product.CreateRule.CustomerID' | translate }}*</label>
+													<input id="customerid" name="customerid" type="number" class="form-control" ng-model="rule.customer_id" min="0" required>
+												</div>
+												<div ng-if="role=='admin'" class="alert alert-danger" ng-show="createRuleForm{{provide._id}}.customerid.$dirty && (createRuleForm{{provide._id}}.customerid.$error.required || createRuleForm{{provide._id}}.customerid.$error.min)">
+													{{ 'Product.CreateRule.CustomerIDError' | translate }}
+												</div>
 												<div class="input-group">
 													<label for="startDate">{{ 'Product.CreateRule.StartDate' | translate }}*</label>
 													<input id="startDate" name="startDate" type="date" class="form-control" ng-model="rule.startDate" min="{{date | date:'yyyy-MM-dd'}}" required>
@@ -115,8 +122,47 @@
 										<p ng-show="provide.customerHasRule">{{ 'Product.AlreadyHasRule' | translate }} <a href="/mypurchasingrules">{{ 'Header.Account.MyPurchasingRules' | translate }}</a></p>
 										<button ng-if="!provide.customerHasRule" type="button" class="btn btn-primary" data-toggle="modal" data-target="#create-rule-{{provide._id}}">{{ 'Product.CreateRule.Title' | translate }}</button>
 									</td>
+									<td ng-if="role=='admin'" class="create-rule">
+										<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create-rule-{{provide._id}}">{{ 'Product.CreateRule.Title' | translate }}</button>
+									</td>
 								</tr>
 							</tbody>
+							<tfoot restrict access="admin">
+								<form name="addProvide">
+									<tr ng-show="isAdding">
+										<td>
+											<div class="input-group spinner">
+												<input ng-model="supplier_id" id="supplier_id" type="text" class="form-control" placeholder="ID" ng-class="{'has-error': addProvide.supplier_id.$dirty && (addProvide.supplier_id.$error.required || addProvide.supplier_id.$invalid)}" value="1" min="0" required>
+												<div class="input-group-btn-vertical">
+													<button class="btn btn-default" type="button" ng-click="supplier_id = supplier_id+1"><i class="fa fa-caret-up"></i></button>
+													<button class="btn btn-default" type="button" ng-click="supplier_id = Math.max(1, supplier_id-1)"><i class="fa fa-caret-down"></i></button>
+												</div>
+											</div>
+										</td>
+										<td>
+											<div class="input-group spinner">
+												<input ng-model="price" id="price" type="text" class="form-control" ng-class="{'has-error': addProvide.price.$dirty && (addProvide.price.$error.required || addProvide.price.$invalid)}" value="1" min="0" required>
+
+												<div class="input-group-btn-vertical">
+													<button class="btn btn-default" type="button" ng-click="price = Math.min(9999, price+1)"><i class="fa fa-caret-up"></i></button>
+													<button class="btn btn-default" type="button" ng-click="price = Math.max(1,price-1)"><i class="fa fa-caret-down"></i></button>
+												</div>
+												<span class="input-group-addon" id="basic-addon2">€</span>
+											</div>
+										</td>
+										<td>
+											<button id="add-provide" class="btn btn-primary" ng-disabled="!price || !supplier_id" ng-click="adminCreateProvide()"><span class="glyphicon glyphicon-ok"></span></button>
+										</td>
+									</tr>
+								</form>
+								<tr ng-show="!isAdding">
+									<td colspan="3">
+										<button id="new-provide-admin" class="btn btn-primary" ng-click="isAdding=true">
+											<span class="glyphicon glyphicon-plus"></span>
+										</button>
+									</td>
+								</tr>
+							</tfoot>
 						</table>
 					</div>
 				</div>
@@ -149,6 +195,70 @@
 					</div>
 					
 
+				</div>
+
+				<div id="discounts" restrict access="admin">
+					<h4 class="title">{{ 'Management.Discounts' | translate }}</h4>
+					<div class="row">
+						<div class="col-md-6">
+							<table id="table-available-discounts" ng-table="tableParams" class="table table-bordered table-hover table-condensed editable-table" show-filter="true">
+								<caption>{{'Discounts.Available' | translate}}: <span>{{tableParams.data.length}}</span></caption>
+
+								<colgroup>
+									<col width="75%" />
+									<col width="20%" />
+									<col width="5%" />
+								</colgroup>
+
+								<tr id="{{discount._id}}" ng-repeat="discount in tableParams.data track by discount._id" demo-tracked-table-row="discount">
+									<td title="'Discounts.Code' | translate" filter="{ code: 'text'}" sortable="'code'">
+					            		{{discount.code}}
+					            	</td>
+
+					            	<td title="'Discounts.Value' | translate" filter="{ value: 'number'}" sortable="'value'">
+					            		{{discount.value}}
+					            	</td>
+
+					            	<td title="'Discounts.Apply' | translate">
+					            		<button class="btn btn-success btn-sm" ng-click="addDiscount(discount._id)">
+					            			<span class="glyphicon glyphicon-plus"></span>
+					            		</button>
+					            	</td>
+								</tr>
+							</table>
+						</div>
+
+						<div class="col-md-6">
+
+							<table id="table-applied-discounts" ng-table="tableParams2" class="table table-bordered table-hover table-condensed editable-table" show-filter="true">
+								<caption>{{'Discounts.Applied' | translate}}: <span>{{tableParams2.data.length}}</span></caption>
+
+								<colgroup>
+									<col width="75%" />
+									<col width="20%" />
+									<col width="5%" />
+								</colgroup>
+
+								<tr id="{{discount._id}}" ng-repeat="discount in tableParams2.data track by discount._id" demo-tracked-table-row="discount">
+									<td title="'Discounts.Code' | translate" filter="{ code: 'text'}" sortable="'code'">
+					            		{{discount.code}}
+					            	</td>
+
+					            	<td title="'Discounts.Value' | translate" filter="{ value: 'number'}" sortable="'value'">
+					            		{{discount.value}}
+					            	</td>
+
+					            	<td title="'Discounts.Remove' | translate">
+					            		<button class="btn btn-danger btn-sm" ng-click="removeDiscount(discount._id)">
+					            			<span class="glyphicon glyphicon-minus"></span>
+					            		</button>
+					            	</td>
+								</tr>
+							</table>
+						</div>
+
+					
+					</div>
 				</div>
 
 

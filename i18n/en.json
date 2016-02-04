@@ -56,7 +56,9 @@
 		"Purchases" : "Purchases",
 		"CreateProduct" : "Add product",
 		"Purchase" : "Purchase for a customer",
-		"CreateRating" : "Rate for a customer"
+		"CreateRating" : "Rate for a customer",
+		"Discounts" : "Discounts",
+		"PurchasingRules" : "Purchasing rules"
 	},
 	"Footer": {
 		"AboutUs" : "About Us",
@@ -266,7 +268,8 @@
 		"Price": "Price",
 		"Rating": "Rating",
 		"Supplier": {
-			"Name" : "Name",
+			"Id" : "Supplier ID",
+			"Name" : "Supplier name",
 			"Reputation" : "Reputation",
 			"Empty" : "Product not available"
 		},
@@ -301,13 +304,17 @@
 		"DeleteProvide" : "Stop providing this product",
 		"AlreadyHasRule" : "You already have a rule to purchase this product. Maybe you want to go to",
 		"CreateRule" : {
+			"CustomerID" : "ID del cliente",
+			"CustomerIDError" : "El ID del cliente es obligatorio y debe ser positivo",
 			"StartDate" : "Star date",
 			"StartDateError" : "The start date is required and must be in the future",
 			"Periodicity" : "Periodicity",
 			"PeriodicityError" : "The periodicity is required and must be extrictly positive",
 			"Quantity" : "Quantity",
 			"QuantityError" : "The quantity is required and must be extrictly positive",
-			"Title" : "Create Purchasing Rule"
+			"Title" : "Create Purchasing Rule",
+			"Error" : "Error creating rule. Please try again later",
+			"AdminError" : "Error creating rule. Pleas make sure the customer exists and has not already a rule for this product and provide"
 		}
 	},
 	"ShoppingCart": {
@@ -427,6 +434,10 @@
 			"Here" : "here",
 			"Description2" : " to continue shopping"
 		},
+		"Discount" : "Redeem discount code",
+		"DiscountError" : "Discount code not valid.",
+		"DiscountRedeemed" : "Discount code successfuly redeemed.",
+		"DiscountSuccess" : "Success",
 		"CreditCard" : {
 			"Empty" : {
 				"Title" : "No credit card registered",
@@ -501,6 +512,17 @@
 			"Error" : "Error deleting the rule. Please try again later."
 		}
 	},
+	"PurchasingRules" : {
+		"Title" : "Purchasing Rules",
+		"Empty" : "No purchases rules found",
+		"Filter" : {
+			"Title" : "Filters",
+			"Customer" : "Customer ID"
+		},
+		"First" : "First",
+		"Last" : "Last",
+		"Customer" : "Customer ID"
+	},
 	"Reputations" : {
 		"Title" : "User rating of your product",
 		"Empty" : "No ratings yet."		
@@ -521,7 +543,33 @@
 			"Value" : "Value"
 		},
 		"Submit" : "Submit",
+		"Discounts" : "Manage discounts",
 		"RatingError" : "The selected customer was not found or it is unable to rate the product",
 		"ServerError" : "Internal server error. Try again later"
+	},
+	"Discounts" : {
+		"Empty" : {
+			"Title" : "Empty",
+			"Description" : "No discounts in the system"
+		},
+		"Filled" : {
+			"Description1" : "There are ",
+			"Description2" : " discounts registered"
+		},
+		"Error" : {
+			"Value" : "The value of the discount is invalid.",
+			"Code" : "The discount code is invalid. Click 'Generate' again to generate a new one.",
+			"Server" : "Internal server error"
+		},
+		"Value" : "Discount (%)",
+		"Code" : "Code",
+		"DiscountCode" : "Discount code",
+		"ProductsNumber" : "Number of products",
+		"Remove" : "Remove",
+		"Create" : "Add a discount",
+		"Apply" : "Apply",
+		"Generate" : "Generate",
+		"Applied" : "Applied discounts",
+		"Available" : "Available discounts"
 	}
 }

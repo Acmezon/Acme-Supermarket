@@ -14,7 +14,10 @@ var Authentication = require('./authentication'),
 	CustomerService = require('./services/service_customers'),
 	ProductService = require('./services/service_products'),
 	RecommenderService = require('./services/service_recommender_server'),
-	async = require('async');
+	async = require('async'),
+	mongoose = require('mongoose'),
+	SupplierService = require('./services/service_suppliers')
+	RateService = require('./services/service_rates');
 
 // Returns all objects of the system, filtered
 exports.getAllProductsFiltered = function(req, res) {
@@ -58,11 +61,7 @@ exports.getAllProductsFiltered = function(req, res) {
 				if (filter_maxPrice != -1) {
 					// PRICE FILTER ACTIVATED
 					Product.find({
-							minPrice: {
-								$gte: 0
-							},
 							maxPrice: {
-								$gte: 0,
 								$lt: filter_maxPrice
 							},
 							avgRating: {
@@ -94,12 +93,6 @@ exports.getAllProductsFiltered = function(req, res) {
 				} else {
 					// PRICE FILTER DEACTIVATED
 					Product.find({
-							minPrice: {
-								$gte: 0
-							},
-							maxPrice: {
-								$gte: 0,
-							},
 							avgRating: {
 								$gte: filter_minRating,
 								$lt: filter_maxRating
@@ -134,17 +127,13 @@ exports.getAllProductsFiltered = function(req, res) {
 		if (filter_maxPrice != -1) {
 			// PRICE FILTER ACTIVATED
 			Product.find({
-					minPrice: {
-						$gte: 0
-					},
 					maxPrice: {
-						$gte: 0,
 						$lt: filter_maxPrice
 					},
 					avgRating: {
 						$gte: filter_minRating,
 						$lt: filter_maxRating
-					},
+					}
 				}).select({
 					'_id': 1,
 					'name': 1,
@@ -167,16 +156,10 @@ exports.getAllProductsFiltered = function(req, res) {
 		} else {
 			// PRICE FILTER DEACTIVATED
 			Product.find({
-					minPrice: {
-						$gte: 0
-					},
-					maxPrice: {
-						$gte: 0,
-					},
 					avgRating: {
 						$gte: filter_minRating,
 						$lt: filter_maxRating
-					},
+					}
 				}).select({
 					'_id': 1,
 					'name': 1,
@@ -186,7 +169,7 @@ exports.getAllProductsFiltered = function(req, res) {
 					'avgRating': 1
 				})
 				.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
-				.exec(function(err, products) {
+				.exec(function (err, products) {
 					if (err) {
 						res.status(500).json({
 							success: false,
@@ -224,11 +207,7 @@ exports.countProductsFiltered = function(req, res) {
 				if (filter_maxPrice != -1) {
 					// PRICE FILTER ACTIVATED
 					Product.count({
-						minPrice: {
-							$gte: 0
-						},
 						maxPrice: {
-							$gte: 0,
 							$lt: filter_maxPrice
 						},
 						avgRating: {
@@ -251,12 +230,6 @@ exports.countProductsFiltered = function(req, res) {
 				} else {
 					// PRICE FILTER DEACTIVATED
 					Product.count({
-						minPrice: {
-							$gte: 0
-						},
-						maxPrice: {
-							$gte: 0
-						},
 						avgRating: {
 							$gte: filter_minRating,
 							$lt: filter_maxRating
@@ -282,17 +255,13 @@ exports.countProductsFiltered = function(req, res) {
 		if (filter_maxPrice != -1) {
 			// PRICE FILTER ACTIVATED
 			Product.count({
-				minPrice: {
-					$gte: 0
-				},
 				maxPrice: {
-					$gte: 0,
 					$lt: filter_maxPrice
 				},
 				avgRating: {
 					$gte: filter_minRating,
 					$lt: filter_maxRating
-				},
+				}
 			}).exec(function(err, number) {
 				if (err) {
 					res.status(500).json({
@@ -306,16 +275,10 @@ exports.countProductsFiltered = function(req, res) {
 		} else {
 			// PRICE FILTER DEACTIVATED
 			Product.count({
-				minPrice: {
-					$gte: 0
-				},
-				maxPrice: {
-					$gte: 0
-				},
 				avgRating: {
 					$gte: filter_minRating,
 					$lt: filter_maxRating
-				},
+				}
 			}).exec(function(err, number) {
 				if (err) {
 					res.status(500).json({
@@ -342,44 +305,255 @@ exports.getSupplierProductsFiltered = function(req, res) {
 		filter_id_category = parseInt(req.body.categoryFilter) || -1,
 		filter_maxPrice = req.body.priceFilter ? parseInt(req.body.priceFilter) || -1 : -1,
 		filter_minRating = parseInt(req.body.ratingFilter) || 0,
-		filter_maxRating = filter_minRating == 0 ? 5 : parseInt(req.body.ratingFilter) + 1 || 5,
-		filter_supplier_id = parseInt(req.body.supplier_id) || -1;
+		filter_maxRating = filter_minRating == 0 ? 5 : parseInt(req.body.ratingFilter) + 1 || 5;
 
-	// Format sort criteria
-	if (ordering_sort == 'rating') {
-		ordering_sort = 'avgRating';
-	} else {
-		if (ordering_sort == 'price') {
-			ordering_sort = 'minPrice';
-		} else {
-			ordering_sort = 'name';
-		}
-	}
+	SupplierService.getPrincipalSupplier(req.cookies.session, req.app.get('superSecret'), function (supplier) {
+		if(supplier != null) {
+			var filter_supplier_id = supplier.id;
 
-	var ord_tuple = {};
-	ord_tuple[ordering_sort] = ordering_order;
-
-	if (filter_id_category != -1) {
-		// CATEGORY FILTER ACTIVATED
-		BelongsTo.find({
-				'category_id': filter_id_category
-			}).select('product_id')
-			.sort({
-				'product_id': 1
-			})
-			.exec(function(err, belongs) {
-				if (err) {
-					res.status(500).json({
-						success: false,
-						message: err
-					});
+			// Format sort criteria
+			if (ordering_sort == 'rating') {
+				ordering_sort = 'avgRating';
+			} else {
+				if (ordering_sort == 'price') {
+					ordering_sort = 'minPrice';
 				} else {
-					// CONTINUE
-					var product_ids = belongs.map(function(belong) {
-						return belong.product_id;
+					ordering_sort = 'name';
+				}
+			}
+
+			var ord_tuple = {};
+			ord_tuple[ordering_sort] = ordering_order;
+
+			if (filter_id_category != -1) {
+				// CATEGORY FILTER ACTIVATED
+				BelongsTo.find({
+						'category_id': filter_id_category
+					}).select('product_id')
+					.sort({
+						'product_id': 1
+					})
+					.exec(function(err, belongs) {
+						if (err) {
+							res.status(500).json({
+								success: false,
+								message: err
+							});
+						} else {
+							// CONTINUE
+							var product_ids = belongs.map(function(belong) {
+								return belong.product_id;
+							});
+
+							Provide
+							.find({
+								supplier_id: filter_supplier_id,
+								deleted: false
+							})
+							.select({
+								'product_id': 1
+							})
+							.sort({
+								'product_id': 1
+							})
+							.exec(function(err, provides) {
+
+								// Intersects the two ids filters (BelongsTo and ProvidesBySupplier)
+								var aux = provides.map(function(provide) {
+									return provide.product_id;
+								});
+								product_ids = db_utils.intersect_safe(product_ids, aux);
+
+								if (filter_maxPrice != -1) {
+									// PRICE FILTER ACTIVATED
+									Product.find({
+											maxPrice: {
+												$lt: filter_maxPrice
+											},
+											avgRating: {
+												$gte: filter_minRating,
+												$lt: filter_maxRating
+											},
+											'_id': {
+												$in: product_ids
+											}
+										}).select({
+											'_id': 1,
+											'name': 1,
+											'image': 1,
+											'minPrice': 1,
+											'maxPrice': 1,
+											'avgRating': 1
+										})
+										.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
+										.exec(function(err, products) {
+											if (err) {
+												res.status(500).json({
+													success: false,
+													message: err
+												});
+											} else {
+												res.status(200).json(products);
+											}
+										});
+								} else {
+									// PRICE FILTER DEACTIVATED
+									Product
+									.find({
+										avgRating: {
+											$gte: filter_minRating,
+											$lt: filter_maxRating
+										},
+										'_id': {
+											$in: product_ids
+										}
+									}).select({
+										'_id': 1,
+										'name': 1,
+										'image': 1,
+										'minPrice': 1,
+										'maxPrice': 1,
+										'avgRating': 1
+									})
+									.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
+									.exec(function(err, products) {
+										if (err) {
+											res.status(500).json({
+												success: false,
+												message: err
+											});
+										} else {
+											res.status(200).json(products);
+										}
+									});
+								}
+							});
+						}
+					});
+			} else {
+				// CATEGORY FILTER DEACTIVATED
+
+				Provide
+				.find({
+					supplier_id: filter_supplier_id,
+					deleted: false
+				})
+				.select({
+					'product_id': 1,
+					'supplier_id' : 1
+				})
+				.exec(function (err, provides) {
+
+					var product_ids = provides.map(function (provide) {
+						return provide.product_id;
 					});
 
-					Provide.find({
+					if (filter_maxPrice != -1) {
+						// PRICE FILTER ACTIVATED
+						Product.find({
+								maxPrice: {
+									$lt: filter_maxPrice
+								},
+								avgRating: {
+									$gte: filter_minRating,
+									$lt: filter_maxRating
+								},
+								'_id': {
+									$in: product_ids
+								}
+							}).select({
+								'_id': 1,
+								'name': 1,
+								'image': 1,
+								'minPrice': 1,
+								'maxPrice': 1,
+								'avgRating': 1
+							})
+							.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
+							.exec(function(err, products) {
+								if (err) {
+									res.status(500).json({
+										success: false,
+										message: err
+									});
+								} else {
+									res.status(200).json(products);
+								}
+							});
+					} else {
+						// PRICE FILTER DEACTIVATED
+						Product
+						.find({
+							avgRating: {
+								$gte: filter_minRating,
+								$lt: filter_maxRating
+							},
+							'_id': {
+								$in: product_ids
+							}
+						}).select({
+							'_id': 1,
+							'name': 1,
+							'image': 1,
+							'minPrice': 1,
+							'maxPrice': 1,
+							'avgRating': 1
+						})
+						.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
+						.exec(function(err, products) {
+							if (err) {
+								res.status(500).json({
+									success: false,
+									message: err
+								});
+							} else {
+								res.status(200).json(products);
+							}
+						});
+					}
+				});
+			}
+		} else {
+			res.status(403).json({success: false, message: "Doesnt have permission"});
+		}
+	});
+}
+
+// Count collection of products of a supplier, filtered
+exports.countSupplierProductsFiltered = function(req, res) {
+	console.log('Function-productsApi-getSupplierProductsFiltered');
+
+	var filter_id_category = parseInt(req.body.categoryFilter) || -1,
+		filter_maxPrice = req.body.priceFilter ? parseInt(req.body.priceFilter) || -1 : -1,
+		filter_minRating = parseInt(req.body.ratingFilter) || 0,
+		filter_maxRating = filter_minRating == 0 ? 5 : parseInt(req.body.ratingFilter) + 1 || 5;
+
+	SupplierService.getPrincipalSupplier(req.cookies.session, req.app.get('superSecret'), function (supplier) {
+		if(supplier != null) {
+			var filter_supplier_id = supplier.id;
+
+			if (filter_id_category != -1) {
+				// CATEGORY FILTER ACTIVATED
+				BelongsTo.find({
+					'category_id': filter_id_category
+				}).select({
+					'product_id': 1
+				}).sort({
+					'product_id': 1
+				}).exec(function(err, belongs) {
+					if (err) {
+						res.status(500).json({
+							success: false,
+							message: err
+						});
+					} else {
+						var product_ids = belongs.map(function(belong) {
+							return belong.product_id;
+						});
+
+						// CONTINUE
+						Provide
+					.find({
 							supplier_id: filter_supplier_id
 						})
 						.select({
@@ -394,97 +568,75 @@ exports.getSupplierProductsFiltered = function(req, res) {
 							var aux = provides.map(function(provide) {
 								return provide.product_id;
 							});
+
 							product_ids = db_utils.intersect_safe(product_ids, aux);
 
 							if (filter_maxPrice != -1) {
 								// PRICE FILTER ACTIVATED
-								Product.find({
-										maxPrice: {
-											$lt: filter_maxPrice
-										},
-										avgRating: {
-											$gte: filter_minRating,
-											$lt: filter_maxRating
-										},
-										'_id': {
-											$in: product_ids
-										}
-									}).select({
-										'_id': 1,
-										'name': 1,
-										'image': 1,
-										'minPrice': 1,
-										'maxPrice': 1,
-										'avgRating': 1
-									})
-									.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
-									.exec(function(err, products) {
-										if (err) {
-											res.status(500).json({
-												success: false,
-												message: err
-											});
-										} else {
-											res.status(200).json(products);
-										}
-									});
+								Product.count({
+									maxPrice: {
+										$lt: filter_maxPrice
+									},
+									avgRating: {
+										$gte: filter_minRating,
+										$lt: filter_maxRating
+									},
+									'_id': {
+										$in: product_ids
+									}
+								}).exec(function(err, number) {
+									if (err) {
+										res.status(500).json({
+											success: false,
+											message: err
+										});
+									} else {
+										res.status(200).json(number);
+									}
+								});
 							} else {
 								// PRICE FILTER DEACTIVATED
-								Product.find({
-										avgRating: {
-											$gte: filter_minRating,
-											$lt: filter_maxRating
-										},
-										'_id': {
-											$in: product_ids
-										}
-									}).select({
-										'_id': 1,
-										'name': 1,
-										'image': 1,
-										'minPrice': 1,
-										'maxPrice': 1,
-										'avgRating': 1
-									})
-									.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
-									.exec(function(err, products) {
-										if (err) {
-											res.status(500).json({
-												success: false,
-												message: err
-											});
-										} else {
-											res.status(200).json(products);
-										}
-									});
+								Product.count({
+									avgRating: {
+										$gte: filter_minRating,
+										$lt: filter_maxRating
+									},
+									'_id': {
+										$in: product_ids
+									}
+								}).exec(function(err, number) {
+									if (err) {
+										res.status(500).json({
+											success: false,
+											message: err
+										});
+									} else {
+										res.status(200).json(number);
+									}
+								});
 							}
-
-
 						});
-
-
-
-
-				}
-			});
-	} else {
-		// CATEGORY FILTER DEACTIVATED
-
-		Provide.find({
-				supplier_id: filter_supplier_id
-			})
-			.select({
-				'product_id': 1
-			})
-			.exec(function(err, provides) {
-
-				var product_ids = provides.map(function(provide) {
-					return provide.product_id;
+					}
 				});
+			} else {
+				// CATEGORY FILTER DEACTIVATED
 
-				if (filter_maxPrice != -1) {
-					// PRICE FILTER ACTIVATED
-					Product.find({
+				Provide
+				.find({
+					supplier_id: filter_supplier_id
+				})
+				.select({
+					'product_id': 1
+				})
+				.exec(function(err, provides) {
+
+					var product_ids = provides.map(function(provide) {
+						return provide.product_id;
+					});
+
+					if (filter_maxPrice != -1) {
+						// PRICE FILTER ACTIVATED
+						Product.count({
 							maxPrice: {
 								$lt: filter_maxPrice
 							},
@@ -495,28 +647,19 @@ exports.getSupplierProductsFiltered = function(req, res) {
 							'_id': {
 								$in: product_ids
 							}
-						}).select({
-							'_id': 1,
-							'name': 1,
-							'image': 1,
-							'minPrice': 1,
-							'maxPrice': 1,
-							'avgRating': 1
-						})
-						.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
-						.exec(function(err, products) {
+						}).exec(function(err, number) {
 							if (err) {
 								res.status(500).json({
 									success: false,
 									message: err
 								});
 							} else {
-								res.status(200).json(products);
+								res.status(200).json(number);
 							}
 						});
-				} else {
-					// PRICE FILTER DEACTIVATED
-					Product.find({
+					} else {
+						// PRICE FILTER DEACTIVATED
+						Product.count({
 							avgRating: {
 								$gte: filter_minRating,
 								$lt: filter_maxRating
@@ -524,192 +667,23 @@ exports.getSupplierProductsFiltered = function(req, res) {
 							'_id': {
 								$in: product_ids
 							}
-						}).select({
-							'_id': 1,
-							'name': 1,
-							'image': 1,
-							'minPrice': 1,
-							'maxPrice': 1,
-							'avgRating': 1
-						})
-						.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
-						.exec(function(err, products) {
+						}).exec(function(err, number) {
 							if (err) {
 								res.status(500).json({
 									success: false,
 									message: err
 								});
 							} else {
-								res.status(200).json(products);
+								res.status(200).json(number);
 							}
 						});
-				}
-			});
-	}
-}
-
-// Count collection of products of a supplier, filtered
-exports.countSupplierProductsFiltered = function(req, res) {
-	console.log('Function-productsApi-getSupplierProductsFiltered');
-
-	var filter_id_category = parseInt(req.body.categoryFilter) || -1,
-		filter_maxPrice = req.body.priceFilter ? parseInt(req.body.priceFilter) || -1 : -1,
-		filter_minRating = parseInt(req.body.ratingFilter) || 0,
-		filter_maxRating = filter_minRating == 0 ? 5 : parseInt(req.body.ratingFilter) + 1 || 5,
-		filter_supplier_id = parseInt(req.body.supplier_id) || -1;
-
-	if (filter_id_category != -1) {
-		// CATEGORY FILTER ACTIVATED
-		BelongsTo.find({
-			'category_id': filter_id_category
-		}).select({
-			'product_id': 1
-		}).sort({
-			'product_id': 1
-		}).exec(function(err, belongs) {
-			if (err) {
-				res.status(500).json({
-					success: false,
-					message: err
+					}
 				});
-			} else {
-				var product_ids = belongs.map(function(belong) {
-					return belong.product_id;
-				});
-
-				// CONTINUE
-				Provide.find({
-						supplier_id: filter_supplier_id
-					})
-					.select({
-						'product_id': 1
-					})
-					.sort({
-						'product_id': 1
-					})
-					.exec(function(err, provides) {
-
-						// Intersects the two ids filters (BelongsTo and ProvidesBySupplier)
-						var aux = provides.map(function(provide) {
-							return provide.product_id;
-						});
-
-						product_ids = db_utils.intersect_safe(product_ids, aux);
-
-						if (filter_maxPrice != -1) {
-							// PRICE FILTER ACTIVATED
-							Product.count({
-								maxPrice: {
-									$lt: filter_maxPrice
-								},
-								avgRating: {
-									$gte: filter_minRating,
-									$lt: filter_maxRating
-								},
-								'_id': {
-									$in: product_ids
-								}
-							}).exec(function(err, number) {
-								if (err) {
-									res.status(500).json({
-										success: false,
-										message: err
-									});
-								} else {
-									res.status(200).json(number);
-								}
-							});
-						} else {
-							// PRICE FILTER DEACTIVATED
-							Product.count({
-								avgRating: {
-									$gte: filter_minRating,
-									$lt: filter_maxRating
-								},
-								'_id': {
-									$in: product_ids
-								}
-							}).exec(function(err, number) {
-								if (err) {
-									res.status(500).json({
-										success: false,
-										message: err
-									});
-								} else {
-									res.status(200).json(number);
-								}
-							});
-						}
-
-
-					});
-
-
-
-
 			}
-		});
-	} else {
-		// CATEGORY FILTER DEACTIVATED
-
-		Provide.find({
-				supplier_id: filter_supplier_id
-			})
-			.select({
-				'product_id': 1
-			})
-			.exec(function(err, provides) {
-
-				var product_ids = provides.map(function(provide) {
-					return provide.product_id;
-				});
-
-				if (filter_maxPrice != -1) {
-					// PRICE FILTER ACTIVATED
-					Product.count({
-						maxPrice: {
-							$lt: filter_maxPrice
-						},
-						avgRating: {
-							$gte: filter_minRating,
-							$lt: filter_maxRating
-						},
-						'_id': {
-							$in: product_ids
-						}
-					}).exec(function(err, number) {
-						if (err) {
-							res.status(500).json({
-								success: false,
-								message: err
-							});
-						} else {
-							res.status(200).json(number);
-						}
-					});
-				} else {
-					// PRICE FILTER DEACTIVATED
-					Product.count({
-						avgRating: {
-							$gte: filter_minRating,
-							$lt: filter_maxRating
-						},
-						'_id': {
-							$in: product_ids
-						}
-					}).exec(function(err, number) {
-						if (err) {
-							res.status(500).json({
-								success: false,
-								message: err
-							});
-						} else {
-							res.status(200).json(number);
-						}
-					});
-				}
-			});
-	}
+		} else {
+			res.status(403).json({success: false, message: "Doesnt have permission"});
+		}
+	});
 }
 
 // Return collection of limited products: Used in home page.
@@ -738,6 +712,7 @@ exports.getProduct = function(req, res) {
 
 	var jwtKey = req.app.get('superSecret');
 	var cookie = req.cookies.session;
+
 	// Check authenticated
 	ActorService.getUserRole(cookie, jwtKey, function(role) {
 		if (role == 'customer' || role == 'admin' || role == 'supplier') {
@@ -875,8 +850,9 @@ exports.createProduct = function(req, res) {
 
 	var jwtKey = req.app.get('superSecret');
 	var cookie = req.cookies.session;
+
 	// Check is admin
-	ActorService.getUserRole(cookie, jwtKey, function(role) {
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
 		if (role == 'admin') {
 			var product = new Product({
 				'code': mongoose.Types.ObjectId(),
@@ -884,7 +860,7 @@ exports.createProduct = function(req, res) {
 				'description': "tmp",
 				'avgRating': 0
 			});
-			product.save(function(err, saved) {
+			product.save(function (err, saved) {
 				if (err) {
 					console.log(err);
 					res.sendStatus(500);
@@ -912,13 +888,19 @@ exports.createProduct = function(req, res) {
 						return;
 					}
 
+					//Check if fields are present
+					if(req.body.name == undefined || req.body.description == undefined) {
+						res.sendStatus(500);
+						return;
+					}
+
 					Product.findByIdAndUpdate(saved.id, {
 						$set: {
 							"name": req.body.name,
 							"description": req.body.description,
 							"image": filename
 						}
-					}, function(err, product) {
+					}, function (err, product) {
 						if (err) {
 							console.log(err);
 
@@ -947,7 +929,12 @@ exports.updateProductRating = function(req, res) {
 	console.log(product_id)
 	console.log(rating_value)
 
-	CustomerService.getPrincipalCustomer(req.cookies.session, req.app.get('superSecret'), function(user) {
+	if(product_id == undefined || rating_value == undefined) {
+		res.sendStatus(500);
+		return;
+	}
+
+	CustomerService.getPrincipalCustomer(req.cookies.session, req.app.get('superSecret'), function (user) {
 		if (user == null) {
 			res.status(403).json({
 				success: false,
@@ -955,80 +942,14 @@ exports.updateProductRating = function(req, res) {
 			});
 			return;
 		} else {
-			CustomerService.checkPurchasing(user, product_id, function(response) {
-				if (!response) {
-					res.sendStatus(401)
-					return;
+			RateService.rateProductForCustomer(user, product_id, rating_value, function (err, saved) {
+				if(err) {
+					console.log(err.message);
+					res.sendStatus(parseInt(err.code));
+				} else {
+					res.sendStatus(200);
 				}
-				Rate.findOne({
-					customer_id: user.id,
-					product_id: product_id
-				}, function(err, rate) {
-					if (err) {
-						res.sendStatus(503);
-						return;
-					} else {
-						if (rate) {
-							// Rate found: Update
-							Rate.findByIdAndUpdate(rate._id, {
-								$set: {
-									value: rating_value
-								}
-							}, function(err, updated) {
-								if (err) {
-									res.sendStatus(503);
-									return;
-								} else {
-									// Update average rating and recalculate recommendations
-									ProductService.updateAverageRating(product_id, function(success) {
-										if (!success) {
-											console.log("Ratings not updated");
-										} else {
-											RecommenderService.recommendRates(user.id, function(err, response) {
-												if (err || response.statusCode == 500) {
-													console.log("No recommendations updated");
-												} else {
-													res.sendStatus(200);
-													return;
-												}
-											});
-										}
-									});
-								}
-							});
-						} else {
-							// Rate not found: Create new one
-							var new_rate = new Rate({
-								value: rating_value,
-								product_id: product_id,
-								customer_id: user.id
-							});
-
-							new_rate.save(function(err) {
-								if (err) {
-									res.sendStatus(503);
-									return;
-								} else {
-									ProductService.updateAverageRating(product_id, function(success) {
-										if (!success) {
-											console.log("Ratings not updated");
-										} else {
-											RecommenderService.recommendRates(user.id, function(err, response) {
-												if (err || response.statusCode == 500) {
-													console.log("No recommendation updated")
-												} else {
-													res.sendStatus(200);
-													return;
-												}
-											});
-										}
-									});
-								}
-							});
-						}
-					}
-				});
-			});
+			})
 		}
 	});
 };
@@ -1096,18 +1017,21 @@ exports.deleteProduct = function(req, res) {
 	ActorService.getUserRole(cookie, jwtKey, function(role) {
 		if (role == 'admin') {
 			var product_id = req.params.id;
-			if (product_id != undefined) {
+
+			if (product_id != undefined && product_id != '') {
 				Product.findOne({
 					_id: product_id
-				}, function(err, product) {
+				}, function (err, product) {
 					if (err) {
 						console.log(err);
 						res.sendStatus(500);
+						return;
 					}
 
 					if (!product) {
 						console.log("No product");
 						res.sendStatus(404);
+						return;
 					}
 
 					var image = product.image;
@@ -1116,16 +1040,20 @@ exports.deleteProduct = function(req, res) {
 						ProductService.removeProduct(product_id, function(success) {
 							if (success) {
 								res.sendStatus(200);
+								return;
 							} else {
 								res.sendStatus(500);
+								return;
 							}
 						});
 					} else {
 						ProductService.removeProductAndImage(product_id, image, function(success) {
 							if (success) {
 								res.sendStatus(200);
+								return;
 							} else {
 								res.sendStatus(500);
+								return;
 							}
 						});
 					}
@@ -1133,12 +1061,14 @@ exports.deleteProduct = function(req, res) {
 			} else {
 				console.log("No product");
 				res.sendStatus(500);
+				return;
 			}
 		} else {
 			res.status(403).json({
 				success: false,
 				message: "Doesnt have permission"
 			});
+			return;
 		}
 	});
 }

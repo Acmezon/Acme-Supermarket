@@ -49,6 +49,10 @@ if (env === 'production') {
 //Database connection
 db_utils.connect();
 
+//Automatic purchases
+var scheduledTasks = require('./routes/scheduled_tasks');
+scheduledTasks.scheduleAutomaticPurchases();
+
 var api = require('./routes/api');
 
 /**
@@ -84,11 +88,12 @@ app.post('/api/ratings/manage', api.Rates.manageRating);
 
 // Provides
 app.get('/api/provide/:id', api.Provides.getProvide);
-app.get('/api/existingProvide/:id', api.Provides.getProvide);
+app.get('/api/existingProvide/:id', api.Provides.getExistingProvide);
 app.get('/api/providesByProductId/:id', api.Provides.getProvidesByProductId);
 app.get('/api/provide/bysupplier/byproduct/:id', api.Provides.getSupplierProvidesByProductId);
-app.get('/api/provide/bysupplier/byproduct/delete/:id', api.Provides.deleteSupplierProvidesByProductId);
+app.delete('/api/provide/bysupplier/byproduct/:id', api.Provides.deleteSupplierProvidesByProductId);
 app.post('/api/provide/updateProvideRating', api.Provides.updateProvideRating);
+app.post('/api/provide/admin/create', api.Provides.adminProvide);
 
 // Categories
 app.get('/api/categories', api.Categories.getCategories);
@@ -97,7 +102,7 @@ app.get('/api/categories', api.Categories.getCategories);
 app.get('/api/purchase/:id', api.Purchases.getPurchase);
 app.post('/api/purchases/filtered', api.Purchases.getPurchasesFiltered);
 app.post('/api/purchases/filtered/count', api.Purchases.countPurchasesFiltered);
-app.get('/api/purchase/process/:billingMethod', api.Purchases.purchase);
+app.post('/api/purchase/process', api.Purchases.purchase);
 app.post('/api/purchase/admin', api.Purchases.purchaseAdmin);
 app.post('/api/purchases/mypurchases/filtered', api.Purchases.getMyPurchasesFiltered);
 app.post('/api/purchases/mypurchases/filtered/count', api.Purchases.countMyPurchasesFiltered);
@@ -107,6 +112,8 @@ app.delete('/api/purchase', api.Purchases.deletePurchase);
 app.get('/api/purchaselines/bypurchase/:id', api.PurchaseLines.getPurchaseLinesByPurchaseId);
 
 // Purchasing rules
+app.post('/api/purchasingrules/filtered', api.PurchasingRules.getPurchasingRulesFiltered);
+app.post('/api/purchasingrules/filtered/count', api.PurchasingRules.countPurchasingRulesFiltered);
 app.post('/api/createPurchasingRule', api.PurchasingRules.createPurchasingRule);
 app.delete('/api/purchasingrule', api.PurchasingRules.removePurchasingRule);
 
@@ -148,6 +155,18 @@ app.get('/api/mypurchasingrules', api.Customer.getMyPurchasesRules);
 // Credit cards
 app.get('/api/creditcard/:id', api.CreditCard.getCreditCard);
 
+// Discounts
+app.get('/api/discounts', api.Discounts.getDiscounts);
+app.post('/api/discount/canredeem', api.Discounts.canRedeemCode);
+app.get('/api/generatecode', api.Discounts.generateCode);
+app.get('/api/discounts/numberproducts/:id', api.Discounts.getNumberOfProductsAffected);
+app.post('/api/discount/create', api.Discounts.createDiscount);
+app.post('/api/discount', api.Discounts.updateDiscount);
+app.delete('/api/discount', api.Discounts.deleteDiscount);
+app.get('/api/discounts/ofproduct/:id', api.Discounts.getDiscountsByProduct);
+app.post('/api/discount/apply', api.Discounts.applyDiscount);
+app.post('/api/discount/clear', api.Discounts.clearDiscount);
+
 // Management
 app.get('/api/resetDataset', api.Management.resetDataset);
 app.get('/api/loadBigDataset', api.Management.loadBigDataset);
@@ -164,6 +183,8 @@ app.get('/api/socialMedia/stop', api.SocialMedia.stopTwitterScrapper);
 
 //Recommender server
 app.get('/api/recommender/checkStatus', api.RecommenderServer.checkStatus);
+
+//Test
 
 // redirect all others to the index (HTML5 history) Use in production only
 app.get('*', routes.index);

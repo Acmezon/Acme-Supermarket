@@ -1,0 +1,118 @@
+<script src="views/purchasing_rules/PurchasingRulesController.js"></script>
+
+<div class="wrap">
+	<ul class="breadcrumb breadcrumb__t">
+		<li><a class="home" href="/">{{ 'Home.Title' | translate }}</a> / 
+			<span>{{'PurchasingRules.Title' | translate}}</span>
+		</li>
+	</ul>
+
+	<h2 class="head">{{'PurchasingRules.Title' | translate}}</h2>
+
+	<div>
+		<div ng-if="numberOfRules==0">
+			<h4 class="title">{{'PurchasingRules.Empty' | translate}}</h4>
+		</div>
+
+		<div class="panel panel-default">
+			<div class="panel-heading" role="tab" id="filterHeading">
+				<a role="button" data-toggle="collapse" data-target="#filters" aria-expanded="true" aria-controls="filters">
+					<h4 class="panel-title">
+						{{'PurchasingRules.Filter.Title' | translate}}
+						<span class="indicator glyphicon glyphicon-chevron-down pull-right"></span>
+					</h4>
+				</a>
+			</div>
+			<div id="filters" class="panel-collapse collapse" role="tabpanel" aria-labelledby="filterHeading">
+				<div class="panel-body">
+					<button class="btn" ng-disabled="customerFilter==''" ng-click="customerFilter=''; clearFilters()">
+						{{'Products.ClearFilters' | translate}} <span class="glyphicon glyphicon-erase"></span>
+					</button>
+					<div class="col-lg-3">
+						<div class="input-group">
+
+							<input type="text" class="form-control" ng-model="customerFilter" placeholder="{{'PurchasingRules.Filter.Customer' | translate}}">
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="button" ng-click="filter(customerFilter)"><span class="glyphicon glyphicon-play"></span></button>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div ng-if="purchasing_rules.length">
+
+		<nav>
+			<ul class="pagination">
+				<li ng-class="{'disabled' : currentPage==0}" ng-click="loadPage(0)">
+					<span aria-hidden="true">{{'PurchasingRules.First' | translate}}</span>
+				</li>
+				<li ng-class="{'disabled' : currentPage==0}" ng-click="loadPage(currentPage-1)">
+					<span aria-hidden="true">&laquo;</span>
+				</li>
+				<li ng-class="{'active': currentPage==number}" ng-click="loadPage(number)" ng-repeat="number in pages" >
+					<span aria-hidden="true">{{number}}</span>
+				</li>
+				<li ng-class="{'disabled' : currentPage>=numberOfRules/pageSize - 1}" ng-click="loadPage(currentPage+1)">
+					<span aria-hidden="true">&raquo;</span>
+				</li>
+				<li ng-class="{'disabled' : currentPage>=numberOfRules/pageSize - 1}" ng-click="loadPage(Math.ceil(numberOfRules/pageSize)-1)">
+					<span aria-hidden="true">{{'PurchasingRules.Last' | translate}}</span>
+				</li>
+			</ul>
+		</nav>
+		<table id="rules-table" class="table table-bordered table-responsive table-hover">
+			<tr>
+				<th>
+					{{'PurchasingRules.Customer' | translate}} <span style="float:right" class="glyphicon" ng-class="{'glyphicon-triangle-top' : !inverseOrder, 'glyphicon-triangle-bottom' : inverseOrder, 'order-selected' : sortBy=='customer_id'}" ng-click="sort('customer_id')"></span>
+				</th>
+				<th>
+					{{'PurchasingRule.StartDate' | translate}} <span style="float:right" class="glyphicon" ng-class="{'glyphicon-triangle-top' : !inverseOrder, 'glyphicon-triangle-bottom' : inverseOrder, 'order-selected' : sortBy=='startDate'}" ng-click="sort('startDate')"></span>
+				</th>
+				<th>
+					{{'PurchasingRule.Periodicity' | translate}} <span style="float:right" class="glyphicon" ng-class="{'glyphicon-triangle-top' : !inverseOrder, 'glyphicon-triangle-bottom' : inverseOrder, 'order-selected' : sortBy=='periodicity'}" ng-click="sort('periodicity')"></span>
+				</th>
+				<th>
+					{{'PurchasingRule.Product' | translate}} <span style="float:right" class="glyphicon" ng-class="{'glyphicon-triangle-top' : !inverseOrder, 'glyphicon-triangle-bottom' : inverseOrder, 'order-selected' : sortBy=='product'}" ng-click="sort('product')"></span>
+				</th>
+				<th>
+					{{'PurchasingRule.Quantity' | translate}} <span style="float:right" class="glyphicon" ng-class="{'glyphicon-triangle-top' : !inverseOrder, 'glyphicon-triangle-bottom' : inverseOrder, 'order-selected' : sortBy=='quantity'}" ng-click="sort('quantity')"></span>
+				</th>
+				<th>
+					{{'PurchasingRule.NextRun' | translate}} <span style="float:right" class="glyphicon" ng-class="{'glyphicon-triangle-top' : !inverseOrder, 'glyphicon-triangle-bottom' : inverseOrder, 'order-selected' : sortBy=='nextRun'}" ng-click="sort('nextRun')"></span>
+				</th>
+				<th style="width:5%">
+					{{'PurchasingRule.Remove' | translate}}
+				</th>
+			</tr>
+			<tr id="{{rule._id}}" ng-repeat="rule in purchasing_rules">
+				<td>
+					{{rule.customer_id}}
+				</td>
+				<td>
+					{{rule.startDate | date:'dd-MM-yyyy'}}
+				</td>
+				<td>
+					{{rule.periodicity}}
+				</td>
+				<td>
+					<a href="product/{{rule.product_id}}">{{rule.product_name}}</a>
+				</td>
+				<td>
+					{{rule.quantity}}
+				</td>
+				<td>
+					{{rule.nextRun | date:'dd-MM-yyyy'}}
+				</td>
+				<td>
+					<button class="btn btn-danger btn-sm" ng-click="remove(rule._id)">
+						<span class="glyphicon glyphicon-trash"></span>
+					</button>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+</div>

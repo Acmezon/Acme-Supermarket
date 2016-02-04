@@ -25,7 +25,7 @@
 
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					{{'Checkout.Days.Title' | translate}}
+					{{'Checkout.Days.Title' | translate}} <span class="pull-right glyphicon glyphicon-time"></span>
 				</div>
 				<div class="list-group">
 					<a class="list-group-item" ng-class="{active: billingMethod==1}" ng-click="billingMethod=1">
@@ -43,9 +43,44 @@
 				</div>
 			</div>
 
+			<div class="row">
+				<div class="col-md-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							{{'Checkout.Discount' | translate}} <span class="glyphicon glyphicon-tags pull-right"></span>
+						</div>
+						<div class="panel-body">
+							<div class="col-md-3">
+								<div class="input-group">
+									<input type="text" class="form-control" ng-model="discountCode" placeholder="{{'Discounts.DiscountCode' | translate}}" ng-readonly="discountRedeemed">
+									<span class="input-group-btn">
+										<button class="btn btn-default" type="button" ng-click="applyDiscount(discountCode)" ng-disabled="discountRedeemed">
+											<span class="glyphicon glyphicon-play"></span>
+										</button>
+									</span>
+								</div>
+							</div>
+							<div class="col-md-9" ng-switch="discountRedeemed">
+								<div class="alert alert-danger" role="alert" ng-switch-when="false">
+									<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 
+									<strong>{{'Checkout.Error' | translate}}:</strong>
+									{{'Checkout.DiscountError' | translate}}
+								</div>
+								<div class="alert alert-success" role="alert" ng-switch-when="true">
+									<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 
+									<strong>{{'Checkout.Success' | translate}}:</strong>
+									{{'Checkout.DiscountRedeemed' | translate}}
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					{{'ShoppingCart.Title' | translate}}
+					{{'ShoppingCart.Title' | translate}} <span class="pull-right glyphicon glyphicon-shopping-cart"></span>
 				</div>
 				<div class="panel-body" ng-if="!shoppingcart.length">
 					<p>{{'ShoppingCart.Empty.Title' | translate}}</p>

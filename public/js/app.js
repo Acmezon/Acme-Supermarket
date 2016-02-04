@@ -371,6 +371,22 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			},
 			activetab : 'management'
 		}).
+		when('/management/discounts', {
+			templateUrl: 'views/discounts/discounts.html',
+			controller: 'DiscountListCtrl',
+			resolve: {
+				admin: checkAdmin
+			},
+			activetab: 'management'
+		}).
+		when('/purchasingrules', {
+			templateUrl: 'views/purchasing_rules/purchasing-rules.html',
+			controller: 'PurchasingRulesCtrl',
+			resolve: {
+				admin: checkAdmin
+			},
+			activetab: 'management'
+		}).
 		when('/401', {
 			templateUrl: 'views/public/errors/401.html'
 		}).

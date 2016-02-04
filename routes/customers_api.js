@@ -75,6 +75,7 @@ exports.getCustomers = function (req, res) {
 
 	var cookie = req.cookies.session;
 	var jwtKey = req.app.get('superSecret');
+
 	// Check principal is an admin
 	ActorService.getUserRole(cookie, jwtKey, function (role) {
 		if (role=='admin') {
@@ -151,8 +152,6 @@ exports.newCustomer = function (customer, callback) {
 			phone: _phone
 		});
 
-		console.log(newCustomer)
-
 		newCustomer.save(function (err) {
 			callback(db_utils.handleInsertErrors(err));
 		});
@@ -167,7 +166,7 @@ exports.newCustomer = function (customer, callback) {
 // Update/Save a credit card. Check id_cc
 exports.updateCC = function(req, res){
 	console.log('Function-customersApi-updateCC');
-
+	
 	var cc = new CreditCard({
 		holderName : req.body.cc.holderName,
 		number : req.body.cc.number,
@@ -177,14 +176,19 @@ exports.updateCC = function(req, res){
 	});
 	// If id not set, Save
 	if(!req.body.id_cc){
+		if(!req.body.customer_id) {
+			res.sendStatus(503);
+			return;
+		}
+
 		credit_card_api.newCreditCard(cc, 
-			function (errors) {
-				if(errors.length > 0) {
+			function (errors, saved) {
+				if(errors) {
 					res.status(500).json({success: false, message: errors});
 				} else {
-					Customer.findByIdAndUpdate(req.body.customer_id, { $set : { credit_card: cc._id } }, function (err, customer) {
+					Customer.findByIdAndUpdate(req.body.customer_id, { $set : { credit_card: saved.id } }, function (err, customer) {
 						if(err) {
-							CreditCard.find(cc._id).remove().exec();
+							CreditCard.find(saved.id).remove().exec();
 							res.sendStatus(503);
 						} else {
 							res.status(200).json({success: true});
@@ -363,47 +367,56 @@ exports.getMyRecommendations = function (req, res) {
 };
 
 exports.getMyPurchasesRules = function (req, res) {
-	CustomerService.getPrincipalCustomer(req.cookies.session, req.app.get('superSecret'), function (customer) {
-		if(!customer) {
-			res.status(403).json({success: false, message: "Doesnt have permission"});
-		} else {
-			PurchasingRule.find({customer_id : customer.id}, function (err, rules) {
-				if(err) {
-					console.log(err);
-					res.sendStatus(500);
+	var cookie = req.cookies.session;
+	var jwtKey = req.app.get('superSecret');
+
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
+		if (role=='customer' || role=='admin' || role=='supplier') {
+			CustomerService.getPrincipalCustomer(req.cookies.session, req.app.get('superSecret'), function (customer) {
+				if(!customer) {
+					res.status(403).json({success: false, message: "Doesnt have permission"});
 				} else {
-					var completed_rules = [];
-
-					sync.fiber(function () {
-						for(var i = 0; i < rules.length; i++) {
-							var rule_obj = rules[i].toObject();
-
-							var provide_id = rule_obj.provide_id;
-
-							var product = sync.await(ProductService.getProductByProvideId(provide_id, sync.defer()));
-
-							if(product) {
-								rule_obj['product_name'] = product.name;
-								rule_obj['product_id'] = product.id;
-							} else {
-								rule_obj['product_name'] = undefined;
-								rule_obj['product_id'] = undefined;
-							}
-
-							completed_rules.push(rule_obj);
-						}
-
-						return completed_rules;			
-					}, function (err, data) {
+					PurchasingRule.find({customer_id : customer.id}, function (err, rules) {
 						if(err) {
 							console.log(err);
 							res.sendStatus(500);
 						} else {
-							res.status(200).json(data);
+							var completed_rules = [];
+
+							sync.fiber(function () {
+								for(var i = 0; i < rules.length; i++) {
+									var rule_obj = rules[i].toObject();
+
+									var provide_id = rule_obj.provide_id;
+
+									var product = sync.await(ProductService.getProductByProvideId(provide_id, sync.defer()));
+
+									if(product) {
+										rule_obj['product_name'] = product.name;
+										rule_obj['product_id'] = product.id;
+									} else {
+										rule_obj['product_name'] = undefined;
+										rule_obj['product_id'] = undefined;
+									}
+
+									completed_rules.push(rule_obj);
+								}
+
+								return completed_rules;			
+							}, function (err, data) {
+								if(err) {
+									console.log(err);
+									res.sendStatus(500);
+								} else {
+									res.status(200).json(data);
+								}
+							});
 						}
 					});
 				}
 			});
+		} else {
+			res.status(401).json({success: false, message: "Doesnt have permission"});
 		}
 	});
 };

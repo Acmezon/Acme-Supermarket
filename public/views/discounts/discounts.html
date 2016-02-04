@@ -1,0 +1,119 @@
+<script src="views/discounts/DiscountListController.js"></script>
+
+<div class="wrap">
+	<ul class="breadcrumb breadcrumb__t">
+		<li><a class="home" href="/">{{ 'Home.Title' | translate }}</a> / {{'Management.Discounts' | translate}}
+		</li>
+	</ul>
+
+	<h2 class="head">{{'Management.Discounts' | translate}} 
+		<button type="button" class="btn" ng-click="refresh()">
+			<span class="glyphicon glyphicon-refresh"></span>
+		</button>
+	</h2> 
+
+	<div ng-if="!$data.length" style="margin-bottom: 3%">
+		<h4 class="title">{{'Discounts.Empty.Title' | translate}}</h4>
+		<p>{{'Discounts.Empty.Description' | translate}}</p>
+	</div>
+
+	<div ng-if="$data.length" style="margin-bottom: 3%">
+
+		<div class="panel panel-default">
+			<div class="panel-heading" role="tab" id="create-discount-heading">
+				<a role="button" data-toggle="collapse" data-target="#create-discount" aria-expanded="true" aria-controls="create-discount">
+					<h4 class="panel-title">
+						{{'Discounts.Create' | translate}}
+						<span class="indicator glyphicon glyphicon-chevron-down pull-right"></span>
+					</h4>
+				</a>
+			</div>
+			<div id="create-discount" class="panel-collapse collapse" role="tabpanel" aria-labelledby="create-discount-heading">
+				<div class="panel-body account-form">
+					<form name="createDiscountForm" ng-controller="DiscountListCtrl" novalidate>
+						<div class="row">
+
+							<div class="col-lg-4" ng-class="{'has-error': createDiscountForm.value.$dirty && createDiscountForm.value.$invalid}">
+								<input id="value-discount" class="form-control" name="value" type="text"  placeholder="{{ 'Discounts.Value' | translate }}" ng-model="discount.value" ng-blur="setValid('value')" ng-minlength="1" ng-maxlength="2" autocomplete="off" ng-pattern="/^\d*$/" required>
+							</div>
+
+							<div class="col-lg-4" ng-class="{'has-error': createDiscountForm.code.$dirty && createDiscountForm.code.$invalid}">
+								<div class="input-group">
+									<input id="code-discount" class="form-control" name="code" type="text"  placeholder="{{ 'Discounts.Code' | translate }}" ng-model="discount.code" ng-blur="setValid('code')" autocomplete="off" ng-change="validateCode()" readonly required>
+									<div class="input-group-btn">
+										<button id="generate-code" class="btn btn-default" ng-click="code()">
+											{{'Discounts.Generate' | translate}}
+										</button>
+									</div>
+								</div>
+							</div>
+
+							<div class="col-lg-4">
+								<button id="submit-discount" type="submit" name="submit" class="btn btn-primary" ng-disabled="createDiscountForm.value.$invalid || createDiscountForm.code.$invalid" ng-click="submit()">
+									{{'Management.Submit' | translate}}
+								</button>
+							</div>
+
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-5 col-md-offset-3">
+				<p>
+					{{'Discounts.Filled.Description1' | translate}}<span id="discounts-length">{{$data.length}}</span>{{'Discounts.Filled.Description2' | translate}}
+				</p>
+
+
+				<table ng-table="tableParams" class="table table-bordered table-hover table-condensed editable-table" ng-form="tableForm" show-filter="true">
+
+					<colgroup>
+						<col width="40%" />
+						<col width="20%" />
+						<col width="20%" />
+						<col width="20%" />
+					</colgroup>
+
+					<tr id="{{discount._id}}" ng-repeat="discount in $data" ng-form="rowForm" demo-tracked-table-row="discount">
+						<td title="'Discounts.Code' | translate" filter="{ code: 'text'}" sortable="'code'">
+		            		{{discount.code}}
+		            	</td>
+
+						<td title="'Discounts.Value' | translate" filter="{value: 'number'}" sortable="'value'" ng-switch="discount.isEditing" ng-class="value.$dirty ? 'bg-warning' : ''" ng-form="value" demo-tracked-table-cell>
+							<span id="discount-value" ng-switch-default class="editable-text">{{discount.value}}</span>
+							<div class="controls" ng-class="value.$invalid && value.$dirty ? 'has-error' : ''" ng-switch-when="true">
+								<input type="text" name="value" ng-model="discount.value" class="editable-input form-control input-sm" ng-minlength="1" ng-maxlength="3" min="0" max="100" ng-pattern="/^\d*$/" required />
+							</div>
+						</td>
+
+						<td title="'Discounts.ProductsNumber' | translate" filter="{ numberOfProducts: 'text'}" sortable="'numberOfProducts'">
+		            		{{discount.numberOfProducts}}
+		            	</td>
+
+						
+						<td>
+							<button class="btn btn-primary btn-sm btn-save-discount" ng-click="save(discount, rowForm)" ng-if="discount.isEditing" ng-disabled="rowForm.$pristine || rowForm.$invalid">
+								<span class="glyphicon glyphicon-ok"></span>
+							</button>
+
+				            <button class="btn btn-default btn-sm btn-cancel-discount" ng-click="cancel(discount, rowForm)" ng-if="discount.isEditing">
+				            	<span class="glyphicon glyphicon-remove"></span>
+				            </button>
+
+				            <button class="btn btn-default btn-sm btn-edit-discount" ng-click="edit(discount, rowForm)" ng-if="!discount.isEditing">
+				            	<span class="glyphicon glyphicon-pencil"></span>
+				            </button>
+
+				            <button class="btn btn-danger btn-sm btn-delete-discount" ng-if="!discount.isEditing" data-toggle="modal" ng-click="delete(discount)">
+				            	<span class="glyphicon glyphicon-trash"></span>
+				            </button>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+
+</div>

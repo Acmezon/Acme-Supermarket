@@ -8,26 +8,78 @@
 	<h2 class="head">{{ 'Checkout.'+state | translate }} <button id="btn-print" ng-if="success"style="float:right" class="btn btn-lg" onclick="window.print()"><span class="glyphicon glyphicon-print"></span></button></h2>
 
 	<div ng-if="success">
-		<div>
-			<div class="row">
-				<div class="col-md-4">
-					<h4>{{'Checkout.Thanks' | translate}}</h4>
-					<table class="table table-bordered">
-						<tr>
-							<th style="width:30%">{{'Checkout.Purchase.PaymentDate' | translate}}</th>
-							<td>{{purchase.paymentDate | date:'dd/MM/yyyy HH:mm:ss Z' }}</td>
-					  	</tr>
-						<tr>
-							<th>{{'Checkout.Purchase.DeliveryDate' | translate}}</th>
-							<td>{{purchase.deliveryDate | date:'dd/MM/yyyy' }}</td>
-					  	</tr>
-					</table>
-				</div>
+		<div class="row">
+			<div class="col-md-4">
+				<h4>{{'Checkout.Thanks' | translate}}</h4>
+				<table class="table table-bordered">
+					<tr>
+						<th style="width:30%">{{'Checkout.Purchase.PaymentDate' | translate}}</th>
+						<td>{{purchase.paymentDate | date:'dd/MM/yyyy HH:mm:ss Z' }}</td>
+				  	</tr>
+					<tr>
+						<th>{{'Checkout.Purchase.DeliveryDate' | translate}}</th>
+						<td>{{purchase.deliveryDate | date:'dd/MM/yyyy' }}</td>
+				  	</tr>
+				</table>
 			</div>
-			<div class="row">
-				<div class="col-lg-3 col-lg-offset-5">
-					<a href="/"><button type="button" class="btn btn-primary btn-arrow-right">{{'ShoppingCart.Continue' | translate}}</button></a>
-				</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<table class="table table-bordered table-hover">
+					<colgroup>
+						<col width="5%" />
+						<col width="10%" />
+						<col width="20%" />
+						<col width="10%" />
+						<col width="10%" />
+						<col width="10%" />
+						<col width="10%" />
+					</colgroup>
+				  	<thead>
+					  	<tr>
+					  		<th>{{'Checkout.Product.MoreInfo' | translate}}</th>
+							<th>{{'Checkout.Product.Image' | translate}}</th>
+							<th>{{'Checkout.Product.Name' | translate}}</th>
+							<th>{{'Checkout.Product.Supplier' | translate}}</th>
+							<th>{{'Checkout.Product.Quantity' | translate}}</th>
+							<th>{{'Checkout.Product.Price' | translate}} (€)</th>
+							<th>{{'Checkout.Product.Total' | translate}} (€)</th>
+					  	</tr>
+					</thead>
+					<tbody>
+					  	<tr ng-repeat="purchaseline in purchase_list">
+					  		<td>
+					  			<a href="/product/{{purchaseline.product._id}}" ng-model="purchaseline.product._id">
+					  				<button type="button" class="btn btn-info btn-sm">
+										<span class="glyphicon glyphicon-info-sign"></span>
+									</button>
+								</a>
+							</td>
+							<td><img class="img-responsive img-thumbnail" src="img/{{purchaseline.product.image}}"/></td>
+							<td>{{purchaseline.product.name}}</td>
+							<td>{{purchaseline.supplierName}}</td>
+							<td>{{purchaseline.quantity}}</td>
+							<td>
+								<strike ng-if="purchaseline.discounted">
+									{{purchaseline.oldprice | number:2}}
+								</strike>&nbsp;
+								<span ng-class="{'red-text': purchaseline.discounted}">{{purchaseline.price | number:2}}</span>
+							</td>
+							<td>{{purchaseline.quantity * purchaseline.price | number:2}}</td>
+					  	</tr>		    
+					</tbody>
+					<tfoot>
+				    	<tr>
+					      <th id="total" colspan="6">{{'Checkout.Product.Total' | translate}} :</th>
+					      <td>{{totalPrice | number:2}}</td>
+				    	</tr>
+				   	</tfoot>
+				</table>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-3 col-lg-offset-5">
+				<a href="/"><button type="button" class="btn btn-primary btn-arrow-right">{{'ShoppingCart.Continue' | translate}}</button></a>
 			</div>
 		</div>
 	</div>
