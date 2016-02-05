@@ -55,13 +55,15 @@
 		"Customers" : "Customers",
 		"Purchases" : "Purchases",
 		"CreateProduct" : "Add product",
+		"Purchase" : "Purchase for a customer",
+		"CreateRating" : "Rate for a customer",
 		"Discounts" : "Discounts",
 		"PurchasingRules" : "Purchasing rules"
 	},
 	"Footer": {
 		"AboutUs" : "About Us",
 		"Cookies" : "Cookies",
-		"TermsConditions" : "Terms & Conditions",
+		"TermsConditions" : "Terms and Conditions",
 		"ContactUs" : "Contact Us",
 		"Delivery" : "Delivery",
 		"Information" : {
@@ -523,19 +525,28 @@
 	},
 	"Reputations" : {
 		"Title" : "User rating of your product",
-		"Empty" : "No ratings yet.",
-		"Remove" : "Remove",
-		"Delete" : {
-			"Question" : "Are you sure you want to delete this purchasing rule? This can not be undone.",
-			"Yes" : "Yes",
-			"No" : "No",
-			"Close" : "Close",
-			"Error" : "Error deleting the rule. Please try again later."
-		}
+		"Empty" : "No ratings yet."		
+	},
+	"PurchasesCreation" : {
+		"Customer" : {
+			"Email" : "Email",
+			"EmailText" : "Customers are identified by unique emails."
+		},
+		"Submit" : "Submit"
 	},
 	"Management" : {
+		"Title" : "Management",
+		"Rating" : {
+			"Create" : "Rating creation",
+			"CustomerId" : "Customer ID",
+			"ProductId" : "Product ID",
+			"Value" : "Value"
+		},
+		"Submit" : "Submit",
 		"Discounts" : "Manage discounts",
-		"Submit" : "Submit"
+		"RatingError" : "The selected customer was not found or it is unable to rate the product",
+		"RatingSuccess" : "Rating updated successdully",
+		"ServerError" : "Internal server error. Try again later"
 	},
 	"Discounts" : {
 		"Empty" : {

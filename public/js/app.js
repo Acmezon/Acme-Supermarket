@@ -363,12 +363,21 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 				loggedin: checkLoggedin
 			}
 		}).
+		when('/management/rating', {
+			templateUrl: 'views/ratings/rating-create.html',
+			controller: 'RatingCtrl',
+			resolve: {
+				admin: checkAdmin
+			},
+			activetab : 'management'
+		}).
 		when('/management/discounts', {
 			templateUrl: 'views/discounts/discounts.html',
 			controller: 'DiscountListCtrl',
 			resolve: {
 				admin: checkAdmin
-			}
+			},
+			activetab: 'management'
 		}).
 		when('/purchasingrules', {
 			templateUrl: 'views/purchasing_rules/purchasing-rules.html',

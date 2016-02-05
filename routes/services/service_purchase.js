@@ -63,6 +63,43 @@ exports.purchaseStandard = function (discountCode, billingMethod, cookie, sessio
 	}
 };
 
+// Called by the admin purchase method. Perform all checks and call the purchase() method
+exports.purchaseAdmin = function(customer_id, billingMethod, shoppingcart, discountCode, session, jwtKey, callback) {
+	if (billingMethod != 1 && billingMethod != 2 && billingMethod != 3) {
+		// Error bad GET params
+		callback(503, null);
+	} else {
+		ActorService.getUserRole(session, jwtKey, function (role) {
+			// CONTINUE
+			// Check principal is customer
+			if (role=='admin' || role=='customer' || role=='supplier') { 
+				if (role=='admin') {
+					Customer.findOne({_id: customer_id, _type:'Customer'})
+					.exec(function (err, customer) {
+						if (customer && shoppingcart) {
+							if (Object.keys(shoppingcart).length) {
+								purchase(discountCode, billingMethod, customer_id, shoppingcart, session, jwtKey, function (code, purchase) {
+									callback(code, purchase);
+								});
+							} else {
+								callback(503, null);
+							}
+						} else {
+							callback(500, null);
+						}
+					});
+				} else {
+					// Error not an admin
+					callback(403, null);
+				}
+			} else {
+				callback(401, null);
+			}
+		});
+	}
+
+};
+
 //Called by the scheduled task for automatic purchasing. Gathers the required parameters and calls the purchase method
 exports.purchaseScheduled = function(customer_id, provide_id, quantity, callback) {
 	if (!customer_id || !provide_id || !quantity) {
@@ -71,7 +108,7 @@ exports.purchaseScheduled = function(customer_id, provide_id, quantity, callback
 	} else {
 		// CONTINUE
 		// Check if customer exists
-		Customer.findById(customer_id, function (err, customer) {
+		Customer.findOne({_id: customer_id, _type:'Customer'}, function (err, customer) {
 			if(err){
 				callback(err, null);
 				return;
@@ -117,7 +154,7 @@ function purchase(discountCode, billingMethod, customer_id, provide_list, sessio
 	}
 
 	var day = new Date();
-	day.setDate(day.getDate() + time); 
+	day.setDate(day.getDate() + time);
 
 	// Create purchase
 	var newPurchase = Purchase({

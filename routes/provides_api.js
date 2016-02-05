@@ -121,16 +121,29 @@ exports.deleteSupplierProvidesByProductId = function(req, res) {
 			SupplierService.getPrincipalSupplier(cookie, jwtKey, function (supplier) {
 				if (supplier) {
 
-					Provide.findOne({product_id: _code, supplier_id: supplier._id, deleted : false}, function (err, result){
-						if(err || !result){
+					Provide.findOne({product_id: _code, supplier_id: supplier._id, deleted : false}, function (err, provide){
+						if(err || !provide){
 							// Internal Server Error
 							res.status(500).json({success: false, message: err});
 						}else{
-							Provide.findByIdAndUpdate(result.id, { $set : { deleted: true } }, function (err) {
+							Provide.findByIdAndUpdate(provide.id, { $set : { deleted: true } }, function (err) {
 								if (err) {
 									res.status(500).json({success: false, message: err});
 								} else {
-									res.status(200).json({success: true});
+									ReputationService.deleteAllByProvide(provide, function (done) {
+										if (done) {
+											PurchasingRuleService.deleteAllByProvide(provide, function (done) {
+												if (done) {
+													res.status(200).json({success: true});
+												} else {
+													res.status(500).json({success: false})
+												}
+											});
+										} else {
+											res.status(500).json({success: false})
+										}
+									});
+									
 								}
 							});
 						}
@@ -240,40 +253,44 @@ exports.adminProvide = function (req, res) {
 					if (err){
 						res.status(500).json({success: false})
 					} else {
-						if (supplier._type=='Supplier') {
-							Provide.findOne({product_id: product_id, supplier_id: supplier_id, deleted: false}).exec (function (err, provide) {
-								if (err) {
-									res.status(500).json({success: false})
-								} else {
-									if (provide) {
-										// FOUND provide
-										Provide.update({_id: provide._id}, {$set: {price: price}}, function (err, provideSaved) {
-											if (err) {
-												res.status(500).json({success: false});
-											} else {
-												res.status(200).json(provideSaved);
-											}
-										});
-
+						if (supplier) {
+							if (supplier._type=='Supplier') {
+								Provide.findOne({product_id: product_id, supplier_id: supplier_id, deleted: false}).exec (function (err, provide) {
+									if (err) {
+										res.status(500).json({success: false})
 									} else {
-										// NOT FOUND provide
-										var newProvide = new Provide({
-											supplier_id: supplier_id,
-											product_id: product_id,
-											price: price,
-											deleted: false
-										});
+										if (provide) {
+											// FOUND provide
+											Provide.update({_id: provide._id}, {$set: {price: price}}, function (err, provideSaved) {
+												if (err) {
+													res.status(500).json({success: false});
+												} else {
+													res.status(200).json(provideSaved);
+												}
+											});
 
-										newProvide.save(function (err, provideSaved) {
-											if (err) {
-												res.status(500).json({success: false});
-											} else {
-												res.status(200).json(provideSaved);
-											}
-										});
+										} else {
+											// NOT FOUND provide
+											var newProvide = new Provide({
+												supplier_id: supplier_id,
+												product_id: product_id,
+												price: price,
+												deleted: false
+											});
+
+											newProvide.save(function (err, provideSaved) {
+												if (err) {
+													res.status(500).json({success: false});
+												} else {
+													res.status(200).json(provideSaved);
+												}
+											});
+										}
 									}
-								}
-							});
+								});
+							} else {
+								res.status(500).json({success: false})
+							}
 						} else {
 							res.status(500).json({success: false})
 						}

@@ -926,6 +926,8 @@ exports.createProduct = function(req, res) {
 exports.updateProductRating = function(req, res) {
 	var product_id = req.body.id;
 	var rating_value = req.body.rating;
+	console.log(product_id)
+	console.log(rating_value)
 
 	if(product_id == undefined || rating_value == undefined) {
 		res.sendStatus(500);

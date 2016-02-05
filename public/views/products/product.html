@@ -13,12 +13,12 @@
 				<button id="btn-edit" class="btn btn-default" ng-click="toggleEdition()" ng-hide="isSomethingEditable()" restrict access="admin">
 					{{ 'Product.Edit' | translate }}
 				</button>
-				<div class="row">
+				<div id="{{product._id}}" class="row product-row">
 					<div class="grid col-md-4">
 						<script src="js/lib/imagezoom.js"></script>
 						<div class="flexslider">
 							<ul class="slides">
-								<li data-thumb="img/template_bootstrap/pic5.jpg">
+								<li data-thumb="img/{{product.image}}">
 									<div class="thumb-image">
 										<img src="img/{{product.image}}" data-imagezoom="true" class="img-responsive">
 									</div>

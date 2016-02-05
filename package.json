@@ -15,7 +15,7 @@
     "jsonwebtoken": "^5.5.4",
     "method-override": "^1.0.0",
     "mongodb": ">=2.0.14",
-    "mongoose": "4.2.8",
+    "mongoose": "^4.2.8",
     "mongoose-auto-increment": "^5.0.1",
     "mongoose-schema-extend": "0.2.0",
     "mongoose-validators": ">=0.1.0",

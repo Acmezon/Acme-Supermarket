@@ -27,7 +27,7 @@
                 </li>
 
                 <li restrict access="isLogged">
-                    <a id="logout" ng-click="signout()">{{ 'Header.Signout' | translate }}</a>
+                    <a href="" id="logout" ng-click="signout()">{{ 'Header.Signout' | translate }}</a>
                 </li>                
             </ul>
         </div>
@@ -57,6 +57,8 @@
                                 <li><a href="/management/discounts">{{ 'Header.Discounts' | translate }}</a></li>
                                 <li><a href="/purchasingrules">{{ 'Header.PurchasingRules' | translate }}</a></li>
                                 <li><a href="/products/create">{{ 'Header.CreateProduct' | translate }}</a></li>
+                                <li><a href="/purchase/create">{{ 'Header.Purchase' | translate }}</a></li>
+                                <li><a href="/management/rating">{{ 'Header.CreateRating' | translate }}</a></li>
                             </ul>
                         </li> 
                         <li ng-class="{active: $route.current.activetab == 'account'}" restrict access="isLogged" class="dropdown">

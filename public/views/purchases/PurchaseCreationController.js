@@ -101,7 +101,7 @@ angular.module('acme_supermarket').registerCtrl('PurchaseCreationCtrl', ['$scope
 				billingMethod : $scope.billingMethod,
 				customer_id: $scope.customer._id,
 				shoppingcart : shoppingcart,
-				discountCode : $scope.discount.code
+				discountCode : $scope.discount ? $scope.discount.code : null
 			}
 		}).
 		then(function success(response) {
