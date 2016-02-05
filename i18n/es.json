@@ -59,7 +59,8 @@
 		"CreateRating" : "Valorar por un cliente",
 		"Discounts" : "Descuentos",
 		"PurchasingRules" : "Reglas de compra",
-		"MonitoringRules" : "Reglas de monitorización de redes sociales"
+		"MonitoringRules" : "Reglas de monitorización",
+		"SocialMedia" : "Medios sociales"
  	},
 	"Footer": {
 		"AboutUs" : "Sobre nosotros",
@@ -268,6 +269,7 @@
 		"Name" : "Nombre",
 		"Price": "Precio",
 		"Rating": "Valoración",
+		"NotAvailable" : "No disponible",
 		"Supplier": {
 			"Id" : "ID de proveedor",
 			"Name" : "Nombre de proveedor",
@@ -529,9 +531,11 @@
 	"PurchasesCreation" : {
 		"Customer" : {
 			"Email" : "Email",
-			"EmailText" : "Los clientes están identificados por correos únicos."
+			"EmailText" : "Los clientes están identificados por correos únicos.",
+			"Success" : "Cliente válido"
 		},
-		"Submit" : "Enviar"
+		"Submit" : "Enviar",
+		"Check" : "Comprobar"
 	},
 	"Management" : {
 		"Title" : "Administración",

@@ -257,7 +257,8 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			controller: 'MyRulesCtrl',
 			resolve: {
 				customer: checkCustomer
-			}
+			},
+			activetab : "account"
 		}).
 		when('/products', {
 			templateUrl: 'views/public/products/products.html',
@@ -285,15 +286,15 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			controller: 'ProductDetailsCtrl',
 			resolve: {
 				loggedin: checkLoggedin
-			}
+			},
+			activetab: 'products'
 		}).
 		when('/shoppingcart', {
 			templateUrl: 'views/shoppingcart/shoppingcart.html',
 			controller: 'ShoppingCartCtrl',
 			resolve: {
 				customer: checkCustomer
-			},
-			activetab: 'account'
+			}
 		}).
 		when('/customers', {
 			templateUrl: 'views/customer/customers.html',
@@ -309,7 +310,7 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			resolve: {
 				admin: checkAdmin
 			},
-			activetab: 'management'
+			activetab: 'socialmedia'
 		}).
 		when('/checkout', {
 			templateUrl: 'views/checkout/checkout.html',
@@ -393,7 +394,7 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			resolve: {
 				admin: checkAdmin
 			},
-			activetab: 'management'
+			activetab: 'socialmedia'
 		}).
 		when('/monitoringrules/create', {
 			templateUrl: 'views/social_media_rules/socialmediarule.html',
@@ -401,7 +402,7 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			resolve: {
 				admin: checkAdmin
 			},
-			activetab: 'management'
+			activetab: 'socialmedia'
 		}).
 		when('/401', {
 			templateUrl: 'views/public/errors/401.html'

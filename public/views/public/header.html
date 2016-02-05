@@ -53,15 +53,21 @@
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="/dashboard">{{ 'Header.Dashboard' | translate }}</a></li>
                                 <li><a href="/customers">{{ 'Header.Customers' | translate }}</a></li>
                                 <li><a href="/purchases">{{ 'Header.Purchases' | translate }}</a></li>
                                 <li><a href="/management/discounts">{{ 'Header.Discounts' | translate }}</a></li>
                                 <li><a href="/purchasingrules">{{ 'Header.PurchasingRules' | translate }}</a></li>
-                                <li><a href="/monitoringrules">{{ 'Header.MonitoringRules' | translate }}</a></li>
-                                <li><a href="/products/create">{{ 'Header.CreateProduct' | translate }}</a></li>
-                                <li><a href="/purchase/create">{{ 'Header.Purchase' | translate }}</a></li>
                                 <li><a href="/management/rating">{{ 'Header.CreateRating' | translate }}</a></li>
+                            </ul>
+                        </li> 
+                        <li ng-class="{active: $route.current.activetab == 'socialmedia'}" restrict access="admin" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="">
+                                {{'Header.SocialMedia' | translate}}
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/dashboard">{{ 'Header.Dashboard' | translate }}</a></li>
+                                <li><a href="/monitoringrules">{{ 'Header.MonitoringRules' | translate }}</a></li>
                             </ul>
                         </li> 
                         <li ng-class="{active: $route.current.activetab == 'account'}" restrict access="isLogged" class="dropdown">

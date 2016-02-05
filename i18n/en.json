@@ -59,7 +59,8 @@
 		"CreateRating" : "Rate for a customer",
 		"Discounts" : "Discounts",
 		"PurchasingRules" : "Purchasing Rules",
-		"MonitoringRules" : "Social Media Monitoring Rules"
+		"MonitoringRules" : "Monitoring Rules",
+		"SocialMedia" : "Social Media"
 	},
 	"Footer": {
 		"AboutUs" : "About Us",
@@ -268,6 +269,7 @@
 		"Name" : "Name",
 		"Price": "Price",
 		"Rating": "Rating",
+		"NotAvailable" : "Not available",
 		"Supplier": {
 			"Id" : "Supplier ID",
 			"Name" : "Supplier name",
@@ -305,9 +307,9 @@
 		"DeleteProvide" : "Stop providing this product",
 		"AlreadyHasRule" : "You already have a rule to purchase this product. Maybe you want to go to",
 		"CreateRule" : {
-			"CustomerID" : "ID del cliente",
-			"CustomerIDError" : "El ID del cliente es obligatorio y debe ser positivo",
-			"StartDate" : "Star date",
+			"CustomerID" : "Customer ID",
+			"CustomerIDError" : "The customer ID is mandatory and must be positive",
+			"StartDate" : "Start date",
 			"StartDateError" : "The start date is required and must be in the future",
 			"Periodicity" : "Periodicity",
 			"PeriodicityError" : "The periodicity is required and must be extrictly positive",
@@ -531,9 +533,11 @@
 	"PurchasesCreation" : {
 		"Customer" : {
 			"Email" : "Email",
-			"EmailText" : "Customers are identified by unique emails."
+			"EmailText" : "Customers are identified by unique emails.",
+			"Success" : "Valid customer"
 		},
-		"Submit" : "Submit"
+		"Submit" : "Submit",
+		"Check" : "Check"
 	},
 	"Management" : {
 		"Title" : "Management",

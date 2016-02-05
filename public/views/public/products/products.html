@@ -25,11 +25,11 @@
 							</div>
 						</div>
 						<div class="col-sm-4" ng-show="products.length">
-							<button class="btn" ng-disabled="currentPage==0" ng-click="currentPage = currentPage-1; reload()">
+							<button class="btn" ng-disabled="currentPage==0" ng-click="currentPage = currentPage-1; reload()" style="margin-right:0">
 								{{'Products.Previous' | translate}}
 							</button>
 							{{ 'Products.Page' | translate }} {{currentPage+1}} / {{Math.ceil(numberOfProducts/pageSize)}}
-							<button class="btn" ng-disabled="currentPage>=numberOfProducts/pageSize - 1" ng-click="currentPage = currentPage+1; reload()">
+							<button class="btn" ng-disabled="currentPage>=numberOfProducts/pageSize - 1" ng-click="currentPage = currentPage+1; reload()" style="margin-left:0">
 								{{'Products.Next' | translate}}
 							</button>
 						</div>
@@ -63,8 +63,11 @@
 												<p class="title">
 													{{product.name}}
 												</p>
-												<div class="price1" ng-if="view=='products'">
+												<div class="price1" ng-if="product.minPrice">
 													<span class="actual">{{product.minPrice}} - {{product.maxPrice}} €</span>
+												</div>
+												<div class="price1" ng-if="!product.minPrice">
+													<span class="red-text">{{'Products.NotAvailable' | translate}}</span>
 												</div>
 											</div>
 											<div class="clear"></div>

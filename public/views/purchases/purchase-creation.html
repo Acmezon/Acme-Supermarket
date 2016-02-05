@@ -15,12 +15,12 @@
 				<label for="customerEmail">{{'PurchasesCreation.Customer.Email' | translate}}</label>
 				<div class="input-group" ng-class="{'has-error': createPurchase.customerEmail.$dirty && customer && !customer.credit_card_id, 'has-warning': createPurchase.customerEmail.$dirty && !customer, 'has-success': createPurchase.customerEmail.$dirty && customer && customer.credit_card_id}">
 					<span class="input-group-btn">
-						<button class="btn btn-default check" type="button" ng-click="check(customerEmail)" ng-disabled="createPurchase.$invalid">Check</button>
+						<button class="btn btn-default check" type="button" ng-click="check(customerEmail)" ng-disabled="createPurchase.$invalid">{{'PurchasesCreation.Check' | translate}}</button>
 					</span>
 					<input ng-model="customerEmail" name="customerEmail" type="email" class="form-control" id="customerEmail" placeholder="email@mail.com" required>
 				</div>
 				<small class="text-muted">{{'PurchasesCreation.Customer.EmailText' | translate}}</small>
-				<div class="alert alert-success" role="alert" ng-if="customer && customer.credit_card_id">BUENA</div>
+				<div class="alert alert-success" role="alert" ng-if="customer && customer.credit_card_id">{{'PurchasesCreation.Customer.Success' | translate}}</div>
 			</fieldset>
 
 			<div class="panel panel-default">
@@ -82,11 +82,8 @@
 				<div class="panel-heading">
 					{{'ShoppingCart.Title' | translate}} <span class="pull-right glyphicon glyphicon-shopping-cart"></span>
 				</div>
-				<div class="panel-body" ng-if="!shoppingcart.length">
-					<p>{{'ShoppingCart.Empty.Title' | translate}}</p>
-				</div>
 
-				<table ng-if="shoppingcart.length" class="table table-bordered table-hover">
+				<table class="table table-bordered table-hover">
 					<thead>
 						<tr>
 							<th>{{'ShoppingCart.Remove' | translate}}</th>
@@ -154,7 +151,7 @@
 				<div class="panel-body" ng-if="!isEditing">
 					<div style="margin: 2% 2% 2% 2%" ng-if="!isEditing">
 						<fieldset class="form-group">
-							<label for="product_id">{{'PurchasesCreation.Customer.Email' | translate}}</label>
+							<label for="product_id">{{'Management.Rating.ProductId' | translate}}</label>
 							<div class="input-group spinner">
 								<input ng-model="product_id" id="product_id" type="text" class="form-control">
 								<div class="input-group-btn-vertical">
