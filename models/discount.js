@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var IsOver = require('./is_over'),
+var autoIncrement = require('mongoose-auto-increment'),
+	IsOver = require('./is_over'),
 	CouponCode = require('coupon-code');
 
 var discountSchema = mongoose.Schema({

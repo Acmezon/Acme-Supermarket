@@ -15,8 +15,10 @@ var db_utils = require('./db_utils'),
 	Discount = require('../models/discount'),
 	IsOver = require('../models/is_over'),
 	PurchasingRule = require('../models/purchasing_rule'),
-	SocialMediaRule = require('../models/social_media_rule'),
-	SocialMediaNotification = require('../models/social_media_notification'),
+	ProductRule = require('../models/product_rule'),
+	BrandRule = require('../models/brand_rule'),
+	ProductNotification = require('../models/product_notification'),
+	BrandNotification = require('../models/brand_notification'),
 	crypto = require('crypto'),//Necesario para encriptacion por MD,
 	mongoose = require('mongoose'),
 	fs = require('fs'),
@@ -364,13 +366,19 @@ function loadSocialMediaRules(callback) {
 		for(var j = 0; j < rules_nr; j++) {
 			var product_to_watch = products[random(0, products.length)];
 
-			var socialMediaRule = new SocialMediaRule({
+			var productRule = new ProductRule({
 				increaseRate: 30,
 				product_id: product_to_watch.id
 			});
 
-			sync.await(socialMediaRule.save(sync.defer()));
+			sync.await(productRule.save(sync.defer()));
 		}
+
+		var brandRule = new BrandRule({
+			increaseRate: 20
+		});
+
+		sync.await(brandRule.save(sync.defer()));
 	}, function (err, data) {
 		if(err) console.log("--ERR: Error saving social media rules: " + err);
 
@@ -382,19 +390,31 @@ function loadSocialMediaRules(callback) {
 
 function loadSocialMediaRulesNotifications(callback) {
 	sync.fiber(function() {
-		var socialMediaRules = sync.await(SocialMediaRule.find({}, sync.defer()));
+		var productRules = sync.await(ProductRule.find({_type: 'ProductRule'}, sync.defer()));
 
-		var chosenRules = shuffle(socialMediaRules).slice(0, random(1, socialMediaRules.length - 3)); //Not all with notifications nor all without notifications
+		var chosenProductRules = shuffle(productRules).slice(0, random(1, productRules.length - 3)); //Not all with notifications nor all without notifications
 
-		for(var i = 0; i < chosenRules.length; i++) {
-			var socialMediaNotification = new SocialMediaNotification({
+		for(var i = 0; i < chosenProductRules.length; i++) {
+			var productNotification = new ProductNotification({
 				percentageExceeded: 40,
-				social_media_rule_id: chosenRules[i].id,
-				product_id: chosenRules[i].product_id
+				product_rule_id: chosenProductRules[i].id,
+				product_id: chosenProductRules[i].product_id
 			});
 
-			sync.await(socialMediaNotification.save(sync.defer()));
+			sync.await(productNotification.save(sync.defer()));
 		}
+
+		var brandRules = sync.await(BrandRule.find({}, sync.defer()));
+
+		var chosenBrandRules = brandRules[0];
+
+		var brandNotification = new BrandNotification({
+			percentageExceeded: 20,
+			brand_rule_id: chosenBrandRules.id
+		});
+
+		sync.await(brandNotification.save(sync.defer()));
+
 	}, function (err, data) {
 		if(err) console.log("--ERR: Error saving social media notifications: " + err);
 
