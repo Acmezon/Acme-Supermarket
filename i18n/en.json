@@ -584,7 +584,7 @@
 			"Description1" : "There are ",
 			"Description2" : " monitoring rules registered."
 		},
-		"IncreaseRate" : "Increase rate",
+		"IncreaseRate" : "Increase rate (%)",
 		"Notifications" : "Notifications",
 		"Remove" : "Remove",
 		"Create" : "Create new monitoring rule",

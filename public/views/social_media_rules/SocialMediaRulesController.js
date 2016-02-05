@@ -7,13 +7,14 @@ angular.module('acme_supermarket').registerCtrl('SocialMediaRulesCtrl', ['$scope
 		url: '/api/socialmediarules/'
 	}).
 	then(function success(response) {
-		var socialmediarules = response.data;
-		$scope.socialmediarules = socialmediarules;
+		$scope.socialmediarules = response.data;
 
 		$scope.tableParams = new ngTableParams(
-			{ group: "_type"},
-			{ dataset: socialmediarules, total: $scope.socialmediarules.length});
+			{ group: "_type" },
+			{ dataset: $scope.socialmediarules , counts: []});
+
 	});
+
 
 	$scope.remove = function (socialmediarule) {
 		$http.delete('/api/socialmediarules/delete/' + socialmediarule._id)

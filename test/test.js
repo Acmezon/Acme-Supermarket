@@ -11,7 +11,7 @@ exports.config = {
 	},
 	seleniumAddress: 'http://localhost:4444/wd/hub',
 	specs: [
-		'backend/purchases/TC06-adminPurchase.js'
+		'e2e/social_media_rules/TC03-createRule.js'
 
 	]/*,
 	beforeLaunch: function() {

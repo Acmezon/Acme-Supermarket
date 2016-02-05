@@ -582,7 +582,7 @@
 			"Description1" : "Hay ",
 			"Description2" : " reglas registradas en el sistema."
 		},
-		"IncreaseRate" : "Tasa de incremento",
+		"IncreaseRate" : "Tasa de incremento (%)",
 		"Notifications" : "Notificaciones",
 		"Remove" : "Eliminar",
 		"Create" : "Crear nueva regla de monitorización",

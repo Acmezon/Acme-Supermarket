@@ -170,6 +170,7 @@ app.post('/api/discount/clear', api.Discounts.clearDiscount);
 // Social media rules
 app.get('/api/socialmediarules/', api.SocialMediaRules.getAll);
 app.delete('/api/socialmediarules/delete/:id', api.SocialMediaRules.deleteSocialMediaRule);
+app.post('/api/productrule/create', api.SocialMediaRules.createProductRule);
 
 // Management
 app.get('/api/resetDataset', api.Management.resetDataset);

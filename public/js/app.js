@@ -395,6 +395,14 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			},
 			activetab: 'management'
 		}).
+		when('/monitoringrules/create', {
+			templateUrl: 'views/social_media_rules/socialmediarule.html',
+			controller: 'SocialMediaRuleCreateCtrl',
+			resolve: {
+				admin: checkAdmin
+			},
+			activetab: 'management'
+		}).
 		when('/401', {
 			templateUrl: 'views/public/errors/401.html'
 		}).
