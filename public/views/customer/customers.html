@@ -13,7 +13,7 @@
 		<h4 class="title">{{'Customers.Empty.Title' | translate}}</h4>
 		<p>{{'Customers.Empty.Description' | translate}}</p>
 	</div>
-	<div ng-if="$data.length" style="z-index:100000; position:relative">
+	<div ng-if="$data.length">
 		<p>{{'Customers.Filled.Description1' | translate}}<span id="customers-length">{{$data.length}}</span>{{'Customers.Filled.Description2' | translate}}</p>
 		<div ng-repeat="customer in $data">
 

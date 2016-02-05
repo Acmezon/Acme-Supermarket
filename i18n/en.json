@@ -58,7 +58,8 @@
 		"Purchase" : "Purchase for a customer",
 		"CreateRating" : "Rate for a customer",
 		"Discounts" : "Discounts",
-		"PurchasingRules" : "Purchasing rules"
+		"PurchasingRules" : "Purchasing Rules",
+		"MonitoringRules" : "Social Media Monitoring Rules"
 	},
 	"Footer": {
 		"AboutUs" : "About Us",
@@ -572,5 +573,30 @@
 		"Generate" : "Generate",
 		"Applied" : "Applied discounts",
 		"Available" : "Available discounts"
+	},
+	"SocialMediaRules" : {
+		"Title" : "Social media monitoring rules",
+		"Empty" : {
+			"Title" : "Empty",
+			"Description" : "No rules registered in the system."
+		},
+		"Filled" : {
+			"Description1" : "There are ",
+			"Description2" : " monitoring rules registered."
+		},
+		"IncreaseRate" : "Increase rate",
+		"Notifications" : "Notifications",
+		"Remove" : "Remove",
+		"Create" : "Create new monitoring rule",
+		"ProductRule" : "Product rule",
+		"BrandRule" : "Brand rule",
+		"Type" : "Type",
+		"Product" : "Product",
+		"Success" : {
+			"Remove" : "Operation completed successfuly."
+		},
+		"Error" : {
+			"Remove" : "There was an error with the operation. Please, try again later."
+		}
 	}
 }

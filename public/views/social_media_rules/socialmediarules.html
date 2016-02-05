@@ -1,0 +1,65 @@
+<script src="views/social_media_rules/SocialMediaRulesController.js"></script>
+
+<div class="wrap">
+	<ul class="breadcrumb breadcrumb__t">
+		<li><a class="home" href="/">{{ 'Home.Title' | translate }}</a> / {{'SocialMediaRules.Title' | translate}}</li>
+	</ul>
+
+	<h2 class="head">{{'SocialMediaRules.Title' | translate}}</h2>
+	<div ng-if="!socialmediarules.length">
+		<h4 class="title">{{'SocialMediaRules.Empty.Title' | translate}}</h4>
+		<p>{{'SocialMediaRules.Empty.Description' | translate}}</p>
+	</div>
+	<div ng-if="socialmediarules.length" style="margin-bottom: 3%">
+		<div class="row">
+			<div class="col-md-12">
+				<p>
+					{{'SocialMediaRules.Filled.Description1' | translate}}<span id="customers-length">{{socialmediarules.length}}</span>{{'SocialMediaRules.Filled.Description2' | translate}}
+				</p>
+				<table ng-table="tableParams" class="table editable-table" show-filter="true">
+					<colgroup>
+						<col width="33%" />
+						<col width="33%" />
+						<col width="33%" />
+					</colgroup>
+					<tr class="ng-table-group" ng-repeat-start="group in tableParams.data">
+						<td colspan="3">
+							<a href="" ng-click="group.$hideRows = !group.$hideRows">
+								<span class="glyphicon" ng-class="{ 'glyphicon-chevron-right': group.$hideRows, 'glyphicon-chevron-down': !group.$hideRows }"></span>
+								<strong>{{'SocialMediaRules.'+group.value | translate}}</strong>
+							</a>
+						</td>
+					</tr>
+
+					<tr id="{{socialmediarule._id}}" ng-hide="group.$hideRows" ng-repeat="socialmediarule in group.data" ng-repeat-end>
+						<td sortable="'_type'" data-title="'SocialMediaRules.Type' | translate" groupable="'_type'" ng-if="false">
+							{{'SocialMediaRules.'+socialmediarule._type | translate}}
+						</td>
+						<td data-title="'SocialMediaRules.Notifications' | translate">
+							<a href="">
+								<button type="button" class="btn btn-info btn-sm">
+									<span class="glyphicon glyphicon-info-sign"></span>
+								</button>
+							</a>
+						</td>
+						<td data-title="'SocialMediaRules.IncreaseRate' | translate" filter="{ increaseRate: 'text'}" sortable="'increaseRate'">
+							<span class="socialmediarule-increaseRate">
+								{{socialmediarule.increaseRate}}
+							</span>
+						</td>
+						<td data-title="'SocialMediaRules.Product' | translate" filter="{ productName: 'text'}" sortable="'productName'">
+							{{socialmediarule.productName}}
+						</td>
+						<td data-title="'SocialMediaRules.Remove' | translate">
+							<button type="button" class="btn btn-danger btn-sm" ng-click="remove(socialmediarule)">
+								<span class="glyphicon glyphicon-trash"></span>
+							</button>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+
+
+</div>

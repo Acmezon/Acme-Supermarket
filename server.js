@@ -167,6 +167,10 @@ app.get('/api/discounts/ofproduct/:id', api.Discounts.getDiscountsByProduct);
 app.post('/api/discount/apply', api.Discounts.applyDiscount);
 app.post('/api/discount/clear', api.Discounts.clearDiscount);
 
+// Social media rules
+app.get('/api/socialmediarules/', api.SocialMediaRules.getAll);
+app.delete('/api/socialmediarules/delete/:id', api.SocialMediaRules.deleteSocialMediaRule);
+
 // Management
 app.get('/api/resetDataset', api.Management.resetDataset);
 app.get('/api/loadBigDataset', api.Management.loadBigDataset);

@@ -58,7 +58,8 @@
 		"Purchase" : "Comprar por un cliente",
 		"CreateRating" : "Valorar por un cliente",
 		"Discounts" : "Descuentos",
-		"PurchasingRules" : "Reglas de compra"
+		"PurchasingRules" : "Reglas de compra",
+		"MonitoringRules" : "Reglas de monitorización de redes sociales"
  	},
 	"Footer": {
 		"AboutUs" : "Sobre nosotros",
@@ -570,5 +571,30 @@
 		"Generate" : "Generar",
 		"Applied" : "Descuentos aplicados",
 		"Available" : "Descuentos disponibles"
+	},
+	"SocialMediaRules" : {
+		"Title" : "Reglas de monitorización de medios sociales",
+		"Empty" : {
+			"Title" : "Vacío",
+			"Description" : "No existen reglas en el sistema."
+		},
+		"Filled" : {
+			"Description1" : "Hay ",
+			"Description2" : " reglas registradas en el sistema."
+		},
+		"IncreaseRate" : "Tasa de incremento",
+		"Notifications" : "Notificaciones",
+		"Remove" : "Eliminar",
+		"Create" : "Crear nueva regla de monitorización",
+		"ProductRule" : "Regla de producto",
+		"BrandRule" : "Regla de marca",
+		"Type" : "Tipo",
+		"Product" : "Producto",
+		"Success" : {
+			"Remove" : "Operación realizada con éxito."
+		},
+		"Error" : {
+			"Remove" : "Hubo un error en la operación. Por favor, inténtelo de nuevo más tarde."
+		}
 	}
 }

@@ -14,6 +14,7 @@ var Customer = require('./customers_api'),
 	Rates = require('./rates_api'),
 	Authentication = require('./authentication'),
 	SocialMedia = require('./social_media_api'),
+	SocialMediaRules = require('./social_media_rules_api'),
 	RecommenderServer = require('./recommender_server_api'),
 	Management = require('./management'),
 	db_utils = require('./db_utils'),
@@ -38,6 +39,7 @@ exports.Management = Management;
 exports.db_utils = db_utils;
 exports.i18n = i18n;
 exports.SocialMedia = SocialMedia;
+exports.SocialMediaRules = SocialMediaRules;
 exports.RecommenderServer = RecommenderServer;
 
 
