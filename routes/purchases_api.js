@@ -311,144 +311,36 @@ exports.purchaseAdmin = function (req, res) {
 			if (role=='admin') {
 				if (billingMethod != 1 && billingMethod != 2 && billingMethod != 3) {
 					// Error bad params
-					res.status(403).send({success: false})
+					res.status(503).send({success: false});
 				} else {
 					// CONTINUE
-					var time;
-					switch (billingMethod) {
-						case 1: 
-							time = 5;
-							break;
-						case 2:
-							time = 15;
-							break;
-						case 3:
-							time = 30;
-							break;
-					}
-
-					var day = new Date();
-					day.setDate(day.getDate() + time); 
-
-					// Create purchase
-					var newPurchase = Purchase({
-						deliveryDate : day,
-						customer_id : customer_id
-					});
-
-					// Save it
-					newPurchase.save(function (err, newPurchase) {
-						if (err){
-							// Internal error
-							res.status(500).send({success: false});
-						} else {
-							// CONTINUE
-							// For each of the provides in shopping cart
-							Object.keys(shoppingcart).forEach(function(cookie_id) {
-								ProvideService.getProvideById(cookie_id, function (provide) {
-									if (provide) {
-										// CONTNUE
-
-										if (discountCode) {
-											// DISCOUNT ACTIVATED
-											var sub = 0;
-											DiscountService.canRedeemCode(session, jwtKey, discountCode, provide.product_id, function (discount) {
-
-												if (discount) {
-													sub = ((discount.value/100) * provide.price) * shoppingcart[cookie_id];
-
-													var newPurchaseLine = PurchaseLine({
-														quantity: shoppingcart[cookie_id],
-														price: provide.price * shoppingcart[cookie_id] - sub,
-														discounted : true,
-														purchase_id: newPurchase._id,
-														provide_id: provide._id,
-														product_id: provide.product_id
-													});
-
-												} else {
-
-													var newPurchaseLine = PurchaseLine({
-														quantity: shoppingcart[cookie_id],
-														price: provide.price * shoppingcart[cookie_id],
-														discounted : false,
-														purchase_id: newPurchase._id,
-														provide_id: provide._id,
-														product_id: provide.product_id
-													});
-
-												}
-
-												// Save it
-												newPurchaseLine.save(function (err) {
-													if (err) {
-														res.status(500).send({success: false});
-													} else {
-														// CONTINUE
-														// Next loop: Next provide
-													}
-												});
-
-												PurchaseService.storePurchaseInRecommendation(customer_id, provide.product_id);
-												
-											});
-
-										} else {
-											// DISCOUNT CODE DEACTIVATED
-											// Create  purchase line
-											var newPurchaseLine = PurchaseLine({
-												quantity: shoppingcart[cookie_id],
-												price: provide.price * shoppingcart[cookie_id],
-												discounted: false,
-												purchase_id: newPurchase._id,
-												provide_id: provide._id,
-												product_id: provide.product_id
-											});
-
-											// Save it
-											newPurchaseLine.save(function (err) {
-												if (err) {
-													res.status(500).send({success: false});
-												} else {
-													// CONTINUE
-													// Next loop: Next provide
-												}
-											});
-
-											PurchaseService.storePurchaseInRecommendation(customer_id, provide.product_id);
-										}
-
-										
-									} else {
-										// Internal error: Provide no longer exists
-										res.status(503).send({success: false, message: 'Product by supplier no longer exists'});
-										// Error: Rollback the purchase saved
-										Purchase.remove({ _id: newPurchase._id });
-
-									}
-								});
-							});
-							// FINISH LOOP
-							// FINISH PURCHASE PROCESS
-							// RECALCULATE RECOMMENDATION
-							RecommenderService.recommendPurchases(customer_id, function (err, response){
-								if(err || response.statusCode == 500) {
-									console.log("No recommendation updated")
-								} else {
-									console.log("Recommendations updated")
-								}
-							});
-							res.status(200).send(newPurchase);
+					PurchaseService.purchaseAdmin(customer_id, billingMethod, shoppingcart, discountCode, session, jwtKey, function (code, purchase) {
+						switch(code) {
+							case 401:
+								res.status(401).send({success: false});
+								break;
+							case 403:
+								res.status(403).send({success: false});
+								break;
+							case 500:
+								res.status(500).send({success: false});
+								break;
+							case 503:
+								res.status(503).send({success: false, message: 'Product by supplier no longer exists'});
+								break;
+							case 200:
+								res.status(200).send(purchase);
+								break;
 						}
 					});
 				}
 			} else {
 				// Doesn't have permissions
-				res.status(403).json({success: false})
+				res.status(403).json({success: false});
 			}
 		} else {
 			// Not authenticated
-			res.status(401).json({success: false})
+			res.status(401).json({success: false});
 		}
 	});
 }
