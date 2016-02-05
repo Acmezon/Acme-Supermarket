@@ -99,28 +99,32 @@ exports.createProductRule = function (req, res) {
 	var cookie = req.cookies.session,
 		jwtKey = req.app.get('superSecret');
 
-	ActorService.getUserRole(cookie, jwtKey, function (role) {
-		if (role=='admin' || role=='supplier' || role=='customer') {
-			if (role=='admin') {
+	if (rule) {
+		ActorService.getUserRole(cookie, jwtKey, function (role) {
+			if (role=='admin' || role=='supplier' || role=='customer') {
+				if (role=='admin') {
 
-				var new_rule = new ProductRule({
-					increaseRate : rule.increaseRate,
-					product_id : rule.product_id
-				});
+					var new_rule = new ProductRule({
+						increaseRate : rule.increaseRate,
+						product_id : rule.product_id
+					});
 
-				new_rule.save(function (err) {
-					if (err) {
-						res.status(500).json({success: false});
-					} else {
-						res.status(200).json({success: true});
-					}
-				});
-				
+					new_rule.save(function (err) {
+						if (err) {
+							res.status(500).json({success: false});
+						} else {
+							res.status(200).json({success: true});
+						}
+					});
+					
+				} else {
+					res.status(403).json({success: false});
+				}
 			} else {
-				res.status(403).json({success: false});
+				res.status(401).json({success: false});
 			}
-		} else {
-			res.status(401).json({success: false});
-		}
-	});
+		});
+	} else {
+		res.status(500).json({success: false});
+	}
 }
