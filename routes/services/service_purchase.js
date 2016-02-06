@@ -53,11 +53,11 @@ exports.purchaseStandard = function (discountCode, billingMethod, cookie, sessio
 						});
 					} else {
 						// Error not a customer
-						callback(401, null);
+						callback(403, null);
 					}
 				});
 			} else {
-				callback(403, null);
+				callback(401, null);
 			}
 		});
 	}

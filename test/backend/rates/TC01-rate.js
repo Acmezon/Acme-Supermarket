@@ -62,7 +62,7 @@ describe('Product rating and Provide rating', function () {
 			.post('http://localhost:3000/api/product/updateProductRating')
 			.send({id : 1, rating: 4})
 			.end(function (err, res) {
-				res.status.should.be.equal(401);
+				res.status.should.be.equal(503);
 
 				done();
 			});

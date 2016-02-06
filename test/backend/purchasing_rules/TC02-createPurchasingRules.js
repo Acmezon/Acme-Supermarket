@@ -112,7 +112,7 @@ describe('Create purchasing rule', function () {
 			.send( { ordering_sort: 'price', priceFilter : 500} )
 			.end(function (err, res){
 
-				var product = res.body[0];
+				var product = res.body[Math.floor(Math.random()*res.body.length)];
 
 				browser
 				.get('http://localhost:3000/api/providesByProductId/' + product._id)
@@ -120,7 +120,7 @@ describe('Create purchasing rule', function () {
 					should.not.exist(err);
 					res.status.should.be.equal(200);
 
-					var provide_id = res.body[0]._id;
+					var provide_id = res.body[Math.floor(Math.random()*res.body.length)]._id;
 
 					var rule = {
 						startDate: new Date(),

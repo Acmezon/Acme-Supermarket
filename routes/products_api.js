@@ -1024,13 +1024,13 @@ exports.deleteProduct = function(req, res) {
 				}, function (err, product) {
 					if (err) {
 						console.log(err);
-						res.sendStatus(500);
+						res.status(500).json({success : false});
 						return;
 					}
 
 					if (!product) {
 						console.log("No product");
-						res.sendStatus(404);
+						res.status(404).json({success : false});
 						return;
 					}
 
@@ -1039,20 +1039,20 @@ exports.deleteProduct = function(req, res) {
 					if (image == "default.jpg") {
 						ProductService.removeProduct(product_id, function(success) {
 							if (success) {
-								res.sendStatus(200);
+								res.status(200).json({success: true});
 								return;
 							} else {
-								res.sendStatus(500);
+								res.status(500).json({success : false});
 								return;
 							}
 						});
 					} else {
 						ProductService.removeProductAndImage(product_id, image, function(success) {
 							if (success) {
-								res.sendStatus(200);
+								res.status(200).json({success: true});
 								return;
 							} else {
-								res.sendStatus(500);
+								res.status(500).json({success : false});
 								return;
 							}
 						});
@@ -1060,7 +1060,7 @@ exports.deleteProduct = function(req, res) {
 				});
 			} else {
 				console.log("No product");
-				res.sendStatus(500);
+				res.status(500).json({success : false});
 				return;
 			}
 		} else {

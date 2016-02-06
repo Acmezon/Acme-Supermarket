@@ -264,7 +264,7 @@ exports.purchase = function (req, res) {
 	try {
 		cookie = JSON.parse(req.cookies.shoppingcart);
 	} catch (error) {
-		res.sendStatus(500);
+		res.status(500).send({success: false});
 		return;
 	}
 
@@ -274,25 +274,31 @@ exports.purchase = function (req, res) {
 	// Optional param
 	var discountCode = req.body.discountCode;
 
-	PurchaseService.purchaseStandard(discountCode, billingMethod, cookie, session, jwtKey, function (code, purchase) {
-		switch(code) {
-			case 401:
-				res.status(401).send({success: false});
-				break;
-			case 403:
-				res.status(403).send({success: false});
-				break;
-			case 500:
-				res.status(500).send({success: false});
-				break;
-			case 503:
-				res.status(503).send({success: false, message: 'Product by supplier no longer exists'});
-				break;
-			case 200:
-				res.status(200).send(purchase);
-				break;
-		}
-	});
+	if (billingMethod!=1 && billingMethod!=3 && billingMethod!=3) {
+		res.status(500).send({success: false});
+		return;
+	} else {
+
+		PurchaseService.purchaseStandard(discountCode, billingMethod, cookie, session, jwtKey, function (code, purchase) {
+			switch(code) {
+				case 401:
+					res.status(401).send({success: false});
+					break;
+				case 403:
+					res.status(403).send({success: false});
+					break;
+				case 500:
+					res.status(500).send({success: false});
+					break;
+				case 503:
+					res.status(503).send({success: false, message: 'Product by supplier no longer exists'});
+					break;
+				case 200:
+					res.status(200).send(purchase);
+					break;
+			}
+		});
+	}
 	
 };
 
@@ -306,43 +312,49 @@ exports.purchaseAdmin = function (req, res) {
 		shoppingcart = req.body.shoppingcart,
 		discountCode = req.body.discountCode;
 
-	ActorService.getUserRole(session, jwtKey, function (role) {
-		if (role=='customer' || role=='supplier' || role=='admin') {
-			if (role=='admin') {
-				if (billingMethod != 1 && billingMethod != 2 && billingMethod != 3) {
-					// Error bad params
-					res.status(503).send({success: false});
+	if (billingMethod!=1 && billingMethod!=3 && billingMethod!=3) {
+		res.status(500).send({success: false});
+		return;
+	} else {
+
+		ActorService.getUserRole(session, jwtKey, function (role) {
+			if (role=='customer' || role=='supplier' || role=='admin') {
+				if (role=='admin') {
+					if (billingMethod != 1 && billingMethod != 2 && billingMethod != 3) {
+						// Error bad params
+						res.status(503).send({success: false});
+					} else {
+						// CONTINUE
+						PurchaseService.purchaseAdmin(customer_id, billingMethod, shoppingcart, discountCode, session, jwtKey, function (code, purchase) {
+							switch(code) {
+								case 401:
+									res.status(401).send({success: false});
+									break;
+								case 403:
+									res.status(403).send({success: false});
+									break;
+								case 500:
+									res.status(500).send({success: false});
+									break;
+								case 503:
+									res.status(503).send({success: false, message: 'Product by supplier no longer exists'});
+									break;
+								case 200:
+									res.status(200).send(purchase);
+									break;
+							}
+						});
+					}
 				} else {
-					// CONTINUE
-					PurchaseService.purchaseAdmin(customer_id, billingMethod, shoppingcart, discountCode, session, jwtKey, function (code, purchase) {
-						switch(code) {
-							case 401:
-								res.status(401).send({success: false});
-								break;
-							case 403:
-								res.status(403).send({success: false});
-								break;
-							case 500:
-								res.status(500).send({success: false});
-								break;
-							case 503:
-								res.status(503).send({success: false, message: 'Product by supplier no longer exists'});
-								break;
-							case 200:
-								res.status(200).send(purchase);
-								break;
-						}
-					});
+					// Doesn't have permissions
+					res.status(403).json({success: false});
 				}
 			} else {
-				// Doesn't have permissions
-				res.status(403).json({success: false});
+				// Not authenticated
+				res.status(401).json({success: false});
 			}
-		} else {
-			// Not authenticated
-			res.status(401).json({success: false});
-		}
-	});
+		});
+	}
 }
 
 // Delete a purchase

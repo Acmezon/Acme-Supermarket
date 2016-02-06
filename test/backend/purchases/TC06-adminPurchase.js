@@ -193,7 +193,7 @@ describe('Purchase api', function () {
 				discountCode : null
 			})
 			.end(function (err, res) {
-				res.status.should.be.equal(503);
+				res.status.should.be.equal(500);
 				res.body.success.should.be.exactly(false);
 				done();
 			});

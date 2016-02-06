@@ -13,12 +13,14 @@ describe('Checkout', function () {
 		browser
 		.get('http://localhost:3000/api/signout')
 		.end(function (err, res) {
+
 			browser
-			.get('http://localhost:3000/api/purchase/process/1')
+			.post('http://localhost:3000/api/purchase/process')
+			.send({ billingMethod: 1, discountCode: null})
 			.set('Cookie', ['shoppingcart={ "2" : 1}']) //Provide_id = 2, quantity = 1
 			.end(function (err, res) {
-
-				res.status.should.be.equal(403);
+				res.status.should.be.equal(401);
+				res.body.success.should.be.exactly(false);
 				done();
 			});
 		});
@@ -31,10 +33,12 @@ describe('Checkout', function () {
 		.end(function (err, res) {
 
 			browser
-			.get('http://localhost:3000/api/purchase/process/1')
+			.post('http://localhost:3000/api/purchase/process')
+			.send({ billingMethod: 1, discountCode: null})
 			.set('Cookie', 'shoppingcart={ "2" : 1};session=' + adminToken) //Provide_id = 2, quantity = 1
 			.end(function (err, res) {
-				res.status.should.be.equal(401);
+				res.status.should.be.equal(403);
+				res.body.success.should.be.exactly(false);
 				done();
 			});
 		});
@@ -47,10 +51,12 @@ describe('Checkout', function () {
 		.end(function (err, res) {
 
 			browser
-			.get('http://localhost:3000/api/purchase/process/1')
+			.post('http://localhost:3000/api/purchase/process')
+			.send({ billingMethod: 1, discountCode: null})
 			.set('Cookie', 'shoppingcart={ "2" : 1};session=' + supplierToken) //Provide_id = 2, quantity = 1
 			.end(function (err, res) {
-				res.status.should.be.equal(401);
+				res.status.should.be.equal(403);
+				res.body.success.should.be.exactly(false);
 				done();
 			});
 		});
@@ -63,9 +69,11 @@ describe('Checkout', function () {
 		.end(function (err, res) {
 
 			browser
-			.get('http://localhost:3000/api/purchase/process/1')
+			.post('http://localhost:3000/api/purchase/process')
+			.send({ billingMethod: 1, discountCode: null})
 			.end(function (err, res) {
 				res.status.should.be.equal(500);
+				res.body.success.should.be.exactly(false);
 				done();
 			});
 		});
@@ -78,10 +86,12 @@ describe('Checkout', function () {
 		.end(function (err, res) {
 
 			browser
-			.get('http://localhost:3000/api/purchase/process/9')
+			.post('http://localhost:3000/api/purchase/process')
+			.send({ billingMethod: 9, discountCode: null})
 			.set('Cookie', 'shoppingcart={ "2" : 1};session=' + customerToken) //Provide_id = 2, quantity = 1
 			.end(function (err, res) {
-				res.status.should.be.equal(503);
+				res.status.should.be.equal(500);
+				res.body.success.should.be.exactly(false);
 				done();
 			});
 		});
@@ -94,7 +104,8 @@ describe('Checkout', function () {
 		.end(function (err, res) {
 
 			browser
-			.get('http://localhost:3000/api/purchase/process/1')
+			.post('http://localhost:3000/api/purchase/process')
+			.send({ billingMethod: 1, discountCode: null})
 			.set('Cookie', 'shoppingcart={ "2" : 1};session=' + customerToken) //Provide_id = 2, quantity = 1
 			.end(function (err, res) {
 				res.status.should.be.equal(200);

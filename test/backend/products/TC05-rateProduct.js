@@ -57,7 +57,7 @@ describe("Edit product rate API url", function (){
 						.post('http://localhost:3000/api/product/updateProductRating')
 						.send({ id : product_id, rating : 1})
 						.end(function (err, res) {
-							res.status.should.be.equal(401);
+							res.status.should.be.equal(503);
 							done();
 						});
 					});
