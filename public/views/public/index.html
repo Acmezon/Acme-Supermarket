@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html ng-app="acme_supermarket">
 <head>
+	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 	<base href="/">
 	<!--TODO Head de la pestaña por secciones-->
-	<title>Acme-Supermarket - {{ 'Home.Title' | translate }}</title>
+	<title>Acme-Supermarket - {{$root.title | translate}}</title>
 	<link href="css/template_bootstrap/style.css" rel="stylesheet" type="text/css" media="all" />
     <link href="css/template_bootstrap/form.css" rel="stylesheet" type="text/css" media="all" />
 

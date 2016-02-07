@@ -429,7 +429,7 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 					method: 'POST', 
 					data: { 
 						rule: {
-							customer_id: $scope.role == "admin" ? form.customerid.$viewValue : -1,
+							customer_id: $scope.role == "admin" ? form.customerid.$viewValue : null,
 							periodicity: form.periodicity.$viewValue,
 							quantity: form.quantity.$viewValue,
 							startDate: new Date(Date.parse(form.startDate.$viewValue))
@@ -467,8 +467,8 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 		}).
 		then(function success(response2) {
 			var discounts_yes = response2.data;
-
-			$scope.tableParams2 = new ngTableParams({ count: 10 }, {counts: [5, 10, 20], dataset:discounts_yes, total: discounts_yes.length});
+			$scope.numDiscounts_yes = discounts_yes.length;
+			$scope.tableParams2 = new ngTableParams({ count: 10 }, {counts: [5, 10, 20], dataset:discounts_yes, total: $scope.numDiscounts_yes});
 
 			$http({
 				method: 'GET',
@@ -476,29 +476,29 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 			}).
 			then(function success(response3) {
 				var discounts = response3.data;
-
-				for (var i = 0; i < discounts.length; i++) {
-					var discount = discounts[i];
-					if(discountInArray(discount, discounts_yes)) {
-						discounts.splice(i, 1);
-					}
-				}
 				
-				$scope.tableParams = new ngTableParams({ count: 10 }, {counts: [5, 10, 20], dataset:discounts, total: discounts.length});
+				for (var i = 0; i < discounts_yes.length; i++) {
+					var discount = discounts_yes[i];
+					discounts.splice(indexDiscountInArray(discount, discounts), 1);
+				}
+
+				$scope.numDiscounts = discounts.length;
+				$scope.tableParams = new ngTableParams({ count: 10 }, {counts: [5, 10, 20], dataset:discounts, total: $scope.numDiscounts});
 			
 			});
 
 		});
 	}
 
-	var discountInArray = function (discount, array) {
+	var indexDiscountInArray = function (discount, array) {
+		var res = -1;
 		for (var i = 0; i < array.length; i++) {
-			if (array[i]._id === discount._id) {
-				return true;
+			if (array[i]._id == discount._id) {
+				res =  i;
+				break;
 			}
 	    }
-
-		return false;
+		return res;
 	}
 
 	$scope.addDiscount = function(discount_id) {
@@ -516,6 +516,8 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 				if (discount._id==discount_id){
 					$scope.tableParams.data.splice($scope.tableParams.data.indexOf(discount), 1);
 					$scope.tableParams2.data.push(discount);
+					$scope.numDiscounts--;
+					$scope.numDiscounts_yes++;
 				}
 			});
 		}, function error (response) {
@@ -543,6 +545,8 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 				if (discount._id==discount_id){
 					$scope.tableParams2.data.splice($scope.tableParams2.data.indexOf(discount), 1);
 					$scope.tableParams.data.push(discount);
+					$scope.numDiscounts++;
+					$scope.numDiscounts_yes--;
 				}
 			});
 		}, function error (response) {

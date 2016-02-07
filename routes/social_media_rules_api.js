@@ -30,6 +30,7 @@ exports.getAll = function (req, res) {
 											// Add product
 											copy.product_name = product.name;
 											copy.product_image = product.image;
+											copy.product_id = product._id;
 											r.push(copy)
 											_callback();
 										} else {

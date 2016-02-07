@@ -148,7 +148,7 @@ describe('Purchase creation', function () {
 			// Customer email
 			element(by.model('customerEmail')).sendKeys('belen.carrasco@example.com')
 			element(by.css('button.check')).click();
-			browser.waitForAngular();
+			browser.sleep(1000);
 			expect(element(by.css('div.alert')).isPresent()).toBe(true);
 
 			// Billing method
@@ -158,12 +158,12 @@ describe('Purchase creation', function () {
 			// Search a product
 			element(by.css('input#product_id')).sendKeys('50');
 			element(by.css('button#add')).click();
-			browser.waitForAngular();
+			browser.sleep(1000);
 
 			// Add product
 			expect(element.all(by.repeater('provide in provides')).count()).toBeGreaterThan(0);
 			element.all(by.repeater('provide in provides')).first().element(by.css('input#cart-btn')).click();
-			browser.waitForAngular();
+			browser.sleep(1000);
 			// Shopping cart updates
 			expect(element.all(by.repeater('product in shoppingcart')).count()).toBe(1);
 

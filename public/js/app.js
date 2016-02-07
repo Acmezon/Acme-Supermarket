@@ -204,45 +204,55 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 		when('/', {
 			templateUrl: 'views/public/home/home.html',
 			controller: 'HomeCtrl',
-			activetab: 'home'
+			activetab: 'home',
+			title: 'Title.Home'
 		}).
 		when('/home', {
 			templateUrl: 'views/public/home/home.html',
 			controller: 'HomeCtrl',
-			activetab: 'home'
+			activetab: 'home',
+			title: 'Title.Home'
 		}).
 		when('/contact', {
 			templateUrl: 'views/public/home/contact.html',
+			title: 'Title.Contact'
 		}).
 		when('/termsandconditions', {
 			templateUrl: 'views/public/home/termsandconditions.html',
+			title: 'Title.Terms'
 		}).
 		when('/cookies', {
 			templateUrl: 'views/public/home/cookies.html',
+			title: 'Title.Cookies'
 		}).
 		when('/about', {
 			templateUrl: 'views/public/home/about.html',
+			title: 'Title.About'
 		}).
 		when('/delivery', {
 			templateUrl: 'views/public/home/delivery.html',
+			title: 'Title.Delivery'
 		}).
 		when('/signin', {
 			templateUrl: 'views/public/signin/signin.html',
 			controller: 'SigninCtrl',
 			resolve : {
 				loggedin : notLoggedin
-			}
+			},
+			title: 'Title.Signin'
 		}).
 		when('/signout', {
 			templateUrl: 'views/public/signout/signout.html',
-			controller: 'SignoutCtrl'
+			controller: 'SignoutCtrl',
+			title: 'Title.Signout'
 		}).
 		when('/signup', {
 			templateUrl: 'views/public/signup/signup.html',
 			controller: 'SignupCtrl',
 			resolve : {
 				notloggedin : notLoggedin
-			}
+			},
+			title: 'Title.Signup'
 		}).
 		when('/myprofile', {
 			templateUrl: 'views/user/profile/profile.html',
@@ -250,7 +260,8 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			resolve: {
 				loggedin: checkLoggedin
 			},
-			activetab: 'account'
+			activetab: 'account',
+			title: 'Title.MyProfile'
 		}).
 		when('/mypurchasingrules', {
 			templateUrl: 'views/user/rules/myrules.html',
@@ -258,12 +269,14 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			resolve: {
 				customer: checkCustomer
 			},
-			activetab : "account"
+			activetab : "account",
+			title: 'Title.MyPurchasingRules'
 		}).
 		when('/products', {
 			templateUrl: 'views/public/products/products.html',
 			controller: 'ProductListCtrl',
-			activetab: 'products'
+			activetab: 'products',
+			title: 'Title.Product.List'
 		}).
 		when('/myproducts', {
 			templateUrl: 'views/public/products/products.html',
@@ -271,7 +284,8 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			resolve : {
 				supplier: checkSupplier
 			},
-			activetab: 'account'
+			activetab: 'account',
+			title: 'Title.Product.MyProducts'
 		}).
 		when('/products/create', {
 			templateUrl: 'views/products/create/createProduct.html',
@@ -279,7 +293,8 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			resolve : {
 				admin: checkAdmin
 			},
-			activetab: 'management'
+			activetab: 'management',
+			title: 'Title.Product.Creation'
 		}).
 		when('/product/:id', {
 			templateUrl: 'views/products/product.html',
@@ -287,14 +302,16 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			resolve: {
 				loggedin: checkLoggedin
 			},
-			activetab: 'products'
+			activetab: 'products',
+			title: 'Title.Product.Details'
 		}).
 		when('/shoppingcart', {
 			templateUrl: 'views/shoppingcart/shoppingcart.html',
 			controller: 'ShoppingCartCtrl',
 			resolve: {
 				customer: checkCustomer
-			}
+			},
+			title: 'Title.ShoppingCart'
 		}).
 		when('/customers', {
 			templateUrl: 'views/customer/customers.html',
@@ -302,7 +319,8 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			resolve: {
 				admin: checkAdmin
 			},
-			activetab: 'management'
+			activetab: 'management',
+			title: 'Title.Customers'
 		}).
 		when('/dashboard', {
 			templateUrl: 'views/dashboard/dashboard.html',
@@ -310,28 +328,32 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			resolve: {
 				admin: checkAdmin
 			},
-			activetab: 'socialmedia'
+			activetab: 'socialmedia',
+			title: 'Title.Dashboard'
 		}).
 		when('/checkout', {
 			templateUrl: 'views/checkout/checkout.html',
 			controller: 'CheckoutCtrl',
 			resolve: {
 				customer: checkCustomer
-			}
+			},
+			title: 'Title.Checkout.Checkout'
 		}).
 		when('/checkout/success/:id', {
 			templateUrl: 'views/checkout/confirm.html',
 			controller: 'CheckoutConfirmCtrl',
 			resolve: {
 				loggedin: checkLoggedin
-			}
+			},
+			title: 'Title.Checkout.Success'
 		}).
 		when('/checkout/error', {
 			templateUrl: 'views/checkout/confirm.html',
 			controller: 'CheckoutConfirmCtrl',
 			resolve: {
 				loggedin: checkLoggedin
-			}
+			},
+			title: 'Title.Checkout.Error'
 		}).
 		when('/mypurchases', {
 			templateUrl: 'views/purchases/purchases.html',
@@ -339,7 +361,8 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			resolve: {
 				customer: checkCustomer
 			},
-			activetab: 'account'
+			activetab: 'account',
+			title: 'Title.Purchase.MyPurchases'
 		}).
 		when('/purchases', {
 			templateUrl: 'views/purchases/purchases.html',
@@ -347,7 +370,8 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			resolve: {
 				admin: checkAdmin
 			},
-			activetab: 'management'
+			activetab: 'management',
+			title: 'Title.Puechase.List'
 		}).
 		when('/purchase/create', {
 			templateUrl: 'views/purchases/purchase-creation.html',
@@ -355,14 +379,16 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			resolve: {
 				admin: checkAdmin
 			},
-			activetab: 'management'
+			activetab: 'management',
+			title: 'Title.Purchase.Creation'
 		}).
 		when('/purchase/:id', {
 			templateUrl: 'views/purchases/purchase.html',
 			controller: 'PurchaseDetailsCtrl',
 			resolve: {
 				loggedin: checkLoggedin
-			}
+			},
+			title: 'Title.Purchase.Details'
 		}).
 		when('/management/rating', {
 			templateUrl: 'views/ratings/rating-create.html',
@@ -370,7 +396,8 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			resolve: {
 				admin: checkAdmin
 			},
-			activetab : 'management'
+			activetab : 'management',
+			title: 'Title.RatingManagement'
 		}).
 		when('/management/discounts', {
 			templateUrl: 'views/discounts/discounts.html',
@@ -378,7 +405,8 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			resolve: {
 				admin: checkAdmin
 			},
-			activetab: 'management'
+			activetab: 'management',
+			title: 'Title.Discounts'
 		}).
 		when('/purchasingrules', {
 			templateUrl: 'views/purchasing_rules/purchasing-rules.html',
@@ -386,7 +414,8 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			resolve: {
 				admin: checkAdmin
 			},
-			activetab: 'management'
+			activetab: 'management',
+			title: 'Title.PurchasingRules'
 		}).
 		when('/monitoringrules', {
 			templateUrl: 'views/social_media_rules/socialmediarules.html',
@@ -394,7 +423,8 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			resolve: {
 				admin: checkAdmin
 			},
-			activetab: 'socialmedia'
+			activetab: 'socialmedia',
+			title: 'Title.MonitoringRules.List'
 		}).
 		when('/monitoringrules/create', {
 			templateUrl: 'views/social_media_rules/socialmediarule.html',
@@ -402,25 +432,40 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			resolve: {
 				admin: checkAdmin
 			},
-			activetab: 'socialmedia'
+			activetab: 'socialmedia',
+			title: 'Title.MonitoringRules.Creation'
+		}).
+		when('/notifications/:id', {
+			templateUrl: 'views/notifications/notifications.html',
+			controller: 'NotificationsCtrl',
+			resolve: {
+				admin: checkAdmin
+			},
+			activetab: 'socialmedia',
+			title: 'Title.Notifications'
 		}).
 		when('/401', {
-			templateUrl: 'views/public/errors/401.html'
+			templateUrl: 'views/public/errors/401.html',
+			title: 'Title.401'
 		}).
 		when('/403', {
-			templateUrl: 'views/public/errors/403.html'
+			templateUrl: 'views/public/errors/403.html',
+			title: 'Title.403'
 		}).
 		when('/404', {
-			templateUrl: 'views/public/errors/404.html'
+			templateUrl: 'views/public/errors/404.html',
+			title: 'Title.404'
 		}).
 		when('/500', {
-			templateUrl: 'views/public/errors/500.html'
+			templateUrl: 'views/public/errors/500.html',
+			title: 'Title.500'
 		}).
 		when('/503', {
-			templateUrl: 'views/public/errors/503.html'
+			templateUrl: 'views/public/errors/503.html',
+			title: 'Title.503'
 		}).
 		otherwise({
-			redirectTo: '/404'
+			redirectTo: '/404',
 		});
 
 		$locationProvider.html5Mode(true);

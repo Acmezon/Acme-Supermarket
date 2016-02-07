@@ -22,6 +22,52 @@
 		"500" : "Internal server error",
 		"503" : "Service unavailable"
 	},
+	"Title" : {
+		"Home" : "Home",
+		"Contact" : "Contact",
+		"Terms" : "Terms and conditions",
+		"Cookies" : "Cookies",
+		"About" : "About",
+		"Delivery" : "Delivery",
+		"Signin" : "Sign in",
+		"Signout" : "Sign out",
+		"Signup" : "Sign up",
+		"MyProfile" : "My profile",
+		"MyPurchasingRules" : "My purchasing rules",
+		"Product" : {
+			"List" : "Products",
+			"MyProducts" : "My products",
+			"Creation" : "Create a product",
+			"Details" : "Product details"
+		},
+		"ShoppingCart" : "Shopping cart",
+		"Customers" : "Customers management",
+		"Dashboard" : "Dashboard",
+		"Checkout" : {
+			"Checkout" : "Checkout",
+			"Success" : "Purchase completed",
+			"Error" : "Purchase error"
+		},
+		"Purchase" : {
+			"MyPurchases" : "My purchases",
+			"List" : "Purchase management",
+			"Creation" : "Purchase for a customer",
+			"Details" : "Purchase details"
+		},
+		"RatingManagement" : "Rating management",
+		"Discounts" : "Discounts management",
+		"PurchasingRules" : "Purchasing rules management",
+		"Monitoring rules" : {
+			"List" : "Monitoring rules management",
+			"Creation" : "Create a monitoring rule"
+		},
+		"Notifications" : "Notifications",
+		"401" : "401 Error",
+		"403" : "403 Error",
+		"404" : "404 Error",
+		"500" : "500 Error",
+		"503" : "503 Error"
+	},
 	"Home": {
 		"Title": "Home",
 		"RecommendedProducts" : "Recommended Products",
@@ -602,5 +648,20 @@
 		"Error" : {
 			"Remove" : "There was an error with the operation. Please, try again later."
 		}
+	},
+	"Notifications" : {
+		"Title" : "Notifications",
+		"Empty" : {
+			"Title" : "Empty",
+			"Description" : "No notifications registered for this rule."
+		},
+		"Filled" : {
+			"Description1" : "There are ",
+			"Description2" : " notifications registered in the system."
+		},
+		"PercentageExceeded" : "Percentage exceeded",
+		"Moment" : "Moment",
+		"ProductId" : "Product ID",
+		"Product" : "Product"
 	}
 }

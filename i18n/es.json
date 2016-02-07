@@ -22,6 +22,52 @@
 		"500" : "Error interno del sistema",
 		"503" : "Servicio no disponible"
 	},
+	"Title" : {
+		"Home" : "Página principal",
+		"Contact" : "Contacto",
+		"Terms" : "Términos y condiciones de uso",
+		"Cookies" : "Cookies",
+		"About" : "Sobre nosotros",
+		"Delivery" : "Reparto y envíos",
+		"Signin" : "Iniciar sesión",
+		"Signout" : "Salir",
+		"Signup" : "Registrarse",
+		"MyProfile" : "Mi perfil",
+		"MyPurchasingRules" : "Mis reglas de compra",
+		"Product" : {
+			"List" : "Productos",
+			"MyProducts" : "Mis productos",
+			"Creation" : "Crear un producto",
+			"Details" : "Detalles de producto"
+		},
+		"ShoppingCart" : "Carrito de la compra",
+		"Customers" : "Administración de clientes",
+		"Dashboard" : "Panel de control",
+		"Checkout" : {
+			"Checkout" : "Comprar",
+			"Success" : "Compra completada",
+			"Error" : "Error de compra"
+		},
+		"Purchase" : {
+			"MyPurchases" : "Mis compras",
+			"List" : "Administración de compras",
+			"Creation" : "Comprar por un cliente",
+			"Details" : "Detalles de compra"
+		},
+		"RatingManagement" : "Administración de valoraciones",
+		"Discounts" : "Administración de descuentos",
+		"PurchasingRules" : "Administración de reglas de compra",
+		"Monitoring rules" : {
+			"List" : "Administración de reglas de monitorización de redes sociales",
+			"Creation" : "Crear una regla de monitorización"
+		},
+		"Notifications" : "Notificaciones",
+		"401" : "Error 401",
+		"403" : "Error 403",
+		"404" : "Error 404",
+		"500" : "Error 500",
+		"503" : "Error 503"
+	},
 	"Home": {
 		"Title": "Inicio",
 		"RecommendedProducts" : "Productos Recomendados",
@@ -600,5 +646,20 @@
 		"Error" : {
 			"Remove" : "Hubo un error en la operación. Por favor, inténtelo de nuevo más tarde."
 		}
+	},
+	"Notifications" : {
+		"Title" : "Notificaciones",
+		"Empty" : {
+			"Title" : "Vacío",
+			"Description" : "No existen notificaciones para esta regla."
+		},
+		"Filled" : {
+			"Description1" : "Hay ",
+			"Description2" : " notificaciones registradas en el sistema."
+		},
+		"PercentageExceeded" : "Porcentaje excedido",
+		"Moment" : "Momento",
+		"ProductId" : "ID de producto",
+		"Product" : "Producto"
 	}
 }

@@ -43,12 +43,15 @@ exports.createPurchasingRule = function(req, res) {
 					});
 				} else {
 					if(rule_data.customer_id) {
+
+						console.log(1)
 						res.sendStatus(403);
 						return;
 					}
 
 					CustomerService.getPrincipalCustomer(req.cookies.session, req.app.get('superSecret'), function (customer) {
 						if(!customer) {
+							console.log(2)
 							res.status(403).json({success: false, message: "Doesnt have permission"});							
 						} else {
 							PurchasingRuleService.customerHasRule(cookie, jwtKey, req.body.provide_id, function (result) {

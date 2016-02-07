@@ -11,8 +11,8 @@ exports.config = {
 	},
 	seleniumAddress: 'http://localhost:4444/wd/hub',
 	specs: [
-		'backend/**/*.js'
-
+		'backend/**/*.js',
+		'e2e/**/*.js'
 	]/*,
 	beforeLaunch: function() {
 		request("http://localhost:3000")

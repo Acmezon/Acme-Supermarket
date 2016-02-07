@@ -63,7 +63,8 @@
 										<div class="cart-left">
 											<p class="title">{{product.name}}</p>
 											<div class="price1">
-												<span class="actual">{{product.minPrice}} - {{product.maxPrice}} €</span>
+												<span class="actual" ng-if="product.minPrice">{{product.minPrice}} - {{product.maxPrice}} €</span>
+												<span class="red-text" ng-if="!product.minPrice">{{'Products.NotAvailable' | translate}}</span>
 											</div>
 										</div>
 										<div class="cart-right"></div>

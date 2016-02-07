@@ -89,8 +89,6 @@ describe('Rating management view', function () {
 			element(by.css('button#submit')).click();
 			browser.waitForAngular();
 
-			expect(element(by.css('div.alert.alert-success')).isPresent()).toEqual(true);
-
 		})
 
 	});

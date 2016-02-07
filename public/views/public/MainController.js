@@ -4,6 +4,10 @@ angular.module('acme_supermarket').registerCtrl('MainCtrl', ['$scope', '$http', 
 
 	$scope.$route = $route;
 	
+	$rootScope.$on("$routeChangeSuccess", function(currentRoute, previousRoute){
+		$rootScope.title = $route.current.title;
+	});
+	
 	// Function invoked by login submit
 	$scope.signout = function() {
 		$http.get('/api/signout')

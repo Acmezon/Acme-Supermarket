@@ -38,7 +38,7 @@
 							{{'SocialMediaRules.'+socialmediarule._type | translate}}
 						</td>
 						<td data-title="'SocialMediaRules.Notifications' | translate">
-							<a href="">
+							<a href="/notifications/{{socialmediarule._id}}">
 								<button type="button" class="btn btn-info btn-sm">
 									<span class="glyphicon glyphicon-info-sign"></span>
 								</button>
@@ -53,7 +53,7 @@
 								{{socialmediarule.product_id}}
 						</td>
 						<td data-title="'SocialMediaRules.Product' | translate" filter="{ product_name: 'text'}" sortable="'product_name'">
-							<a href="/product/{{socialmediarule._id}}" ng-if="socialmediarule._type=='ProductRule'">
+							<a href="/product/{{socialmediarule.product_id}}" ng-if="socialmediarule._type=='ProductRule'">
 								<img width="16" height="16" src="img/{{socialmediarule.product_image}}">
 								{{socialmediarule.product_name}}
 							</a>

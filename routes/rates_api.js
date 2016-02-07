@@ -43,13 +43,11 @@ exports.manageRating = function (req, res) {
 			if (role=='admin') {
 				
 				RateService.rateProductForCustomer(customer, product_id, value, function (err, saved) {
-
 					if(err) {
-						res.status(parseInt(err.code)).json({success: false})
+						res.status(err.code).json({success: false})
 					} else {
-						res.status(200);
+						res.sendStatus(200);
 					}
-
 				});
 
 			} else {

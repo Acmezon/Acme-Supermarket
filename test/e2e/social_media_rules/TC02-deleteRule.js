@@ -33,7 +33,6 @@ describe('Social media monitoring rules page', function () {
 			element(by.css('span#rules-length')).getText().then (function (new_number) {
 				new_number = parseInt(new_number);
 				expect(new_number).toEqual(number-1);
-				expect(element(by.css('div.alert.alert-success')).isPresent()).toEqual(true);
 			});
 		});
 	});

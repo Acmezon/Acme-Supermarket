@@ -49,8 +49,13 @@ describe('Checkout page', function () {
 
 		// Visit product
 		browser.get('http://localhost:3000/products');
+		element(by.css('img.v-middle')).click()
+		element(by.cssContainingText('option', 'Price')).click();
+
+		browser.sleep(2000)
 		var product = element.all(by.css('.product')).first();
 		product.click();
+		browser.sleep(2000)
 
 		// Add to shopping cart
 		var cartbtn = element.all(by.id('cart-btn')).first();
@@ -58,6 +63,7 @@ describe('Checkout page', function () {
 		cartbtn.click();
 		cartbtn.click();
 		cartbtn.click();
+		browser.sleep(2000)
 
 		// Shopping cart view page
 		browser.get('http://localhost:3000/shoppingcart');
@@ -66,15 +72,17 @@ describe('Checkout page', function () {
 		element(by.css('button.btn-arrow-right')).click()
 
 		expect(browser.getCurrentUrl()).toEqual('http://localhost:3000/checkout');
+		browser.sleep(2000)
 		expect(element.all(by.repeater('product in shoppingcart')).count()).toBeGreaterThan(0);
 
 		// Select delivery period
 		element.all(by.css('div.list-group>a')).first().click();
-
+		
 		// Purchase
+		browser.sleep(2000)
 		element(by.css('button.btn-arrow-right')).click();
-		browser.waitForAngular();
 
+		browser.sleep(3000)
 		browser.getCurrentUrl().then( function (url) {
 			expect(url.indexOf('success')).toBeGreaterThan(-1)
 		});

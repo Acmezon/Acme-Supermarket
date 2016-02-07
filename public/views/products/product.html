@@ -42,10 +42,10 @@
 							<uib-rating ng-model="product_rating" class="rating" max="max" ng-click="rateProduct(product_rating)"></uib-rating>
 						</div>
 						<!--<div class="rating" data-stars="{{product.rating}}"></div>-->
-						<h3 class="m_3" editable-text="product.name" e-maxlength="100" e-form="textNameForm" e-placeholder="{{ 'Product.Create.Name' | translate }}" onbeforesave="updateProduct('name', $data)">{{product.name}}</h3>
+						<h3 id="product-name" class="m_3" editable-text="product.name" e-maxlength="100" e-form="textNameForm" e-placeholder="{{ 'Product.Create.Name' | translate }}" onbeforesave="updateProduct('name', $data)">{{product.name}}</h3>
 						<p class="price">{{product.minPrice}} - {{product.maxPrice}} €</p>
 						<p class="m_4">{{product.code}}</p>
-						<p class="m_text2" editable-textarea="product.description" e-form="textDescForm" e-rows="10" e-cols="70" e-maxlength="1000" e-placeholder="{{ 'Product.Create.Description' | translate }}" onbeforesave="updateProduct('description', $data)">{{product.description}}</p>
+						<p id="product-description" class="m_text2" editable-textarea="product.description" e-form="textDescForm" e-rows="10" e-cols="70" e-maxlength="1000" e-placeholder="{{ 'Product.Create.Description' | translate }}" onbeforesave="updateProduct('description', $data)">{{product.description}}</p>
 
 						<div ng-if="out_suppliers.length > 0">
 							<div ng-repeat="provide in out_suppliers">
@@ -90,8 +90,12 @@
 							</div>
 						</div>
 
-						<p class="m_3" ng-show="out_suppliers.length===0">{{'Products.Supplier.Empty' | translate}}</p>
-						<table class="table table-responsive table-bordered table-hover table-provides" ng-show="out_suppliers.length>0">
+						<p class="m_3" ng-show="out_suppliers.length===0">{{'Products.Supplier.Empty' | translate}} 
+							<button id="new-provide-admin" class="btn btn-primary" ng-click="isAdding=true">
+								<span class="glyphicon glyphicon-plus"></span>
+							</button>
+						</p>
+						<table class="table table-responsive table-bordered table-hover table-provides" ng-show="out_suppliers.length>0 || isAdding">
 							<thead>
 								<th>{{'Products.Supplier.Name' | translate}}</th>
 								<th>{{'Products.Supplier.Reputation' | translate}}</th>
@@ -111,19 +115,19 @@
 									<td class="row-price">
 										{{provide.price | number:2}} €
 									</td>
-									<td ng-if="role=='customer'" class="add-to-cart">
+									<td ng-if="role=='customer'" class="add-to-cart" restrict access="customer">
 										<div class="btn_form" >
 											<form class="btn_form">
 												<input id="cart-btn" type="submit" ng-click="addToCart(provide._id)" value="{{ 'Products.AddToCart' | translate }}" title="" />
 											</form>
 										</div>
 									</td>
-									<td ng-if="role=='customer'" class="create-rule">
+									<td ng-if="role=='customer'" class="create-rule" restrict access="customer">
 										<p ng-show="provide.customerHasRule">{{ 'Product.AlreadyHasRule' | translate }} <a href="/mypurchasingrules">{{ 'Header.Account.MyPurchasingRules' | translate }}</a></p>
-										<button ng-if="!provide.customerHasRule" type="button" class="btn btn-primary" data-toggle="modal" data-target="#create-rule-{{provide._id}}">{{ 'Product.CreateRule.Title' | translate }}</button>
+										<button id="create-rule-customer" ng-if="!provide.customerHasRule" type="button" class="btn btn-primary" data-toggle="modal" data-target="#create-rule-{{provide._id}}">{{ 'Product.CreateRule.Title' | translate }}</button>
 									</td>
-									<td ng-if="role=='admin'" class="create-rule">
-										<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#create-rule-{{provide._id}}">{{ 'Product.CreateRule.Title' | translate }}</button>
+									<td ng-if="role=='admin'" class="create-rule" restrict access="admin">
+										<button id="create-rule-admin" type="button" class="btn btn-primary" data-toggle="modal" data-target="#create-rule-{{provide._id}}">{{ 'Product.CreateRule.Title' | translate }}</button>
 									</td>
 								</tr>
 							</tbody>
@@ -202,7 +206,7 @@
 					<div class="row">
 						<div class="col-md-6">
 							<table id="table-available-discounts" ng-table="tableParams" class="table table-bordered table-hover table-condensed editable-table" show-filter="true">
-								<caption>{{'Discounts.Available' | translate}}: <span>{{tableParams.total()}}</span></caption>
+								<caption>{{'Discounts.Available' | translate}}: <span>{{numDiscounts}}</span></caption>
 
 								<colgroup>
 									<col width="75%" />
@@ -231,7 +235,7 @@
 						<div class="col-md-6">
 
 							<table id="table-applied-discounts" ng-table="tableParams2" class="table table-bordered table-hover table-condensed editable-table" show-filter="true">
-								<caption>{{'Discounts.Applied' | translate}}: <span>{{tableParams2.total()}}</span></caption>
+								<caption>{{'Discounts.Applied' | translate}}: <span>{{numDiscounts_yes}}</span></caption>
 
 								<colgroup>
 									<col width="75%" />

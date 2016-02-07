@@ -13,7 +13,7 @@ describe('Product rating and Provide rating', function () {
 		element.all(by.css('div.top-box>div>div>a>div')).first().click();;
 		browser.waitForAngular();
 
-		var ratingElement = element(by.model('rate'));
+		var ratingElement = element(by.model('product_rating'));
 		expect(ratingElement.isPresent()).toBe(false);
 		expect(browser.getCurrentUrl()).toEqual('http://localhost:3000/401');
 	});
@@ -31,7 +31,7 @@ describe('Product rating and Provide rating', function () {
 		element.all(by.css('div.top-box>div>div>a>div')).first().click();;
 		browser.waitForAngular();
 
-		var ratingElement = element(by.model('rate'));
+		var ratingElement = element(by.model('product_rating'));
 		expect(ratingElement.isPresent()).toBe(false);
 
 		var supplierRElement = element(by.model('provide.reputation'));
@@ -62,7 +62,7 @@ describe('Product rating and Provide rating', function () {
 		element.all(by.repeater('purchaseline in purchase_list')).last().element(by.model('purchaseline.product._id')).click();
 		browser.waitForAngular();
 
-		var ratingElement = element(by.model('value'));
+		var ratingElement = element(by.model('product_rating'));
 		expect(ratingElement.isPresent()).toBe(true);
 
 		var supplierRElement = element(by.model('provide.reputation'));

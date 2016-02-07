@@ -6,7 +6,7 @@
 	</ul>
 	<h2 class="head">{{'Profile.PurchasingRules' | translate}}</h2> 
 	
-	<div ng-if="$data.length>0" style="z-index:100000; position:relative">
+	<div style="z-index:100000; position:relative">
 		<div ng-repeat="rule in $data">
 			<!-- Modal content-->
 			<div class="modal fade" id="delete-{{rule._id}}" role="dialog" >
