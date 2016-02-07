@@ -2,7 +2,7 @@
 
 <!-- Carousel
 	================================================== -->
-<div class="overlay"><h1>Texto opcional</h1></div>
+<div class="overlay"><h1>Acme-Supermarket</h1></div>
 <div id="banner" class="carousel slide">
 	<!-- Indicators -->
 	<ol class="carousel-indicators">
@@ -14,6 +14,7 @@
 			<img src="img/template_bootstrap/banner.jpg" class="img-responsive">
 			<div class="container">
 				<div class="carousel-caption">
+					<a href="/products">{{ 'Home.CheckItOut' | translate }}</a>
 				</div>
 			</div>
 		</div>
@@ -21,7 +22,7 @@
 			<img src="img/template_bootstrap/banner1.jpg" class="img-responsive">
 			<div class="container">
 				<div class="carousel-caption">
-
+					<a href="/products">{{ 'Home.CheckItOut' | translate }}</a>
 				</div>
 			</div>
 		</div>
@@ -127,18 +128,7 @@
 						});						
 					</script>
 					<div class="btn">
-						<a href="/products">{{ 'Home.CheckItOut' | translate }}</a>
-					</div>
-				</div>
-				<div class="top-border"></div>
-				<div class="sidebar-bottom">
-					<h2 class="m_1" ng-bind-html="'Home.NewslettersSignup' | translate | htmlSafe"></h2>
-					<p class="m_text">Lorem ipsum dolor sit amet, consectetuer</p>
-					<div class="subscribe">
-						<form>
-							<input name="userName" type="text" class="textbox">
-							<input type="submit" value="{{'Home.Subscribe' | translate }}">
-						</form>
+						<a href="/products" style="margin-left: 100%">{{ 'Home.CheckItOut' | translate }}</a>
 					</div>
 				</div>
 			</div>

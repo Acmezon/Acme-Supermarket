@@ -6,7 +6,8 @@ var Schema = mongoose.Schema,
 	IsOver = require('./is_over'),
 	SocialMediaProductData = require('./social_media_product_data'),
 	BelongsTo = require('./belongs_to'),
-	Provide = require('./provide');
+	Provide = require('./provide'),
+	random = require('mongoose-simple-random');
 
 var productSchema = mongoose.Schema({
 	name: {type: String, required: true, minlength: 1, maxlength: 100},
@@ -19,6 +20,7 @@ var productSchema = mongoose.Schema({
 });
 
 productSchema.plugin(autoIncrement.plugin, 'Product');
+productSchema.plugin(random);
 
 module.exports = mongoose.model('Product', productSchema);
 
