@@ -410,3 +410,8 @@ form.create-rule_form div.input-group {
 .red-text {
 	color: red;
 }
+
+.caption>p.m_text {
+	text-align: justify;
+    text-justify: inter-word;
+}
