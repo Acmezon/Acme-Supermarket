@@ -579,7 +579,8 @@ exports.getSupplierProductsFiltered = function(req, res) {
 		filter_id_category = parseInt(req.body.categoryFilter) || -1,
 		filter_maxPrice = req.body.priceFilter ? parseInt(req.body.priceFilter) || -1 : -1,
 		filter_minRating = parseInt(req.body.ratingFilter) || 0,
-		filter_maxRating = filter_minRating == 0 ? 5 : parseInt(req.body.ratingFilter) + 1 || 5;
+		filter_maxRating = filter_minRating == 0 ? 5 : parseInt(req.body.ratingFilter) + 1 || 5,
+		filter_text = req.body.textSearch;
 
 	SupplierService.getPrincipalSupplier(req.cookies.session, req.app.get('superSecret'), function (supplier) {
 		if(supplier != null) {
@@ -599,51 +600,85 @@ exports.getSupplierProductsFiltered = function(req, res) {
 			var ord_tuple = {};
 			ord_tuple[ordering_sort] = ordering_order;
 
-			if (filter_id_category != -1) {
-				// CATEGORY FILTER ACTIVATED
-				BelongsTo.find({
-						'category_id': filter_id_category
-					}).select('product_id')
-					.sort({
-						'product_id': 1
-					})
-					.exec(function(err, belongs) {
-						if (err) {
-							res.status(500).json({
-								success: false,
-								message: err
-							});
-						} else {
-							// CONTINUE
-							var product_ids = belongs.map(function(belong) {
-								return belong.product_id;
-							});
-
-							Provide
-							.find({
-								supplier_id: filter_supplier_id,
-								deleted: false
-							})
-							.select({
-								'product_id': 1
-							})
-							.sort({
-								'product_id': 1
-							})
-							.exec(function(err, provides) {
-
-								// Intersects the two ids filters (BelongsTo and ProvidesBySupplier)
-								var aux = provides.map(function(provide) {
-									return provide.product_id;
+			if (filter_text) {
+				// NAME FILTER ACTIVATED
+				if (filter_id_category != -1) {
+					// CATEGORY FILTER ACTIVATED
+					BelongsTo.find({
+							'category_id': filter_id_category
+						}).select('product_id')
+						.sort({
+							'product_id': 1
+						})
+						.exec(function(err, belongs) {
+							if (err) {
+								res.status(500).json({
+									success: false,
+									message: err
 								});
-								product_ids = db_utils.intersect_safe(product_ids, aux);
+							} else {
+								// CONTINUE
+								var product_ids = belongs.map(function(belong) {
+									return belong.product_id;
+								});
 
-								if (filter_maxPrice != -1) {
-									// PRICE FILTER ACTIVATED
-									Product.find({
-											maxPrice: {
-												$lt: filter_maxPrice
-											},
+								Provide
+								.find({
+									supplier_id: filter_supplier_id,
+									deleted: false
+								})
+								.select({
+									'product_id': 1
+								})
+								.sort({
+									'product_id': 1
+								})
+								.exec(function(err, provides) {
+
+									// Intersects the two ids filters (BelongsTo and ProvidesBySupplier)
+									var aux = provides.map(function(provide) {
+										return provide.product_id;
+									});
+									product_ids = db_utils.intersect_safe(product_ids, aux);
+
+									if (filter_maxPrice != -1) {
+										// PRICE FILTER ACTIVATED
+										Product.find({
+												$text:{$search: filter_text},
+												maxPrice: {
+													$lt: filter_maxPrice
+												},
+												avgRating: {
+													$gte: filter_minRating,
+													$lt: filter_maxRating
+												},
+												'_id': {
+													$in: product_ids
+												}
+											}).select({
+												'_id': 1,
+												'name': 1,
+												'image': 1,
+												'minPrice': 1,
+												'maxPrice': 1,
+												'avgRating': 1
+											})
+											.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
+											.exec(function(err, products) {
+												if (err) {
+													res.status(500).json({
+														success: false,
+														message: err
+													});
+												} else {
+													res.status(200).json(products);
+												}
+											});
+									} else {
+										// PRICE FILTER DEACTIVATED
+										Product
+										.find({
+											$text:{$search: filter_text},
 											avgRating: {
 												$gte: filter_minRating,
 												$lt: filter_maxRating
@@ -670,64 +705,66 @@ exports.getSupplierProductsFiltered = function(req, res) {
 												res.status(200).json(products);
 											}
 										});
-								} else {
-									// PRICE FILTER DEACTIVATED
-									Product
-									.find({
-										avgRating: {
-											$gte: filter_minRating,
-											$lt: filter_maxRating
-										},
-										'_id': {
-											$in: product_ids
-										}
-									}).select({
-										'_id': 1,
-										'name': 1,
-										'image': 1,
-										'minPrice': 1,
-										'maxPrice': 1,
-										'avgRating': 1
-									})
-									.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
-									.exec(function(err, products) {
-										if (err) {
-											res.status(500).json({
-												success: false,
-												message: err
-											});
-										} else {
-											res.status(200).json(products);
-										}
-									});
-								}
-							});
-						}
-					});
-			} else {
-				// CATEGORY FILTER DEACTIVATED
+									}
+								});
+							}
+						});
+				} else {
+					// CATEGORY FILTER DEACTIVATED
 
-				Provide
-				.find({
-					supplier_id: filter_supplier_id,
-					deleted: false
-				})
-				.select({
-					'product_id': 1,
-					'supplier_id' : 1
-				})
-				.exec(function (err, provides) {
+					Provide
+					.find({
+						supplier_id: filter_supplier_id,
+						deleted: false
+					})
+					.select({
+						'product_id': 1,
+						'supplier_id' : 1
+					})
+					.exec(function (err, provides) {
 
-					var product_ids = provides.map(function (provide) {
-						return provide.product_id;
-					});
+						var product_ids = provides.map(function (provide) {
+							return provide.product_id;
+						});
 
-					if (filter_maxPrice != -1) {
-						// PRICE FILTER ACTIVATED
-						Product.find({
-								maxPrice: {
-									$lt: filter_maxPrice
-								},
+						if (filter_maxPrice != -1) {
+							// PRICE FILTER ACTIVATED
+							Product.find({
+									$text:{$search: filter_text},
+									maxPrice: {
+										$lt: filter_maxPrice
+									},
+									avgRating: {
+										$gte: filter_minRating,
+										$lt: filter_maxRating
+									},
+									'_id': {
+										$in: product_ids
+									}
+								}).select({
+									'_id': 1,
+									'name': 1,
+									'image': 1,
+									'minPrice': 1,
+									'maxPrice': 1,
+									'avgRating': 1
+								})
+								.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
+								.exec(function(err, products) {
+									if (err) {
+										res.status(500).json({
+											success: false,
+											message: err
+										});
+									} else {
+										res.status(200).json(products);
+									}
+								});
+						} else {
+							// PRICE FILTER DEACTIVATED
+							Product
+							.find({
+								$text:{$search: filter_text},
 								avgRating: {
 									$gte: filter_minRating,
 									$lt: filter_maxRating
@@ -754,38 +791,200 @@ exports.getSupplierProductsFiltered = function(req, res) {
 									res.status(200).json(products);
 								}
 							});
-					} else {
-						// PRICE FILTER DEACTIVATED
-						Product
-						.find({
-							avgRating: {
-								$gte: filter_minRating,
-								$lt: filter_maxRating
-							},
-							'_id': {
-								$in: product_ids
-							}
-						}).select({
-							'_id': 1,
-							'name': 1,
-							'image': 1,
-							'minPrice': 1,
-							'maxPrice': 1,
-							'avgRating': 1
+						}
+					});
+				}
+
+			} else {
+				// NAME FILTER DEACTIVATED
+				if (filter_id_category != -1) {
+					// CATEGORY FILTER ACTIVATED
+					BelongsTo.find({
+							'category_id': filter_id_category
+						}).select('product_id')
+						.sort({
+							'product_id': 1
 						})
-						.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
-						.exec(function(err, products) {
+						.exec(function(err, belongs) {
 							if (err) {
 								res.status(500).json({
 									success: false,
 									message: err
 								});
 							} else {
-								res.status(200).json(products);
+								// CONTINUE
+								var product_ids = belongs.map(function(belong) {
+									return belong.product_id;
+								});
+
+								Provide
+								.find({
+									supplier_id: filter_supplier_id,
+									deleted: false
+								})
+								.select({
+									'product_id': 1
+								})
+								.sort({
+									'product_id': 1
+								})
+								.exec(function(err, provides) {
+
+									// Intersects the two ids filters (BelongsTo and ProvidesBySupplier)
+									var aux = provides.map(function(provide) {
+										return provide.product_id;
+									});
+									product_ids = db_utils.intersect_safe(product_ids, aux);
+
+									if (filter_maxPrice != -1) {
+										// PRICE FILTER ACTIVATED
+										Product.find({
+												maxPrice: {
+													$lt: filter_maxPrice
+												},
+												avgRating: {
+													$gte: filter_minRating,
+													$lt: filter_maxRating
+												},
+												'_id': {
+													$in: product_ids
+												}
+											}).select({
+												'_id': 1,
+												'name': 1,
+												'image': 1,
+												'minPrice': 1,
+												'maxPrice': 1,
+												'avgRating': 1
+											})
+											.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
+											.exec(function(err, products) {
+												if (err) {
+													res.status(500).json({
+														success: false,
+														message: err
+													});
+												} else {
+													res.status(200).json(products);
+												}
+											});
+									} else {
+										// PRICE FILTER DEACTIVATED
+										Product
+										.find({
+											avgRating: {
+												$gte: filter_minRating,
+												$lt: filter_maxRating
+											},
+											'_id': {
+												$in: product_ids
+											}
+										}).select({
+											'_id': 1,
+											'name': 1,
+											'image': 1,
+											'minPrice': 1,
+											'maxPrice': 1,
+											'avgRating': 1
+										})
+										.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
+										.exec(function(err, products) {
+											if (err) {
+												res.status(500).json({
+													success: false,
+													message: err
+												});
+											} else {
+												res.status(200).json(products);
+											}
+										});
+									}
+								});
 							}
 						});
-					}
-				});
+				} else {
+					// CATEGORY FILTER DEACTIVATED
+
+					Provide
+					.find({
+						supplier_id: filter_supplier_id,
+						deleted: false
+					})
+					.select({
+						'product_id': 1,
+						'supplier_id' : 1
+					})
+					.exec(function (err, provides) {
+
+						var product_ids = provides.map(function (provide) {
+							return provide.product_id;
+						});
+
+						if (filter_maxPrice != -1) {
+							// PRICE FILTER ACTIVATED
+							Product.find({
+									maxPrice: {
+										$lt: filter_maxPrice
+									},
+									avgRating: {
+										$gte: filter_minRating,
+										$lt: filter_maxRating
+									},
+									'_id': {
+										$in: product_ids
+									}
+								}).select({
+									'_id': 1,
+									'name': 1,
+									'image': 1,
+									'minPrice': 1,
+									'maxPrice': 1,
+									'avgRating': 1
+								})
+								.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
+								.exec(function(err, products) {
+									if (err) {
+										res.status(500).json({
+											success: false,
+											message: err
+										});
+									} else {
+										res.status(200).json(products);
+									}
+								});
+						} else {
+							// PRICE FILTER DEACTIVATED
+							Product
+							.find({
+								avgRating: {
+									$gte: filter_minRating,
+									$lt: filter_maxRating
+								},
+								'_id': {
+									$in: product_ids
+								}
+							}).select({
+								'_id': 1,
+								'name': 1,
+								'image': 1,
+								'minPrice': 1,
+								'maxPrice': 1,
+								'avgRating': 1
+							})
+							.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
+							.exec(function(err, products) {
+								if (err) {
+									res.status(500).json({
+										success: false,
+										message: err
+									});
+								} else {
+									res.status(200).json(products);
+								}
+							});
+						}
+					});
+				}
 			}
 		} else {
 			res.status(403).json({success: false, message: "Doesnt have permission"});
@@ -800,159 +999,318 @@ exports.countSupplierProductsFiltered = function(req, res) {
 	var filter_id_category = parseInt(req.body.categoryFilter) || -1,
 		filter_maxPrice = req.body.priceFilter ? parseInt(req.body.priceFilter) || -1 : -1,
 		filter_minRating = parseInt(req.body.ratingFilter) || 0,
-		filter_maxRating = filter_minRating == 0 ? 5 : parseInt(req.body.ratingFilter) + 1 || 5;
+		filter_maxRating = filter_minRating == 0 ? 5 : parseInt(req.body.ratingFilter) + 1 || 5,
+		filter_text = req.body.textSearch;
 
 	SupplierService.getPrincipalSupplier(req.cookies.session, req.app.get('superSecret'), function (supplier) {
 		if(supplier != null) {
 			var filter_supplier_id = supplier.id;
 
-			if (filter_id_category != -1) {
-				// CATEGORY FILTER ACTIVATED
-				BelongsTo.find({
-					'category_id': filter_id_category
-				}).select({
-					'product_id': 1
-				}).sort({
-					'product_id': 1
-				}).exec(function(err, belongs) {
-					if (err) {
-						res.status(500).json({
-							success: false,
-							message: err
-						});
-					} else {
-						var product_ids = belongs.map(function(belong) {
-							return belong.product_id;
-						});
-
-						// CONTINUE
-						Provide
-					.find({
-							supplier_id: filter_supplier_id
-						})
-						.select({
-							'product_id': 1
-						})
-						.sort({
-							'product_id': 1
-						})
-						.exec(function(err, provides) {
-
-							// Intersects the two ids filters (BelongsTo and ProvidesBySupplier)
-							var aux = provides.map(function(provide) {
-								return provide.product_id;
+			if (filter_text) {
+				// NAME FILTER ACTIVATED
+				if (filter_id_category != -1) {
+					// CATEGORY FILTER ACTIVATED
+					BelongsTo.find({
+						'category_id': filter_id_category
+					}).select({
+						'product_id': 1
+					}).sort({
+						'product_id': 1
+					}).exec(function(err, belongs) {
+						if (err) {
+							res.status(500).json({
+								success: false,
+								message: err
+							});
+						} else {
+							var product_ids = belongs.map(function(belong) {
+								return belong.product_id;
 							});
 
-							product_ids = db_utils.intersect_safe(product_ids, aux);
+							// CONTINUE
+							Provide
+						.find({
+								supplier_id: filter_supplier_id
+							})
+							.select({
+								'product_id': 1
+							})
+							.sort({
+								'product_id': 1
+							})
+							.exec(function(err, provides) {
 
-							if (filter_maxPrice != -1) {
-								// PRICE FILTER ACTIVATED
-								Product.count({
-									maxPrice: {
-										$lt: filter_maxPrice
-									},
-									avgRating: {
-										$gte: filter_minRating,
-										$lt: filter_maxRating
-									},
-									'_id': {
-										$in: product_ids
-									}
-								}).exec(function(err, number) {
-									if (err) {
-										res.status(500).json({
-											success: false,
-											message: err
-										});
-									} else {
-										res.status(200).json(number);
-									}
+								// Intersects the two ids filters (BelongsTo and ProvidesBySupplier)
+								var aux = provides.map(function(provide) {
+									return provide.product_id;
 								});
-							} else {
-								// PRICE FILTER DEACTIVATED
-								Product.count({
-									avgRating: {
-										$gte: filter_minRating,
-										$lt: filter_maxRating
-									},
-									'_id': {
-										$in: product_ids
-									}
-								}).exec(function(err, number) {
-									if (err) {
-										res.status(500).json({
-											success: false,
-											message: err
-										});
-									} else {
-										res.status(200).json(number);
-									}
-								});
-							}
-						});
-					}
-				});
-			} else {
-				// CATEGORY FILTER DEACTIVATED
 
-				Provide
-				.find({
-					supplier_id: filter_supplier_id
-				})
-				.select({
-					'product_id': 1
-				})
-				.exec(function(err, provides) {
+								product_ids = db_utils.intersect_safe(product_ids, aux);
 
-					var product_ids = provides.map(function(provide) {
-						return provide.product_id;
+								if (filter_maxPrice != -1) {
+									// PRICE FILTER ACTIVATED
+									Product.count({
+										$text:{$search: filter_text},
+										maxPrice: {
+											$lt: filter_maxPrice
+										},
+										avgRating: {
+											$gte: filter_minRating,
+											$lt: filter_maxRating
+										},
+										'_id': {
+											$in: product_ids
+										}
+									}).exec(function(err, number) {
+										if (err) {
+											res.status(500).json({
+												success: false,
+												message: err
+											});
+										} else {
+											res.status(200).json(number);
+										}
+									});
+								} else {
+									// PRICE FILTER DEACTIVATED
+									Product.count({
+										$text:{$search: filter_text},
+										avgRating: {
+											$gte: filter_minRating,
+											$lt: filter_maxRating
+										},
+										'_id': {
+											$in: product_ids
+										}
+									}).exec(function(err, number) {
+										if (err) {
+											res.status(500).json({
+												success: false,
+												message: err
+											});
+										} else {
+											res.status(200).json(number);
+										}
+									});
+								}
+							});
+						}
 					});
+				} else {
+					// CATEGORY FILTER DEACTIVATED
 
-					if (filter_maxPrice != -1) {
-						// PRICE FILTER ACTIVATED
-						Product.count({
-							maxPrice: {
-								$lt: filter_maxPrice
-							},
-							avgRating: {
-								$gte: filter_minRating,
-								$lt: filter_maxRating
-							},
-							'_id': {
-								$in: product_ids
-							}
-						}).exec(function(err, number) {
-							if (err) {
-								res.status(500).json({
-									success: false,
-									message: err
-								});
-							} else {
-								res.status(200).json(number);
-							}
+					Provide
+					.find({
+						supplier_id: filter_supplier_id
+					})
+					.select({
+						'product_id': 1
+					})
+					.exec(function(err, provides) {
+
+						var product_ids = provides.map(function(provide) {
+							return provide.product_id;
 						});
-					} else {
-						// PRICE FILTER DEACTIVATED
-						Product.count({
-							avgRating: {
-								$gte: filter_minRating,
-								$lt: filter_maxRating
-							},
-							'_id': {
-								$in: product_ids
-							}
-						}).exec(function(err, number) {
-							if (err) {
-								res.status(500).json({
-									success: false,
-									message: err
+
+						if (filter_maxPrice != -1) {
+							// PRICE FILTER ACTIVATED
+							Product.count({
+								$text:{$search: filter_text},
+								maxPrice: {
+									$lt: filter_maxPrice
+								},
+								avgRating: {
+									$gte: filter_minRating,
+									$lt: filter_maxRating
+								},
+								'_id': {
+									$in: product_ids
+								}
+							}).exec(function(err, number) {
+								if (err) {
+									res.status(500).json({
+										success: false,
+										message: err
+									});
+								} else {
+									res.status(200).json(number);
+								}
+							});
+						} else {
+							// PRICE FILTER DEACTIVATED
+							Product.count({
+								$text:{$search: filter_text},
+								avgRating: {
+									$gte: filter_minRating,
+									$lt: filter_maxRating
+								},
+								'_id': {
+									$in: product_ids
+								}
+							}).exec(function(err, number) {
+								if (err) {
+									res.status(500).json({
+										success: false,
+										message: err
+									});
+								} else {
+									res.status(200).json(number);
+								}
+							});
+						}
+					});
+				}
+
+			} else {
+				// NAME FILTER DEACTIVATED
+				if (filter_id_category != -1) {
+					// CATEGORY FILTER ACTIVATED
+					BelongsTo.find({
+						'category_id': filter_id_category
+					}).select({
+						'product_id': 1
+					}).sort({
+						'product_id': 1
+					}).exec(function(err, belongs) {
+						if (err) {
+							res.status(500).json({
+								success: false,
+								message: err
+							});
+						} else {
+							var product_ids = belongs.map(function(belong) {
+								return belong.product_id;
+							});
+
+							// CONTINUE
+							Provide
+						.find({
+								supplier_id: filter_supplier_id
+							})
+							.select({
+								'product_id': 1
+							})
+							.sort({
+								'product_id': 1
+							})
+							.exec(function(err, provides) {
+
+								// Intersects the two ids filters (BelongsTo and ProvidesBySupplier)
+								var aux = provides.map(function(provide) {
+									return provide.product_id;
 								});
-							} else {
-								res.status(200).json(number);
-							}
+
+								product_ids = db_utils.intersect_safe(product_ids, aux);
+
+								if (filter_maxPrice != -1) {
+									// PRICE FILTER ACTIVATED
+									Product.count({
+										maxPrice: {
+											$lt: filter_maxPrice
+										},
+										avgRating: {
+											$gte: filter_minRating,
+											$lt: filter_maxRating
+										},
+										'_id': {
+											$in: product_ids
+										}
+									}).exec(function(err, number) {
+										if (err) {
+											res.status(500).json({
+												success: false,
+												message: err
+											});
+										} else {
+											res.status(200).json(number);
+										}
+									});
+								} else {
+									// PRICE FILTER DEACTIVATED
+									Product.count({
+										avgRating: {
+											$gte: filter_minRating,
+											$lt: filter_maxRating
+										},
+										'_id': {
+											$in: product_ids
+										}
+									}).exec(function(err, number) {
+										if (err) {
+											res.status(500).json({
+												success: false,
+												message: err
+											});
+										} else {
+											res.status(200).json(number);
+										}
+									});
+								}
+							});
+						}
+					});
+				} else {
+					// CATEGORY FILTER DEACTIVATED
+
+					Provide
+					.find({
+						supplier_id: filter_supplier_id
+					})
+					.select({
+						'product_id': 1
+					})
+					.exec(function(err, provides) {
+
+						var product_ids = provides.map(function(provide) {
+							return provide.product_id;
 						});
-					}
-				});
+
+						if (filter_maxPrice != -1) {
+							// PRICE FILTER ACTIVATED
+							Product.count({
+								maxPrice: {
+									$lt: filter_maxPrice
+								},
+								avgRating: {
+									$gte: filter_minRating,
+									$lt: filter_maxRating
+								},
+								'_id': {
+									$in: product_ids
+								}
+							}).exec(function(err, number) {
+								if (err) {
+									res.status(500).json({
+										success: false,
+										message: err
+									});
+								} else {
+									res.status(200).json(number);
+								}
+							});
+						} else {
+							// PRICE FILTER DEACTIVATED
+							Product.count({
+								avgRating: {
+									$gte: filter_minRating,
+									$lt: filter_maxRating
+								},
+								'_id': {
+									$in: product_ids
+								}
+							}).exec(function(err, number) {
+								if (err) {
+									res.status(500).json({
+										success: false,
+										message: err
+									});
+								} else {
+									res.status(200).json(number);
+								}
+							});
+						}
+					});
+				}
 			}
 		} else {
 			res.status(403).json({success: false, message: "Doesnt have permission"});

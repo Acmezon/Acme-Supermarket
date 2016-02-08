@@ -48,6 +48,7 @@ angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$
 				categoryFilter : $scope.categoryFilterMode,
 				priceFilter : translatePriceFilter($scope.priceFilterMode),
 				ratingFilter : $scope.ratingFilterMode,
+				textSearch : $scope.textSearch
 			}
 			).then(function success(response2) {
 				callback(response2.data);
@@ -83,7 +84,8 @@ angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$
 			{
 				categoryFilter : $scope.categoryFilterMode,
 				priceFilter : translatePriceFilter($scope.priceFilterMode),
-				ratingFilter : $scope.ratingFilterMode
+				ratingFilter : $scope.ratingFilterMode,
+				textSearch : $scope.textSearch
 			}
 			).then(function success(response2) {
 				callback(response2.data);
@@ -126,7 +128,7 @@ angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$
 	};
 
 	$scope.search = function (text) {
-		if ($scope.view=='products') {
+		if ($scope.view=='products' || $scope.view=='myproducts') {
 			$scope.textSearch = text;
 			$scope.reload();
 		}

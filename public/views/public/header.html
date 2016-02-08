@@ -88,7 +88,7 @@
             </nav>
         </div>
         <div class="header-bottom-right">
-            <div class="search" ng-if="$root.title=='Title.Product.List'" onKeyPress="return searchKeyPress(event);">
+            <div class="search" ng-if="$root.title=='Title.Product.List' || $root.title=='Title.Product.MyProducts'" onKeyPress="return searchKeyPress(event);">
                 <script>
                 function searchKeyPress(e) {
                     // look for window.event in case event isn't passed in
