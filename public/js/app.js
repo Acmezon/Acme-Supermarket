@@ -453,6 +453,15 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			activetab: 'management',
 			title: 'Title.Reports'
 		}).
+		when('/salesovertime', {
+			templateUrl: 'views/businessintelligence/salesovertime.html',
+			controller: 'SalesOverTimeCtrl',
+			resolve: {
+				admin: checkAdmin
+			},
+			activetab: 'businessIntelligence',
+			title: 'Title.SalesOverTime'
+		}).
 		when('/401', {
 			templateUrl: 'views/public/errors/401.html',
 			title: 'Title.401'

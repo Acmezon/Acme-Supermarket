@@ -192,6 +192,9 @@ app.get('/api/socialMedia/stop', api.SocialMedia.stopTwitterScrapper);
 //Recommender server
 app.get('/api/recommender/checkStatus', api.RecommenderServer.checkStatus);
 
+//Business Intelligence
+app.get('/api/bi/getSalesOverTime/:id', api.BusinessIntelligence.getSalesOverTime);
+
 //Test
 
 // redirect all others to the index (HTML5 history) Use in production only

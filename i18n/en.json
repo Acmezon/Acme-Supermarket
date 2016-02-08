@@ -107,7 +107,10 @@
 		"Discounts" : "Discounts",
 		"PurchasingRules" : "Purchasing Rules",
 		"MonitoringRules" : "Monitoring Rules",
-		"SocialMedia" : "Social Media"
+		"SocialMedia" : "Social Media",
+		"BusinessIntelligence": "Business Intelligence",
+		"SalesOverTime" : "Sales over time",
+		"SuplierReport" : "Sales report"
 	},
 	"Footer": {
 		"AboutUs" : "About Us",

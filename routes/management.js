@@ -35,6 +35,9 @@ function random(max, min) {
 	return Math.floor(Math.random()*(max-min+1)+min);
 }
 
+function randomDate(start, end) {
+	return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+}
 // Restore Mongo DB to development state
 function startProcess(callback) {
 	loadCategories(callback);
@@ -299,6 +302,13 @@ function loadSuppliers(callback) {
 
 function loadPurchases(callback) {
 	sync.fiber(function () {
+		var dates = [];
+		var now = new Date();
+
+		for(var i=0; i<200; i++) {
+			dates.push(randomDate(new Date(now.getFullYear() - 3, 0, 1, 0, 0, 0, 0), now));
+		}
+
 		var customers = sync.await(Actor.find({ "_type" : "Customer"}, sync.defer()));
 
 		for (var i = 0; i < customers.length; i++){
@@ -314,7 +324,7 @@ function loadPurchases(callback) {
 			var rand_products = shuffled_products.slice(0, nr_products);
 			
 			for(var j = 0; j < rand_products.length; j++) {
-				sync.await(buyProduct(rand_products[j], customer.id, sync.defer()));
+				sync.await(buyProduct(rand_products[j], customer.id, dates, sync.defer()));
 			}
 		}
 
@@ -481,15 +491,18 @@ function loadSpeacialUsers(callback) {
 }
 
 
-function buyProduct(product, customer_id ,callback) {
+function buyProduct(product, customer_id, dates, callback) {
 	loadProvides(product, 
 	function (provide) {
-		var deliveryDate = new Date();
+		var now = new Date();
+		var paymentDate = dates[random(0, dates.length)];
+
+		var deliveryDate = new Date(paymentDate);
 		deliveryDate.setDate(deliveryDate.getDate() + 15);
 
 		var purchase = new Purchase({
 			"deliveryDate" : deliveryDate,
-			"paymentDate" : new Date(),
+			"paymentDate" : paymentDate,
 			"customer_id" : customer_id
 		});
 
