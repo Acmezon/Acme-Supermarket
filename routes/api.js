@@ -18,6 +18,7 @@ var Customer = require('./customers_api'),
 	SocialMediaNotifications = require('./notifications_api'),
 	RecommenderServer = require('./recommender_server_api'),
 	Management = require('./management'),
+	BusinessIntelligence = require('./business_intelligence'),
 	db_utils = require('./db_utils'),
 	i18n = require('./i18n');
 
@@ -43,10 +44,4 @@ exports.SocialMedia = SocialMedia;
 exports.SocialMediaRules = SocialMediaRules;
 exports.SocialMediaNotifications = SocialMediaNotifications;
 exports.RecommenderServer = RecommenderServer;
-
-
-exports.cookieTest = function (req, res) {
-	console.log(req.cookies);
-
-	res.sendStatus(200);
-}
+exports.BusinessIntelligence = BusinessIntelligence;
