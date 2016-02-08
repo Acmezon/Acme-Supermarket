@@ -444,6 +444,15 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			activetab: 'socialmedia',
 			title: 'Title.Notifications'
 		}).
+		when('/reports', {
+			templateUrl: 'views/reports/reports.html',
+			controller: 'ReportCtrl',
+			resolve: {
+				admin: checkAdmin
+			},
+			activetab: 'management',
+			title: 'Title.Reports'
+		}).
 		when('/401', {
 			templateUrl: 'views/public/errors/401.html',
 			title: 'Title.401'

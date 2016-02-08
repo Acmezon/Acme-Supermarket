@@ -1,0 +1,56 @@
+<script src="views/reports/ReportController.js"></script>
+
+<div class="wrap">
+	<ul class="breadcrumb breadcrumb__t">
+		<li><a class="home" href="/">{{ 'Home.Title' | translate }}</a> / {{ 'Title.Reports' | translate }}</li>
+	</ul>
+
+	<div class="panel panel-default">
+		<div class="panel-heading" role="tab" id="filterHeading">
+			<a role="button" data-toggle="collapse" data-target="#filters" aria-expanded="true" aria-controls="filters">
+				<h4 class="panel-title">
+					{{'Reports.Filter.Title' | translate}}
+					<span class="indicator glyphicon glyphicon-chevron-down pull-right"></span>
+				</h4>
+			</a>
+		</div>
+		<div id="filters" class="panel-collapse collapse" role="tabpanel" aria-labelledby="filterHeading">
+			<div class="panel-body">
+				<button class="btn" ng-click="clearFilters()">
+					{{'Reports.ClearFilters' | translate}} <span class="glyphicon glyphicon-erase"></span>
+				</button>
+				<div class="col-lg-3">
+					<form name="reportForm" onSubmit="loadReport()">
+						<div class="form-group">
+							<input name="email" type="email" class="form-control" ng-model="supplierEmail" placeholder="{{'Reports.Filter.SupplierEmail' | translate}}" autocomplete="off" ng-class="{'has-error': reportForm.email.$dirty && (reportForm.email.$error.required || reportForm.email.$error.invalid)}" required>
+						</div>
+						<div class="form-group">
+							<input name="year" type="number" class="form-control" ng-model="year" placeholder="{{'Reports.Filter.Year' | translate}}" min="2010" autocomplete="off" ng-class="{'has-error': reportForm.year.$dirty && (reportForm.year.$error.required || reportForm.year.$error.invalid)}" required>
+						</div>
+						<div class="form-group">
+							<button id="signup-submit" type="submit" name="submit" class="grey" ng-disabled="reportForm.$invalid">ok</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+			<div class="row">
+				<div class="col-lg-6">
+					<button class="btn btn-arrow-left" ng-click="previousPage()">-</button>
+				</div>
+				<div class="col-lg-6">
+					<button class="btn btn-arrow-right" ng-click="nextPage()">+</button>
+				</div>
+			</div>
+			<div class="row" style="margin-top:5%">
+				<canvas id="the-canvas" style="border:1px solid black;"/>
+			</div>
+		</div>
+	</div>
+	
+
+</div>
