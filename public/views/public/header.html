@@ -88,9 +88,21 @@
             </nav>
         </div>
         <div class="header-bottom-right">
-            <div class="search">
-                <input type="text" name="s" class="textbox" placeholder="{{ 'Header.Search' | translate }}" >
-                <input type="submit" value="Subscribe" id="submit" name="submit">
+            <div class="search" ng-if="$root.title=='Title.Product.List'" onKeyPress="return searchKeyPress(event);">
+                <script>
+                function searchKeyPress(e) {
+                    // look for window.event in case event isn't passed in
+                    e = e || window.event;
+                    if (e.keyCode == 13)
+                    {
+                        document.getElementById('search-submit').click();
+                        return false;
+                    }
+                    return true;
+                }
+                </script>
+                <input type="text" name="s" ng-model="textSearch" class="textbox" placeholder="{{ 'Header.Search' | translate }}" >
+                <input id="search-submit" type="submit" value="Subscribe" id="submit" name="submit" ng-click="search(textSearch)">
                 <div id="response"></div>
             </div>
             <div class="tag-list" restrict access="customer">

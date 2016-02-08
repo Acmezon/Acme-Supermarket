@@ -7,22 +7,34 @@ var Schema = mongoose.Schema,
 	SocialMediaProductData = require('./social_media_product_data'),
 	BelongsTo = require('./belongs_to'),
 	Provide = require('./provide'),
-	random = require('mongoose-simple-random');
+	random = require('mongoose-simple-random'),
+	textSearch = require("mongoose-text-search");;
 
 var productSchema = mongoose.Schema({
 	name: {type: String, required: true, minlength: 1, maxlength: 100},
 	description: {type: String, required: true, maxlength: 1000},
 	code: {type: String, required: true, unique:true},
 	image: String,
+	keywords: [String],
 	minPrice: {type: Number, required:false, min:0},
 	maxPrice: {type: Number, required:false, min:0},
 	avgRating: {type: Number, required:false, min:0, max:5}
-});
+})
 
 productSchema.plugin(autoIncrement.plugin, 'Product');
 productSchema.plugin(random);
+productSchema.plugin(textSearch);
+
+productSchema.index({
+	keywords : "text"
+});
 
 module.exports = mongoose.model('Product', productSchema);
+
+productSchema.pre('save', function (next, done) {
+	this.keywords = this.name.split(" ");
+	next();
+});
 
 productSchema.pre('remove', function (next, done) {
 	//Eliminar:

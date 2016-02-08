@@ -43,4 +43,15 @@ angular.module('acme_supermarket').registerCtrl('MainCtrl', ['$scope', '$http', 
 		return r;
 	}
 
+	$scope.search = function (text){
+		$scope.$emit('textSearch', text);
+	};
+
+	$scope.checkSubmit = function(e) {
+		console.log(e.keyCode)
+		if(e && e.keyCode == 13) {
+			$scope.search($scope.textSearch)
+		}
+	};
+
 }]);

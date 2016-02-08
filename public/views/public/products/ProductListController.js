@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$http', 'ngToast', '$translate', '$window', '$location', function ($scope, $http, ngToast, $translate, $window, $location) {
+angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$http', 'ngToast', '$translate', '$window', '$location', '$rootScope', function ($scope, $http, ngToast, $translate, $window, $location, $rootScope) {
 
 	// DEFAULT VALUES
 	// Orderings
@@ -10,6 +10,7 @@ angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$
 	$scope.priceFilterMode = 0;
 	$scope.ratingFilterMode = 0;
 	$scope.categoryFilterMode = -1;
+	$scope.textSearch = null;
 	// Pagination
 	$scope.currentPage = 0;
 	$scope.pageSize = '9';
@@ -25,6 +26,14 @@ angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$
 			$scope.categories = response.data;
 	});
 
+	var destroyEvent = $rootScope.$on('textSearch', function(event, args) {
+		$scope.search(args);
+	});
+
+	$scope.$on('$destroy', function() {
+		destroyEvent(); // remove listener.
+	});
+
 	// Refresh the page (order, filter and pagination)
 	$scope.refreshPage = function(callback) {
 
@@ -38,7 +47,7 @@ angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$
 				pageSize : $scope.pageSize,
 				categoryFilter : $scope.categoryFilterMode,
 				priceFilter : translatePriceFilter($scope.priceFilterMode),
-				ratingFilter : $scope.ratingFilterMode
+				ratingFilter : $scope.ratingFilterMode,
 			}
 			).then(function success(response2) {
 				callback(response2.data);
@@ -55,7 +64,8 @@ angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$
 					pageSize : $scope.pageSize,
 					categoryFilter : $scope.categoryFilterMode,
 					priceFilter : translatePriceFilter($scope.priceFilterMode),
-					ratingFilter : $scope.ratingFilterMode
+					ratingFilter : $scope.ratingFilterMode,
+					textSearch : $scope.textSearch
 				}
 			).then(function success(response) {
 				callback(response.data);
@@ -85,7 +95,8 @@ angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$
 			{
 				categoryFilter : $scope.categoryFilterMode,
 				priceFilter : translatePriceFilter($scope.priceFilterMode),
-				ratingFilter : $scope.ratingFilterMode
+				ratingFilter : $scope.ratingFilterMode,
+				textSearch : $scope.textSearch
 			}
 			).then(function success(response) {
 				callback(response.data);
@@ -113,6 +124,13 @@ angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$
 			$scope.refresh();
 		});
 	};
+
+	$scope.search = function (text) {
+		if ($scope.view=='products') {
+			$scope.textSearch = text;
+			$scope.reload();
+		}
+	}
 
 	// Auxiliar function: priceCode to maxPrice in filter
 	var translatePriceFilter = function(code) {
@@ -203,6 +221,7 @@ angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$
 		$scope.priceFilterMode = 0;
 		$scope.ratingFilterMode = 0;
 		$scope.categoryFilterMode = -1;
+		$scope.textSearch = null;
 		$scope.reload();
 	};
 
@@ -250,8 +269,6 @@ angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$
 
 		$scope.reload();
 	};
-
-
 
 	$http.get('/api/myRecommendations').then(function success(products) {
 		$http.post('/api/product/getByIdList', { products : products}).then(

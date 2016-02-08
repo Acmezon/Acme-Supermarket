@@ -30,7 +30,8 @@ exports.getAllProductsFiltered = function(req, res) {
 		filter_id_category = parseInt(req.body.categoryFilter) || -1,
 		filter_maxPrice = req.body.priceFilter ? parseInt(req.body.priceFilter) || -1 : -1,
 		filter_minRating = parseInt(req.body.ratingFilter) || 0,
-		filter_maxRating = filter_minRating == 0 ? 5 : parseInt(req.body.ratingFilter) + 1 || 5;
+		filter_maxRating = filter_minRating == 0 ? 5 : parseInt(req.body.ratingFilter) + 1 || 5,
+		filter_text = req.body.textSearch;
 
 	// Format sort criteria
 	if (ordering_sort == 'rating') {
@@ -46,139 +47,294 @@ exports.getAllProductsFiltered = function(req, res) {
 	var ord_tuple = {};
 	ord_tuple[ordering_sort] = ordering_order;
 
-	if (filter_id_category != -1) {
-		// CATEGORY FILTER ACTIVATED
-		BelongsTo.find({
-			'category_id': filter_id_category
-		}).select('product_id').exec(function(err, product_ids) {
-			if (err) {
-				res.status(500).json({
-					success: false,
-					message: err
-				});
-			} else {
-				// CONTINUE
-				if (filter_maxPrice != -1) {
-					// PRICE FILTER ACTIVATED
-					Product.find({
-							maxPrice: {
-								$lt: filter_maxPrice
-							},
-							avgRating: {
-								$gte: filter_minRating,
-								$lt: filter_maxRating
-							},
-							'_id': {
-								$in: product_ids
-							}
-						}).select({
-							'_id': 1,
-							'name': 1,
-							'image': 1,
-							'minPrice': 1,
-							'maxPrice': 1,
-							'avgRating': 1
-						})
-						.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
-						.exec(function(err, products) {
-							if (err) {
-								res.status(500).json({
-									success: false,
-									message: err
-								});
-							} else {
-								res.status(200).json(products);
-							}
-						});
+	if (filter_text) {
+		// FILTER TEXT ACTIVATED
+
+		if (filter_id_category != -1) {
+			// CATEGORY FILTER ACTIVATED
+			BelongsTo.find({
+				'category_id': filter_id_category
+			}).select('product_id').exec(function(err, product_ids) {
+				if (err) {
+					res.status(500).json({
+						success: false,
+						message: err
+					});
 				} else {
-					// PRICE FILTER DEACTIVATED
-					Product.find({
-							avgRating: {
-								$gte: filter_minRating,
-								$lt: filter_maxRating
-							},
-							'_id': {
-								$in: product_ids
-							}
-						}).select({
-							'_id': 1,
-							'name': 1,
-							'image': 1,
-							'minPrice': 1,
-							'maxPrice': 1,
-							'avgRating': 1
-						})
-						.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
-						.exec(function(err, products) {
-							if (err) {
-								res.status(500).json({
-									success: false,
-									message: err
-								});
-							} else {
-								res.status(200).json(products);
-							}
-						});
+					// CONTINUE
+					if (filter_maxPrice != -1) {
+						// PRICE FILTER ACTIVATED
+						
+						Product.find({
+								$text:{$search: filter_text},
+								maxPrice: {
+									$lt: filter_maxPrice
+								},
+								avgRating: {
+									$gte: filter_minRating,
+									$lt: filter_maxRating
+								},
+								'_id': {
+									$in: product_ids
+								}
+							})
+							.select({
+								'_id': 1,
+								'name': 1,
+								'image': 1,
+								'minPrice': 1,
+								'maxPrice': 1,
+								'avgRating': 1
+							})
+							.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
+							.exec(function(err, products) {
+								
+								if (err) {
+									res.status(500).json({
+										success: false,
+										message: err
+									});
+								} else {
+									res.status(200).json(products);
+								}
+							});
+					} else {
+						// PRICE FILTER DEACTIVATED
+						Product.find({
+								$text:{$search: filter_text},
+								avgRating: {
+									$gte: filter_minRating,
+									$lt: filter_maxRating
+								},
+								'_id': {
+									$in: product_ids
+								}
+							})
+							.select({
+								'_id': 1,
+								'name': 1,
+								'image': 1,
+								'minPrice': 1,
+								'maxPrice': 1,
+								'avgRating': 1
+							})
+							.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
+							.exec(function(err, products) {
+								if (err) {
+									res.status(500).json({
+										success: false,
+										message: err
+									});
+								} else {
+									res.status(200).json(products);
+								}
+							});
+					}
 				}
-			}
-		});
-	} else {
-		// CATEGORY FILTER DEACTIVATED
-		if (filter_maxPrice != -1) {
-			// PRICE FILTER ACTIVATED
-			Product.find({
-					maxPrice: {
-						$lt: filter_maxPrice
-					},
-					avgRating: {
-						$gte: filter_minRating,
-						$lt: filter_maxRating
-					}
-				}).select({
-					'_id': 1,
-					'name': 1,
-					'image': 1,
-					'minPrice': 1,
-					'maxPrice': 1,
-					'avgRating': 1
-				})
-				.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
-				.exec(function(err, products) {
-					if (err) {
-						res.status(500).json({
-							success: false,
-							message: err
-						});
-					} else {
-						res.status(200).json(products);
-					}
-				});
+			});
 		} else {
-			// PRICE FILTER DEACTIVATED
-			Product.find({
-					avgRating: {
-						$gte: filter_minRating,
-						$lt: filter_maxRating
-					}
-				}).select({
-					'_id': 1,
-					'name': 1,
-					'image': 1,
-					'minPrice': 1,
-					'maxPrice': 1,
-					'avgRating': 1
-				})
-				.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
-				.exec(function (err, products) {
-					if (err) {
-						res.status(500).json({
-							success: false,
-							message: err
-						});
+			// CATEGORY FILTER DEACTIVATED
+			if (filter_maxPrice != -1) {
+				// PRICE FILTER ACTIVATED
+				Product.find({
+						$text:{$search: filter_text},
+						maxPrice: {
+							$lt: filter_maxPrice
+						},
+						avgRating: {
+							$gte: filter_minRating,
+							$lt: filter_maxRating
+						}
+					})
+					.select({
+						'_id': 1,
+						'name': 1,
+						'image': 1,
+						'minPrice': 1,
+						'maxPrice': 1,
+						'avgRating': 1
+					})
+					.sort(ord_tuple)
+					.skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
+					.exec(function(err, products) {
+						if (err) {
+							res.status(500).json({
+								success: false,
+								message: err
+							});
+						} else {
+							res.status(200).json(products);
+						}
+					});
+			} else {
+				// PRICE FILTER DEACTIVATED
+				Product.find({
+						$text:{$search: filter_text},
+						avgRating: {
+							$gte: filter_minRating,
+							$lt: filter_maxRating
+						}
+					})
+					.select({
+						'_id': 1,
+						'name': 1,
+						'image': 1,
+						'minPrice': 1,
+						'maxPrice': 1,
+						'avgRating': 1
+					})
+					.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
+					.exec(function (err, products) {
+						if (err) {
+							console.log(err);
+							res.status(500).json({
+								success: false,
+								message: err
+							});
+						} else {
+							res.status(200).json(products);
+						}
+					});
+			}
+		}
+
+	} else {
+		// FILTER TEXT DEACTIVATED
+
+		if (filter_id_category != -1) {
+			// CATEGORY FILTER ACTIVATED
+			BelongsTo.find({
+				'category_id': filter_id_category
+			}).select('product_id').exec(function(err, product_ids) {
+				if (err) {
+					res.status(500).json({
+						success: false,
+						message: err
+					});
+				} else {
+					// CONTINUE
+					if (filter_maxPrice != -1) {
+						// PRICE FILTER ACTIVATED
+						Product.find({
+								maxPrice: {
+									$lt: filter_maxPrice
+								},
+								avgRating: {
+									$gte: filter_minRating,
+									$lt: filter_maxRating
+								},
+								'_id': {
+									$in: product_ids
+								}
+							}).select({
+								'_id': 1,
+								'name': 1,
+								'image': 1,
+								'minPrice': 1,
+								'maxPrice': 1,
+								'avgRating': 1
+							})
+							.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
+							.exec(function(err, products) {
+								if (err) {
+									res.status(500).json({
+										success: false,
+										message: err
+									});
+								} else {
+									res.status(200).json(products);
+								}
+							});
 					} else {
-						res.status(200).json(products);
+						// PRICE FILTER DEACTIVATED
+						Product.find({
+								avgRating: {
+									$gte: filter_minRating,
+									$lt: filter_maxRating
+								},
+								'_id': {
+									$in: product_ids
+								}
+							}).select({
+								'_id': 1,
+								'name': 1,
+								'image': 1,
+								'minPrice': 1,
+								'maxPrice': 1,
+								'avgRating': 1
+							})
+							.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
+							.exec(function(err, products) {
+								if (err) {
+									res.status(500).json({
+										success: false,
+										message: err
+									});
+								} else {
+									res.status(200).json(products);
+								}
+							});
 					}
-				});
+				}
+			});
+		} else {
+			// CATEGORY FILTER DEACTIVATED
+			if (filter_maxPrice != -1) {
+				// PRICE FILTER ACTIVATED
+				Product.find({
+						maxPrice: {
+							$lt: filter_maxPrice
+						},
+						avgRating: {
+							$gte: filter_minRating,
+							$lt: filter_maxRating
+						}
+					}).select({
+						'_id': 1,
+						'name': 1,
+						'image': 1,
+						'minPrice': 1,
+						'maxPrice': 1,
+						'avgRating': 1
+					})
+					.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
+					.exec(function(err, products) {
+						if (err) {
+							res.status(500).json({
+								success: false,
+								message: err
+							});
+						} else {
+							res.status(200).json(products);
+						}
+					});
+			} else {
+				// PRICE FILTER DEACTIVATED
+				Product.find({
+						avgRating: {
+							$gte: filter_minRating,
+							$lt: filter_maxRating
+						}
+					}).select({
+						'_id': 1,
+						'name': 1,
+						'image': 1,
+						'minPrice': 1,
+						'maxPrice': 1,
+						'avgRating': 1
+					})
+					.sort(ord_tuple).skip(ordering_pageSize * ordering_currentPage).limit(ordering_pageSize)
+					.exec(function (err, products) {
+						if (err) {
+							res.status(500).json({
+								success: false,
+								message: err
+							});
+						} else {
+							res.status(200).json(products);
+						}
+					});
+			}
 		}
 	}
 };
@@ -190,105 +346,223 @@ exports.countProductsFiltered = function(req, res) {
 	var filter_id_category = parseInt(req.body.categoryFilter) || -1,
 		filter_maxPrice = req.body.priceFilter ? parseInt(req.body.priceFilter) || -1 : -1,
 		filter_minRating = parseInt(req.body.ratingFilter) || 0,
-		filter_maxRating = filter_minRating == 0 ? 5 : parseInt(req.body.ratingFilter) + 1 || 5;
+		filter_maxRating = filter_minRating == 0 ? 5 : parseInt(req.body.ratingFilter) + 1 || 5,
+		filter_text = req.body.textSearch;
 
-	if (filter_id_category != -1) {
-		// CATEGORY FILTER ACTIVATED
-		BelongsTo.find({
-			'category_id': filter_id_category
-		}).select('product_id').exec(function(err, product_ids) {
-			if (err) {
-				res.status(500).json({
-					success: false,
-					message: err
-				});
-			} else {
-				// CONTINUE
-				if (filter_maxPrice != -1) {
-					// PRICE FILTER ACTIVATED
-					Product.count({
-						maxPrice: {
-							$lt: filter_maxPrice
-						},
-						avgRating: {
-							$gte: filter_minRating,
-							$lt: filter_maxRating
-						},
-						'_id': {
-							$in: product_ids
-						}
-					}).exec(function(err, number) {
-						if (err) {
-							res.status(500).json({
-								success: false,
-								message: err
-							});
-						} else {
-							res.status(200).json(number);
-						}
-					});
-				} else {
-					// PRICE FILTER DEACTIVATED
-					Product.count({
-						avgRating: {
-							$gte: filter_minRating,
-							$lt: filter_maxRating
-						},
-						'_id': {
-							$in: product_ids
-						}
-					}).exec(function(err, number) {
-						if (err) {
-							res.status(500).json({
-								success: false,
-								message: err
-							});
-						} else {
-							res.status(200).json(number);
-						}
-					});
-				}
-			}
-		});
-	} else {
-		// CATEGORY FILTER DEACTIVATED
-		if (filter_maxPrice != -1) {
-			// PRICE FILTER ACTIVATED
-			Product.count({
-				maxPrice: {
-					$lt: filter_maxPrice
-				},
-				avgRating: {
-					$gte: filter_minRating,
-					$lt: filter_maxRating
-				}
-			}).exec(function(err, number) {
+	if (filter_text) {
+		// FILTER TEXT ACTIVATED
+
+		if (filter_id_category != -1) {
+			// CATEGORY FILTER ACTIVATED
+			BelongsTo.find({
+				'category_id': filter_id_category
+			}).select('product_id').exec(function(err, product_ids) {
 				if (err) {
 					res.status(500).json({
 						success: false,
 						message: err
 					});
 				} else {
-					res.status(200).json(number);
+					// CONTINUE
+					if (filter_maxPrice != -1) {
+						// PRICE FILTER ACTIVATED
+						Product.count({
+							$text:{$search: filter_text},
+							maxPrice: {
+								$lt: filter_maxPrice
+							},
+							avgRating: {
+								$gte: filter_minRating,
+								$lt: filter_maxRating
+							},
+							'_id': {
+								$in: product_ids
+							}
+						})
+						.exec(function(err, number) {
+							if (err) {
+								res.status(500).json({
+									success: false,
+									message: err
+								});
+							} else {
+								res.status(200).json(number);
+							}
+						});
+					} else {
+						// PRICE FILTER DEACTIVATED
+						Product.count({
+							$text:{$search: filter_text},
+							avgRating: {
+								$gte: filter_minRating,
+								$lt: filter_maxRating
+							},
+							'_id': {
+								$in: product_ids
+							}
+						})
+						.exec(function(err, number) {
+							if (err) {
+								res.status(500).json({
+									success: false,
+									message: err
+								});
+							} else {
+								res.status(200).json(number);
+							}
+						});
+					}
 				}
 			});
 		} else {
-			// PRICE FILTER DEACTIVATED
-			Product.count({
-				avgRating: {
-					$gte: filter_minRating,
-					$lt: filter_maxRating
-				}
-			}).exec(function(err, number) {
+			// CATEGORY FILTER DEACTIVATED
+			if (filter_maxPrice != -1) {
+				// PRICE FILTER ACTIVATED
+				Product.count({
+					$text:{$search: filter_text},
+					maxPrice: {
+						$lt: filter_maxPrice
+					},
+					avgRating: {
+						$gte: filter_minRating,
+						$lt: filter_maxRating
+					}
+				})
+				.exec(function(err, number) {
+					if (err) {
+						res.status(500).json({
+							success: false,
+							message: err
+						});
+					} else {
+						res.status(200).json(number);
+					}
+				});
+			} else {
+				// PRICE FILTER DEACTIVATED
+				Product.count({
+					$text:{$search: filter_text},
+					avgRating: {
+						$gte: filter_minRating,
+						$lt: filter_maxRating
+					}
+				})
+				.exec(function(err, number) {
+					if (err) {
+						res.status(500).json({
+							success: false,
+							message: err
+						});
+					} else {
+						res.status(200).json(number);
+					}
+				});
+			}
+		}
+	} else {
+		// FILTER TEXT DEACTIVATED
+		if (filter_id_category != -1) {
+			// CATEGORY FILTER ACTIVATED
+			BelongsTo.find({
+				'category_id': filter_id_category
+			}).select('product_id').exec(function(err, product_ids) {
 				if (err) {
 					res.status(500).json({
 						success: false,
 						message: err
 					});
 				} else {
-					res.status(200).json(number);
+					// CONTINUE
+					if (filter_maxPrice != -1) {
+						// PRICE FILTER ACTIVATED
+						Product.count({
+							maxPrice: {
+								$lt: filter_maxPrice
+							},
+							avgRating: {
+								$gte: filter_minRating,
+								$lt: filter_maxRating
+							},
+							'_id': {
+								$in: product_ids
+							}
+						})
+						.exec(function(err, number) {
+							if (err) {
+								res.status(500).json({
+									success: false,
+									message: err
+								});
+							} else {
+								res.status(200).json(number);
+							}
+						});
+					} else {
+						// PRICE FILTER DEACTIVATED
+						Product.count({
+							avgRating: {
+								$gte: filter_minRating,
+								$lt: filter_maxRating
+							},
+							'_id': {
+								$in: product_ids
+							}
+						})
+						.exec(function(err, number) {
+							if (err) {
+								res.status(500).json({
+									success: false,
+									message: err
+								});
+							} else {
+								res.status(200).json(number);
+							}
+						});
+					}
 				}
 			});
+		} else {
+			// CATEGORY FILTER DEACTIVATED
+			if (filter_maxPrice != -1) {
+				// PRICE FILTER ACTIVATED
+				Product.count({
+					maxPrice: {
+						$lt: filter_maxPrice
+					},
+					avgRating: {
+						$gte: filter_minRating,
+						$lt: filter_maxRating
+					}
+				})
+				.exec(function(err, number) {
+					if (err) {
+						res.status(500).json({
+							success: false,
+							message: err
+						});
+					} else {
+						res.status(200).json(number);
+					}
+				});
+			} else {
+				// PRICE FILTER DEACTIVATED
+				Product.count({
+					avgRating: {
+						$gte: filter_minRating,
+						$lt: filter_maxRating
+					}
+				})
+				.exec(function(err, number) {
+					if (err) {
+						res.status(500).json({
+							success: false,
+							message: err
+						});
+					} else {
+						res.status(200).json(number);
+					}
+				});
+			}
 		}
 	}
 
@@ -926,8 +1200,6 @@ exports.createProduct = function(req, res) {
 exports.updateProductRating = function(req, res) {
 	var product_id = req.body.id;
 	var rating_value = req.body.rating;
-	console.log(product_id)
-	console.log(rating_value)
 
 	if(product_id == undefined || rating_value == undefined) {
 		res.sendStatus(500);

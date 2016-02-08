@@ -83,7 +83,7 @@
 				</div>
 				<div class="rsidebar col-md-3">
 					<section class="sky-form" style="margin-top:10%">
-						<button class="btn" ng-disabled="ratingFilterMode==0 && priceFilterMode==0 && categoryFilterMode==-1" ng-click="clearFilters()">
+						<button class="btn" ng-disabled="ratingFilterMode==0 && priceFilterMode==0 && categoryFilterMode==-1 && !textSearch" ng-click="clearFilters()">
 							{{'Products.ClearFilters' | translate}} <span class="glyphicon glyphicon-erase"></span>
 						</button>
 					</section>
