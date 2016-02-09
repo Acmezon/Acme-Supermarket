@@ -171,6 +171,7 @@ describe('Purchase creation', function () {
 
 	it("should let an admin create admin purchase", function (){
 		browser.get('http://localhost:3000/signin');
+		browser.sleep(2000);
 
 		element(by.model('email')).sendKeys('ismael.perez@example.com');
 		element(by.model('password')).sendKeys('supplier');
@@ -178,7 +179,9 @@ describe('Purchase creation', function () {
 		element(by.css('.button')).click();
 
 		browser.get('http://localhost:3000/myproducts');
-		browser.waitForAngular();
+		browser.sleep(2000);
+
+		//browser.waitForAngular();
 
 		var product_links = element.all(by.repeater('product in products')).first();
 
@@ -187,6 +190,7 @@ describe('Purchase creation', function () {
 			browser.manage().deleteAllCookies();
 
 			browser.get('http://localhost:3000/signin');
+			browser.sleep(2000);
 
 			element(by.model('email')).sendKeys('admin@mail.com');
 			element(by.model('password')).sendKeys('administrator');
@@ -194,33 +198,37 @@ describe('Purchase creation', function () {
 			element(by.css('.button')).click();
 
 			browser.get('http://localhost:3000/purchase/create');
+			browser.sleep(2000);
+
 			expect(browser.getCurrentUrl()).toEqual('http://localhost:3000/purchase/create');
 
 			element(by.css('input#product_id')).clear().then(function () {
 				// Customer email
 				element(by.model('customerEmail')).sendKeys('no.purchases@mail.com')
 				element(by.css('button.check')).click();
-				browser.sleep(1000);
+				browser.sleep(2000);
 				expect(element(by.css('div.alert')).isPresent()).toBe(true);
 
 				// Billing method
 				element.all(by.css('div.list-group>a')).first().click();
+				browser.sleep(2000);
 
 			
 				// Search a product
 				element(by.css('input#product_id')).sendKeys(product_id);
 				element(by.css('button#add')).click();
-				browser.sleep(1000);
+				browser.sleep(2000);
 
 				// Add product
 				expect(element.all(by.repeater('provide in provides')).count()).toBeGreaterThan(0);
 				element.all(by.repeater('provide in provides')).first().element(by.css('input#cart-btn')).click();
-				browser.sleep(1000);
+				browser.sleep(2000);
 				// Shopping cart updates
 				expect(element.all(by.repeater('product in shoppingcart')).count()).toBe(1);
 
 				// Submit
 				element(by.css('button#submit')).click();
+				browser.sleep(2000);
 
 				browser.getLocationAbsUrl().then(function (url) {
 					expect(url).toMatch('/checkout/success');

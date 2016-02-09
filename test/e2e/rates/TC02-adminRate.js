@@ -91,6 +91,6 @@ describe('Rating management view', function () {
 
 		})
 
-	});
+	}, 60000);
 
 });

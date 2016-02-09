@@ -28,7 +28,7 @@ describe('My profile page', function () {
 		// Login
 		browser.get('http://localhost:3000/signin');
 
-		element(by.model('email')).sendKeys('consuelo.lopez@example.com');
+		element(by.model('email')).sendKeys('no.provides@mail.com');
 		element(by.model('password')).sendKeys('supplier');
 
 		element(by.css('.button')).click();
@@ -39,8 +39,8 @@ describe('My profile page', function () {
 
 		expect(element(by.css('div#personalinfo')).isPresent()).toBe(true)
 
-		var name_label = element(by.css('div#personalinfo>div:nth-child(2)>p'));
-		var surname_label = element(by.css('div#personalinfo>div:nth-child(3)>p'));
+		var name_label = element(by.css('div#personalinfo>div:nth-child(3)>p'));
+		var surname_label = element(by.css('div#personalinfo>div:nth-child(4)>p'));
 
 		var new_name = stringGen(5);
 		name_label.click();
@@ -51,7 +51,7 @@ describe('My profile page', function () {
 			var name_submit = element(by.css('span.editable-buttons>button:nth-child(1)'));
 			name_submit.click();
 			browser.waitForAngular();
-			expect(element(by.css('div#personalinfo>div:nth-child(2)>p')).getText()).toEqual(new_name);
+			expect(element(by.css('div#personalinfo>div:nth-child(3)>p')).getText()).toEqual(new_name);
 		});
 
 		var new_surname = stringGen(5);
@@ -63,11 +63,11 @@ describe('My profile page', function () {
 			var surname_submit = element(by.css('span.editable-buttons>button:nth-child(1)'));
 			surname_submit.click();
 			browser.waitForAngular();
-			expect(element(by.css('div#personalinfo>div:nth-child(3)>p')).getText()).toEqual(new_surname);
+			expect(element(by.css('div#personalinfo>div:nth-child(4)>p')).getText()).toEqual(new_surname);
 		});
 
 
-		expect(element(by.css('div#personalinfo>p:nth-child(4)')).getText()).toEqual('consuelo.lopez@example.com')
+		expect(element(by.css('div#personalinfo>p:nth-child(5)')).getText()).toEqual('no.provides@mail.com')
 	});
 
 });
