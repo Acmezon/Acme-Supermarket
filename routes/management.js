@@ -475,6 +475,25 @@ function loadExtraProvides(callback) {
 				sync.await(provide.save(sync.defer()));
 			}
 		}
+
+		var suppliers = sync.await(Supplier.find({_type : "Supplier"}, sync.defer()));
+		var nr_suppliers = random(1, suppliers.length);
+
+		var shuffled_suppliers = shuffle(suppliers);
+		var rand_suppliers = shuffled_suppliers.slice(0, nr_suppliers);
+
+		var price = random(5, 50);
+		for(var j = 0; j < rand_suppliers.length; j++) {
+			var supplier = rand_suppliers[j];
+
+			var provide = new Provide({
+				"price" : price + random(-5, 5),
+				"product_id" : 1,
+				"supplier_id" : supplier.id
+			});
+
+			sync.await(provide.save(sync.defer()));
+		}
 	}, function (err, data) {
 		if(err) console.log("--ERR: Error saving extra provides: " + err);
 

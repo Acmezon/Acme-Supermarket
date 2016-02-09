@@ -96,7 +96,7 @@ it('should cancel edition and fields should revert', function (){
 		element(by.id('customers-length')).getText().then (function (text) {
 			var number_customers = parseInt(text);
 
-			element(by.css('tr.ng-table-filters>th:nth-child(2)>div>input')).sendKeys('f');
+			element(by.css('tr.ng-table-filters>th:nth-child(4)>div>input')).sendKeys('randmail');
 			
 			// Click on last delete button
 			var row = element.all(by.repeater('customer in $data')).last()

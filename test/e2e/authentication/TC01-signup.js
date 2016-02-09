@@ -264,7 +264,7 @@ describe('Register page', function () {
 		// Insert values into form inputs
 		element(by.model('customer.name')).sendKeys('John');
 		element(by.model('customer.surname')).sendKeys('Doe');
-		element(by.model('customer.email')).sendKeys(stringGen(6) + '@mail.com');
+		element(by.model('customer.email')).sendKeys('randmail@mail.com');
 		element(by.model('customer.password')).sendKeys('00000000');
 		element(by.id('coord-btn')).click();
 		element(by.model('customer.address')).sendKeys('Calle 1 Bloque A Bajo Derecha');
