@@ -667,5 +667,18 @@
 		"Moment" : "Moment",
 		"ProductId" : "Product ID",
 		"Product" : "Product"
+	},
+	"Reports" : {
+		"Filter" : {
+			"Title" : "Select report of sales",
+			"SupplierEmail" : "Supplier email",
+			"Year" : "Year",
+			"Submit" : "Submit"
+		},
+		"Success" : "Report successfuly loaded",
+		"Error" : {
+			"SupplierNotFound" : "Supplier not found",
+			"InvalidParams" : "Invalid parameters"
+		}
 	}
 }

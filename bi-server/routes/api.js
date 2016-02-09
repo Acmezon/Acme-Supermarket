@@ -3,7 +3,9 @@ var SalesFact = require('../models/sales_fact'),
 	SupplierDim = require('../models/supplier_dim'),
 	TimeDim = require('../models/time_dim');
 	sync = require('synchronize'),
-	SortedMap = require("collections/sorted-map");
+	SortedMap = require("collections/sorted-map"),
+	fs = require('fs'),
+	ServiceReports = require('./service_reports');
 
 exports.getSalesOverTime = function(req, res) {
 	var supplier_id = req.params.id;
@@ -113,3 +115,48 @@ exports.notFound = function(req, res) {
 	console.log("Route not found: " + req.originalUrl);
 	res.sendStatus(404);
 }
+
+exports.getReport = function (req, res) {
+	var year = parseInt(req.body.year) || null,
+		supplier_email = req.body.supplier_email;
+
+	console.log("Funtion-BI_API-getReport --suppier: " + supplier_email + " --year: " + year);
+
+	if (year && supplier_email) {
+
+		var expectedURI =  "../public/reports/sales/" + supplier_email + year + ".pdf";
+
+		fs.access(expectedURI, fs.F_OK, function(err) {
+		    if (!err) {
+		        console.log('File exists');
+				var today = new Date();
+				if (year==today.getFullYear()) {
+					// Update report
+					ServiceReports.generateReport(year, supplier_email, expectedURI, function (response) {
+			    		if (response.success) {
+			    			res.sendStatus(200);
+			    		} else{
+			    			res.status(response.code).json({success: false})
+			    		}
+		    		});
+				} else {
+					// Returns report already generated
+					res.sendStatus(200);
+				}
+		    } else {
+		        console.log('File dont exists');
+				// Create report
+				ServiceReports.generateReport(year, supplier_email, expectedURI, function (response) {
+		    		if (response.success) {
+		    			res.sendStatus(200)
+		    		} else{
+		    			res.status(response.code).json({success: false})
+		    		}
+		    	});
+		    }
+		});
+	} else {
+		res.status(500);
+	}
+}
+

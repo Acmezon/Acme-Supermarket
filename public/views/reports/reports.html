@@ -15,20 +15,17 @@
 			</a>
 		</div>
 		<div id="filters" class="panel-collapse collapse" role="tabpanel" aria-labelledby="filterHeading">
-			<div class="panel-body">
-				<button class="btn" ng-click="clearFilters()">
-					{{'Reports.ClearFilters' | translate}} <span class="glyphicon glyphicon-erase"></span>
-				</button>
+			<div class="panel-body account_form">
 				<div class="col-lg-3">
-					<form name="reportForm" onSubmit="loadReport()">
+					<form name="reportForm">
 						<div class="form-group">
-							<input name="email" type="email" class="form-control" ng-model="supplierEmail" placeholder="{{'Reports.Filter.SupplierEmail' | translate}}" autocomplete="off" ng-class="{'has-error': reportForm.email.$dirty && (reportForm.email.$error.required || reportForm.email.$error.invalid)}" required>
+							<input name="email" type="email" class="form-control" ng-model="supplierEmail" placeholder="{{'Reports.Filter.SupplierEmail' | translate}}" ng-class="{'has-error': reportForm.email.$invalid && reportForm.email.$dirty}" required>
 						</div>
 						<div class="form-group">
-							<input name="year" type="number" class="form-control" ng-model="year" placeholder="{{'Reports.Filter.Year' | translate}}" min="2010" autocomplete="off" ng-class="{'has-error': reportForm.year.$dirty && (reportForm.year.$error.required || reportForm.year.$error.invalid)}" required>
+							<input name="year" type="number" class="form-control" ng-model="year" placeholder="{{'Reports.Filter.Year' | translate}}" min="2010" max="{{today.getFullYear()}}" ng-maxlength="4" ng-minlength="4" ng-class="{'has-error': reportForm.year.$invalid && reportForm.year.$dirty}" required>
 						</div>
 						<div class="form-group">
-							<button id="signup-submit" type="submit" name="submit" class="grey" ng-disabled="reportForm.$invalid">ok</button>
+							<button id="signup-submit" type="submit" name="submit" class="grey" ng-disabled="reportForm.$invalid" ng-click="loadReport()">{{'Reports.Filter.Submit' | translate}}</button>
 						</div>
 					</form>
 				</div>
@@ -36,19 +33,14 @@
 		</div>
 	</div>
 
-	<div class="row">
+	<div class="row" ng-show="url">
 		<div class="col-md-8 col-md-offset-2">
 			<div class="row">
-				<div class="col-lg-6">
-					<button class="btn btn-arrow-left" ng-click="previousPage()">-</button>
-				</div>
-				<div class="col-lg-6">
-					<button class="btn btn-arrow-right" ng-click="nextPage()">+</button>
+				<div class="pull-right">
+					<a target="_self" href="{{url}}"><button class="btn btn-lg"><i class="fa fa-file-pdf-o"></i></button></a>
 				</div>
 			</div>
-			<div class="row" style="margin-top:5%">
-				<canvas id="the-canvas" style="border:1px solid black;"/>
-			</div>
+			<canvas id="pdf-canvas" style="border:1px solid black;"/>
 		</div>
 	</div>
 	

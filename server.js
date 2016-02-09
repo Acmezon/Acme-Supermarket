@@ -194,6 +194,7 @@ app.get('/api/recommender/checkStatus', api.RecommenderServer.checkStatus);
 
 //Business Intelligence
 app.get('/api/bi/getSalesOverTime/:id', api.BusinessIntelligence.getSalesOverTime);
+app.post('/api/bi/getReport', api.BusinessIntelligence.getReport);
 
 //Test
 

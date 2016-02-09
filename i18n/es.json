@@ -665,5 +665,18 @@
 		"Moment" : "Momento",
 		"ProductId" : "ID de producto",
 		"Product" : "Producto"
+	},
+	"Reports" : {
+		"Filter" : {
+			"Title" : "Seleccionar informe de ventas",
+			"SupplierEmail" : "Email de proveedor",
+			"Year" : "Año",
+			"Submit" : "Seleccionar"
+		},
+		"Success" : "Informe cargado con éxito",
+		"Error" : {
+			"SupplierNotFound" : "Proveedor no encontrado",
+			"InvalidParams" : "Parámetros inválidos"
+		}
 	}
 }
