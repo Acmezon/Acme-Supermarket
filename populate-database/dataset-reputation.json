@@ -1,5 +1,0 @@
-{"value": 3, "supplier_id" : ObjectId("000000000000000000000003"), "customer_id" : ObjectId("000000000000000000000002") }
-{"value": 4, "supplier_id" : ObjectId("000000000000000000000004"), "customer_id" : ObjectId("000000000000000000000002") }
-
-{"value": 5, "supplier_id" : ObjectId("000000000000000000000003"), "customer_id" : ObjectId("000000000000000000000005") }
-{"value": 2, "supplier_id" : ObjectId("000000000000000000000004"), "customer_id" : ObjectId("000000000000000000000005") }
