@@ -106,7 +106,10 @@
 		"Discounts" : "Discounts",
 		"PurchasingRules" : "Purchasing Rules",
 		"MonitoringRules" : "Monitoring Rules",
-		"SocialMedia" : "Social Media"
+		"SocialMedia" : "Social Media",
+		"BusinessIntelligence": "Business Intelligence",
+		"SalesOverTime" : "Sales over time",
+		"SuplierReport" : "Sales report"
 	},
 	"Footer": {
 		"AboutUs" : "About Us",
@@ -663,5 +666,14 @@
 		"Moment" : "Moment",
 		"ProductId" : "Product ID",
 		"Product" : "Product"
+	},
+	"SalesOverTime" : {
+		"Title" : "Sales over time",
+		"ChartTitle" : "Sales over time of:",
+		"XLabel" : "Date",
+		"YLabel" : "Sales",
+		"SupplierEmail" : "Supplier email",
+		"ProductId" : "Product ID (optional)",
+		"Loading" : "Loading"
 	}
 }

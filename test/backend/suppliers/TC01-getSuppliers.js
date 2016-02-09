@@ -79,4 +79,63 @@ describe('Customers management api', function () {
 			});
 		});
 	});
+
+	it("shouldn't load a supplier by email to a non-authenticated user", function (done){
+		browser
+		.get('http://localhost:3000/api/signout')
+		.end(function (err, res) {
+			browser
+			.get('http://localhost:3000/api/supplier/byemail/no.provides@mail.com')
+			.end(function (err, res) {
+				res.status.should.be.equal(401);
+				res.body.success.should.be.exactly(false);
+				done();
+			});
+		});
+	});
+
+	it("shouldn't load a supplier by email to a customer", function (done){
+		browser
+		.post('http://localhost:3000/api/signin')
+		.send( { email : 'alex.gallardo@example.com', password : 'customer' } )
+		.end(function (err, res) {
+			browser
+			.get('http://localhost:3000/api/supplier/byemail/no.provides@mail.com')
+			.end(function (err, res) {
+				res.status.should.be.equal(403);
+				res.body.success.should.be.exactly(false);
+				done();
+			});
+		});
+	});
+
+	it("shouldn't load a supplier by email to a supplier", function (done){
+		browser
+		.post('http://localhost:3000/api/signin')
+		.send( { email : 'german.cruz@example.com', password : 'supplier' } )
+		.end(function (err, res) {
+			browser
+			.get('http://localhost:3000/api/supplier/byemail/no.provides@mail.com')
+			.end(function (err, res) {
+				res.status.should.be.equal(403);
+				res.body.success.should.be.exactly(false);
+				done();
+			});
+		});
+	});
+
+	it('should load a supplier by email', function (done){
+		browser
+		.post('http://localhost:3000/api/signin')
+		.send( { email : 'admin@mail.com', password : 'administrator' } )
+		.end(function (err, res) {
+			browser
+			.get('http://localhost:3000/api/supplier/byemail/no.provides@mail.com')
+			.end(function (err, res) {
+				res.status.should.be.equal(200);
+				
+				done();
+			});
+		});
+	});
 });

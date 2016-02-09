@@ -1,0 +1,35 @@
+<script src="views/businessintelligence/SalesOverTimeController.js"></script>
+
+<div class="wrap">
+	<div class="main">
+		<ul class="breadcrumb breadcrumb__t">
+			<li><a class="home" href="/">{{ 'Home.Title' | translate }}</a> / {{'SalesOverTime.Title' | translate}}
+			</li>
+		</ul>
+
+		<div class="account_form">
+			<form accept-charset="UTF-8">
+				<div>
+					<input type="email" name="email" ng-model="supplierEmail" placeholder="{{ 'SalesOverTime.SupplierEmail' | translate }}*" required>
+				</div>
+				<div>
+					<input type="number" name="product" ng-model="product_id" placeholder="{{ 'SalesOverTime.ProductId' | translate }}">
+				</div>
+				<button id="signup-submit" ng-click="plotChart()" class="grey chart">{{ 'Global.Submit' | translate }}</button>
+			</form>
+		</div>
+
+		<div class="content" id="chart-loading">
+			<div class="load-wrapp">
+				<div class="load">
+					<p>{{ 'SalesOverTime.Loading' | translate }}</p>
+					<div class="line"></div>
+					<div class="line"></div>
+					<div class="line"></div>
+				</div>
+			</div>
+		</div>
+		<div id="sales-chart">
+		</div>
+	</div>
+</div>
