@@ -132,7 +132,7 @@ exports.getReport = function (req, res) {
 
 	if (year && supplier_email) {
 
-		var expectedURI =  "../public/reports/sales/" + supplier_email + year + ".pdf";
+		var expectedURI =  "../public/reports/sales/" + supplier_email + "-" +  year + ".pdf";
 
 		fs.access(expectedURI, fs.F_OK, function(err) {
 		    if (!err) {

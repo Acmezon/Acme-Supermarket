@@ -73,7 +73,7 @@ exports.getReport = function (req, res) {
 									if(err){
 										res.status(500).send({success: false});
 									} else {
-										res.status(200).json({success: true, url: "reports/sales/" + supplier.email + year + ".pdf"})
+										res.status(200).json({success: true, url: "reports/sales/" + supplier.email + "-" + year + ".pdf"})
 									}
 								});
 							} else {
