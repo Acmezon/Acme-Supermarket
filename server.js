@@ -176,12 +176,6 @@ app.post('/api/productrule/create', api.SocialMediaRules.createProductRule);
 // Social media notifications
 app.get('/api/notifications/:id', api.SocialMediaNotifications.getNotificationsBySocialMediaRuleId);
 
-// Management
-app.get('/api/resetDataset', api.Management.resetDataset);
-app.get('/api/loadBigDataset', api.Management.loadBigDataset);
-app.get('/api/updateProductFields', api.Management.updateAllAvgRatingAndMinMaxPrice);
-app.get('/api/fixDeadImages', api.Management.fixDeadImages)
-
 // i18n
 app.get('/api/lang', api.i18n.getLanguageFile);
 
