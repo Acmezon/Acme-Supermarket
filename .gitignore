@@ -27,6 +27,5 @@ build/Release
 node_modules
 
 *.jar
-*.pdf
 
 #Gitignore product images moved to /public/img/products
