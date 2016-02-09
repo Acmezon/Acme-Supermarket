@@ -12,8 +12,8 @@ exports.config = {
 	allScriptsTimeout: 60000,
 	seleniumAddress: 'http://localhost:4444/wd/hub',
 	specs: [
-		//'backend/**/*.js'
-		'e2e/customers/TC02*.js'
+		'backend/**/*.js'
+		//'e2e/**/*.js'
 	]/*,
 	beforeLaunch: function() {
 		request("http://localhost:3000")
