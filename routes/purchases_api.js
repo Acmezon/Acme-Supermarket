@@ -274,7 +274,8 @@ exports.purchase = function (req, res) {
 	// Optional param
 	var discountCode = req.body.discountCode;
 
-	if (billingMethod!=1 && billingMethod!=3 && billingMethod!=3) {
+	if (billingMethod!=1 && billingMethod!=2 && billingMethod!=3) {
+		console.log(1)
 		res.status(500).send({success: false});
 		return;
 	} else {
