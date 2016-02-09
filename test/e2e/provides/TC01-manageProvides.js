@@ -43,7 +43,7 @@ describe('Product details page', function () {
 	it('should let the supplier provide the product', function (){
 		browser.get('http://localhost:3000/signin');
 
-		element(by.model('email')).sendKeys('gustavo.santana@example.com');
+		element(by.model('email')).sendKeys('no.provides@mail.com');
 		element(by.model('password')).sendKeys('supplier');
 
 		element(by.css('.button')).click();
@@ -54,11 +54,11 @@ describe('Product details page', function () {
 			expect(element(by.model('new_provide.price')).isPresent()).toBe(true);
 			element(by.model('new_provide.price')).sendKeys(30);
 
-			$('#provideproduct-submit').click();
+			element(by.id('provideproduct-submit')).click();
 
-			browser.get('http://localhost:3000/product/31');
+			browser.sleep(1000)
 			element.all(by.repeater('provide in out_suppliers')).count().then(function (new_count) {
-				expect(new_count).toBe(count + 1);
+				expect(new_count).toBe(count + 2);//2 ng-repeat over out_suppliers -> +-2 when added / removed
 			});
 		});
 	});
@@ -66,7 +66,7 @@ describe('Product details page', function () {
 	it('should let the supplier remove the provide from the product', function (){
 		browser.get('http://localhost:3000/signin');
 
-		element(by.model('email')).sendKeys('gustavo.santana@example.com');
+		element(by.model('email')).sendKeys('no.provides@mail.com');
 		element(by.model('password')).sendKeys('supplier');
 
 		element(by.css('.button')).click();
@@ -79,7 +79,7 @@ describe('Product details page', function () {
 
 			browser.get('http://localhost:3000/product/31');
 			element.all(by.repeater('provide in out_suppliers')).count().then(function (new_count) {
-				expect(new_count).toBe(count - 1);
+				expect(new_count).toBe(count - 2);//2 ng-repeat over out_suppliers -> +-2 when added / removed
 			});
 		});
 	});

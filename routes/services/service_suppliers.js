@@ -20,6 +20,7 @@ exports.getName = function(id, callback) {
 	});	
 };
 
+//Returs whether a customer has purchased the provide or not
 exports.userHasPurchased = function (cookie, key, provide_id, callback) {
 	ActorService.getPrincipal(cookie, key, function (user) {
 		if(user == -1) {

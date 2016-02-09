@@ -95,28 +95,20 @@ it('should cancel edition and fields should revert', function (){
 
 		element(by.id('customers-length')).getText().then (function (text) {
 			var number_customers = parseInt(text);
+
+			element(by.css('tr.ng-table-filters>th:nth-child(4)>div>input')).sendKeys('randmail');
 			
 			// Click on last delete button
 			var row = element.all(by.repeater('customer in $data')).last()
 			var deleteBtn = row.element(by.css('.btn-delete-customers'));
 
-			row.getAttribute('id').then(function (id) {
-				deleteBtn.click().then(function() {
-					browser.waitForAngular();
-					var confirmBtn = element(by.css('div#delete-'+id+'>div>div>div:nth-child(2)>button:nth-child(2)'));
+			deleteBtn.click().then(function() {
+				browser.waitForAngular();
 
-					var EC = protractor.ExpectedConditions;
-					browser.wait(EC.visibilityOf(confirmBtn), 5000);
-
-					confirmBtn.click().then(function () {
-						browser.waitForAngular();
-						browser.sleep(500)
-						element(by.id('customers-length')).getText().then (function (text) {
-							expect(parseInt(text)).toEqual(number_customers - 1);
-						});
-					});
-				}); 
-			});
+				element(by.id('customers-length')).getText().then (function (text) {
+					expect(parseInt(text)).toEqual(number_customers - 1);
+				});
+			}); 
 		});
 	});
 });

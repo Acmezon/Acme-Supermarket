@@ -9,11 +9,11 @@ exports.config = {
 			}
 		}
 	},
+	allScriptsTimeout: 60000,
 	seleniumAddress: 'http://localhost:4444/wd/hub',
 	specs: [
+		'backend/**/*.js'
 		'e2e/**/*.js'
-		//'backend/products/TC03-rateProduct.js'
-
 	]/*,
 	beforeLaunch: function() {
 		request("http://localhost:3000")

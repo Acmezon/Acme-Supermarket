@@ -34,6 +34,11 @@
 							{{ 'Profile.PersonalInfo' | translate }}
 						</h3>
 						<div>
+							<p>
+								ID: <span id="id">{{user.id}}</span>
+							</p>
+						</div>
+						<div>
 							<p class="editable-p" editable-text="user.name" onbeforesave="updateUser('name', $data)">
 								{{user.name}}
 							</p>

@@ -27,7 +27,7 @@
                 </li>
 
                 <li restrict access="isLogged">
-                    <a id="logout" ng-click="signout()">{{ 'Header.Signout' | translate }}</a>
+                    <a href="" id="logout" ng-click="signout()">{{ 'Header.Signout' | translate }}</a>
                 </li>                
             </ul>
         </div>
@@ -40,7 +40,9 @@
             <nav class="navbar navbar-default">
                 <div class="container-fluid">
                     <div class="navbar-header">
-                        <a class="navbar-brand" href="/"><img src="img/template_bootstrap/logo.png" alt=""/></a>
+                        <a class="navbar-brand" href="/" style="padding-top: 0px">
+                            <img style="margin-top: 10px; height: 100%"src="img/template_bootstrap/logo.png" alt="Acme-Supermarket"/>
+                        </a>
                     </div>
                     <ul class="nav navbar-nav">
                         <li ng-class="{active: $route.current.activetab == 'home'}"><a href="/">{{ 'Home.Title' | translate }}</a></li>
@@ -51,10 +53,32 @@
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="/dashboard">{{ 'Header.Dashboard' | translate }}</a></li>
                                 <li><a href="/customers">{{ 'Header.Customers' | translate }}</a></li>
                                 <li><a href="/purchases">{{ 'Header.Purchases' | translate }}</a></li>
-                                <li><a href="/products/create">{{ 'Header.CreateProduct' | translate }}</a></li>
+                                <li><a href="/management/discounts">{{ 'Header.Discounts' | translate }}</a></li>
+                                <li><a href="/purchasingrules">{{ 'Header.PurchasingRules' | translate }}</a></li>
+                                <li><a href="/management/rating">{{ 'Header.CreateRating' | translate }}</a></li>
+                                <li><a href="/reports">{{ 'Title.Reports' | translate }}</a></li>
+                            </ul>
+                        </li> 
+                        <li ng-class="{active: $route.current.activetab == 'socialmedia'}" restrict access="admin" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="">
+                                {{'Header.SocialMedia' | translate}}
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/dashboard">{{ 'Header.Dashboard' | translate }}</a></li>
+                                <li><a href="/monitoringrules">{{ 'Header.MonitoringRules' | translate }}</a></li>
+                            </ul>
+                        </li> 
+                        <li ng-class="{active: $route.current.activetab == 'businessIntelligence'}" restrict access="admin" class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="">
+                                {{'Header.BusinessIntelligence' | translate}}
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/salesovertime">{{ 'Header.SalesOverTime' | translate }}</a></li>
+                                <li><a href="/reports">{{ 'Header.SuplierReport' | translate }}</a></li>
                             </ul>
                         </li> 
                         <li ng-class="{active: $route.current.activetab == 'account'}" restrict access="isLogged" class="dropdown">
@@ -65,6 +89,7 @@
                             <ul class="dropdown-menu">
                                 <li><a href="/myprofile">{{ 'Header.Account.MyProfile' | translate }}</a></li>
                                 <li restrict access="customer"><a href="/mypurchases">{{ 'Header.Account.MyPurchases' | translate }}</a></li>
+                                <li restrict access="customer"><a href="/mypurchasingrules">{{ 'Header.Account.MyPurchasingRules' | translate }}</a></li>
                                 <li restrict access="supplier"><a href="/myproducts">{{ 'Header.Account.MyProducts' | translate }}</a></li>
                                 <li restrict access="customer"><a href="/shoppingcart">{{ 'Header.Account.ShoppingCart' | translate }}</a></li> 
                             </ul>
@@ -74,9 +99,21 @@
             </nav>
         </div>
         <div class="header-bottom-right">
-            <div class="search">
-                <input type="text" name="s" class="textbox" placeholder="{{ 'Header.Search' | translate }}" >
-                <input type="submit" value="Subscribe" id="submit" name="submit">
+            <div class="search" ng-if="$root.title=='Title.Product.List' || $root.title=='Title.Product.MyProducts'" onKeyPress="return searchKeyPress(event);">
+                <script>
+                function searchKeyPress(e) {
+                    // look for window.event in case event isn't passed in
+                    e = e || window.event;
+                    if (e.keyCode == 13)
+                    {
+                        document.getElementById('search-submit').click();
+                        return false;
+                    }
+                    return true;
+                }
+                </script>
+                <input type="text" name="s" ng-model="textSearch" class="textbox" placeholder="{{ 'Header.Search' | translate }}" >
+                <input id="search-submit" type="submit" value="Subscribe" id="submit" name="submit" ng-click="search(textSearch)">
                 <div id="response"></div>
             </div>
             <div class="tag-list" restrict access="customer">
@@ -98,7 +135,7 @@
                 </ul>
                 <ul class="last">
                     <li>
-                        <a href="/shoppingcart">{{ 'Header.Cart' | translate}} (<span id="products-cart">{{productsInCart()}}</span>)</a>
+                        <a id="shopping-cart-link" href="/shoppingcart">{{ 'Header.Cart' | translate}} (<span id="products-cart">{{productsInCart()}}</span>)</a>
                     </li>
                 </ul>
             </div>

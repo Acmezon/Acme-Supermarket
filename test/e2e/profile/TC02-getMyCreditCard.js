@@ -30,7 +30,7 @@ describe('My profile page', function () {
 		expect(browser.getCurrentUrl()).toEqual('http://localhost:3000/myprofile');
 
 		expect(element(by.css('div#personalinfo')).isPresent()).toBe(true)
-		expect(element(by.css('div#personalinfo>p:nth-child(4)')).getText()).toEqual('daniel.diaz@example.com')
+		expect(element(by.css('div#personalinfo>p:nth-child(5)')).getText()).toEqual('daniel.diaz@example.com')
 		expect(element(by.id('ccdata-tab')).isPresent()).toBe(true);
 		expect(element(by.id('ccdata')).isPresent()).toBe(true);
 	});

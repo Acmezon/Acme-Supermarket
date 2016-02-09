@@ -1,0 +1,45 @@
+<script src="views/notifications/NotificationsController.js"></script>
+
+<div class="wrap">
+	<ul class="breadcrumb breadcrumb__t">
+		<li><a class="home" href="/">{{ 'Home.Title' | translate }}</a> / 
+			<a href="/monitoringrules">{{'SocialMediaRules.Title' | translate}}</a> / {{'Notifications.Title' | translate}}
+		</li>
+	</ul>
+
+	<div>
+		<h2 class="head">{{'Notifications.Title' | translate}}</h2>
+		<div class="row">
+			<div class="col-md-12">
+				<div ng-if="!numNotifications">
+					<h4 class="title">{{'Notifications.Empty.Title' | translate}}</h4>
+					<p>{{'Notifications.Empty.Description' | translate}}</p>
+				</div>
+				<p ng-if="numNotifications">{{'Notifications.Filled.Description1' | translate}}{{numNotifications}}{{'Notifications.Filled.Description2' | translate}}</p>
+				<table ng-if="numNotifications" ng-table="tableParams" class="table" show-filter="true">
+					<colgroup>
+						<col width="30%" />
+						<col width="20%" />
+						<col width="50%" />
+					</colgroup>
+					<tr ng-repeat="notification in tableParams.data track by notification._id">
+						<td title="'Notifications.Moment' | translate" filter="{ moment: 'text'}" sortable="'moment'">
+							{{notification.moment | date:'dd/MM/yyyy HH:mm'}}
+						</td>
+						<td title="'Notifications.PercentageExceeded' | translate" filter="{ percentageExceeded: 'number'}" sortable="'percentageExceeded'">
+							{{notification.percentageExceeded | number:2}}
+						</td>
+						<td ng-show="notification._type=='ProductNotification'" title="'Notifications.Product' | translate" filter="{ product_name: 'number'}" sortable="'product_name'">
+							<a href="/product/{{notification.product_id}}">
+								<img width="16" height="16" src="img/{{notification.product_image}}">
+								{{notification.product_name}}
+							</a>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+
+
+	</div>
+</div>

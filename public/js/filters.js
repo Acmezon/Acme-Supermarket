@@ -24,3 +24,43 @@ filters.filter('startFrom', function() {
     	}
     }
 });
+
+filters.filter('hidecc', function(){
+	return function (input) {
+		if(input == undefined) {
+			return input;
+		}
+		input = input.toString();
+
+		var setCharAt = function(str,index,chr) {
+			if(index > str.length-1) return str;
+			return str.substr(0,index) + chr + str.substr(index+1);
+		}
+
+		for (var i = 0; i < input.length - 4; i++) {
+			input = setCharAt(input, i, '*')
+		}
+
+		return input;
+	}
+});
+
+filters.filter('hidecvc', function(){
+	return function (input) {
+		if(input == undefined) {
+			return input;
+		}
+		input = input.toString();
+
+		var setCharAt = function(str,index,chr) {
+			if(index > str.length-1) return str;
+			return str.substr(0,index) + chr + str.substr(index+1);
+		}
+
+		for (var i = 0; i < input.length - 1; i++) {
+			input = setCharAt(input, i, '*')
+		}
+
+		return input;
+	}
+});

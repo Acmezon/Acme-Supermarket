@@ -57,10 +57,14 @@ describe('Add products to the shopping cart', function () {
 
 		// Visit product
 		browser.get('http://localhost:3000/products');
+		element(by.cssContainingText('option', 'Price')).click();
+		element(by.css('img.v-middle')).click()
+		
 		var product = element.all(by.css('.product')).first();
 		product.click();
 
-		var cartbtn = element(by.id('cart-btn'));
+		browser.sleep(2000)
+		var cartbtn = element.all(by.id('cart-btn')).first();
 		expect(cartbtn.isPresent()).toBe(true);
 		cartbtn.click();
 		cartbtn.click();

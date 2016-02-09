@@ -28,8 +28,8 @@ describe('Log in to the system', function () {
 
 		// Click logout
 		logout_button.click();
-		browser.waitForAngular();
-
+		browser.sleep(1000);
+		
 		// Cleared cookies
 		browser.manage().getCookies().then(function (cookies) {
 			expect(cookies.length).toBeLessThan(2);

@@ -8,10 +8,10 @@
 		</li>
 	</ul>
 
-	<h2 class="head" ng-if="view=='mypurchases'">{{'Purchases.MyPurchases.Title' | translate}}</h2>
-	<h2 class="head" ng-if="view=='purchases'">{{'Purchases.Title' | translate}}</h2>
+	<h2 class="head" ng-if="view=='mypurchases'" restrict access="customer">{{'Purchases.MyPurchases.Title' | translate}}</h2>
+	<h2 class="head" ng-if="view=='purchases'" restrict access="admin">{{'Purchases.Title' | translate}} <a href="/purchase/create" class="pull-right"><button class="btn btn-primary">{{ 'Header.Purchase' | translate }}</button></a></h2>
 
-	<div ng-if="view=='purchases'">
+	<div ng-if="view=='purchases'" restrict access="admin">
 		<!-- Admin view -->
 		<div ng-if="numberOfPurchases==0">
 			<h4 class="title">{{'Purchases.Empty' | translate}}</h4>
@@ -45,7 +45,7 @@
 		</div>
 	</div>
 
-	<div ng-if="view=='mypurchases'">
+	<div ng-if="view=='mypurchases'" restrict access="customer">
 		<!-- Customer view -->
 		<div ng-if="numberOfPurchases==0">
 			<h4 class="title">{{'Purchases.MyPurchases.Empty.Title' | translate}}</h4>

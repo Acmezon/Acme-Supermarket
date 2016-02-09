@@ -4,6 +4,8 @@ var Customer = require('../models/customer'),
 	Actor = require('../models/actor'),
 	ActorService = require('./services/service_actors'),
 	CustomerService = require('./services/service_customers'),
+	PurchasingRule = require('../models/purchasing_rule'),
+	ProductService = require('./services/service_products'),
 	crypto = require('crypto'),//Necesario para encriptacion por MD5	
 	db_utils = require('./db_utils'),
 	jwt = require('jsonwebtoken'),
@@ -36,12 +38,44 @@ exports.getCustomer = function (req, res) {
 	});
 };
 
-// Returns all customers of the system (W/O PASSWORDS)
-exports.getCustomers = function (req, res) {
-	console.log('Function-productsApi-getCustomers');
+// Returns a customer by its email. ONLY FOR ADMINS
+exports.getCustomerByEmail = function (req, res) {
+	var email = req.params.email;
+	console.log('Function-productsApi-getCustomerByEmail -- email: ' + email);
 
 	var cookie = req.cookies.session;
 	var jwtKey = req.app.get('superSecret');
+
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
+		if (role=='customer' || role=='supplier' || role=='admin') {
+			if (role=='admin') {
+				Customer.findOne({email: email, _type: 'Customer'}).exec (function (err, customer) {
+					if (err) {
+						// Internal server error
+						res.status(500).json({success: false});
+					} else {
+						
+						res.status(200).json(customer);
+					}
+				});
+			} else {
+				// Doesn't have permissions
+				res.status(403).json({success: false});
+			}
+		} else {
+			// Not authenticated
+			res.status(401).json({success: false});
+		}
+	});
+}
+
+// Returns all customers of the system (W/O PASSWORDS)
+exports.getCustomers = function (req, res) {
+	console.log('Function-customersApi-getCustomers');
+
+	var cookie = req.cookies.session;
+	var jwtKey = req.app.get('superSecret');
+
 	// Check principal is an admin
 	ActorService.getUserRole(cookie, jwtKey, function (role) {
 		if (role=='admin') {
@@ -101,7 +135,6 @@ exports.newCustomer = function (customer, callback) {
 
 	// Server validation
 	var pass = CustomerService.checkFieldsCorrect(_name, _surname, _email, _password, _coordinates, _address, _country, _city, _phone);
-	console.log(pass)
 
 	if (pass) {
 		var md5Password = crypto.createHash('md5').update(_password).digest("hex");
@@ -119,8 +152,6 @@ exports.newCustomer = function (customer, callback) {
 			phone: _phone
 		});
 
-		console.log(newCustomer)
-
 		newCustomer.save(function (err) {
 			callback(db_utils.handleInsertErrors(err));
 		});
@@ -135,7 +166,7 @@ exports.newCustomer = function (customer, callback) {
 // Update/Save a credit card. Check id_cc
 exports.updateCC = function(req, res){
 	console.log('Function-customersApi-updateCC');
-
+	
 	var cc = new CreditCard({
 		holderName : req.body.cc.holderName,
 		number : req.body.cc.number,
@@ -145,14 +176,19 @@ exports.updateCC = function(req, res){
 	});
 	// If id not set, Save
 	if(!req.body.id_cc){
+		if(!req.body.customer_id) {
+			res.sendStatus(503);
+			return;
+		}
+
 		credit_card_api.newCreditCard(cc, 
-			function (errors) {
-				if(errors.length > 0) {
+			function (errors, saved) {
+				if(errors) {
 					res.status(500).json({success: false, message: errors});
 				} else {
-					Customer.findByIdAndUpdate(req.body.customer_id, { $set : { credit_card: cc._id } }, function (err, customer) {
+					Customer.findByIdAndUpdate(req.body.customer_id, { $set : { credit_card: saved.id } }, function (err, customer) {
 						if(err) {
-							CreditCard.find(cc._id).remove().exec();
+							CreditCard.find(saved.id).remove().exec();
 							res.sendStatus(503);
 						} else {
 							res.status(200).json({success: true});
@@ -273,67 +309,27 @@ exports.getMyCreditCard = function (req, res) {
 
 	var cookie = req.cookies.session;
 
-	if (cookie !== undefined) {
-		var token = cookie.token;
-
-		// decode token
-		if (token) {
-
-			// verifies secret and checks exp
-			jwt.verify(token, req.app.get('superSecret'), function(err, decoded) {
-				if (err) {
-					res.status(404).send({
-						success: false
-					});
-				} else {
-					var email = decoded.email;
-					var password = decoded.password;
-
-					Customer.findOne({email: email}, function(err, customer){
-						if(err){
+	CustomerService.getPrincipalCustomer(cookie, req.app.get('superSecret'), function (customer) {
+		if(!customer) {
+			res.status(403).json({success: false, message: "Doesnt have permission"});
+		} else {
+			if(customer.credit_card_id) {
+				CreditCard.findOne({_id: customer.credit_card_id},
+					function(err, credit_card){
+						if(err) {
 							res.status(404).send({
 								success: false
-							});							
-						} else{
-							// Check password correct
-							if (password != customer.password) {
-								res.status(401).json({success: false, message: "Not authenticated"});
-							} else {
-								// Check is customer
-								ActorService.getUserRole(req.cookies.session, req.app.get('superSecret'), function (role) {
-									if (role=='customer') {
-										// Posible that credit card is null
-										if(customer.credit_card_id) {
-											CreditCard.findOne({_id: customer.credit_card_id},
-												function(err, credit_card){
-													if(err) {
-														res.status(404).send({
-															success: false
-														})
-													} else {
-														res.status(200).json(credit_card);
-													}
-											})
-										} else {
-											// empty credit card
-											res.status(200).json(null);
-										}
-									} else {
-										res.status(403).json({success: false, message: "Doesnt have permission"});
-									}
-								});
-							}
+							});
+						} else {
+							res.status(200).json(credit_card);
 						}
-					});
-				}
-			});
-
-		} else {
-			res.status(401).json({success: false, message: "Not authenticated"});
+				})
+			} else {
+				// empty credit card
+				res.status(200).json(null);
+			}
 		}
-	} else {
-		res.status(401).json({success: false, message: "Not authenticated"});
-	}
+	});
 };
 
 exports.getMyRecommendations = function (req, res) {
@@ -366,6 +362,61 @@ exports.getMyRecommendations = function (req, res) {
 					res.sendStatus(500);
 				}
 			});
+		}
+	});
+};
+
+exports.getMyPurchasesRules = function (req, res) {
+	var cookie = req.cookies.session;
+	var jwtKey = req.app.get('superSecret');
+
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
+		if (role=='customer' || role=='admin' || role=='supplier') {
+			CustomerService.getPrincipalCustomer(req.cookies.session, req.app.get('superSecret'), function (customer) {
+				if(!customer) {
+					res.status(403).json({success: false, message: "Doesnt have permission"});
+				} else {
+					PurchasingRule.find({customer_id : customer.id}, function (err, rules) {
+						if(err) {
+							console.log(err);
+							res.sendStatus(500);
+						} else {
+							var completed_rules = [];
+
+							sync.fiber(function () {
+								for(var i = 0; i < rules.length; i++) {
+									var rule_obj = rules[i].toObject();
+
+									var provide_id = rule_obj.provide_id;
+
+									var product = sync.await(ProductService.getProductByProvideId(provide_id, sync.defer()));
+
+									if(product) {
+										rule_obj['product_name'] = product.name;
+										rule_obj['product_id'] = product.id;
+									} else {
+										rule_obj['product_name'] = undefined;
+										rule_obj['product_id'] = undefined;
+									}
+
+									completed_rules.push(rule_obj);
+								}
+
+								return completed_rules;			
+							}, function (err, data) {
+								if(err) {
+									console.log(err);
+									res.sendStatus(500);
+								} else {
+									res.status(200).json(data);
+								}
+							});
+						}
+					});
+				}
+			});
+		} else {
+			res.status(401).json({success: false, message: "Doesnt have permission"});
 		}
 	});
 };

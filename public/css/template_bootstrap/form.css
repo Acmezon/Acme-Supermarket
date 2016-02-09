@@ -302,10 +302,10 @@ color: #2DA5DA;
 @font-face
 {
 	font-family: 'FontAwesome';
-	src: url('../icons/fontawesome-webfont.eot?v=3.0.1');
-	src: url('../icons/fontawesome-webfont.eot?#iefix&v=3.0.1') format('embedded-opentype'),
-	url('../icons/fontawesome-webfont.woff?v=3.0.1') format('woff'),
-	url('../icons/fontawesome-webfont.ttf?v=3.0.1') format('truetype');
+	src: url('../../fonts/fontawesome-webfont.eot?v=3.0.1');
+	src: url('../../fonts/fontawesome-webfont.eot?#iefix&v=3.0.1') format('embedded-opentype'),
+	url('../../fonts/fontawesome-webfont.woff?v=3.0.1') format('woff'),
+	url('../../fonts/fontawesome-webfont.ttf?v=3.0.1') format('truetype');
 	font-weight: normal;
 	font-style: normal;
 }

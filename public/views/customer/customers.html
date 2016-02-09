@@ -9,53 +9,13 @@
 			<span class="glyphicon glyphicon-refresh"></span>
 		</button>
 	</h2> 
-	<div ng-if="$data.length===0">
+	<div ng-if="!$data.length">
 		<h4 class="title">{{'Customers.Empty.Title' | translate}}</h4>
 		<p>{{'Customers.Empty.Description' | translate}}</p>
 	</div>
-	<div ng-if="$data.length>0" style="z-index:100000; position:relative">
+	<div ng-if="$data.length">
 		<p>{{'Customers.Filled.Description1' | translate}}<span id="customers-length">{{$data.length}}</span>{{'Customers.Filled.Description2' | translate}}</p>
 		<div ng-repeat="customer in $data">
-			<div class="modal fade" id="delete-{{customer._id}}" role="dialog" >
-				<div class="modal-dialog modal-sm">
-				<!-- Modal content-->
-					<div class="modal-content">
-						<div class="modal-header">
-	  						<button type="button" class="close" data-dismiss="modal">&times;</button>
-	  						<h4 class="modal-title">{{'Customers.Delete.Question' | translate}}</h4>
-						</div>
-						<div class="modal-body">
-							<table class="table">
-	  							<tr>
-	  								<td>{{'Customers.Actor.Id' | translate}}</td>
-	  								<td>{{customer._id}}</td>
-	  							</tr>
-	  							<tr>
-	  								<td>{{'Customers.Actor.Name' | translate}}</td>
-	  								<td>{{customer.name}}</td>
-	  							</tr>
-	  							<tr>
-	  								<td>{{'Customers.Actor.Surname' | translate}}</td>
-	  								<td>{{customer.surname}}</td>
-	  							</tr>
-	  							<tr>
-	  								<td>{{'Customers.Actor.Email' | translate}}</td>
-	  								<td><a href="mailto:{{customer.email}}">{{customer.email}}</a></td>
-	  							</tr>
-	  						</table>
-	  						<button type="button" class="btn btn-primary btn-confirm-customers" data-toggle="button" ng-click="delete(customer)">
-								{{'Customers.Delete.Yes' |translate}}
-							</button>
-	  						<button type="button" class="btn btn-danger" data-toggle="button" data-dismiss="modal">
-								{{'Customers.Delete.No' |translate}}
-							</button>
-			       		</div>
-						<div class="modal-footer">
-							<button type="button" class="btn btn-default" data-dismiss="modal">{{'Customers.Close' | translate}}</button>
-						</div>
-					</div>
-				</div>
-			</div>
 
 			<!-- Modal -->
 			<div class="modal fade" id="info-{{customer._id}}" role="dialog">
@@ -123,23 +83,23 @@
 		  						<tbody>
 		  							<tr>
 		  								<td>{{'Customers.CreditCard.Id' | translate}}</td>
-		  								<td>{{customer.creditcard._id}}</td>
+		  								<td>{{customer.credit_card._id}}</td>
 		  							</tr>
 		  							<tr>
 		  								<td>{{'Customers.CreditCard.HolderName' | translate}}</td>
-		  								<td>{{customer.creditcard.holderName}}</td>
+		  								<td>{{customer.credit_card.holderName}}</td>
 		  							</tr>
 		  							<tr>
 		  								<td>{{'Customers.CreditCard.Number' | translate}}</td>
-		  								<td>{{customer.creditcard.number}}</td>
+		  								<td>{{customer.credit_card.number | hidecc }}</td>
 		  							</tr>
 		  							<tr>
 		  								<td>{{'Customers.CreditCard.Expiration' | translate}}</td>
-		  								<td>{{customer.creditcard.expirationMonth}} / {{customer.creditcard.expirationYear}}</td>
+		  								<td>{{customer.credit_card.expirationMonth}} / {{customer.credit_card.expirationYear}}</td>
 		  							</tr>
 		  							<tr>
 		  								<td>{{'Customers.CreditCard.CvcCode' | translate}}</td>
-		  								<td>{{customer.creditcard.cvcCode}}</td>
+		  								<td>{{customer.credit_card.cvcCode | hidecvc}}</td>
 		  							</tr>
 	  							</tbody>
 	  						</table>
@@ -228,7 +188,7 @@
 		            	<span class="glyphicon glyphicon-pencil"></span>
 		            </button>
 
-		            <button class="btn btn-danger btn-sm btn-delete-customers" ng-if="!customer.isEditing" data-toggle="modal" data-target="#delete-{{customer._id}}">
+		            <button class="btn btn-danger btn-sm btn-delete-customers" ng-if="!customer.isEditing" ng-click="delete(customer)">
 		            	<span class="glyphicon glyphicon-trash"></span>
 		            </button>
 				</td>

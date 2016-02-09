@@ -195,3 +195,34 @@ exports.checkProvides = function(req, res) {
 		}
 	);
 }
+
+// Returns a supplier by its email. ONLY FOR ADMINS
+exports.getSupplierByEmail = function (req, res) {
+	var email = req.params.email;
+	console.log('Function-productsApi-getCustomerByEmail -- email: ' + email);
+
+	var cookie = req.cookies.session;
+	var jwtKey = req.app.get('superSecret');
+
+	ActorService.getUserRole(cookie, jwtKey, function (role) {
+		if (role=='customer' || role=='supplier' || role=='admin') {
+			if (role=='admin') {
+				Supplier.findOne({email: email, _type: 'Supplier'}).exec (function (err, supplier) {
+					if (err) {
+						// Internal server error
+						res.status(500).json({success: false});
+					} else {
+						
+						res.status(200).json(supplier);
+					}
+				});
+			} else {
+				// Doesn't have permissions
+				res.status(403).json({success: false});
+			}
+		} else {
+			// Not authenticated
+			res.status(401).json({success: false});
+		}
+	});
+}

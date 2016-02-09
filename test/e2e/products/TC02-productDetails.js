@@ -53,7 +53,7 @@ describe('Load products', function () {
 
 			//AFTER THIS
 			// Visit product
-			element.all(by.css('div.top-box>div>div>a>div')).first().click();;
+			element.all(by.css('div.top-box>div>div>a>div')).first().click();
 
 			browser.waitForAngular();
 
@@ -85,7 +85,7 @@ describe('Load products', function () {
 
 			//AFTER THIS
 			// Visit product
-			element.all(by.css('div.top-box>div>div>a>div')).first().click();;
+			element.all(by.css('div.top-box>div>div>a>div')).first().click();
 
 			browser.waitForAngular();
 

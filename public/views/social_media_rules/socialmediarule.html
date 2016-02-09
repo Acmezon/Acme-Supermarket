@@ -1,0 +1,23 @@
+<script src="views/social_media_rules/SocialMediaRuleCreateController.js"></script>
+
+<div class="wrap">
+	<ul class="breadcrumb breadcrumb__t">
+		<li><a class="home" href="/">{{ 'Home.Title' | translate }}</a> / <a href="/monitoringrules">{{'SocialMediaRules.Title' | translate}}</a> / {{'SocialMediaRules.Create' | translate}}</li>
+	</ul>
+
+	<h2 class="head">{{'SocialMediaRules.Create' | translate}}</h2>
+
+	<form method="post" name="createProductRule" id="submit-form" ng-submit="submit()" class="product_form" novalidate>
+		<div class="input-group">
+			<input id="input-product-id" name="productId" type="number" class="form-control" placeholder="{{ 'Management.Rating.ProductId' | translate }}*" ng-model="socialmediarule.product_id" ng-class="{'has-error': createProductRule.productId.$dirty && createProductRule.productId.$error.required }" min="0" required>
+		</div>
+		<div class="input-group">
+			<input id="input-increaserate" name="increaseRate" type="number" class="form-control" placeholder="{{ 'SocialMediaRules.IncreaseRate' | translate }}*" ng-model="socialmediarule.increaseRate" ng-class="{'has-error': createProductRule.increaseRate.$dirty && createProductRule.increaseRate.$error.required }" min="0" required>
+		</div>
+		
+		<button id="createproductrule-submit" type="submit" name="submit" class="grey" ng-disabled="createProductRule.$invalid">
+			{{ 'Global.Submit' | translate }}
+		</button>
+	</form>
+
+</div>

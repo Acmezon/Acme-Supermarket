@@ -12,7 +12,14 @@ var db_utils = require('./db_utils'),
 	PurchaseLine = require('../models/purchase_line'),
 	Rate = require('../models/rate'),
 	Reputation = require('../models/reputation'),
-	crypto = require('crypto');//Necesario para encriptacion por MD,
+	Discount = require('../models/discount'),
+	IsOver = require('../models/is_over'),
+	PurchasingRule = require('../models/purchasing_rule'),
+	ProductRule = require('../models/product_rule'),
+	BrandRule = require('../models/brand_rule'),
+	ProductNotification = require('../models/product_notification'),
+	BrandNotification = require('../models/brand_notification'),
+	crypto = require('crypto'),//Necesario para encriptacion por MD,
 	mongoose = require('mongoose'),
 	fs = require('fs'),
 	async = require('async'),
@@ -20,13 +27,17 @@ var db_utils = require('./db_utils'),
 	ProductService = require('./services/service_products'),
 	PurchaseService = require('./services/service_purchase'),
 	shuffle = require('shuffle-array'),
-	sync = require('synchronize');
+	sync = require('synchronize'),
+	CouponCode = require('coupon-code');
 
 
 function random(max, min) {
 	return Math.floor(Math.random()*(max-min+1)+min);
 }
 
+function randomDate(start, end) {
+	return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+}
 // Restore Mongo DB to development state
 function startProcess(callback) {
 	loadCategories(callback);
@@ -40,7 +51,7 @@ function loadCategories (callback) {
 
 	async.each(categories.categories, function (category, category_callback) {
 		var new_category = new Category({
-			"name" : category.name
+			name : category.name || "No Category"
 		});
 
 		new_category.save(function (err, saved) {
@@ -93,8 +104,62 @@ function loadProducts(callback) {
 		fs.writeFileSync('big_db/products_mapping.json', JSON.stringify(products_mapping));
 		console.log("--DO: Products saved");
 
-		loadBelongsTo(callback);
+		loadDiscounts(callback);
 	});
+}
+
+function loadDiscounts(callback) {
+	sync.fiber(
+		function() {
+			var products = sync.await(Product.find({}, sync.defer()));
+
+			var fixed_product = sync.await(Product.findById(1, sync.defer()));
+
+			var discount = new Discount({
+				code : 'W5PQ-PYN2-B8B4-6H8J',
+				value : 30
+			});
+
+			var saved = sync.await(discount.save(sync.defer()));
+
+			var isOver = new IsOver({
+				product_id: fixed_product.id,
+				discount_id : saved.id
+			});
+
+			sync.await(isOver.save(sync.defer()));
+
+			for(var i = 0; i < 30; i++) {
+				var rand_products = shuffle(products);
+				var nr_products = random(30, 40);
+				var affected_products = rand_products.slice(0, nr_products);
+
+				discount = new Discount({
+					code: CouponCode.generate({ parts: 4 }),
+					value : random(10, 60)
+				});
+
+				saved = sync.await(discount.save(sync.defer()));
+
+				for(var j = 0; j < affected_products.length; j++) {
+					isOver = new IsOver({
+						product_id: affected_products[j].id,
+						discount_id: saved.id
+					});
+
+					sync.await(isOver.save(sync.defer()));
+				}
+			} 
+	
+		},
+		function (err, data) {
+			if(err) console.log('--ERR: Error saving discounts: ' + err);
+
+			console.log("--DO: Saved all discounts");
+
+			loadBelongsTo(callback);
+		}
+	);
 }
 
 function loadBelongsTo(callback) {
@@ -190,7 +255,7 @@ function loadCustomers(callback) {
 				"credit_card_id" : card.id
 			});
 
-			customer1.save(function (err) {
+			customer1.save(function (err, saved) {
 				if (err) console.log("--ERR: Error saving customer: " + err);
 
 				callback();
@@ -237,22 +302,31 @@ function loadSuppliers(callback) {
 
 function loadPurchases(callback) {
 	sync.fiber(function () {
+		var dates = [];
+		var now = new Date();
+
+		for(var i=0; i<200; i++) {
+			dates.push(randomDate(new Date(now.getFullYear() - 3, 0, 1, 0, 0, 0, 0), now));
+		}
+
 		var customers = sync.await(Actor.find({ "_type" : "Customer"}, sync.defer()));
 
+		var products = sync.await(Product.find({}, sync.defer()));
+		var shuffled_products = shuffle(products);
+		shuffled_products = shuffled_products.slice(0, 400);
+		
 		for (var i = 0; i < customers.length; i++){
 			var customer = customers[i];
 
-			var max_products = 300;
-			var min_products = 200;
+			var max_products = 200;
+			var min_products = 300;
 
 			var nr_products = random(max_products, min_products);
 
-			var products = sync.await(Product.find({}, sync.defer()));
-			var shuffled_products = shuffle(products);
 			var rand_products = shuffled_products.slice(0, nr_products);
 			
 			for(var j = 0; j < rand_products.length; j++) {
-				sync.await(buyProduct(rand_products[j], customer.id, sync.defer()));
+				sync.await(buyProduct(rand_products[j], customer.id, dates, sync.defer()));
 			}
 		}
 
@@ -261,19 +335,255 @@ function loadPurchases(callback) {
 
 		console.log("--DO: Purchased all products");
 
+		loadPurchasingRules(callback);
+	});
+}
+
+function loadPurchasingRules(callback) {
+	sync.fiber(function () {
+		var customers = sync.await(Customer.find({"_type" : "Customer"}, sync.defer()));
+
+		var provides = sync.await(Provide.find({}, sync.defer()));
+
+		for(var i = 0; i < customers.length; i++) {
+			var rules_nr = random(1, 5);
+
+			for(var j = 0; j < rules_nr; j++) {
+				var quantity = random(1, 4);
+				var provide_to_buy = provides[random(0, provides.length)];
+
+				var purchasingRule = new PurchasingRule({
+					periodicity: random(4, 10),
+					customer_id: customers[i].id,
+					provide_id : provide_to_buy.id
+				});
+
+				sync.await(purchasingRule.save(sync.defer()));
+			}
+		}
+	}, function (err, data) {
+		if(err) console.log("--ERR: Error saving purchasing rules: " + err);
+
+		console.log("--DO: Saved all purchasing rules");
+
+		loadSocialMediaRules(callback);
+	});
+}
+
+function loadSocialMediaRules(callback) {
+	sync.fiber(function () {
+		var products = sync.await(Product.find({}, sync.defer()));
+		var rules_nr = 10;
+
+		for(var j = 0; j < rules_nr; j++) {
+			var product_to_watch = products[random(0, products.length)];
+
+			var productRule = new ProductRule({
+				increaseRate: 30,
+				product_id: product_to_watch.id
+			});
+
+			sync.await(productRule.save(sync.defer()));
+		}
+
+		var brandRule = new BrandRule({
+			increaseRate: 20
+		});
+
+		sync.await(brandRule.save(sync.defer()));
+	}, function (err, data) {
+		if(err) console.log("--ERR: Error saving social media rules: " + err);
+
+		console.log("--DO: Saved all social media rules");
+
+		loadSocialMediaRulesNotifications(callback);
+	});
+}
+
+function loadSocialMediaRulesNotifications(callback) {
+	sync.fiber(function() {
+		var productRules = sync.await(ProductRule.find({_type: 'ProductRule'}, sync.defer()));
+
+		var chosenProductRules = shuffle(productRules).slice(0, random(1, productRules.length - 3)); //Not all with notifications nor all without notifications
+
+		for(var i = 0; i < chosenProductRules.length; i++) {
+			var productNotification = new ProductNotification({
+				percentageExceeded: 40,
+				product_rule_id: chosenProductRules[i].id,
+				product_id: chosenProductRules[i].product_id
+			});
+
+			sync.await(productNotification.save(sync.defer()));
+		}
+
+		var brandRules = sync.await(BrandRule.find({}, sync.defer()));
+
+		var chosenBrandRules = brandRules[0];
+
+		var brandNotification = new BrandNotification({
+			percentageExceeded: 20,
+			brand_rule_id: chosenBrandRules.id
+		});
+
+		sync.await(brandNotification.save(sync.defer()));
+
+	}, function (err, data) {
+		if(err) console.log("--ERR: Error saving social media notifications: " + err);
+
+		console.log("--DO: Saved all social media notifications");
+
+		loadExtraProvides(callback);
+	});
+}
+
+function loadExtraProvides(callback) {
+	sync.fiber(function () {
+		var provided_products = sync.await(Provide.find({}).select({ "product_id" : 1}).exec(sync.defer()));
+
+		var provided_products_ids = provided_products.map(function (product) {
+			return product.id;
+		});
+
+		var not_provided_products = sync.await(Product.find({"_id" : {"$nin" : provided_products_ids }}, sync.defer()));
+		var not_provided_products_ids = not_provided_products.map(function (product) {
+			return product.id;
+		});
+
+		var not_provided_products_ids = shuffle(not_provided_products_ids);
+		var products_nr = random(Math.floor(not_provided_products_ids.length * 0.7), not_provided_products_ids.length);
+		var products_to_provide = not_provided_products.slice(0, products_nr);
+
+		for(var i=0; i < products_to_provide.length; i++) {
+			var p_id = products_to_provide[i];
+
+			var suppliers = sync.await(Supplier.find({_type : "Supplier"}, sync.defer()));
+			var nr_suppliers = random(1, suppliers.length);
+
+			var shuffled_suppliers = shuffle(suppliers);
+			var rand_suppliers = shuffled_suppliers.slice(0, nr_suppliers);
+
+			var price = random(5, 50);
+			for(var j = 0; j < rand_suppliers.length; j++) {
+				var supplier = rand_suppliers[j];
+
+				var provide = new Provide({
+					"price" : price + random(-5, 5),
+					"product_id" : p_id,
+					"supplier_id" : supplier.id
+				});
+
+				sync.await(provide.save(sync.defer()));
+			}
+		}
+
+		var suppliers = sync.await(Supplier.find({_type : "Supplier"}, sync.defer()));
+		var nr_suppliers = random(1, suppliers.length);
+
+		var shuffled_suppliers = shuffle(suppliers);
+		var rand_suppliers = shuffled_suppliers.slice(0, nr_suppliers);
+
+		var price = random(5, 50);
+		for(var j = 0; j < rand_suppliers.length; j++) {
+			var supplier = rand_suppliers[j];
+
+			var provide = new Provide({
+				"price" : price + random(-5, 5),
+				"product_id" : 1,
+				"supplier_id" : supplier.id
+			});
+
+			sync.await(provide.save(sync.defer()));
+		}
+	}, function (err, data) {
+		if(err) console.log("--ERR: Error saving extra provides: " + err);
+
+		console.log("--DO: Saved all extra provides");
+
+		loadSpeacialUsers(callback);
+	});
+
+}
+
+function loadSpeacialUsers(callback) {
+	sync.fiber(function() {
+		//Supplier with no provides
+		var supplier1 = new Supplier({
+			"_type" : "Supplier",
+			"name" : "No Provides",
+			"surname" : "Supplier",
+			"email" : "no.provides@mail.com",
+			"password" : "99b0e8da24e29e4ccb5d7d76e677c2ac", //supplier
+			"coordinates" : "37.358716;-5.987814",
+			"address" : "1471 Calle De Toledo"
+		});
+
+		sync.await(supplier1.save(sync.defer()));
+
+		var credit_card = new Credit_card({
+			"holderName" : "No purchases Customer",
+			"number" : generator.GenCC("VISA")[0],
+			"expirationMonth" : 06,
+			"expirationYear" : 2020,
+			"cvcCode" : 224
+		});
+
+		var cc = sync.await(credit_card.save(sync.defer()));
+
+		//Customer with no purchases
+		var customer1 = new Customer({
+			"_type" : "Customer",
+			"name" : "No purchases",
+			"surname" : "Customer",
+			"email" : "no.purchases@mail.com",
+			"password" : "91ec1f9324753048c0096d036a694f86", //customer
+			"coordinates":"37.358716;-5.987814",
+			"country":"Spain",
+			"city":"La Coruña",
+			"address":"3481 Calle Del Prado",
+			"phone":"949705177",
+			"credit_card_id": cc.id
+		});
+
+		sync.await(customer1.save(sync.defer()));
+		
+		//Customer with no rules
+		var customer2 = new Customer({
+			"_type" : "Customer",
+			"name" : "No Rules",
+			"surname" : "Customer",
+			"email" : "no.rules@mail.com",
+			"password" : "91ec1f9324753048c0096d036a694f86", //customer
+			"coordinates":"37.358716;-5.987814",
+			"country":"Spain",
+			"city":"La Coruña",
+			"address":"3481 Calle Del Prado",
+			"phone":"949705177"
+		});
+
+		sync.await(customer2.save(sync.defer()));
+
+	}, function (err, data) {
+		if(err) console.log("--ERR: Error saving special users: " + err);
+
+		console.log("--DO: Saved special users");
+
 		clean(callback);
 	});
 }
 
-function buyProduct(product, customer_id ,callback) {
+
+function buyProduct(product, customer_id, dates, callback) {
 	loadProvides(product, 
 	function (provide) {
-		var deliveryDate = new Date();
+		var now = new Date();
+		var paymentDate = dates[random(0, dates.length)];
+
+		var deliveryDate = new Date(paymentDate);
 		deliveryDate.setDate(deliveryDate.getDate() + 15);
 
 		var purchase = new Purchase({
 			"deliveryDate" : deliveryDate,
-			"paymentDate" : new Date(),
+			"paymentDate" : paymentDate,
 			"customer_id" : customer_id
 		});
 
@@ -281,10 +591,13 @@ function buyProduct(product, customer_id ,callback) {
 			if(err) {
 				console.log("--ERR: Error saving purchase: " + err);
 			} else {
+				var quantity = 1;
 				var purchase_line = new PurchaseLine({
-					"quantity" : 1,
+					"quantity" : quantity,
+					"price" : provide.price * quantity,
 					"purchase_id" : saved.id,
-					"provide_id" : provide.id
+					"provide_id" : provide.id,
+					"product_id" : provide.product_id
 				});
 
 				purchase_line.save(function (err) {
@@ -334,7 +647,7 @@ function buyProduct(product, customer_id ,callback) {
 
 						var reputation = new Reputation({
 							"value" : reputationValue,
-							"supplier_id" : provide.supplier_id,
+							"provide_id" : provide.id,
 							"customer_id" : customer_id
 						});
 
@@ -376,6 +689,7 @@ function loadProvides(product, callback) {
 				var shuffled_suppliers = shuffle(suppliers);
 				var rand_suppliers = shuffled_suppliers.slice(0, nr_suppliers);
 
+				var price = random(5, 50);
 				async.each(rand_suppliers, function (supplier, callback2) {
 					Provide.findOne( {supplier_id : supplier.id, product_id : product.id }, function (err, result) {
 						if(err) console.log("--ERR: Error finding supplier provide: " + err);
@@ -383,7 +697,7 @@ function loadProvides(product, callback) {
 							callback2();
 						} else {
 							var provide = new Provide({
-								"price" : random(20, 200),
+								"price" : price + random(-5, 5),
 								"product_id" : product.id,
 								"supplier_id" : supplier.id
 							});

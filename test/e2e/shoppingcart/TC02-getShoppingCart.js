@@ -53,11 +53,15 @@ describe('Get the shopping cart', function () {
 		element(by.css('.button')).click();
 
 		browser.get('http://localhost:3000/products');
+		element(by.cssContainingText('option', 'Price')).click();
+		element(by.css('img.v-middle')).click()
+
 		var product = element.all(by.css('.product')).first();
 		product.click();
 
+		browser.sleep(2000)
 		// Add 3 products
-		var cartbtn = element(by.id('cart-btn'));
+		var cartbtn = element.all(by.id('cart-btn')).first();
 		cartbtn.click();
 		cartbtn.click();
 		cartbtn.click();

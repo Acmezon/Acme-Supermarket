@@ -22,6 +22,53 @@
 		"500" : "Error interno del sistema",
 		"503" : "Servicio no disponible"
 	},
+	"Title" : {
+		"Home" : "Página principal",
+		"Contact" : "Contacto",
+		"Terms" : "Términos y condiciones de uso",
+		"Cookies" : "Cookies",
+		"About" : "Sobre nosotros",
+		"Delivery" : "Reparto y envíos",
+		"Signin" : "Iniciar sesión",
+		"Signout" : "Salir",
+		"Signup" : "Registrarse",
+		"MyProfile" : "Mi perfil",
+		"MyPurchasingRules" : "Mis reglas de compra",
+		"Product" : {
+			"List" : "Productos",
+			"MyProducts" : "Mis productos",
+			"Creation" : "Crear un producto",
+			"Details" : "Detalles de producto"
+		},
+		"ShoppingCart" : "Carrito de la compra",
+		"Customers" : "Administración de clientes",
+		"Dashboard" : "Panel de control",
+		"Checkout" : {
+			"Checkout" : "Comprar",
+			"Success" : "Compra completada",
+			"Error" : "Error de compra"
+		},
+		"Purchase" : {
+			"MyPurchases" : "Mis compras",
+			"List" : "Administración de compras",
+			"Creation" : "Comprar por un cliente",
+			"Details" : "Detalles de compra"
+		},
+		"RatingManagement" : "Administración de valoraciones",
+		"Discounts" : "Administración de descuentos",
+		"PurchasingRules" : "Administración de reglas de compra",
+		"Monitoring rules" : {
+			"List" : "Administración de reglas de monitorización de redes sociales",
+			"Creation" : "Crear una regla de monitorización"
+		},
+		"Notifications" : "Notificaciones",
+		"Reports" : "Informe de ventas",
+		"401" : "Error 401",
+		"403" : "Error 403",
+		"404" : "Error 404",
+		"500" : "Error 500",
+		"503" : "Error 503"
+	},
 	"Home": {
 		"Title": "Inicio",
 		"RecommendedProducts" : "Productos Recomendados",
@@ -37,8 +84,9 @@
 			"Title" : "Mi cuenta",
 			"MyProfile" : "Mi perfil",
 			"MyPurchases" : "Mis compras",
-			"shoppingCart" : "Carrito de la compra",
-			"MyProducts" : "Mis productos"
+			"ShoppingCart" : "Carrito de la compra",
+			"MyProducts" : "Mis productos",
+			"MyPurchasingRules" : "Mis reglas de compra"
 		},
 		"Checkout" : "Ir al carrito",
 		"Signin" : "Iniciar sesión",
@@ -53,7 +101,16 @@
 		"Management" : "Administración",
 		"Customers" : "Clientes",
 		"Purchases" : "Compras",
-		"CreateProduct" : "Añadir un producto"
+		"CreateProduct" : "Añadir un producto",
+		"Purchase" : "Comprar por un cliente",
+		"CreateRating" : "Valorar por un cliente",
+		"Discounts" : "Descuentos",
+		"PurchasingRules" : "Reglas de compra",
+		"MonitoringRules" : "Reglas de monitorización",
+		"SocialMedia" : "Medios sociales",
+		"BusinessIntelligence": "Business Intelligence",
+		"SalesOverTime" : "Ventas en el tiempo",
+		"SuplierReport" : "Informes de ventas"
  	},
 	"Footer": {
 		"AboutUs" : "Sobre nosotros",
@@ -250,7 +307,8 @@
 		"ExpYear" : "Año de caducidad",
 		"CVC" : "CVC",
 		"CCData" : "Datos de tarjeta de crédito",
-		"Cancel" : "Cancelar"
+		"Cancel" : "Cancelar",
+		"PurchasingRules" : "Mis reglas de compra"
 	},
 	"Products" : {
 		"Title" : "Productos",
@@ -261,8 +319,10 @@
 		"Name" : "Nombre",
 		"Price": "Precio",
 		"Rating": "Valoración",
+		"NotAvailable" : "No disponible",
 		"Supplier": {
-			"Name" : "Nombre",
+			"Id" : "ID de proveedor",
+			"Name" : "Nombre de proveedor",
 			"Reputation" : "Reputación",
 			"Empty" : "Producto no disponible"
 		},
@@ -293,7 +353,21 @@
 		"Provide" : "Proveer este producto",
 		"ProvidePrice" : "Precio del producto",
 		"ProvideError" : "No se ha podido guardar el producto. Por favor, inténtelo de nuevo más tarde",
-		"DeleteProvide" : "Dejar de proveer este producto"
+		"DeleteProvide" : "Dejar de proveer este producto",
+		"AlreadyHasRule" : "Ya tienes una regla para comprar este producto. Quizás quieres ir a",
+		"CreateRule" : {
+			"CustomerID" : "ID del cliente",
+			"CustomerIDError" : "El ID del cliente es obligatorio y debe ser positivo",
+			"StartDate" : "Fecha de inicio",
+			"StartDateError" : "La fecha de inicio es obligatoria y debe ser futura",
+			"Periodicity" : "Periodicidad",
+			"PeriodicityError" : "La periodicidad es obligatoria y debe ser extrictamente positiva",
+			"Quantity" : "Cantidad",
+			"QuantityError" : "La cantidad es obligatoria y debe ser extrictamente positiva",
+			"Title" : "Crear regla de compra",
+			"Error" : "Error al crear la regla. Inténtelo de nuevo más tarde",
+			"AdminError" : "Error al crear la regla. Asegúrese de que el cliente existe y no tiene ya una regla para este producto y proveedor"
+		}
 	},
 	"ShoppingCart": {
 		"Title" : "Carrito de la compra",
@@ -362,7 +436,9 @@
 			"Question" : "¿Seguro que quieres borrar a este usuario?",
 			"Yes" : "Sí",
 			"No"  :"No"
-		}
+		},
+		"NotFound" : "Cliente no encontrado",
+		"CreditCardNotFound" : "Tarjeta de crédito no encontrada"
 	},
 	"Dashboard" : {
 		"Title" : "Dashboard",
@@ -410,6 +486,10 @@
 			"Here" : "aquí",
 			"Description2" : " para continuar con la compra."
 		},
+		"Discount" : "Canjear código de descuento",
+		"DiscountError" : "Código de descuento no válido.",
+		"DiscountRedeemed" : "Código de descuento canjeado ćon éxito.",
+		"DiscountSuccess" : "Éxito",
 		"CreditCard" : {
 			"Title" : "Tarjeta de crédito",
 			"Empty" : {
@@ -467,5 +547,145 @@
 		"Remove" : "Eliminar",
 		"First" : "Primero",
 		"Last" : "Último"
+	},
+	"PurchasingRule" : {
+		"StartDate" : "Fecha de inicio",
+		"Periodicity" : "Periodicidad",
+		"Product" : "Producto",
+		"Quantity" : "Cantidad",
+		"NextRun" : "Siguiente compra el:",
+		"Remove" : "Eliminar",
+		"Delete" : {
+			"Question" : "¿Está seguro de que desea borrar esta regla? Esto no se puede deshacer.",
+			"Yes" : "Sí",
+			"No" : "No",
+			"Close" : "Cerrar",
+			"Error" : "Se produjo un error al eliminar la regla. Por favor inténtelo de nuevo más tarde."
+		}
+	},
+	"PurchasingRules" : {
+		"Title" : "Reglas de compra",
+		"Empty" : "No se han encontrado reglas de compra",
+		"Filter" : {
+			"Title" : "Filtros",
+			"Customer" : "ID de cliente"
+		},
+		"First" : "Primera",
+		"Last" : "Última",
+		"Customer" : "ID de cliente"
+	},
+	"Reputations" : {
+		"Title" : "Valoraciones de usuarios a su producto",
+		"Empty" : "No hay valoraciones todavía."
+	},
+	"PurchasesCreation" : {
+		"Customer" : {
+			"Email" : "Email",
+			"EmailText" : "Los clientes están identificados por correos únicos.",
+			"Success" : "Cliente válido"
+		},
+		"Submit" : "Enviar",
+		"Check" : "Comprobar"
+	},
+	"Management" : {
+		"Title" : "Administración",
+		"Rating" : {
+			"Create" : "Crear una valoración",
+			"CustomerId" : "ID Cliente",
+			"ProductId" : "ID Producto",
+			"Value" : "Valor"
+		},
+		"Submit" : "Enviar",
+		"Discounts" : "Administrar descuentos",
+		"RatingError" : "El cliente seleccionado no ha sido encontrado o no puede valorar este producto",
+		"RatingSuccess" : "Valoración actualizada con éxito",
+		"ServerError" : "Ha habido un error interno en la transacción. Inténtelo de nuevo más tarde"
+	},
+	"Discounts" : {
+		"Empty" : {
+			"Title" : "Vacío",
+			"Description" : "No existen descuentos en el sistema."
+		},
+		"Filled" : {
+			"Description1" : "Hay ",
+			"Description2" : " descuentos registrados"
+		},
+		"Error" : {
+			"Value" : "El valor de descuento es inválido",
+			"Code" : "El código de descuento es inválido. Pulse 'Generar' para generar uno nuevo.",
+			"Server" : "Error interno del servidor"
+		},
+		"Value" : "Descuento (%)",
+		"Code" : "Código",
+		"DiscountCode" : "Código de descuento",
+		"ProductsNumber" : "Número de productos",
+		"Remove" : "Eliminar",
+		"Apply" : "Aplicar",
+		"Create" : "Añadir un descuento",
+		"Generate" : "Generar",
+		"Applied" : "Descuentos aplicados",
+		"Available" : "Descuentos disponibles"
+	},
+	"SocialMediaRules" : {
+		"Title" : "Reglas de monitorización de medios sociales",
+		"Empty" : {
+			"Title" : "Vacío",
+			"Description" : "No existen reglas en el sistema."
+		},
+		"Filled" : {
+			"Description1" : "Hay ",
+			"Description2" : " reglas registradas en el sistema."
+		},
+		"IncreaseRate" : "Tasa de incremento (%)",
+		"Notifications" : "Notificaciones",
+		"Remove" : "Eliminar",
+		"Create" : "Crear nueva regla de monitorización",
+		"ProductRule" : "Regla de producto",
+		"BrandRule" : "Regla de marca",
+		"Type" : "Tipo",
+		"Product" : "Producto",
+		"Success" : {
+			"Remove" : "Operación realizada con éxito."
+		},
+		"Error" : {
+			"Remove" : "Hubo un error en la operación. Por favor, inténtelo de nuevo más tarde."
+		}
+	},
+	"Notifications" : {
+		"Title" : "Notificaciones",
+		"Empty" : {
+			"Title" : "Vacío",
+			"Description" : "No existen notificaciones para esta regla."
+		},
+		"Filled" : {
+			"Description1" : "Hay ",
+			"Description2" : " notificaciones registradas en el sistema."
+		},
+		"PercentageExceeded" : "Porcentaje excedido",
+		"Moment" : "Momento",
+		"ProductId" : "ID de producto",
+		"Product" : "Producto"
+	},
+	"Reports" : {
+		"Filter" : {
+			"Title" : "Seleccionar informe de ventas",
+			"SupplierEmail" : "Email de proveedor",
+			"Year" : "Año",
+			"Submit" : "Seleccionar"
+		},
+		"Success" : "Informe cargado con éxito",
+		"Error" : {
+			"SupplierNotFound" : "Proveedor no encontrado",
+			"InvalidParams" : "Parámetros inválidos"
+		}
+	},
+	"SalesOverTime" : {
+		"Title" : "Ventas en tiempo",
+		"ChartTitle" : "Ventas a lo largo del tiempo de:",
+		"XLabel" : "Fecha",
+		"YLabel" : "Ventas",
+		"SupplierEmail" : "Email del proveedor",
+		"ProductId" : "ID de un producto (opcional)",
+		"Loading" : "Cargando"
 	}
 }

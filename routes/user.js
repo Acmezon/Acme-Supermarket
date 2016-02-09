@@ -9,7 +9,6 @@ var jwt = require('jsonwebtoken'),
 exports.getMyProfile = function (req, res) {
 	console.log('Function-usersApi-getMyProfile');
 	var cookie = req.cookies.session;
-	console.log(req.cookies)
 
 	if (cookie != undefined) {
 		var token = cookie.token;
@@ -27,8 +26,8 @@ exports.getMyProfile = function (req, res) {
 					var email = decoded.email;
 					var password = decoded.password;
 
-					Actor.findOne({email: email}, function(err, actor){
-						if(err){
+					Actor.findOne({email: email}, function (err, actor){
+						if(err || !actor){
 							res.status(401).send({
 								success: false
 							});
@@ -118,7 +117,7 @@ exports.updateUser = function (req, res) {
 		if (role=='customer' || role=='supplier' || role=='admin') {
 			ActorService.checkPrincipal(cookie, jwtKey, req.body.id, function (isPrincipal) {
 				if ( (role=='customer' && isPrincipal) || (role=='supplier' && isPrincipal) || (role=='admin')) {
-					Actor.findByIdAndUpdate(req.body.id, { $set: set}, function (err, response) {
+					Actor.findByIdAndUpdate(req.body.id, { $set: set }, function (err, response) {
 						if(err){
 							res.status(500).send("Unable to save field, check input.")
 						} else {
@@ -133,11 +132,6 @@ exports.updateUser = function (req, res) {
 			res.status(401).json({success: false, message: "Doesn't have permission"});
 		}
 	});
-	ActorService.checkPrincipal()
-
-
-	
-	
 };
 
 // Change password
@@ -149,33 +143,37 @@ exports.changePassword = function (req, res) {
 	// Check authenticated
 	ActorService.getUserRole(cookie, jwtKey, function (role) {
 		if (role=='admin' || role=='customer' || role=='supplier') {
-
-			Actor.findOne({
-				_id: req.body.id
-			}, function (err, user){
-				if (err) {
-					res.sendStatus(503);
-				}
-
-				var md5OldPassword = crypto.createHash('md5').update(req.body.oldPass).digest("hex");
-				if(user.password != md5OldPassword) {
-					res.sendStatus(403);
-					return;
-				} else {
-					var md5Password = crypto.createHash('md5').update(req.body.newPass).digest("hex");
-					Actor.findByIdAndUpdate(req.body.id, { $set: { password: md5Password }}, 
-					function (err, user) {
-						if(err){
+			ActorService.checkPrincipal(cookie, jwtKey, req.body.id, function (isPrincipal) {
+				if ( (role=='customer' && isPrincipal) || (role=='supplier' && isPrincipal) || (role=='admin')) {
+					Actor.findOne({
+						_id: req.body.id
+					}, function (err, user){
+						if (err) {
 							res.sendStatus(503);
+						}
+
+						var md5OldPassword = crypto.createHash('md5').update(req.body.oldPass).digest("hex");
+						if(user.password != md5OldPassword) {
+							res.sendStatus(403);
 							return;
 						} else {
-							res.sendStatus(200);
-							return;
+							var md5Password = crypto.createHash('md5').update(req.body.newPass).digest("hex");
+							Actor.findByIdAndUpdate(req.body.id, { $set: { password: md5Password }}, 
+							function (err, user) {
+								if(err){
+									res.sendStatus(503);
+									return;
+								} else {
+									res.sendStatus(200);
+									return;
+								}
+							});
 						}
 					});
+				} else {
+					res.status(403).json({success: false, message: "Doesn't have permission"});
 				}
 			});
-
 		} else {
 			res.sendStatus(401);
 		}

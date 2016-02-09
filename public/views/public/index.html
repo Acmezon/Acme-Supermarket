@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html ng-app="acme_supermarket">
 <head>
+	<link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon" />
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 	<base href="/">
 	<!--TODO Head de la pestaña por secciones-->
-	<title>Acme-Supermarket - {{ 'Home.Title' | translate }}</title>
+	<title>Acme-Supermarket - {{$root.title | translate}}</title>
 	<link href="css/template_bootstrap/style.css" rel="stylesheet" type="text/css" media="all" />
     <link href="css/template_bootstrap/form.css" rel="stylesheet" type="text/css" media="all" />
 
@@ -33,6 +34,7 @@
     <link rel="stylesheet" href="css/template_bootstrap/slider.css" media="all">
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/bootstrap-arrow-buttons.css">
+    <link rel="stylesheet" href="css/spinner.css">
     <link rel="stylesheet" href="css/ng-table.min.css">
     <link rel="stylesheet" href="css/template_bootstrap/lang.css">
 	<link rel="stylesheet" href="css/app.css">
@@ -46,6 +48,9 @@
 	<div id="footer" ng-include src="'views/public/footer.html'"></div>
 	
 	<script src="js/lib/bootstrap.js"></script>
+	<script src="js/lib/pdf.js"></script>
+	<script src="js/lib/pdf.worker.js"></script>
+	
 	<script src="js/lib/angular/angular.js"></script>
 	<script src="js/lib/angular/angular-route.js"></script>
 	<script src="js/lib/angular/angular-resource.js"></script>
@@ -64,11 +69,17 @@
 	<script src="js/lib/bootstrap-editable.js"></script>
 	<script src="js/lib/dropzone.js"></script>
 	<script src="js/lib/ng-table.min.js"></script>
+	<script src="js/lib/dygraph.js"></script>
 	<script src="js/app.js"></script>
 	<script src="js/services.js"></script>
 	<script src="js/controllers/main.js"></script>
 	<script src="js/filters.js"></script>
 	<script src="js/directives.js"></script>
+
+	<script src="js/lib/d3.min.js" charset="utf-8"></script>
+	<script src="js/lib/nv.d3.min.js"></script>
+	<link rel="stylesheet" href="css/nv.d3.css" type="text/css">
+
 	
 </script>
 </body>

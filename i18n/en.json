@@ -22,6 +22,53 @@
 		"500" : "Internal server error",
 		"503" : "Service unavailable"
 	},
+	"Title" : {
+		"Home" : "Home",
+		"Contact" : "Contact",
+		"Terms" : "Terms and conditions",
+		"Cookies" : "Cookies",
+		"About" : "About",
+		"Delivery" : "Delivery",
+		"Signin" : "Sign in",
+		"Signout" : "Sign out",
+		"Signup" : "Sign up",
+		"MyProfile" : "My profile",
+		"MyPurchasingRules" : "My purchasing rules",
+		"Product" : {
+			"List" : "Products",
+			"MyProducts" : "My products",
+			"Creation" : "Create a product",
+			"Details" : "Product details"
+		},
+		"ShoppingCart" : "Shopping cart",
+		"Customers" : "Customers management",
+		"Dashboard" : "Dashboard",
+		"Checkout" : {
+			"Checkout" : "Checkout",
+			"Success" : "Purchase completed",
+			"Error" : "Purchase error"
+		},
+		"Purchase" : {
+			"MyPurchases" : "My purchases",
+			"List" : "Purchase management",
+			"Creation" : "Purchase for a customer",
+			"Details" : "Purchase details"
+		},
+		"RatingManagement" : "Rating management",
+		"Discounts" : "Discounts management",
+		"PurchasingRules" : "Purchasing rules management",
+		"Monitoring rules" : {
+			"List" : "Monitoring rules management",
+			"Creation" : "Create a monitoring rule"
+		},
+		"Notifications" : "Notifications",
+		"Reports" : "Reports of sales",
+		"401" : "401 Error",
+		"403" : "403 Error",
+		"404" : "404 Error",
+		"500" : "500 Error",
+		"503" : "503 Error"
+	},
 	"Home": {
 		"Title": "Home",
 		"RecommendedProducts" : "Recommended Products",
@@ -38,7 +85,8 @@
 			"MyProfile" : "My profile",
 			"MyPurchases" : "My purchases",
 			"ShoppingCart" : "Shopping cart",
-			"MyProducts" : "My products"
+			"MyProducts" : "My products",
+			"MyPurchasingRules" : "My purchasing rules"
 		},
 		"Checkout" : "Checkout",
 		"Signin" : "Sign in",
@@ -53,12 +101,21 @@
 		"Management" : "Management",
 		"Customers" : "Customers",
 		"Purchases" : "Purchases",
-		"CreateProduct" : "Add product"
+		"CreateProduct" : "Add product",
+		"Purchase" : "Purchase for a customer",
+		"CreateRating" : "Rate for a customer",
+		"Discounts" : "Discounts",
+		"PurchasingRules" : "Purchasing Rules",
+		"MonitoringRules" : "Monitoring Rules",
+		"SocialMedia" : "Social Media",
+		"BusinessIntelligence": "Business Intelligence",
+		"SalesOverTime" : "Sales over time",
+		"SuplierReport" : "Sales report"
 	},
 	"Footer": {
 		"AboutUs" : "About Us",
 		"Cookies" : "Cookies",
-		"TermsConditions" : "Terms & Conditions",
+		"TermsConditions" : "Terms and Conditions",
 		"ContactUs" : "Contact Us",
 		"Delivery" : "Delivery",
 		"Information" : {
@@ -250,7 +307,8 @@
 		"ExpYear" : "Expiration year",
 		"CVC" : "CVV",
 		"CCData" : "Credit Card data",
-		"Cancel" : "Cancel"
+		"Cancel" : "Cancel",
+		"PurchasingRules" : "My purchasing rules"
 	},
 	"Products" : {
 		"Title" : "Products",
@@ -261,8 +319,10 @@
 		"Name" : "Name",
 		"Price": "Price",
 		"Rating": "Rating",
+		"NotAvailable" : "Not available",
 		"Supplier": {
-			"Name" : "Name",
+			"Id" : "Supplier ID",
+			"Name" : "Supplier name",
 			"Reputation" : "Reputation",
 			"Empty" : "Product not available"
 		},
@@ -294,7 +354,21 @@
 		"Provide" : "Provide this product",
 		"ProvidePrice" : "Product price",
 		"ProvideError" : "The provide could not be saved. Please, try again later",
-		"DeleteProvide" : "Stop providing this product"
+		"DeleteProvide" : "Stop providing this product",
+		"AlreadyHasRule" : "You already have a rule to purchase this product. Maybe you want to go to",
+		"CreateRule" : {
+			"CustomerID" : "Customer ID",
+			"CustomerIDError" : "The customer ID is mandatory and must be positive",
+			"StartDate" : "Start date",
+			"StartDateError" : "The start date is required and must be in the future",
+			"Periodicity" : "Periodicity",
+			"PeriodicityError" : "The periodicity is required and must be extrictly positive",
+			"Quantity" : "Quantity",
+			"QuantityError" : "The quantity is required and must be extrictly positive",
+			"Title" : "Create Purchasing Rule",
+			"Error" : "Error creating rule. Please try again later",
+			"AdminError" : "Error creating rule. Pleas make sure the customer exists and has not already a rule for this product and provide"
+		}
 	},
 	"ShoppingCart": {
 		"Title" : "Shopping cart",
@@ -363,7 +437,9 @@
 			"Question" : "Are you sure you want to remove this customer",
 			"Yes" : "Sí",
 			"No"  :"no"
-		}
+		},
+		"NotFound" : "Customer not found",
+		"CreditCardNotFound" : "Credit card not found"
 	},
 	"Dashboard" : {
 		"Title" : "Dashboard",
@@ -411,6 +487,10 @@
 			"Here" : "here",
 			"Description2" : " to continue shopping"
 		},
+		"Discount" : "Redeem discount code",
+		"DiscountError" : "Discount code not valid.",
+		"DiscountRedeemed" : "Discount code successfuly redeemed.",
+		"DiscountSuccess" : "Success",
 		"CreditCard" : {
 			"Empty" : {
 				"Title" : "No credit card registered",
@@ -469,5 +549,145 @@
 		"Remove" : "Remove",
 		"First" : "First",
 		"Last" : "Last"
+	},
+	"PurchasingRule" : {
+		"StartDate" : "Start date",
+		"Periodicity" : "Periodicity",
+		"Product" : "Product",
+		"Quantity" : "Quantity",
+		"NextRun" : "Next purchase will be at",
+		"Remove" : "Remove",
+		"Delete" : {
+			"Question" : "Are you sure you want to delete this purchasing rule? This can not be undone.",
+			"Yes" : "Yes",
+			"No" : "No",
+			"Close" : "Close",
+			"Error" : "Error deleting the rule. Please try again later."
+		}
+	},
+	"PurchasingRules" : {
+		"Title" : "Purchasing Rules",
+		"Empty" : "No purchases rules found",
+		"Filter" : {
+			"Title" : "Filters",
+			"Customer" : "Customer ID"
+		},
+		"First" : "First",
+		"Last" : "Last",
+		"Customer" : "Customer ID"
+	},
+	"Reputations" : {
+		"Title" : "User rating of your product",
+		"Empty" : "No ratings yet."		
+	},
+	"PurchasesCreation" : {
+		"Customer" : {
+			"Email" : "Email",
+			"EmailText" : "Customers are identified by unique emails.",
+			"Success" : "Valid customer"
+		},
+		"Submit" : "Submit",
+		"Check" : "Check"
+	},
+	"Management" : {
+		"Title" : "Management",
+		"Rating" : {
+			"Create" : "Rating creation",
+			"CustomerId" : "Customer ID",
+			"ProductId" : "Product ID",
+			"Value" : "Value"
+		},
+		"Submit" : "Submit",
+		"Discounts" : "Manage discounts",
+		"RatingError" : "The selected customer was not found or it is unable to rate the product",
+		"RatingSuccess" : "Rating updated successdully",
+		"ServerError" : "Internal server error. Try again later"
+	},
+	"Discounts" : {
+		"Empty" : {
+			"Title" : "Empty",
+			"Description" : "No discounts in the system"
+		},
+		"Filled" : {
+			"Description1" : "There are ",
+			"Description2" : " discounts registered"
+		},
+		"Error" : {
+			"Value" : "The value of the discount is invalid.",
+			"Code" : "The discount code is invalid. Click 'Generate' again to generate a new one.",
+			"Server" : "Internal server error"
+		},
+		"Value" : "Discount (%)",
+		"Code" : "Code",
+		"DiscountCode" : "Discount code",
+		"ProductsNumber" : "Number of products",
+		"Remove" : "Remove",
+		"Create" : "Add a discount",
+		"Apply" : "Apply",
+		"Generate" : "Generate",
+		"Applied" : "Applied discounts",
+		"Available" : "Available discounts"
+	},
+	"SocialMediaRules" : {
+		"Title" : "Social media monitoring rules",
+		"Empty" : {
+			"Title" : "Empty",
+			"Description" : "No rules registered in the system."
+		},
+		"Filled" : {
+			"Description1" : "There are ",
+			"Description2" : " monitoring rules registered."
+		},
+		"IncreaseRate" : "Increase rate (%)",
+		"Notifications" : "Notifications",
+		"Remove" : "Remove",
+		"Create" : "Create new monitoring rule",
+		"ProductRule" : "Product rule",
+		"BrandRule" : "Brand rule",
+		"Type" : "Type",
+		"Product" : "Product",
+		"Success" : {
+			"Remove" : "Operation completed successfuly."
+		},
+		"Error" : {
+			"Remove" : "There was an error with the operation. Please, try again later."
+		}
+	},
+	"Notifications" : {
+		"Title" : "Notifications",
+		"Empty" : {
+			"Title" : "Empty",
+			"Description" : "No notifications registered for this rule."
+		},
+		"Filled" : {
+			"Description1" : "There are ",
+			"Description2" : " notifications registered in the system."
+		},
+		"PercentageExceeded" : "Percentage exceeded",
+		"Moment" : "Moment",
+		"ProductId" : "Product ID",
+		"Product" : "Product"
+	},
+	"Reports" : {
+		"Filter" : {
+			"Title" : "Select report of sales",
+			"SupplierEmail" : "Supplier email",
+			"Year" : "Year",
+			"Submit" : "Submit"
+		},
+		"Success" : "Report successfuly loaded",
+		"Error" : {
+			"SupplierNotFound" : "Supplier not found",
+			"InvalidParams" : "Invalid parameters"
+		}
+	},
+	"SalesOverTime" : {
+		"Title" : "Sales over time",
+		"ChartTitle" : "Sales over time of:",
+		"XLabel" : "Date",
+		"YLabel" : "Sales",
+		"SupplierEmail" : "Supplier email",
+		"ProductId" : "Product ID (optional)",
+		"Loading" : "Loading"
 	}
 }

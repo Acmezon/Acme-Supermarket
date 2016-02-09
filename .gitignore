@@ -28,4 +28,4 @@ node_modules
 
 *.jar
 
-#Gitignore images moved to /public/img/products
+#Gitignore product images moved to /public/img/products

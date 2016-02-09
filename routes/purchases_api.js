@@ -4,7 +4,8 @@ var Purchase = require('../models/purchase'),
 	ProvideService = require('./services/service_provides'),
 	ActorService = require('./services/service_actors'),
 	PurchaseService = require('./services/service_purchase'),
-	RecommenderService = require('./services/service_recommender_server');
+	RecommenderService = require('./services/service_recommender_server'),
+	DiscountService = require('./services/service_discounts');
 
 // Returns a purchase identified by id
 exports.getPurchase = function (req, res) {
@@ -15,14 +16,14 @@ exports.getPurchase = function (req, res) {
 	var jwtKey = req.app.get('superSecret');
 
 	Purchase.findById(_code, function (err, purchase) {
-		if (err) {
+		if (err || !purchase) {
 			console.log('---ERROR finding Purchase: '+_code);
 			res.status(500).json({success: false, message: err});
 		} else {
-			// If customer&purchased OR admin OR supplier: PASS
+			// If customer&purchased OR admin: PASS
 			ActorService.getUserRole(cookie, jwtKey, function (role){
 				CustomerService.checkHasPurchasedPurchase(cookie, jwtKey, purchase, function (hasPurchased){
-					if ( (role=='customer' && hasPurchased) || role=='admin' || role=='supplier') {
+					if ( (role=='customer' && hasPurchased) || role=='admin') {
 						res.status(200).json(purchase);
 					} else {
 						res.status(403).json({success: false});
@@ -45,7 +46,7 @@ exports.getPurchasesFiltered = function (req, res) {
 
 
 	var ord_tuple = {};
-    ord_tuple[sort] = order;
+	ord_tuple[sort] = order;
 
 	var cookie = req.cookies.session;
 	var jwtKey = req.app.get('superSecret');
@@ -108,7 +109,7 @@ exports.countPurchasesFiltered = function (req, res) {
 		customerFilter = parseInt(req.body.customerFilter) || null;
 
 	var ord_tuple = {};
-    ord_tuple[sort] = order;
+	ord_tuple[sort] = order;
 
 	var cookie = req.cookies.session;
 	var jwtKey = req.app.get('superSecret');
@@ -165,7 +166,7 @@ exports.getMyPurchasesFiltered = function (req, res) {
 		order = parseInt(req.body.order) || 1;
 
 	var ord_tuple = {};
-    ord_tuple[sort] = order;
+	ord_tuple[sort] = order;
 
 	var cookie = req.cookies.session;
 	var jwtKey = req.app.get('superSecret');
@@ -217,7 +218,7 @@ exports.countMyPurchasesFiltered = function (req, res) {
 		order = parseInt(req.body.order) || 1;
 
 	var ord_tuple = {};
-    ord_tuple[sort] = order;
+	ord_tuple[sort] = order;
 
 	var cookie = req.cookies.session;
 	var jwtKey = req.app.get('superSecret');
@@ -258,102 +259,103 @@ exports.countMyPurchasesFiltered = function (req, res) {
 
 exports.purchase = function (req, res) {
 	console.log('Function-purchasesApi-purchaseProcess');
-	var cookie = JSON.parse(req.cookies.shoppingcart);
+	
+	var cookie = undefined;
+	try {
+		cookie = JSON.parse(req.cookies.shoppingcart);
+	} catch (error) {
+		res.status(500).send({success: false});
+		return;
+	}
+
 	var session = req.cookies.session;
 	var jwtKey = req.app.get('superSecret');
-	var billingMethod = parseInt(req.params.billingMethod);
+	var billingMethod = parseInt(req.body.billingMethod);
+	// Optional param
+	var discountCode = req.body.discountCode;
 
-
-	if (billingMethod != 1 && billingMethod != 2 && billingMethod != 3) {
-		// Error bad GET params
-		res.status(403).send({success: false});
+	if (billingMethod!=1 && billingMethod!=3 && billingMethod!=3) {
+		res.status(500).send({success: false});
+		return;
 	} else {
-		// CONTINUE
-		// Check principal is customer
-		CustomerService.getPrincipalCustomer(session, jwtKey, function (customer) {
-			if (customer) {
 
-				var time;
-				switch (billingMethod) {
-					case 1: 
-						time = 5;
-						break;
-					case 2:
-						time = 15;
-						break;
-					case 3:
-						time = 30;
-						break;
-				}
-
-				var day = new Date();
-				day.setDate(day.getDate() + time); 
-
-				// Create purchase
-				var newPurchase = Purchase({
-					deliveryDate : day,
-					customer_id : customer._id
-				});
-
-				// Save it
-				newPurchase.save(function (err, newPurchase) {
-			  		if (err){
-			  			// Internal error
-			  			res.status(500).send({success: false});
-			  		} else {
-			  			// CONTINUE
-			  			// For each of the provides in shopping cart
-			  			Object.keys(cookie).forEach(function(cookie_id) {
-							ProvideService.getProvideById(cookie_id, function (provide) {
-								if (provide) {
-									// CONTNUE
-									// Create  purchase line
-									var newPurchaseLine = PurchaseLine({
-										quantity: cookie[cookie_id],
-										purchase_id: newPurchase._id,
-										provide_id: provide._id,
-									});
-
-									// Save it
-									newPurchaseLine.save(function (err) {
-										if (err) {
-											res.status(500).send({success: false});
-										} else {
-											// CONTINUE
-											// Next loop: Next provide
-										}
-									});
-
-									PurchaseService.storePurchaseInRecommendation(customer.id, provide.product_id);
-								} else {
-									// Internal error: Provide no longer exists
-									res.status(503).send({success: false, message: 'Product by supplier no longer exists'});
-									// Error: Rollback the purchase saved
-									Purchase.remove({ _id: newPurchase._id });
-
-								}
-							});
-						});
-			  			// FINISH LOOP
-			  			// FINISH PURCHASE PROCESS
-			  			// RECALCULATE RECOMMENDATION
-			  			RecommenderService.recommendPurchases(customer.id, function (err, response){
-			  				if(err || response.statusCode == 500) {
-			  					console.log("No recommendation updated")
-			  				} else {
-			  					console.log("Recommendations updated")
-			  				}
-			  			});
-			  			res.status(200).send(newPurchase);
-			  		}
-				});
-			} else {
-				// Error not a customer
-				res.status(401).send({success: false});
+		PurchaseService.purchaseStandard(discountCode, billingMethod, cookie, session, jwtKey, function (code, purchase) {
+			switch(code) {
+				case 401:
+					res.status(401).send({success: false});
+					break;
+				case 403:
+					res.status(403).send({success: false});
+					break;
+				case 500:
+					res.status(500).send({success: false});
+					break;
+				case 503:
+					res.status(503).send({success: false, message: 'Product by supplier no longer exists'});
+					break;
+				case 200:
+					res.status(200).send(purchase);
+					break;
 			}
 		});
 	}
+	
 };
+
+exports.purchaseAdmin = function (req, res) {
+	console.log('Function-purchasesApi-purchaseProcessAdmin');
+	var session = req.cookies.session;
+	var jwtKey = req.app.get('superSecret');
+
+	var billingMethod = parseInt(req.body.billingMethod) || -1,
+		customer_id = req.body.customer_id,
+		shoppingcart = req.body.shoppingcart,
+		discountCode = req.body.discountCode;
+
+	if (billingMethod!=1 && billingMethod!=3 && billingMethod!=3) {
+		res.status(500).send({success: false});
+		return;
+	} else {
+
+		ActorService.getUserRole(session, jwtKey, function (role) {
+			if (role=='customer' || role=='supplier' || role=='admin') {
+				if (role=='admin') {
+					if (billingMethod != 1 && billingMethod != 2 && billingMethod != 3) {
+						// Error bad params
+						res.status(503).send({success: false});
+					} else {
+						// CONTINUE
+						PurchaseService.purchaseAdmin(customer_id, billingMethod, shoppingcart, discountCode, session, jwtKey, function (code, purchase) {
+							switch(code) {
+								case 401:
+									res.status(401).send({success: false});
+									break;
+								case 403:
+									res.status(403).send({success: false});
+									break;
+								case 500:
+									res.status(500).send({success: false});
+									break;
+								case 503:
+									res.status(503).send({success: false, message: 'Product by supplier no longer exists'});
+									break;
+								case 200:
+									res.status(200).send(purchase);
+									break;
+							}
+						});
+					}
+				} else {
+					// Doesn't have permissions
+					res.status(403).json({success: false});
+				}
+			} else {
+				// Not authenticated
+				res.status(401).json({success: false});
+			}
+		});
+	}
+}
 
 // Delete a purchase
 exports.deletePurchase = function (req, res) {

@@ -1,0 +1,44 @@
+<script src="views/reports/ReportController.js"></script>
+
+<div class="wrap">
+	<ul class="breadcrumb breadcrumb__t">
+		<li><a class="home" href="/">{{ 'Home.Title' | translate }}</a> / {{ 'Title.Reports' | translate }}</li>
+	</ul>
+
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h4 class="panel-title">
+				{{'Reports.Filter.Title' | translate}}
+				<span class="glyphicon glyphicon-search pull-right"></span>
+			</h4>
+		</div>
+		<div class="panel-body account_form">
+			<div class="col-lg-3">
+				<form name="reportForm">
+					<div class="form-group">
+						<input id="email-input" name="email" type="email" class="form-control" ng-model="supplierEmail" placeholder="{{'Reports.Filter.SupplierEmail' | translate}}" ng-class="{'has-error': reportForm.email.$invalid && reportForm.email.$dirty}" required>
+					</div>
+					<div class="form-group">
+						<input id="year-input" name="year" type="number" class="form-control" ng-model="year" placeholder="{{'Reports.Filter.Year' | translate}}" min="2010" max="{{today.getFullYear()}}" ng-maxlength="4" ng-minlength="4" ng-class="{'has-error': reportForm.year.$invalid && reportForm.year.$dirty}" required>
+					</div>
+					<div class="form-group">
+						<button id="report-submit" type="submit" name="submit" class="grey" ng-disabled="reportForm.$invalid" ng-click="loadReport()">{{'Reports.Filter.Submit' | translate}}</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div class="row" ng-if="url">
+		<div class="col-md-8 col-md-offset-2">
+			<div class="row">
+				<div class="pull-right">
+					<a target="_self" href="{{url}}"><button class="btn btn-lg"><i class="fa fa-file-pdf-o"></i></button></a>
+				</div>
+			</div>
+			<canvas id="pdf-canvas" style="border:1px solid black;"/>
+		</div>
+	</div>
+	
+
+</div>
