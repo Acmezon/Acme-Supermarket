@@ -129,7 +129,6 @@ var generateHTML = function (supplier, year, sales, callback) {
 
 	var part3 = '</tbody></table></div></body></html>';
 
-	console.log(part1+part2+part3)
 	callback(part1 + part2 + part3)
 }
 

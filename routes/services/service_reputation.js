@@ -56,12 +56,12 @@ exports.saveReputationForCustomer = function (cookie, key, customer_id, provide_
 					} else {
 						// Rate not found: Create new one
 						var new_reputation = new Reputation({
-							value: rating_value,
+							value: value,
 							provide_id : provide.id,
-							customer_id : user.id
+							customer_id : customer_id
 						});
 
-						Reputation.save(function (err, saved) {
+						new_reputation.save(function (err, saved) {
 							if (err) {
 								callback({ code: 503, message: "Error while working with the database" }, null);
 								return;

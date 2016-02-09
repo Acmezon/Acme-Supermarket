@@ -149,6 +149,7 @@ function purchase(discountCode, billingMethod, customer_id, provide_list, sessio
 	}
 
 	if(!provide_list) {
+		console.log(1)
 		res.sendStatus(500);
 		return;
 	}
@@ -166,6 +167,7 @@ function purchase(discountCode, billingMethod, customer_id, provide_list, sessio
 	newPurchase.save(function (err, newPurchase) {
 		if (err){
 			// Internal error
+			console.log(2)
 			callback(500, null);
 		} else {
 			// CONTINUE
@@ -209,6 +211,7 @@ function purchase(discountCode, billingMethod, customer_id, provide_list, sessio
 								// Save it
 								newPurchaseLine.save(function (err) {
 									if (err) {
+										console.log(3)
 										callback(500, null);
 									}
 								});
