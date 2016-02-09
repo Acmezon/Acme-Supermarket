@@ -432,8 +432,57 @@ function loadSocialMediaRulesNotifications(callback) {
 
 		console.log("--DO: Saved all social media notifications");
 
+		loadExtraProvides(callback);
+	});
+}
+
+function loadExtraProvides(callback) {
+	sync.fiber(function () {
+		var provided_products = sync.await(Provide.find({}).select({ "product_id" : 1}).exec(sync.defer()));
+
+		var provided_products_ids = provided_products.map(function (product) {
+			return product.id;
+		});
+
+		var not_provided_products = sync.await(Product.find({"_id" : {"$nin" : provided_products_ids }}, sync.defer()));
+		var not_provided_products_ids = not_provided_products.map(function (product) {
+			return product.id;
+		});
+
+		var not_provided_products_ids = shuffle(not_provided_products_ids);
+		var products_nr = random(Math.floor(not_provided_products_ids.length * 0.7), not_provided_products_ids.length);
+		var products_to_provide = not_provided_products.slice(0, products_nr);
+
+		for(var i=0; i < products_to_provide.length; i++) {
+			var p_id = products_to_provide[i];
+
+			var suppliers = sync.await(Supplier.find({_type : "Supplier"}, sync.defer()));
+			var nr_suppliers = random(1, suppliers.length);
+
+			var shuffled_suppliers = shuffle(suppliers);
+			var rand_suppliers = shuffled_suppliers.slice(0, nr_suppliers);
+
+			var price = random(5, 50);
+			for(var j = 0; j < rand_suppliers.length; j++) {
+				var supplier = rand_suppliers[j];
+
+				var provide = new Provide({
+					"price" : price + random(-5, 5),
+					"product_id" : p_id,
+					"supplier_id" : supplier.id
+				});
+
+				sync.await(provide.save(sync.defer()));
+			}
+		}
+	}, function (err, data) {
+		if(err) console.log("--ERR: Error saving extra provides: " + err);
+
+		console.log("--DO: Saved all extra provides");
+
 		loadSpeacialUsers(callback);
 	});
+
 }
 
 function loadSpeacialUsers(callback) {
@@ -610,6 +659,7 @@ function loadProvides(product, callback) {
 				var shuffled_suppliers = shuffle(suppliers);
 				var rand_suppliers = shuffled_suppliers.slice(0, nr_suppliers);
 
+				var price = random(5, 50);
 				async.each(rand_suppliers, function (supplier, callback2) {
 					Provide.findOne( {supplier_id : supplier.id, product_id : product.id }, function (err, result) {
 						if(err) console.log("--ERR: Error finding supplier provide: " + err);
@@ -617,7 +667,7 @@ function loadProvides(product, callback) {
 							callback2();
 						} else {
 							var provide = new Provide({
-								"price" : random(20, 200),
+								"price" : price + random(-5, 5),
 								"product_id" : product.id,
 								"supplier_id" : supplier.id
 							});
