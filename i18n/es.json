@@ -664,5 +664,14 @@
 		"Moment" : "Momento",
 		"ProductId" : "ID de producto",
 		"Product" : "Producto"
+	},
+	"SalesOverTime" : {
+		"Title" : "Ventas en tiempo",
+		"ChartTitle" : "Ventas a lo largo del tiempo de:",
+		"XLabel" : "Fecha",
+		"YLabel" : "Ventas",
+		"SupplierEmail" : "Email del proveedor",
+		"ProductId" : "ID de un producto (opcional)",
+		"Loading" : "Cargando"
 	}
 }

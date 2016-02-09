@@ -311,6 +311,10 @@ function loadPurchases(callback) {
 
 		var customers = sync.await(Actor.find({ "_type" : "Customer"}, sync.defer()));
 
+		var products = sync.await(Product.find({}, sync.defer()));
+		var shuffled_products = shuffle(products);
+		shuffled_products = shuffled_products.slice(0, 400);
+		
 		for (var i = 0; i < customers.length; i++){
 			var customer = customers[i];
 
@@ -319,8 +323,6 @@ function loadPurchases(callback) {
 
 			var nr_products = random(max_products, min_products);
 
-			var products = sync.await(Product.find({}, sync.defer()));
-			var shuffled_products = shuffle(products);
 			var rand_products = shuffled_products.slice(0, nr_products);
 			
 			for(var j = 0; j < rand_products.length; j++) {

@@ -364,7 +364,7 @@ div.delete-provide {
 }
 
 .nv-label text{
-    font-family: Droid Sans;
+	font-family: Droid Sans;
 }
 
 /*Provides table in product details*/
@@ -404,7 +404,7 @@ form.create-rule_form div.input-group {
 }
 
 .nv-label text{
-    font-family: Droid Sans;
+	font-family: Droid Sans;
 }
 
 .red-text {
@@ -413,5 +413,57 @@ form.create-rule_form div.input-group {
 
 .caption>p.m_text {
 	text-align: justify;
-    text-justify: inter-word;
+	text-justify: inter-word;
+}
+
+
+/*Sales over time chart */
+button.grey.chart {
+	float: none;
+}
+
+div#sales-chart {
+	margin: auto;
+}
+
+/*Loading snipet*/
+.content {
+	padding: 15px;
+	overflow: hidden;
+}
+
+#chart-loading p {
+	margin: 0;
+	padding: 10px 0;
+	color: #777;
+}
+
+.load-wrapp {
+	width: 100px;
+	height: 100px;
+	margin: auto;
+	padding: 20px 20px 20px;
+	border-radius: 5px;
+	text-align: center;
+	background-color: #d8d8d8;
+}
+
+.load-wrapp p {padding: 0 0 20px;}
+
+.line {
+	display: inline-block;
+	width: 15px;
+	height: 15px;
+	border-radius: 15px;
+	background-color: #4b9cdb;
+}
+
+.load .line:nth-last-child(1) {animation: loading .6s .1s linear infinite;}
+.load .line:nth-last-child(2) {animation: loading .6s .2s linear infinite;}
+.load .line:nth-last-child(3) {animation: loading .6s .3s linear infinite;}
+
+@keyframes loading {
+	0 {transform: translate(0,0);}
+	50% {transform: translate(0,15px);}
+	100% {transform: translate(0,0);}
 }

@@ -666,5 +666,14 @@
 		"Moment" : "Moment",
 		"ProductId" : "Product ID",
 		"Product" : "Product"
+	},
+	"SalesOverTime" : {
+		"Title" : "Sales over time",
+		"ChartTitle" : "Sales over time of:",
+		"XLabel" : "Date",
+		"YLabel" : "Sales",
+		"SupplierEmail" : "Supplier email",
+		"ProductId" : "Product ID (optional)",
+		"Loading" : "Loading"
 	}
 }
