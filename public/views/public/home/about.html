@@ -2,145 +2,142 @@
     <ul class="breadcrumb breadcrumb__t">
         <li>
             <a class="home" href="/">{{ 'Home.Title' | translate }}</a> / {{ 'Legal.About.Title' | translate }}
+
         </li>
     </ul>
     <div class="section group">
-        <div class="labout span_1_of_about">
-            <h3>COSAS</h3>
-            <div class="testimonials ">
+        <div class="col-md-3">
+            <h3>{{'Legal.About.Testimonials.Title' | translate}}</h3>
+            <div class="testimonials">
                 <div class="testi-item">
                     <blockquote class="testi-item_blockquote">
                         <a href="">
-								TEXTO AQUI.
-							</a>
+                                {{'Legal.About.Testimonials.Alejandro.Text' | translate}}
+                            </a>
                         <div class="clear"></div>
                     </blockquote>
                     <small class="testi-meta">
                         <span class="user">
-								Alejandro Sánchez
-							</span>,
+                                Alejandro Sánchez
+                            </span>,
+                        
                         <span class="info">
-								{{'Legal.About.Developer' | translate}}
-							</span>
+                                {{'Legal.About.Developer' | translate}}
+                            </span>
                         <br>
                             <a href="http://alesanmed.com">
-								alesanmed.com
-							</a>
+                            alesanmed.com
+                        </a>
                         </small>
-                    </div>
                 </div>
-                <div class="testimonials">
-                    <div class="testi-item">
-                        <blockquote class="testi-item_blockquote">
-                            <a href="">
-								TEXTO AQUI 2.
-							</a>
-                            <div class="clear"></div>
-                        </blockquote>
-                        <small class="testi-meta">
-                            <span class="user">Daniel de los Reyes</span>,
-                            <span class="info">{{'Legal.About.Developer' | translate}}</span>
-                            <br>
-                                <a href="http://dandelea.com">dandelea.com</a>
-                            </small>
+            </div>
+            <div class="testimonials">
+                <div class="testi-item">
+                    <blockquote class="testi-item_blockquote">
+                        <a href="">
+                            {{'Legal.About.Testimonials.Daniel.Text' | translate}}
+                        </a>
+                        <div class="clear"></div>
+                    </blockquote>
+                    <small class="testi-meta">
+                            <span class="user">{{'Legal.About.Testimonials.Daniel.Author' | translate}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <h5 class="m_6">{{'Legal.About.Context.Title' | translate}}</h5>
+            <p class="m_text">{{'Legal.About.Context.Description1' | translate}} Daniel de los Reyes {{'Legal.About.Context.Description2' | translate}} Alejandro Sánchez {{'Legal.About.Context.Description3' | translate}}
+
+            <i>{{'Legal.About.Context.Description4' | translate}}</i>{{'Legal.About.Context.Description5' | translate}}
+
+            <i>{{'Legal.About.Context.Description6' | translate}}</i>{{'Legal.About.Context.Description7' | translate}}
+
+
+            </p>
+            <h5 class="m_6">{{'Legal.About.Members.Title' | translate}}</h5>
+            <div class="section group">
+                <div class="col_1_of_about-box span_1_of_about-box">
+                    <a class="popup-with-zoom-anim" href="#small-dialog1">
+                        <span class="rollover"></span>
+                        <img src="img/daniel.png" title="continue" alt="Daniel de los Reyes">
+                    </a>
+                    <div id="small-dialog1" class="mfp-hide">
+                        <div class="pop_up2">
+                            <h2>Daniel de los Reyes</h2>
+                            <p>{{'Legal.About.Members.Daniel' | translate}}</p>
                         </div>
                     </div>
-                </div>
-                <div class="cont span_2_of_about">
-                    <h3>{{'Legal.About.Context.Title' | translate}}</h3>
-                    <p>{{'Legal.About.Context.Description1' | translate}} Daniel de los Reyes {{'Legal.About.Context.Description2' | translate}} Alejandro Sánchez {{'Legal.About.Context.Description3' | translate}}
-                        <i>{{'Legal.About.Context.Description4' | translate}}</i>{{'Legal.About.Context.Description5' | translate}}
-                        <i>{{'Legal.About.Context.Description6' | translate}}</i>{{'Legal.About.Context.Description7' | translate}}
-					
-                    </p>
-                    <h5 class="m_6">{{'Legal.About.Members.Title' | translate}}</h5>
-                    <div class="section group">
-                        <div class="col_1_of_about-box span_1_of_about-box">
-                            <a class="popup-with-zoom-anim" href="#small-dialog1">
-                                <span class="rollover"></span>
-                                <img src="img/daniel.png" title="continue" alt="Daniel de los Reyes">
-                                </a>
-                                <div id="small-dialog1" class="mfp-hide">
-                                    <div class="pop_up2">
-                                        <h2>Daniel de los Reyes</h2>
-                                        <p>{{'Legal.About.Members.Daniel' | translate}}</p>
-                                    </div>
-                                </div>
-                                <h4 class="m_7">
+                    <h4 class="m_7">
                                     <a href="">Daniel de los Reyes</a>
                                 </h4>
-                            </div>
-                            <div class="col_1_of_about-box span_1_of_about-box">
-                                <a class="popup-with-zoom-anim" href="#small-dialog2">
-                                    <span class="rollover"></span>
-                                    <img src="img/alejandro.png" title="continue" alt="Alejandro Sánchez">
-                                    </a>
-                                    <div id="small-dialog2" class="mfp-hide">
-                                        <div class="pop_up2">
-                                            <h2>Alejandro Sánchez</h2>
-                                            <p>{{'Legal.About.Members.Alejandro' | translate}}</p>
-                                        </div>
-                                    </div>
-                                    <h4 class="m_7">
-                                        <a href="">Alejandro Sánchez</a>
-                                    </h4>
-                                </div>
-                                <div class="clear"></div>
-                            </div>
-                            <!-- Add fancyBox main JS and CSS files -->
-                            <script src="js/lib/template_bootstrap/jquery.magnific-popup.js" type="text/javascript"></script>
-                            <link href="css/template_bootstrap/magnific-popup.css" rel="stylesheet" type="text/css">
-                                <script>
-							$(document).ready(function() {
-								$('.popup-with-zoom-anim').magnificPopup();
-						});
-						</script>
-                            </div>
-                            <div class="clear"></div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="heading2" style="color:#31708f">
-						{{'Legal.About.Goals.Title' | translate}}
-					</h3>
-                            </div>
-                            <div class="panel-body">
-                                <p>
-						{{'Legal.About.Goals.Goal1' | translate}}
-					</p>
-                                <p>
-						{{'Legal.About.Goals.Goal2' | translate}}
-					</p>
-                                <ul class="list-group">
-                                    <a href="" class="list-group-item">
-                                        <h4 class="list-group-item-heading">{{'Legal.About.Goals.Goal3.Title' | translate}}</h4>
-                                        <p class="list-group-item-text">{{'Legal.About.Goals.Goal3.Description' | translate}}</p>
-                                    </a>
-                                    <a href="" class="list-group-item">
-                                        <h4 class="list-group-item-heading">{{'Legal.About.Goals.Goal4.Title' | translate}}</h4>
-                                        <p class="list-group-item-text">{{'Legal.About.Goals.Goal4.Description' | translate}}</p>
-                                    </a>
-                                    <a href="" class="list-group-item">
-                                        <h4 class="list-group-item-heading">{{'Legal.About.Goals.Goal5.Title' | translate}}</h4>
-                                        <p class="list-group-item-text">{{'Legal.About.Goals.Goal5.Description' | translate}}</p>
-                                    </a>
-                                    <a href="" class="list-group-item">
-                                        <h4 class="list-group-item-heading">{{'Legal.About.Goals.Goal6.Title' | translate}}</h4>
-                                        <p class="list-group-item-text">{{'Legal.About.Goals.Goal6.Description' | translate}}</p>
-                                    </a>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h3 class="heading2" style="color:#31708f">
-						{{'Legal.About.Contact' | translate}}
-					</h3>
-                            </div>
-                            <div class="panel-body">
-                                <p>
-                                    <a href="mailto:contact@acmesupermarket.com?Subject=Contact">contact@acmesupermarket.com</a>
-                                </p>
-                            </div>
+                </div>
+                <div class="col_1_of_about-box span_1_of_about-box">
+                    <a class="popup-with-zoom-anim" href="#small-dialog2">
+                        <span class="rollover"></span>
+                        <img src="img/alejandro.png" title="continue" alt="Alejandro Sánchez">
+                    </a>
+                    <div id="small-dialog2" class="mfp-hide">
+                        <div class="pop_up2">
+                            <h2>Alejandro Sánchez</h2>
+                            <p>{{'Legal.About.Members.Alejandro' | translate}}</p>
                         </div>
                     </div>
+                    <h4 class="m_7">
+                        <a href="">Alejandro Sánchez</a>
+                    </h4>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <!-- Add fancyBox main JS and CSS files -->
+            <script src="js/lib/template_bootstrap/jquery.magnific-popup.js" type="text/javascript"></script>
+            <link href="css/template_bootstrap/magnific-popup.css" rel="stylesheet" type="text/css">
+            <script>
+                $(document).ready(function() {
+                    $('.popup-with-zoom-anim').magnificPopup();
+                });
+            </script>
+        </div>
+        <div class="clear"></div>
+    </div>
+    
+    <div>
+        <h5 class="m_6">
+            {{'Legal.About.Goals.Title' | translate}}
+        </h5>
+
+        <p class="m_text">
+            {{'Legal.About.Goals.Goal1' | translate}}
+        </p>
+        <p class="m_text">
+            {{'Legal.About.Goals.Goal2' | translate}}
+        </p>
+
+        <ul class="list-group">
+            <a href="" class="list-group-item">
+                <h4 class="list-group-item-heading">{{'Legal.About.Goals.Goal3.Title' | translate}} <span class="pull-right glyphicon glyphicon-heart"></span></h4>
+                <p class="list-group-item-text">{{'Legal.About.Goals.Goal3.Description' | translate}}</p>
+            </a>
+            <a href="" class="list-group-item">
+                <h4 class="list-group-item-heading">{{'Legal.About.Goals.Goal4.Title' | translate}} <span class="pull-right glyphicon glyphicon-euro"></span></h4>
+                <p class="list-group-item-text">{{'Legal.About.Goals.Goal4.Description' | translate}}</p>
+            </a>
+            <a href="" class="list-group-item">
+                <h4 class="list-group-item-heading">{{'Legal.About.Goals.Goal5.Title' | translate}} <span class="pull-right glyphicon glyphicon-star-empty"></span></h4>
+                <p class="list-group-item-text">{{'Legal.About.Goals.Goal5.Description' | translate}}</p>
+            </a>
+            <a href="" class="list-group-item">
+                <h4 class="list-group-item-heading">{{'Legal.About.Goals.Goal6.Title' | translate}} <span class="pull-right glyphicon glyphicon-search"></span></h4>
+                <p class="list-group-item-text">{{'Legal.About.Goals.Goal6.Description' | translate}}</p>
+            </a>
+        </ul>
+    </div>
+    <div>
+        <h5 class="m_6">
+            {{'Legal.About.Contact' | translate}}
+        </h5>
+
+        <p class="m_text">
+            <a href="mailto:contact@acmesupermarket.com?Subject=Contact">contact@acmesupermarket.com <span class="glyphicon glyphicon-envelope"></span></a>
+        </p>
+    </div>
+</div>
