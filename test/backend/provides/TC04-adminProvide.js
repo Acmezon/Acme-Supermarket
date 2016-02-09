@@ -7,16 +7,27 @@ describe('Provides API', function () {
 
 	it("shouldn't let an anonymous user provide", function (done){
 		browser
-		.get('http://localhost:3000/api/signout')
+		.post('http://localhost:3000/api/signin')
+		.send( { email : 'admin@mail.com', password : 'administrator' } )
 		.end(function (err, res) {
-
 			browser
-			.post('http://localhost:3000/api/provide/admin/create')
-			.send({product_id: 1, supplier_id: 70, price : 1})
-			.end(function (err, res) {
-				res.status.should.be.equal(401);
-				res.body.success.should.be.exactly(false);
-				done();
+			.get('http://localhost:3000/api/supplier/byemail/no.provides@mail.com')
+			.end(function (err, supplier) {
+				supplier.status.should.be.equal(200);
+				
+				browser
+				.get('http://localhost:3000/api/signout')
+				.end(function (err, res) {
+
+					browser
+					.post('http://localhost:3000/api/provide/admin/create')
+					.send({product_id: 1, supplier_id: supplier.body._id, price : 1})
+					.end(function (err, res) {
+						res.status.should.be.equal(401);
+						res.body.success.should.be.exactly(false);
+						done();
+					});
+				});
 			});
 		});
 	});
@@ -24,16 +35,27 @@ describe('Provides API', function () {
 	it("shouldn't let a customer provide", function (done){
 		browser
 		.post('http://localhost:3000/api/signin')
-		.send( { email : 'alex.gallardo@example.com', password : 'customer' } )
+		.send( { email : 'admin@mail.com', password : 'administrator' } )
 		.end(function (err, res) {
-
 			browser
-			.post('http://localhost:3000/api/provide/admin/create')
-			.send({product_id: 1, supplier_id: 70, price : 1})
-			.end(function (err, res) {
-				res.status.should.be.equal(403);
-				res.body.success.should.be.exactly(false);
-				done();
+			.get('http://localhost:3000/api/supplier/byemail/no.provides@mail.com')
+			.end(function (err, supplier) {
+				supplier.status.should.be.equal(200);
+				
+				browser
+				.post('http://localhost:3000/api/signin')
+				.send( { email : 'alex.gallardo@example.com', password : 'customer' } )
+				.end(function (err, res) {
+
+					browser
+					.post('http://localhost:3000/api/provide/admin/create')
+					.send({product_id: 1, supplier_id: supplier.body._id, price : 1})
+					.end(function (err, res) {
+						res.status.should.be.equal(403);
+						res.body.success.should.be.exactly(false);
+						done();
+					});
+				});
 			});
 		});
 	});
@@ -41,16 +63,27 @@ describe('Provides API', function () {
 	it("shouldn't let a supplier provide for other supplier", function (done){
 		browser
 		.post('http://localhost:3000/api/signin')
-		.send( { email : 'ismael.perez@example.com', password : 'supplier' } )
+		.send( { email : 'admin@mail.com', password : 'administrator' } )
 		.end(function (err, res) {
-
 			browser
-			.post('http://localhost:3000/api/provide/admin/create')
-			.send({product_id: 1, supplier_id: 70, price : 1})
-			.end(function (err, res) {
-				res.status.should.be.equal(403);
-				res.body.success.should.be.exactly(false);
-				done();
+			.get('http://localhost:3000/api/supplier/byemail/no.provides@mail.com')
+			.end(function (err, supplier) {
+				supplier.status.should.be.equal(200);
+				
+				browser
+				.post('http://localhost:3000/api/signin')
+				.send( { email : 'ismael.perez@example.com', password : 'supplier' } )
+				.end(function (err, res) {
+
+					browser
+					.post('http://localhost:3000/api/provide/admin/create')
+					.send({product_id: 1, supplier_id: supplier.body._id, price : 1})
+					.end(function (err, res) {
+						res.status.should.be.equal(403);
+						res.body.success.should.be.exactly(false);
+						done();
+					});
+				});
 			});
 		});
 	});
@@ -94,14 +127,20 @@ describe('Provides API', function () {
 		.post('http://localhost:3000/api/signin')
 		.send( { email : 'admin@mail.com', password : 'administrator' } )
 		.end(function (err, res) {
-
 			browser
-			.post('http://localhost:3000/api/provide/admin/create')
-			.send({product_id: 100, supplier_id: 70, price : 1})
-			.end(function (err, res) {
-				res.status.should.be.equal(200);
-				res.body.should.be.ok();
-				done();
+			.get('http://localhost:3000/api/supplier/byemail/no.provides@mail.com')
+			.end(function (err, supplier) {
+				supplier.status.should.be.equal(200);
+				
+				browser
+				.post('http://localhost:3000/api/provide/admin/create')
+				.send({product_id: 100, supplier_id: supplier.body._id, price : 1})
+				.end(function (err, res) {
+					res.status.should.be.equal(200);
+
+					res.body.should.be.ok();
+					done();
+				});
 			});
 		});
 	});

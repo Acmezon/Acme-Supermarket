@@ -16,9 +16,7 @@ describe('Checkout page', function () {
 		element(by.css('.button')).click();
 
 		// Visit product
-		browser.get('http://localhost:3000/products');
-		var product = element.all(by.css('.product')).first();
-		product.click();
+		browser.get('http://localhost:3000/product/1');
 
 		var discounts_applied = element.all(by.repeater('discount in tableParams2.data track by discount._id'))
 		discounts_applied.count().then (function (number) {
@@ -34,9 +32,8 @@ describe('Checkout page', function () {
 					element(by.css('.button')).click();
 
 					// Visit product
-					browser.get('http://localhost:3000/products');
-					var product = element.all(by.css('.product')).first();
-					product.click();
+					// Visit product
+					browser.get('http://localhost:3000/product/1');
 
 					// Add to shopping cart
 					var cartbtn = element.all(by.id('cart-btn')).first();

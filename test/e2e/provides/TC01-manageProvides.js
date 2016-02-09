@@ -43,7 +43,7 @@ describe('Product details page', function () {
 	it('should let the supplier provide the product', function (){
 		browser.get('http://localhost:3000/signin');
 
-		element(by.model('email')).sendKeys('gustavo.santana@example.com');
+		element(by.model('email')).sendKeys('no.provides@mail.com');
 		element(by.model('password')).sendKeys('supplier');
 
 		element(by.css('.button')).click();
@@ -66,7 +66,7 @@ describe('Product details page', function () {
 	it('should let the supplier remove the provide from the product', function (){
 		browser.get('http://localhost:3000/signin');
 
-		element(by.model('email')).sendKeys('gustavo.santana@example.com');
+		element(by.model('email')).sendKeys('no.provides@mail.com');
 		element(by.model('password')).sendKeys('supplier');
 
 		element(by.css('.button')).click();

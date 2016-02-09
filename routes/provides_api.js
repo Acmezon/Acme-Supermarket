@@ -43,7 +43,12 @@ exports.getProvidesByProductId = function(req, res) {
 										res.sendStatus(500);
 									}
 
-									provide_obj['reputation'] = Math.floor(results[0].avg);
+									if(results.length < 1) {
+										provide_obj['reputation'] = 0;
+									} else {
+										provide_obj['reputation'] = Math.floor(results[0].avg);
+									}
+									
 									SupplierService.userHasPurchased(cookie, jwtKey, provide.id, function (hasPurchased) {
 										provide_obj['userHasPurchased'] = hasPurchased;
 										

@@ -680,5 +680,14 @@
 			"SupplierNotFound" : "Supplier not found",
 			"InvalidParams" : "Invalid parameters"
 		}
+	},
+	"SalesOverTime" : {
+		"Title" : "Sales over time",
+		"ChartTitle" : "Sales over time of:",
+		"XLabel" : "Date",
+		"YLabel" : "Sales",
+		"SupplierEmail" : "Supplier email",
+		"ProductId" : "Product ID (optional)",
+		"Loading" : "Loading"
 	}
 }

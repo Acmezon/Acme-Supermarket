@@ -120,6 +120,7 @@ app.delete('/api/purchasingrule', api.PurchasingRules.removePurchasingRule);
 // Suppliers
 app.get('/api/supplier/principal', api.Supplier.getSupplierPrincipal);
 app.get('/api/supplierName/:id', api.Supplier.getSupplierName);
+app.get('/api/supplier/byemail/:email', api.Supplier.getSupplierByEmail);
 app.post('/api/supplier/provideProduct', api.Supplier.provideProduct);
 app.post('/api/supplier/checkProvides', api.Supplier.checkProvides);
 

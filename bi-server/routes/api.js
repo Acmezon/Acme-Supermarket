@@ -9,9 +9,17 @@ var SalesFact = require('../models/sales_fact'),
 
 exports.getSalesOverTime = function(req, res) {
 	var supplier_id = req.params.id;
-	console.log("Api-GetSalesOverTime-Supplier: " + supplier_id);
+	var product_id = req.query.productid;
 
-	SalesFact.find({"supplier_id" : supplier_id}, function (err, facts) {
+	console.log("Api-GetSalesOverTime-Supplier: " + supplier_id + " and product: " + product_id);
+
+	var salesQuery = SalesFact.find({"supplier_id" : supplier_id});
+
+	if(product_id != undefined && product_id != '') {
+		salesQuery.where({ "product_id" : product_id });
+	}
+
+	salesQuery.exec(function (err, facts) {
 		if(err) {
 			res.sendStatus(500);
 			return;
@@ -27,7 +35,6 @@ exports.getSalesOverTime = function(req, res) {
 				var fact_date = sync.await(TimeDim.find({"time_id" : fact.time_id}, sync.defer()))[0];				
 				fact_date = new Date(fact_date.date);
 
-				//fact_date = fact_date.getDate() + "/" + fact_date.getMonth() + "/" + fact_date.getFullYear();
 				fact_product = fact.product_id;
 
 				if(!(fact_date in completed_facts)) {
@@ -48,7 +55,7 @@ exports.getSalesOverTime = function(req, res) {
 				}
 			}
 
-			var products_number = sync.await(SalesFact.find({"supplier_id" : supplier_id}).distinct("product_id", sync.defer())).length;
+			var products_number = sync.await(salesQuery.distinct("product_id", sync.defer())).length;
 
 			var dates = Object.keys(completed_facts);
 			dates.sort(function (a, b){
@@ -70,6 +77,7 @@ exports.getSalesOverTime = function(req, res) {
 				}
 
 				new_line.splice(0, 0, date.getFullYear() + "/" + (date.getMonth() + 1) + "/" + date.getDate());
+
 				final_data.push(new_line);
 
 				for(var j=0; j<ids.length; j++){
@@ -81,7 +89,7 @@ exports.getSalesOverTime = function(req, res) {
 					var index = header.indexOf(product_id);
 					var current_line = final_data[i];
 
-					current_line.splice(index, 0, products[product_id]);
+					current_line[index] = products[product_id];
 				}
 			}
 
