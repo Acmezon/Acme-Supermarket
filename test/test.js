@@ -12,7 +12,7 @@ exports.config = {
 	seleniumAddress: 'http://localhost:4444/wd/hub',
 	specs: [
 		//'backend/**/*.js'
-		'e2e/discounts/TC06-*.js'
+		'backend/business_intelligence/TC02-*.js'
 	]/*,
 	beforeLaunch: function() {
 		request("http://localhost:3000")

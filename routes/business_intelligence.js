@@ -58,7 +58,7 @@ exports.getReport = function (req, res) {
 		if (role=='admin' || role=='supplier' || role=='customer') {
 			if (role=='admin') {
 				var today  = new Date();
-				if (year>=2010 && year <= today.getFullYear()) {
+				if (year>=2010 && year <= today.getFullYear() && email) {
 					Supplier.findOne({email: email, _type: 'Supplier'}, function (err, supplier) {
 						if (err) {
 							res.status(500).send({success: false});
@@ -78,7 +78,7 @@ exports.getReport = function (req, res) {
 								});
 							} else {
 								// Supplier not found: Show toast
-								res.status(200).json({success: true})
+								res.status(200).json({success: false})
 							}
 						}
 					});

@@ -61,8 +61,7 @@ angular.module('acme_supermarket').registerCtrl('ReportCtrl', ['$scope', '$http'
 				}
 			}).
 			then(function success(response) {
-
-				if (response.data.url) {
+				if (response.data.success) {
 					$scope.url = response.data.url;
 					$translate(['Reports.Success']).then(function (translation) {
 						ngToast.create({
