@@ -500,6 +500,16 @@ function loadSpeacialUsers(callback) {
 
 		sync.await(supplier1.save(sync.defer()));
 
+		var credit_card = new Credit_card({
+			"holderName" : "No purchases Customer",
+			"number" : generator.GenCC("VISA")[0],
+			"expirationMonth" : 06,
+			"expirationYear" : 2020,
+			"cvcCode" : 224
+		});
+
+		var cc = sync.await(credit_card.save(sync.defer()));
+
 		//Customer with no purchases
 		var customer1 = new Customer({
 			"_type" : "Customer",
@@ -511,7 +521,8 @@ function loadSpeacialUsers(callback) {
 			"country":"Spain",
 			"city":"La Coruña",
 			"address":"3481 Calle Del Prado",
-			"phone":"949705177"
+			"phone":"949705177",
+			"credit_card_id": cc.id
 		});
 
 		sync.await(customer1.save(sync.defer()));

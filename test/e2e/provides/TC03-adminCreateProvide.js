@@ -7,39 +7,74 @@ describe('Product page', function () {
 		browser.manage().deleteAllCookies();
 	});
 
-	var randomnumber = Math.floor(Math.random() * (8 - 0 + 1)) + 0;
-	var supplier_id = Math.floor(Math.random() * (80 - 66 + 1)) + 66;
-
 
 	it("should let admin create a provide", function (){
 		browser.get('http://localhost:3000/signin');
 
-		element(by.model('email')).sendKeys('admin@mail.com');
-		element(by.model('password')).sendKeys('administrator');
+		element(by.model('email')).sendKeys('no.provides@mail.com');
+		element(by.model('password')).sendKeys('supplier');
 
 		element(by.css('.button')).click();
 
-		browser.get('http://localhost:3000/products');
-		element(by.cssContainingText('option', 'Price')).click();
+		browser.get('http://localhost:3000/myprofile');
 
-		element.all(by.css('div.top-box>div>div>a')).get(randomnumber).click();
+		var id = element(by.css('span#id'));
 
-		element.all(by.repeater('provide in out_suppliers')).count().then(function (number) {
+		id.getText().then(function (text) {
+			var supplier_id = parseInt(text);
 
-			var addbtn = element.all(by.css('button#new-provide-admin')).first();
-			expect(addbtn.isPresent()).toBe(true);
-			addbtn.click();
-			browser.waitForAngular();
+			// Logout
+			browser.manage().deleteAllCookies();
 
-			element(by.css('input#supplier_id')).sendKeys(supplier_id);
-			element(by.css('input#price')).sendKeys('50');
+			browser.get('http://localhost:3000/signin');
 
-			expect(element(by.css('table.table>tfoot>tr>td>button#add-provide')).isEnabled()).toBe(true);
-			element(by.css('table.table>tfoot>tr>td>button#add-provide')).click()
-			browser.waitForAngular();
+			element(by.model('email')).sendKeys('admin@mail.com');
+			element(by.model('password')).sendKeys('administrator');
 
-			expect(element.all(by.repeater('provide in out_suppliers')).count()).toEqual(number+2)
+			element(by.css('.button')).click();
+
+			browser.get('http://localhost:3000/products');
+			element(by.cssContainingText('option', 'Price')).click();
+
+			browser.get('http://localhost:3000/product/31');
+
+			element.all(by.repeater('provide in out_suppliers')).count().then(function (number) {
+
+				var addbtn = element.all(by.css('button#new-provide-admin')).first();
+				expect(addbtn.isPresent()).toBe(true);
+				addbtn.click();
+				browser.waitForAngular();
+
+				element(by.css('input#supplier_id')).sendKeys(supplier_id);
+				element(by.css('input#price')).sendKeys('50');
+
+				expect(element(by.css('table.table>tfoot>tr>td>button#add-provide')).isEnabled()).toBe(true);
+				element(by.css('table.table>tfoot>tr>td>button#add-provide')).click()
+				browser.waitForAngular();
+
+				expect(element.all(by.repeater('provide in out_suppliers')).count()).toEqual(number+2)
+			});
 		});
 	});
+	
+	it('should let the supplier remove the provide from the product', function (){
+		browser.get('http://localhost:3000/signin');
 
+		element(by.model('email')).sendKeys('no.provides@mail.com');
+		element(by.model('password')).sendKeys('supplier');
+
+		element(by.css('.button')).click();
+		
+		browser.get('http://localhost:3000/product/31');
+
+		element.all(by.repeater('provide in out_suppliers')).count().then(function (count) {
+			expect($('#delete-provide').isPresent()).toBe(true);
+			$('#delete-provide').click();
+
+			browser.get('http://localhost:3000/product/31');
+			element.all(by.repeater('provide in out_suppliers')).count().then(function (new_count) {
+				expect(new_count).toBe(count - 2);//2 ng-repeat over out_suppliers -> +-2 when added / removed
+			});
+		});
+	});
 });

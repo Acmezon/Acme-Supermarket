@@ -1,10 +1,31 @@
 describe('Create purchasing rule', function () {
+	var product_id = "";
 
-	beforeEach(function() {
+	beforeEach(function (done) {
 		// Mandatory visit in order to make cookies work
 		browser.driver.get('http://localhost:3000/');
+	
 		// Logout
 		browser.manage().deleteAllCookies();
+
+		browser.get('http://localhost:3000/signin');
+
+		element(by.model('email')).sendKeys('ismael.perez@example.com');
+		element(by.model('password')).sendKeys('supplier');
+
+		element(by.css('.button')).click();
+
+		browser.get('http://localhost:3000/myproducts');
+		browser.waitForAngular();
+
+		var product_links = element.all(by.repeater('product in products')).first();
+
+		product_links.getAttribute('id').then(function (product) {
+			product_id = parseInt(product);
+			// Logout
+			browser.manage().deleteAllCookies();
+			done();
+		});
 	});
 
 	it("shouldn't show a button for every provide due to already having a rule for one of them", function (){
@@ -43,9 +64,7 @@ describe('Create purchasing rule', function () {
 		browser.waitForAngular();
 		
 		element.all(by.repeater("rule in $data")).count().then(function (count) {
-			browser.get('http://localhost:3000/products');
-
-			element.all(by.css('div.top-box>div>div>a>div')).first().click();
+			browser.get('http://localhost:3000/product/' + product_id);
 
 			browser.waitForAngular();
 
@@ -93,10 +112,8 @@ describe('Create purchasing rule', function () {
 
 		browser.waitForAngular();
 		
-		element.all(by.repeater("rule in $data")).count().then(function (count) {
-			browser.get('http://localhost:3000/products');
-
-			element.all(by.css('div.top-box>div>div>a>div')).first().click();
+		element.all(by.repeater("rule in $data")).count().then(function (count) {			
+			browser.get('http://localhost:3000/product/' + product_id);
 
 			browser.waitForAngular();
 
@@ -144,10 +161,8 @@ describe('Create purchasing rule', function () {
 
 		browser.waitForAngular();
 		
-		element.all(by.repeater("rule in $data")).count().then(function (count) {
-			browser.get('http://localhost:3000/products');
-
-			element.all(by.css('div.top-box>div>div>a>div')).first().click();
+		element.all(by.repeater("rule in $data")).count().then(function (count) {			
+			browser.get('http://localhost:3000/product/' + product_id);
 
 			browser.waitForAngular();
 
@@ -197,10 +212,8 @@ describe('Create purchasing rule', function () {
 		
 		
 		element.all(by.repeater("rule in $data")).count().then(function (count) {
+			browser.get('http://localhost:3000/product/' + product_id);
 
-			browser.get('http://localhost:3000/products');
-
-			element.all(by.css('div.top-box>div>div>a>div')).first().click();
 			browser.waitForAngular();
 
 			browser.sleep(1000)
@@ -272,9 +285,7 @@ describe('Create purchasing rule', function () {
 			browser.waitForAngular();
 			
 			element.all(by.repeater("rule in purchasing_rules")).count().then(function (count) {
-				browser.get('http://localhost:3000/products');
-
-				element.all(by.css('div.top-box>div>div>a>div')).last().click();
+			browser.get('http://localhost:3000/product/' + product_id);
 
 				browser.waitForAngular();
 

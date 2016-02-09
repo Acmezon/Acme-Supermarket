@@ -83,23 +83,23 @@
 		  						<tbody>
 		  							<tr>
 		  								<td>{{'Customers.CreditCard.Id' | translate}}</td>
-		  								<td>{{customer.creditcard._id}}</td>
+		  								<td>{{customer.credit_card._id}}</td>
 		  							</tr>
 		  							<tr>
 		  								<td>{{'Customers.CreditCard.HolderName' | translate}}</td>
-		  								<td>{{customer.creditcard.holderName}}</td>
+		  								<td>{{customer.credit_card.holderName}}</td>
 		  							</tr>
 		  							<tr>
 		  								<td>{{'Customers.CreditCard.Number' | translate}}</td>
-		  								<td>{{customer.creditcard.number}}</td>
+		  								<td>{{customer.credit_card.number | hidecc }}</td>
 		  							</tr>
 		  							<tr>
 		  								<td>{{'Customers.CreditCard.Expiration' | translate}}</td>
-		  								<td>{{customer.creditcard.expirationMonth}} / {{customer.creditcard.expirationYear}}</td>
+		  								<td>{{customer.credit_card.expirationMonth}} / {{customer.credit_card.expirationYear}}</td>
 		  							</tr>
 		  							<tr>
 		  								<td>{{'Customers.CreditCard.CvcCode' | translate}}</td>
-		  								<td>{{customer.creditcard.cvcCode}}</td>
+		  								<td>{{customer.credit_card.cvcCode | hidecvc}}</td>
 		  							</tr>
 	  							</tbody>
 	  						</table>

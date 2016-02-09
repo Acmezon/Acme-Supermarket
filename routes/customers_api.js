@@ -71,7 +71,7 @@ exports.getCustomerByEmail = function (req, res) {
 
 // Returns all customers of the system (W/O PASSWORDS)
 exports.getCustomers = function (req, res) {
-	console.log('Function-productsApi-getCustomers');
+	console.log('Function-customersApi-getCustomers');
 
 	var cookie = req.cookies.session;
 	var jwtKey = req.app.get('superSecret');
