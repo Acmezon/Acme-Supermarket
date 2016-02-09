@@ -196,6 +196,17 @@
 		},
 		"About" : {
 			"Title" : "About us",
+			"Testimonials" : {
+				"Title" : "Testimonials",
+				"Alejandro" : {
+					"Text" : "In linux, in order to run an application on a port lower than 1024, you need to be root",
+					"Author" : "Alejandro Sánchez"
+				},
+				"Daniel" : {
+					"Text" : "He has worked hard. He deserves a 10.",
+					"Author" : "Daniel de los Reyes' mother"
+				}
+			},
 			"Developer" : "Developer",
 			"Context" : {
 				"Title" : "Context",
@@ -271,7 +282,12 @@
 		"City" : "City",
 		"Phone" : "Phone",
 		"Geoerror" : "We couldn't get your coordinates. Please make sure your navigator is up to date and you are not blocking our web from getting your coordinates.",
-		"Complete" : "Register completed. Now you can sign in."
+		"Complete" : "Register completed. Now you can sign in.",
+		"Banner" : "Register in Acme-Supermarket and get amazing prices at the best products. We have a no-cost delivery service just for you. What are you waiting for? Click on 'Create an account' for joining us and start buying.",
+		"Terms" : {
+			"Text" : "By clicking 'Submit' you agree to the ",
+			"Link" : "Terms and conditions"
+		}
 	},
 	"Signin" : {
 		"Signin" : "Sign in",
@@ -492,13 +508,13 @@
 		"DiscountRedeemed" : "Discount code successfuly redeemed.",
 		"DiscountSuccess" : "Success",
 		"CreditCard" : {
+			"Title" : "Credit card",
 			"Empty" : {
 				"Title" : "No credit card registered",
 				"Description1" : "Please ",
 				"Link" : "register credit card",
 				"Description2" : " to proceed with purchase."
 			},
-			"Title" : "Credit card",
 			"Type" : "Type",
 			"HolderName" : "holder name",
 			"Number" : "Number",

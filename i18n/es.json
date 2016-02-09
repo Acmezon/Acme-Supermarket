@@ -196,6 +196,18 @@
 		},
 		"About" : {
 			"Title" : "Sobre nosotros",
+			"Title" : "About us",
+			"Testimonials" : {
+				"Title" : "Testimonios",
+				"Alejandro" : {
+					"Text" : "En linux para ejecutar una aplicación en un puerto menor a 1024 necesitas ser root",
+					"Author" : "Alejandro Sánchez"
+				},
+				"Daniel" : {
+					"Text" : "Ha trabajado mucho. Se merece un 10.",
+					"Author" : "Madre de Daniel de los Reyes"
+				}
+			},
 			"Developer" : "Desarrollador",
 			"Context" : {
 				"Title" : "Contexto",
@@ -271,7 +283,12 @@
 		"City" : "Ciudad",
 		"Phone" : "Teléfono",
 		"Geoerror" : "No se han podido obtener tus coordenadas, asegúrate de que tu navegador permite obtener coordenadas y de que no las estás bloqueando.",
-		"Complete" : "Register completed. Now you can sign in."
+		"Complete" : "Register completed. Now you can sign in.",
+		"Banner" : "Regístrate en Acme-Supermarket para disfrutar de los mejores precios en una gran variedad de productos. Tenemos un servicio de envío libre de costes sólo para tí. ¿A qué esperas? Haz clic en 'Crear tu cuenta' para unirte a nosotros y comenzar a comprar.",
+		"Terms" : {
+			"Text" : "Al hacer clic en 'Enviar' aceptas nuestros ",
+			"Link" : "Términos y condiciones"
+		}
 	},
 	"Signin" : {
 		"Signin" : "Entrar",
@@ -346,6 +363,7 @@
 		"Edit" : "Editar",
 		"Upload" : "Arratra una imagen aquí para cambiarla",
 		"RatingError" : "Error al guardar la puntuación, recarge la página e inténtelo de nuevo",
+		"RatingProvidePurchaseError" : "No puede valorar un proveedor sin haberle comprado antes",
 		"Create" : {
 			"Name" : "Name",
 			"Description" : "Description"
@@ -502,7 +520,8 @@
 			"HolderName" : "Propietario",
 			"Number" : "Número",
 			"Expiration" : "Expiración",
-			"CvcCode" : "CVC"
+			"CvcCode" : "CVC",
+			"Unknown" : "Desconocida"
 		},
 		"Address" : {
 			"Title" : "Dirección de envío",
