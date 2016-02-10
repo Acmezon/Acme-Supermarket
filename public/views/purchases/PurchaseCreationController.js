@@ -25,7 +25,6 @@ angular.module('acme_supermarket').registerCtrl('PurchaseCreationCtrl', ['$scope
 			url: '/api/product/' + provide.product_id
 		}).
 		then (function success (response) {
-			console.log(response)
 			var product = response.data;
 			product.provide_id = provide._id;
 			product.price = provide.price;
@@ -39,7 +38,6 @@ angular.module('acme_supermarket').registerCtrl('PurchaseCreationCtrl', ['$scope
 				product.quantity = 1;
 				$scope.shoppingcart.push(product);
 			}
-			console.log($scope.shoppingcart)
 			$scope.isEditing = false;
 
 		});
@@ -60,7 +58,6 @@ angular.module('acme_supermarket').registerCtrl('PurchaseCreationCtrl', ['$scope
 	}
 
 	$scope.check = function (customerEmail) {
-		console.log(customerEmail)
 		$http({
 			method: 'GET',
 			url: '/api/customer/byemail/' + customerEmail

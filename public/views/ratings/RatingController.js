@@ -1,6 +1,6 @@
 'use strict'
 
-angular.module('acme_supermarket').registerCtrl('RatingCtrl', ['$scope', '$http', '$translate', 'ngToast', function ($scope, $http, $translate, ngToast) {
+angular.module('acme_supermarket').registerCtrl('RatingCtrl', ['$scope', '$http', '$translate', 'ngToast', '$location', function ($scope, $http, $translate, ngToast, $location) {
 
 	$scope.Math = Math;
 
@@ -32,9 +32,8 @@ angular.module('acme_supermarket').registerCtrl('RatingCtrl', ['$scope', '$http'
 					});
 				});
 			});
-
+			$location.path('/'); 
 		});
-
 	};
 
 }]);

@@ -469,6 +469,6 @@ div#sales-chart {
 }
 
 /*Customers management refresh button*/
-button#customersBtn {
+button#refreshBtn {
 	z-index: 1;
 }

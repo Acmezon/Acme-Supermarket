@@ -2,8 +2,6 @@
 
 angular.module('acme_supermarket').registerCtrl('CustomersCtrl', ['$scope', '$http', 'ngTableParams', '$route', function ($scope, $http, ngTableParams, $route) {
 	
-	console.log("Entra");
-
 	$http({
 		method: 'GET',
 		url: '/api/customers'

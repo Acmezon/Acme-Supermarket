@@ -32,12 +32,15 @@ exports.getRecommendations = function (req, res) {
 };
 
 exports.recommendRates = function(req, res) {
+	console.log("Api-recommendRates:" + req.params.userId);
 	var user_id = req.params.userId;
 	recommendation_service.runRatesRecommendation(user_id, 
 		function (error, stdout, stderr) {
 			if(error) {
+				console.log("Finished with error: " + error);
 				res.sendStatus(500);
 			} else {
+				console.log("Finished successfully");
 				res.sendStatus(200);
 			}
 		}

@@ -9,13 +9,13 @@ angular.module('acme_supermarket').registerCtrl('PurchasesListCtrl', ['$scope', 
 	$scope.inverseOrder = false;
 	$scope.sortBy = 'paymentDate';
 	// Filters
-    $scope.customerFilter = '';
+	$scope.customerFilter = '';
 	// Inject Math
 	$scope.Math = window.Math;
 	
 	$scope.view = $location.path().split("/")[1];
 
-    // Refresh the page (order, filter and pagination)
+	// Refresh the page (order, filter and pagination)
 	$scope.refreshPage = function(callback) {
 
 		if ($scope.view=='mypurchases') {
@@ -99,24 +99,24 @@ angular.module('acme_supermarket').registerCtrl('PurchasesListCtrl', ['$scope', 
 
 	$scope.refresh = function () {
 		$scope.refreshCount(function (number) {
-    		$scope.numberOfPurchases = number;
-    		if ($scope.currentPage > Math.ceil($scope.numberOfPurchases/parseInt($scope.pageSize))) {
-    			$scope.currentPage = 0;
-    			$scope.reload();
-    		}
-    		var list = [];
+			$scope.numberOfPurchases = number;
+			if ($scope.currentPage > Math.ceil($scope.numberOfPurchases/parseInt($scope.pageSize))) {
+				$scope.currentPage = 0;
+				$scope.reload();
+			}
+			var list = [];
 			for (var i = Math.max(0, $scope.currentPage-5); i < Math.min(Math.ceil($scope.numberOfPurchases/parseInt($scope.pageSize)), $scope.currentPage+6); i++) {
-    			list.push(i);
+				list.push(i);
 			}
 			$scope.pages = list;
-    	});
+		});
 	};
 
 	$scope.reload = function() {
 		$scope.refreshPage(function (purchases) {
-    		$scope.purchases = purchases;
-    		$scope.refresh();
-    	});
+			$scope.purchases = purchases;
+			$scope.refresh();
+		});
 	};
 
 	$scope.filter = function(value) {
@@ -150,18 +150,17 @@ angular.module('acme_supermarket').registerCtrl('PurchasesListCtrl', ['$scope', 
 
 	$scope.remove = function(purchase_id) {
 		$http({ url: '/api/purchase', 
-	                method: 'DELETE', 
-	                data: {id: purchase_id}, 
-	                headers: {"Content-Type": "application/json;charset=utf-8"}
-		        }).then (function success(response) {
+					method: 'DELETE', 
+					data: {id: purchase_id}, 
+					headers: {"Content-Type": "application/json;charset=utf-8"}
+				}).then (function success(response) {
 					for (var i = 0; i < $scope.purchases.length; i++) {
 						if ($scope.purchases[i]._id == purchase_id) {
 							$scope.purchases.splice(i, 1);
 						}
 					}
-		        }, function error (error) {
-		        	alert(error.data)
-		            console.log(error.data);
+				}, function error (error) {
+					console.log(error.data);
 		});
 
 	}
