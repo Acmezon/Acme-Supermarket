@@ -68,7 +68,7 @@
 												<span class="red-text" ng-if="!product.minPrice">{{'Products.NotAvailable' | translate}}</span>
 											</div>
 										</div>
-										<div class="cart-right"></div>
+										<div class="cart-right" restrict access="customer"></div>
 										<div class="clear"></div>
 									</div>
 								</div>
@@ -78,7 +78,7 @@
 					</div>
 					<div class="clear"></div>
 				</div>
-				<div restrict access="customer">
+				<div>
 					<h2 class="head">{{ 'Home.RecommendedProducts' | translate }}</h2>
 					<div class="section group">
 						<div ng-repeat="product in recommendedProducts | limitTo:3">
@@ -98,7 +98,7 @@
 													<span class="actual">{{product.minPrice}} - {{product.maxPrice}} €</span>
 												</div>
 											</div>
-											<div class="cart-right"></div>
+											<div class="cart-right" restrict access="customer"></div>
 											<div class="clear"></div>
 										</div>
 									</div>
