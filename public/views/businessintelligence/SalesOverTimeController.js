@@ -11,18 +11,17 @@ angular.module('acme_supermarket').registerCtrl('SalesOverTimeCtrl', ['$scope', 
 		}
 		
 		if($('#sales-chart').is(':visible')) {
-			$('#sales-chart').fadeOut(function (){
-				$('#chart-loading').fadeIn();
-			});
+			$('#sales-chart').fadeOut();
+			$('#chart-loading').fadeIn();
 		} else {
 			$('#chart-loading').fadeIn();
 		}
 
 		$http.get('/api/supplier/byemail/' + $scope.supplierEmail)
 		.then(function success(response) {
-			if(response.data._id == undefined) {
-				return false;
+			if(!response.data) {
 				$('#chart-loading').fadeOut();
+				return false;
 			}
 
 			var supplier = response.data;
