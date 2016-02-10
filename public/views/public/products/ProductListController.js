@@ -271,6 +271,17 @@ angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$
 		$scope.reload();
 	};
 
+	$http({
+		method: 'GET',
+		url: '/api/getUserRole'
+	}).
+	then(function success(response) {
+		$scope.role = response.data;
+
+	}, function error(response) {
+		$scope.role = "anonymous";
+	});
+
 	$http.get('/api/myRecommendations').then(function success(products) {
 		$http.post('/api/product/getByIdList', { products : products}).then(
 			function success(product_list) {

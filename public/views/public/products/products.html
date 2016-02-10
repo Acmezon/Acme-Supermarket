@@ -74,7 +74,7 @@
 										</div>				
 									</div>
 								</a>
-								<div restrict access="admin" id="delete-product" class="delete-product" ng-click="deleteProduct(product._id)"><i class="fa fa-trash"></i></div>
+								<div id="delete-product" class="delete-product" ng-if="role=='admin'" ng-click="deleteProduct(product._id)"><i class="fa fa-trash"></i></div>
 								<div restrict access="supplier" id="delete-provide" ng-if="view=='myproducts'" class="delete-product" ng-click="deleteProvide(product._id)"><i class="fa fa-trash"></i></div>
 							</div>
 						</div>
