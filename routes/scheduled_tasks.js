@@ -5,8 +5,8 @@ var schedule = require('node-schedule'),
 	log = require('../logger');
 
 exports.scheduleAutomaticPurchases = function() {
-											//Every day at 17:00
-	var autoPurchase = schedule.scheduleJob({hour: 17, minute: 17}, function(){
+											//Every day at 03:00AM
+	var autoPurchase = schedule.scheduleJob({hour: 3, minute: 0}, function(){
 		var end = new Date();
 		end.setHours(23,59,59,999);
 
