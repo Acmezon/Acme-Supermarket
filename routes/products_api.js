@@ -1324,7 +1324,7 @@ exports.getAllProductsLimit = function(req, res) {
 	console.log('Function-productsApi-getAllProductsLimit  -- limit:' + limit);
 
 	// Find no conditions
-	Product.findRandom({}, {}, {limit: limit}, function(err, products) {
+	Product.findRandom({"minPrice" : {$gte: 0}}, {}, {limit: limit}, function (err, products) {
 		if (err) {
 			res.status(500).json({
 				success: false,
