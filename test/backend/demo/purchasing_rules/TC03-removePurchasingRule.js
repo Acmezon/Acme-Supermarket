@@ -66,11 +66,13 @@ describe('Remove purchasing rule', function () {
 	it("should let a customer delete an owned purchasing rule ", function (done){
 		browser
 		.post('http://localhost:3000/api/signin')
-		.send( { email : 'no.rules@example.com', password : 'customer' } )
+		.send( { email : 'no.rules@mail.com', password : 'customer' } )
 		.end(function (err, res) {
 			browser
 			.get('http://localhost:3000/api/mypurchasingrules')
 			.end(function (err, res) {
+				res.status.should.be.equal(200);
+				
 				var rule = res.body[res.body.length - 1];
 
 				browser
