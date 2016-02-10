@@ -46,7 +46,6 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 							}).
 							then(function success(reps) {
 								var reputations = reps.data.reputations;
-								console.log(reputations)
 								if (reputations.length) {
 									$scope.avgRating = reps.data.avgRating;
 									var count1 = 0,
@@ -448,7 +447,6 @@ function ($scope, $http, $routeParams, $translate, $window, ngToast, $cookies, $
 						$window.location.reload();
 					}
 				}, function error (response) {
-					console.log(response);
 					$translate(['Product.CreateRule.Error']).then(function (translation) {
 						ngToast.create({
 							className: 'danger',

@@ -48,7 +48,6 @@ angular.module('acme_supermarket').registerCtrl('MainCtrl', ['$scope', '$http', 
 	};
 
 	$scope.checkSubmit = function(e) {
-		console.log(e.keyCode)
 		if(e && e.keyCode == 13) {
 			$scope.search($scope.textSearch)
 		}

@@ -197,7 +197,6 @@ angular.module('acme_supermarket').registerCtrl('ProductListCtrl', ['$scope', '$
 
 	// Supplier deletes a provide
 	$scope.deleteProvide = function (product_id){
-		console.log(product_id)
 		$http({
 			method: 'DELETE',
 			url: '/api/provide/bysupplier/byproduct/' + product_id

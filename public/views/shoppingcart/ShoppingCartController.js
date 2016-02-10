@@ -138,15 +138,12 @@ angular.module('acme_supermarket').registerCtrl('ShoppingCartCtrl', ['$scope', '
 
 
 	$scope.remove = function (product_id) {
-		console.log("To be removed "+product_id)
 		var cookie = $cookies.get("shoppingcart");
 		if (cookie) {
 			cookie = JSON.parse(cookie);
-			console.log(cookie)
 			if (!$.isEmptyObject(cookie)) {
 				for (var id in cookie) {
 					if (cookie.hasOwnProperty(id)) {
-						console.log("Removing " + id)
 						if (id==product_id) {
 							delete cookie[id];
 						}
