@@ -66,7 +66,7 @@ describe('Remove purchasing rule', function () {
 	it("should let a customer delete an owned purchasing rule ", function (done){
 		browser
 		.post('http://localhost:3000/api/signin')
-		.send( { email : 'alex.gallardo@example.com', password : 'customer' } )
+		.send( { email : 'no.rules@mail.com', password : 'customer' } )
 		.end(function (err, res) {
 			browser
 			.get('http://localhost:3000/api/mypurchasingrules')
@@ -84,23 +84,4 @@ describe('Remove purchasing rule', function () {
 			});
 		});
 	});
-
-
-	//TODO
-	/*it("should let an admin delete a purchasing rule ", function (done){
-		browser
-		.post('http://localhost:3000/api/signin')
-		.send( { email : 'alex.gallardo@example.com', password : 'customer' } )
-		.end(function (err, res) {
-			browser
-			.del('http://localhost:3000/api/purchasingrule')
-			//TODO: Get one from the all purchasing rules list
-			.send({id : 1})
-			.end(function (err, res) {
-				res.status.should.be.equal(200);
-
-				done();
-			});
-		});
-	});*/
 });
