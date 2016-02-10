@@ -7,13 +7,10 @@ var schedule = require('node-schedule'),
 exports.scheduleAutomaticPurchases = function() {
 											//Every day at 17:00
 	var autoPurchase = schedule.scheduleJob({hour: 17, minute: 17}, function(){
-		var start = new Date();
-		start.setHours(0,0,0,0);
-
 		var end = new Date();
 		end.setHours(23,59,59,999);
 
-		PurchasingRule.find({ nextRun : { $gte: start, $lt: end} }, function (err, results) {
+		PurchasingRule.find({ nextRun : { $lt: end } }, function (err, results) {
 			if(err) {
 				console.log(err);
 			}
@@ -24,8 +21,6 @@ exports.scheduleAutomaticPurchases = function() {
 					var rule = results[i];
 
 					var result = sync.await(PurchaseService.purchaseScheduled(rule.customer_id, rule.provide_id, rule.quantity, sync.defer()));
-
-					console.log("Purchased: " + result);
 
 					var nextRun = new Date(rule.nextRun);
 
