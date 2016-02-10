@@ -478,6 +478,12 @@
 			"Running" : "Online",
 			"Stopped" : "Offline",
 			"Serverstatus" : "Estado del servidor"
+		},
+		"BusinessIntelligence" : {
+			"Server" : "Servidor de Business Intelligence",
+			"Running" : "Online",
+			"Stopped" : "Offline",
+			"Serverstatus" : "Estado del servidor"
 		}
 	},
 	"Checkout" : {

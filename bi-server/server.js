@@ -21,6 +21,7 @@ var api = require('./routes/api');
 //Business Intelligence
 app.get('/api/bi/getSalesOverTime/:id', api.getSalesOverTime);
 app.post('/api/bi/getReport/', api.getReport);
+app.get('/api/checkStatus', api.checkStatus);
 
 
 // redirect all others to the index (HTML5 history) Use in production only
