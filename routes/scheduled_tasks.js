@@ -7,8 +7,8 @@ var schedule = require('node-schedule'),
 exports.scheduleAutomaticPurchases = function() {
 											//Every day at 03:00AM
 	var autoPurchase = schedule.scheduleJob({hour: 3, minute: 0}, function(){
-		var start = new Date();
-		start.setHours(0,0,0,0);
+		var end = new Date();
+		end.setHours(23,59,59,999);
 
 		PurchasingRule.find({ nextRun : { $lt: end } }, function (err, results) {
 			if(err) {
