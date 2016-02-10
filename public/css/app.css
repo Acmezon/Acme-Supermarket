@@ -467,3 +467,8 @@ div#sales-chart {
 	50% {transform: translate(0,15px);}
 	100% {transform: translate(0,0);}
 }
+
+/*Customers management refresh button*/
+button#customersBtn {
+	z-index: 1;
+}
