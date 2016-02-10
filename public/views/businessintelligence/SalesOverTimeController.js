@@ -29,7 +29,7 @@ angular.module('acme_supermarket').registerCtrl('SalesOverTimeCtrl', ['$scope', 
 			var name = supplier.name + " " + supplier.surname;
 
 			$translate(['SalesOverTime.ChartTitle', 'SalesOverTime.YLabel', 'SalesOverTime.XLabel']).then(function (translation) {
-				var url = "http://localhost:3000/api/bi/getSalesOverTime/" + supplier._id;
+				var url = "/api/bi/getSalesOverTime/" + supplier._id;
 
 				if($scope.product_id != undefined && $scope.product_id != '') {
 					url += '?productid=' + $scope.product_id
