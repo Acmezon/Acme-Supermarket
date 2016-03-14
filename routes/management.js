@@ -316,17 +316,16 @@ function loadPurchases(callback) {
 		shuffled_products = shuffled_products.slice(0, 400);
 		
 		for (var i = 0; i < customers.length; i++){
+			console.log(i + "/" + customers.length)
 			var customer = customers[i];
 
-			var max_products = 200;
-			var min_products = 300;
+			var max_purchases = 50;
+			var min_purchases = 150;
 
-			var nr_products = random(max_products, min_products);
-
-			var rand_products = shuffled_products.slice(0, nr_products);
+			var nr_purchases = random(max_purchases, min_purchases);
 			
-			for(var j = 0; j < rand_products.length; j++) {
-				sync.await(buyProduct(rand_products[j], customer.id, dates, sync.defer()));
+			for(var j = 0; j < nr_purchases; j++) {
+				sync.await(makePurchase(shuffled_products, customer.id, dates, sync.defer()));
 			}
 		}
 
@@ -572,26 +571,32 @@ function loadSpeacialUsers(callback) {
 }
 
 
-function buyProduct(product, customer_id, dates, callback) {
-	loadProvides(product, 
-	function (provide) {
-		var now = new Date();
-		var paymentDate = dates[random(0, dates.length)];
+function makePurchase(products, customer_id, dates, callback) {
+	var index = random(products.length - 5, 0)
+	var count = random(5, 2)
+	var rand_products = products.slice(index, index + count + 1);
 
-		var deliveryDate = new Date(paymentDate);
-		deliveryDate.setDate(deliveryDate.getDate() + 15);
+	loadProvides(rand_products, 
+	function (provides) {
+		sync.fiber(function () {
+			var now = new Date();
+			var paymentDate = dates[random(0, dates.length)];
 
-		var purchase = new Purchase({
-			"deliveryDate" : deliveryDate,
-			"paymentDate" : paymentDate,
-			"customer_id" : customer_id
-		});
+			var deliveryDate = new Date(paymentDate);
+			deliveryDate.setDate(deliveryDate.getDate() + 15);
 
-		purchase.save(function (err, saved) {
-			if(err) {
-				console.log("--ERR: Error saving purchase: " + err);
-			} else {
-				var quantity = 1;
+			var purchase = new Purchase({
+				"deliveryDate" : deliveryDate,
+				"paymentDate" : paymentDate,
+				"customer_id" : customer_id
+			});
+
+			saved = sync.await(purchase.save(sync.defer()))
+			var quantity = 1;
+
+			for(var i = 0; i < provides.length; i++) {
+				provide = provides[i];
+
 				var purchase_line = new PurchaseLine({
 					"quantity" : quantity,
 					"price" : provide.price * quantity,
@@ -600,71 +605,62 @@ function buyProduct(product, customer_id, dates, callback) {
 					"product_id" : provide.product_id
 				});
 
-				purchase_line.save(function (err) {
-					if (err) {
-						console.log("--ERR: Error saving purchase line: " + err);	
-					} else {
-						var profile = random(2, 0);
+				sync.await(purchase_line.save(sync.defer()))
 
-						var rateValue = -1;
-						var reputationValue = -1;
+				var profile = random(2, 0);
 
-						switch(profile) {
-							case 0: //Optimistic
-								var baseRate = random(5, 3);
-								var deviation = -1 * random(0, 1);
-								rateValue = baseRate + deviation;
+				var rateValue = -1;
+				var reputationValue = -1;
 
-								var baseReputation = random(5, 3);
-								deviation = -1 * random(0, 1);
-								reputationValue = baseReputation + deviation;								
-								break;
-							case 1: //Pessimistic
-								var baseRate = random(3, 1);
-								var deviation = random(0, 1);
-								rateValue = baseRate + deviation;
+				switch(profile) {
+					case 0: //Optimistic
+						var baseRate = random(5, 3);
+						var deviation = -1 * random(0, 1);
+						rateValue = baseRate + deviation;
 
-								var baseReputation = random(3, 1);
-								deviation = -1 * random(0, 1);
-								reputationValue = baseReputation + deviation;
-								break;
-							case 2: //Neutral
-								var baseRate = random(2, 4);
-								var deviation = random(1, -1);
-								rateValue = baseRate + deviation;
+						var baseReputation = random(5, 3);
+						deviation = -1 * random(0, 1);
+						reputationValue = baseReputation + deviation;								
+						break;
+					case 1: //Pessimistic
+						var baseRate = random(3, 1);
+						var deviation = random(0, 1);
+						rateValue = baseRate + deviation;
 
-								var baseReputation = random(2, 4);
-								deviation = -1 * random(1, -1);
-								reputationValue = baseReputation + deviation;
-								break;
-						}
+						var baseReputation = random(3, 1);
+						deviation = -1 * random(0, 1);
+						reputationValue = baseReputation + deviation;
+						break;
+					case 2: //Neutral
+						var baseRate = random(2, 4);
+						var deviation = random(1, -1);
+						rateValue = baseRate + deviation;
 
-						var rate = new Rate({
-							"value" : rateValue,
-							"product_id" : product.id,
-							"customer_id" : customer_id
-						});
+						var baseReputation = random(2, 4);
+						deviation = -1 * random(1, -1);
+						reputationValue = baseReputation + deviation;
+						break;
+				}
 
-						var reputation = new Reputation({
-							"value" : reputationValue,
-							"provide_id" : provide.id,
-							"customer_id" : customer_id
-						});
-
-						rate.save(function (err) {
-							if(err) console.log("--ERR: Error saving rate: " + err);
-
-							reputation.save( function (err) {
-								if(err) console.log("--ERR: Error saving reputation: " + err);
-
-								callback(err);
-							});
-						});
-
-						PurchaseService.storePurchaseInRecommendation(customer_id, product.id);
-					}
+				var rate = new Rate({
+					"value" : rateValue,
+					"product_id" : product.id,
+					"customer_id" : customer_id
 				});
+
+				var reputation = new Reputation({
+					"value" : reputationValue,
+					"provide_id" : provide.id,
+					"customer_id" : customer_id
+				});
+
+				sync.await(rate.save(sync.defer()))
+				sync.await(reputation.save(sync.defer()))
+
+				PurchaseService.storePurchaseInRecommendation(customer_id, product.id);
 			}
+		}, function (err, data) {
+			callback(err, data)
 		});
 	});
 }
@@ -677,52 +673,55 @@ function clean(callback) {
 	callback();
 }
 
-function loadProvides(product, callback) {
-	Provide.find({ product_id : product.id, deleted: false }, function (err, provides) {
-		if(provides.length == 0) {
-			var max_suppliers = 3;
-			var min_suppliers = 1;
+function loadProvides(products, callback) {
+	sync.fiber(function() {
+		provides_res = []
+		for(var i = 0; i < products.length; i++) {
+			product = products[i];
 
-			var nr_suppliers = random(max_suppliers, min_suppliers);
+			provides = sync.await(Provide.find({ product_id: product.id, deleted: false }, sync.defer()))
 
-			Supplier.find({_type : "Supplier"}, function (err, suppliers) {
+			if(provides.length == 0) {
+				var max_suppliers = 3;
+				var min_suppliers = 1;
+
+				var nr_suppliers = random(max_suppliers, min_suppliers);
+
+				suppliers = sync.await(Supplier.find({_type : "Supplier"}, sync.defer()))
+
 				var shuffled_suppliers = shuffle(suppliers);
 				var rand_suppliers = shuffled_suppliers.slice(0, nr_suppliers);
 
 				var price = random(5, 50);
-				async.each(rand_suppliers, function (supplier, callback2) {
-					Provide.findOne( {supplier_id : supplier.id, product_id : product.id }, function (err, result) {
-						if(err) console.log("--ERR: Error finding supplier provide: " + err);
-						if(result) {
-							callback2();
-						} else {
-							var provide = new Provide({
-								"price" : price + random(-5, 5),
-								"product_id" : product.id,
-								"supplier_id" : supplier.id
-							});
 
-							provide.save(function (err, saved) {
-								if(err) console.log("--ERR: Error saving provide: " + err);
-								callback2();
-							});
-						}
+				for(var j = 0; j < rand_suppliers.length; j++) {
+					supplier = rand_suppliers[j]
+					var provide = new Provide({
+						"price" : price + random(-5, 5),
+						"product_id" : product.id,
+						"supplier_id" : supplier.id
 					});
-					
-				}, function (error) {
-					var supplier = rand_suppliers[Math.floor(Math.random() * rand_suppliers.length)];
+					saved = sync.await(provide.save(sync.defer()));
+				}
 
-					Provide.findOne({ product_id : product.id, "supplier_id" : supplier.id, deleted: false }, function (err, provide) {
-						if(err) console.log("--ERR: Error finding provide: " + err);
-						callback(provide);
-					});
-				});
-			});
-		} else {
-			var provide = provides[Math.floor(Math.random() * provides.length)];
+				var supplier = rand_suppliers[Math.floor(Math.random() * rand_suppliers.length)];
 
-			callback(provide);
+				provide = sync.await(Provide.findOne({ product_id : product.id, "supplier_id" : supplier.id, deleted: false }, sync.defer()))
+
+				provides_res.push(provide);
+			} else {
+				var provide = provides[Math.floor(Math.random() * provides.length)];
+
+				provides_res.push(provide);
+			}
 		}
+
+		return provides_res
+	}, function(err, data) {
+		if(err) {
+			console.log("--ERR Error saving provides, error: " + err)
+		}
+		callback(data)
 	});
 }
 
