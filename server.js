@@ -62,9 +62,6 @@ var api = require('./routes/api');
 app.get('/', routes.index);
 app.get('/home', routes.index);
 
-
-
-
 /* JSON API */
 
 // Products
@@ -175,6 +172,9 @@ app.post('/api/productrule/create', api.SocialMediaRules.createProductRule);
 
 // Social media notifications
 app.get('/api/notifications/:id', api.SocialMediaNotifications.getNotificationsBySocialMediaRuleId);
+
+// Barcode
+app.post('/api/barcode', api.Products.scanBarcode);
 
 // Management
 app.get('/api/resetDataset', api.Management.resetDataset);

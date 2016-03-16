@@ -1,0 +1,31 @@
+<script src="views/barcode/BarcodeController.js"></script>
+
+<div class="wrap">
+	<div class="main">
+		<ul class="breadcrumb breadcrumb__t">
+			<li><a class="home" href="/">{{ 'Home.Title' | translate }}</a> / <a class="home" href="/products">{{'Products.Title' | translate}}</a> / {{'Title.Barcode' | translate}}
+			</li>
+		</ul>
+
+		<div>
+		<h2 class="head">{{'Title.Barcode' | translate}}</h2>
+		<div class="row">
+			<div class="col-md-12">
+
+				<form id="uploadForm" ng-submit="scanBarcode()">
+
+					<div class="input-group">
+						<input type="file" class="form-control" ngf-select ng-model="barcode" name="image" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100" ng-class="{'has-error': scanBarcodeForm.image.$dirty && scanBarcodeForm.image.$error.required}" required />
+					</div>
+
+					<br/>
+					
+					<button id="barcode-submit" type="submit" name="submit" class="grey" ng-disabled="scanBarcodeForm.$invalid">
+						{{ 'Global.Submit' | translate }}
+					</button>
+
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

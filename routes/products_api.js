@@ -18,7 +18,8 @@ var Authentication = require('./authentication'),
 	mongoose = require('mongoose'),
 	SupplierService = require('./services/service_suppliers'),
 	RateService = require('./services/service_rates'),
-	sync = require('synchronize');
+	sync = require('synchronize'),
+	request = require('request');
 
 // Returns all objects of the system, filtered
 exports.getAllProductsFiltered = function(req, res) {
@@ -610,6 +611,30 @@ exports.deleteProduct = function(req, res) {
 				message: "Doesnt have permission"
 			});
 			return;
+		}
+	});
+}
+
+// Gets a product id by its barcode
+exports.scanBarcode = function(req, res) {
+	var jwtKey = req.app.get('superSecret');
+	var cookie = req.cookies.session;
+
+	// Check principal is authenticated
+	ActorService.getUserRole(cookie, jwtKey, function(role) {
+		if (role == 'admin' || role=='customer' || role=='supplier') {
+			var image = req.body.image
+			var barcode_path = image['$ngfBlobUrl']
+			request.post({url:'http://localhost:3032/api/barcode/scan', form: {barcode_path:barcode_path}}, function(err,httpResponse,body){
+				if(err){
+					res.status(200).json({ 'success' : false });
+				} else {
+					//TODO: Encontrar por codigo
+					res.status(200).json({ 'success' : true });
+				}
+			});
+		} else {
+			res.status(401).json({success: false, message: "Doesnt have permission"})
 		}
 	});
 }

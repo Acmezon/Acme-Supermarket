@@ -63,6 +63,7 @@
 		},
 		"Notifications" : "Notificaciones",
 		"Reports" : "Informe de ventas",
+		"Barcode" : "Escanear código de barras",
 		"401" : "Error 401",
 		"403" : "Error 403",
 		"404" : "Error 404",
@@ -357,7 +358,11 @@
 		"ClearFilters" : "Limpiar filtros",
 		"Categories" : "Categorías",
 		"Create" : "Añadir producto",
-		"DeleteError" : "Error al eliminar el producto, inténtelo de nuevo más tarde"
+		"DeleteError" : "Error al eliminar el producto, inténtelo de nuevo más tarde",
+		"Barcode" : {
+			"Search" : "Escanear código de barras",
+			"Image" : "Imagen"
+		}
 	},
 	"Product" : {
 		"Edit" : "Editar",

@@ -462,6 +462,15 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			activetab: 'businessIntelligence',
 			title: 'Title.SalesOverTime'
 		}).
+		when('/barcode', {
+			templateUrl: 'views/barcode/barcode.html',
+			controller: 'BarcodeCtrl',
+			resolve: {
+				admin: checkLoggedin
+			},
+			activetab: 'products',
+			title: 'Title.Barcode'
+		}).
 		when('/401', {
 			templateUrl: 'views/public/errors/401.html',
 			title: 'Title.401'

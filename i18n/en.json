@@ -63,6 +63,7 @@
 		},
 		"Notifications" : "Notifications",
 		"Reports" : "Reports of sales",
+		"Barcode" : "Scan barcode",
 		"401" : "401 Error",
 		"403" : "403 Error",
 		"404" : "404 Error",
@@ -356,7 +357,11 @@
 		"ClearFilters" : "Clear filters",
 		"Categories" : "Categories",
 		"Create" : "New product",
-		"DeleteError" : "Error removing product. Please, try again later"
+		"DeleteError" : "Error removing product. Please, try again later",
+		"Barcode" : {
+			"Search" : "Scan barcode",
+			"Image" : "Image"
+		}
 	},
 	"Product" : {
 		"Edit" : "Edit",
