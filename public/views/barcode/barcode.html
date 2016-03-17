@@ -11,19 +11,10 @@
 		<h2 class="head">{{'Title.Barcode' | translate}}</h2>
 		<div class="row">
 			<div class="col-md-12">
-
-				<form id="uploadForm" ng-submit="scanBarcode()">
-
-					<div class="input-group">
-						<input type="file" class="form-control" ngf-select ng-model="barcode" name="image" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100" ng-class="{'has-error': scanBarcodeForm.image.$dirty && scanBarcodeForm.image.$error.required}" required />
+				<form action="/api/barcode" method="post" enctype="multipart/form-data" id="upload-img-form" class="dropzone">
+					<div class="fallback">
+						<input type="file" />
 					</div>
-
-					<br/>
-					
-					<button id="barcode-submit" type="submit" name="submit" class="grey" ng-disabled="scanBarcodeForm.$invalid">
-						{{ 'Global.Submit' | translate }}
-					</button>
-
 				</form>
 			</div>
 		</div>

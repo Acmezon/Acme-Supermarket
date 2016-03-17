@@ -54,8 +54,10 @@ def decode_image(path, blur_strength=(7, 7),
 
     sample = image[image.shape[0] / 2, :]
 
+    """
     plt.subplot(1, 2, 1)
     plt.plot(sample)
+    """
 
     sample_mean = np.mean(sample)
     sample[np.where(sample < sample_mean)] = 0
@@ -65,7 +67,7 @@ def decode_image(path, blur_strength=(7, 7),
     generated_barcode[:, np.where(sample == 1)] = 255
     generated_barcode = 255 - generated_barcode
 
-    #cv2.imwrite("generated_barcode.jpg", generated_barcode)
+    # cv2.imwrite("generated_barcode.jpg", generated_barcode)
 
     non_zero = np.nonzero(sample)
     first_non_zero, last_non_zero = non_zero[0][0], non_zero[0][-1] + 1

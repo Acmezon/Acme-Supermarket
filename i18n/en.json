@@ -389,7 +389,9 @@
 			"Title" : "Create Purchasing Rule",
 			"Error" : "Error creating rule. Please try again later",
 			"AdminError" : "Error creating rule. Pleas make sure the customer exists and has not already a rule for this product and provide"
-		}
+		},
+		"BarcodeUpload" : "Drop a barcode image to look for the product",
+		"BarcodeScanError" : "The barcode could not be scanned, please try again."
 	},
 	"ShoppingCart": {
 		"Title" : "Shopping cart",

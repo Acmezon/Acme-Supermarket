@@ -4,6 +4,7 @@ import barcode_read
 import math
 import traceback
 import translate_ean
+import os
 
 
 def run(image_path):
@@ -25,7 +26,7 @@ def run(image_path):
     blur_strengths = [(5, 5), (6, 6), (7, 7), (4, 4), (3, 3)]
     inclination_ns = [0, 5, 1]
     success = False
-    i = 6
+    i = 0
     blur = i % len(blur_strengths)
     inclinations = math.floor(i / len(blur_strengths))
 
@@ -56,6 +57,7 @@ def run(image_path):
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("-p", "--path", required = True, help = "Path to the image file")
+    ap.add_argument(
+        "-p", "--path", required=True, help="Path to the image file")
     args = vars(ap.parse_args())
     run(args["path"])

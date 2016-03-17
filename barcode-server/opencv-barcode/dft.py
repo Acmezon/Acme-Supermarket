@@ -4,6 +4,7 @@ import functions
 import math
 import numpy as np
 
+
 def run(in_file, n=2):
     """
     Computes a inclination correction process with DFT
@@ -14,7 +15,6 @@ def run(in_file, n=2):
         Output:
             Corrected image.
     """
-
     image = cv2.imread(in_file)
     image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
@@ -25,8 +25,8 @@ def run(in_file, n=2):
         dft = cv2.dft(np.float32(result), flags=cv2.DFT_COMPLEX_OUTPUT)
         dft_shift = np.fft.fftshift(dft)
 
-        magnitude_spectrum = 20*np.log(cv2.magnitude(dft_shift[:, :, 0],
-                                                     dft_shift[:, :, 1]))
+        magnitude_spectrum = 20 * np.log(cv2.magnitude(dft_shift[:, :, 0],
+                                                       dft_shift[:, :, 1]))
 
         (_, thresh) = cv2.threshold(
             magnitude_spectrum, 230, 255, cv2.THRESH_BINARY)

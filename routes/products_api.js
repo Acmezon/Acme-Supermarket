@@ -1,8 +1,8 @@
-var db_utils = require('./db_utils');
-var Product = require('../models/product');
-var multer = require('multer');
-var fs = require('fs');
-var Authentication = require('./authentication'),
+var db_utils = require('./db_utils'),
+	Product = require('../models/product'),
+	multer = require('multer'),
+	fs = require('fs'),
+	Authentication = require('./authentication'),
 	Rate = require('../models/rate'),
 	Actor = require('../models/actor'),
 	Customer = require('../models/customer'),
@@ -19,7 +19,8 @@ var Authentication = require('./authentication'),
 	SupplierService = require('./services/service_suppliers'),
 	RateService = require('./services/service_rates'),
 	sync = require('synchronize'),
-	request = require('request');
+	request = require('request'),
+	uuid = require('node-uuid');
 
 // Returns all objects of the system, filtered
 exports.getAllProductsFiltered = function(req, res) {
@@ -617,21 +618,56 @@ exports.deleteProduct = function(req, res) {
 
 // Gets a product id by its barcode
 exports.scanBarcode = function(req, res) {
+	var filename = "";
 	var jwtKey = req.app.get('superSecret');
 	var cookie = req.cookies.session;
 
 	// Check principal is authenticated
 	ActorService.getUserRole(cookie, jwtKey, function(role) {
 		if (role == 'admin' || role=='customer' || role=='supplier') {
-			var image = req.body.image
-			var barcode_path = image['$ngfBlobUrl']
-			request.post({url:'http://localhost:3032/api/barcode/scan', form: {barcode_path:barcode_path}}, function(err,httpResponse,body){
-				if(err){
-					res.status(200).json({ 'success' : false });
-				} else {
-					console.log(body)
-					res.status(200).json({ 'success' : true });
+			var storage = multer.diskStorage({
+				destination: function(req, file, cb) {
+					cb(null, 'barcode-server/images/')
+				},
+				filename: function(req, file, cb) {
+					var originalExtension = file.originalname.split(".")[file.originalname.split(".").length - 1]
+
+					filename = uuid.v4() + "." + originalExtension;
+
+					cb(null, filename);
 				}
+			});
+			var upload = multer({
+				storage: storage
+			}).single('file');
+
+			upload(req, res, function(err) {
+				if(err) {
+					console.log(err)
+					res.status(200).json({ 'success' : false });
+					return
+				}
+
+				request.post({
+					url: 'http://localhost:3032/api/barcode/scan', 
+					form: {
+						barcode_path: filename
+					}
+				}, function(err,httpResponse,body){
+					fs.unlinkSync('barcode-server/images/' + filename);
+
+					if(err){
+						res.status(200).json({ 'success' : false });
+					} else {
+						number = body;
+						p_id = -1;
+						if(number != -1) {
+							// Buscar en la BD el articulo correspondiente y meterla en p_id
+						}
+
+						res.status(200).json({ 'p_id' : p_id });
+					}
+				});
 			});
 		} else {
 			res.status(401).json({success: false, message: "Doesnt have permission"})

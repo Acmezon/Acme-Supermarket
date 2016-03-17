@@ -3,6 +3,7 @@ import cv2
 import dft
 import functions
 
+
 def run(in_file, blur_strength=(7, 7), inclination_n=5):
     """
     Preprocessing of the barcode image

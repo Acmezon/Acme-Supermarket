@@ -390,7 +390,9 @@
 			"Title" : "Crear regla de compra",
 			"Error" : "Error al crear la regla. Inténtelo de nuevo más tarde",
 			"AdminError" : "Error al crear la regla. Asegúrese de que el cliente existe y no tiene ya una regla para este producto y proveedor"
-		}
+		},		
+		"BarcodeUpload" : "Arrastra la imagen de un código de barras para buscar el pructo",
+		"BarcodeScanError" : "El código de barras no ha posido ser escaneado, inténtelo de nuevo"
 	},
 	"ShoppingCart": {
 		"Title" : "Carrito de la compra",
