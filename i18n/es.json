@@ -489,6 +489,12 @@
 			"Running" : "Online",
 			"Stopped" : "Offline",
 			"Serverstatus" : "Estado del servidor"
+		},
+		"Barcode" : {
+			"Server" : "Servidor de identificación de códigos de barras",
+			"Running" : "Online",
+			"Stopped" : "Offline",
+			"Serverstatus" : "Estado del servidor"
 		}
 	},
 	"Checkout" : {

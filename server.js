@@ -175,6 +175,7 @@ app.get('/api/notifications/:id', api.SocialMediaNotifications.getNotificationsB
 
 // Barcode
 app.post('/api/barcode', api.Products.scanBarcode);
+app.get('/api/barcode/checkStatus', api.Products.checkStatusBarcodeServer);
 
 // Management
 app.get('/api/resetDataset', api.Management.resetDataset);

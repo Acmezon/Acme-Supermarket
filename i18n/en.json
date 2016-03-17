@@ -488,6 +488,12 @@
 			"Running" : "Online",
 			"Stopped" : "Offline",
 			"Serverstatus" : "Server status"
+		},
+		"Barcode" : {
+			"Server" : "Barcode decodification server",
+			"Running" : "Online",
+			"Stopped" : "Offline",
+			"Serverstatus" : "Server status"
 		}
 	},
 	"Checkout" : {

@@ -3,6 +3,7 @@ function ($scope, $http, $translate, ngToast, $location) {
 	checkSocialMediaStatus();
 	checkRecommenderServerStatus();
 	checkBIServerStatus();
+	checkBarcodeStatus();
 
 	$scope.startSocialMediaService = function() {
 		if($scope.socialMediaServiceRunning) {
@@ -96,6 +97,15 @@ function ($scope, $http, $translate, ngToast, $location) {
 			$scope.biServerRunning = response.data.online;
 		}, function error (response) {
 			$scope.biServerRunning = false;
+		});
+	}
+
+	function checkBarcodeStatus() {
+		$http.get('/api/barcode/checkStatus').then(
+		function success(response) {
+			$scope.barcodeRunning = response.data.online;
+		}, function error (response) {
+			$scope.barcodeRunning = false;
 		});
 	}
 

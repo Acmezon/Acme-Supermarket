@@ -629,7 +629,7 @@ exports.scanBarcode = function(req, res) {
 				if(err){
 					res.status(200).json({ 'success' : false });
 				} else {
-					//TODO: Encontrar por codigo
+					console.log(body)
 					res.status(200).json({ 'success' : true });
 				}
 			});
@@ -637,4 +637,19 @@ exports.scanBarcode = function(req, res) {
 			res.status(401).json({success: false, message: "Doesnt have permission"})
 		}
 	});
+}
+
+exports.checkStatusBarcodeServer = function(req, res) {
+	request({
+		'method' : 'GET',
+		'url' : 'http://localhost:3032/api/checkStatus',
+		'timeout' : 1000
+	}, function (err, response, body) {
+		if(err){
+			res.status(200).json({ 'online' : false });
+		} else {
+			res.status(200).json({ 'online' : true });
+		}
+
+	})
 }
