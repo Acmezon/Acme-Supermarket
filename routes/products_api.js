@@ -727,12 +727,14 @@ exports.scanBarcode = function(req, res) {
 									res.sendStatus(500)
 								} else {
 									if (product) {
-										res.status(200).json({ 'success' : true, 'p_id' : p_id });
+										res.status(200).json({ 'success' : true, 'p_id' : product._id });
 									} else {
 										res.status(200).json({ 'success' : false });
 									}
 								}
 							});
+						} else {
+							res.status(200).json({ 'success' : false });
 						}
 					}
 				});

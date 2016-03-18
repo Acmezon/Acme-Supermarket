@@ -12,7 +12,7 @@ exports.scanBarcode = function(req, res) {
 				res.sendStatus(500);
 			} else {
 				number = stdout.replace(/\r?\n|\r/g, "");
-
+				console.log(number)
 				res.status(200).send(number);
 			}
 	});

@@ -17,8 +17,9 @@ describe('Product creation', function () {
 
 			browser
 			.post('http://localhost:3000/api/products/create')
-			.field('product[name]', product_name)
-			.field('product[description]', 'My test product')
+			.field('name', product_name)
+			.field('description', 'My test product')
+			.field('code', '9999999999999')
 			//.attach('file', absolutePath)
 			.end(function (err, res) {
 				res.status.should.be.equal(403);
@@ -40,6 +41,7 @@ describe('Product creation', function () {
 			.post('http://localhost:3000/api/products/create')
 			.field('name', product_name)
 			.field('description', 'My test product')
+			.field('code', '9999999999999')
 			//.attach('file', absolutePath)
 			.end(function (err, res) {
 				res.status.should.be.equal(403);
@@ -60,6 +62,7 @@ describe('Product creation', function () {
 			.post('http://localhost:3000/api/products/create')
 			.field('name', product_name)
 			.field('description', 'My test product')
+			.field('code', '9999999999999')
 			//.attach('file', absolutePath)
 			.end(function (err, res) {
 				res.status.should.be.equal(403);
@@ -81,6 +84,7 @@ describe('Product creation', function () {
 			.post('http://localhost:3000/api/products/create')
 			.field('name', product_name)
 			.field('description', 'My test product')
+			.field('code', '9999999999998')
 			.attach('file', absolutePath)
 			.end(function (err, res) {
 				should.not.exist(err);

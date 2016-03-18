@@ -99,14 +99,36 @@ function loadProducts(callback) {
 
 	var products_mapping = {};
 
+	var barcodes_test = ["4035873029458", "7613033114397", "4260209940101", "8714789733173", "9437000435655", "8480000444080",
+	"5600445303978", "8410014837578", "4001954302147", "8480000773289", "7613034333650", "4010355105370",
+	"8413700405815", "8470006792902", "3073781042238", "4031741420037", "8480000107206", "2000591007820",
+	"8410637112014", "8480000171122", "8480000467034", "8480000808592", "8410213257504", "8480000460226",
+	"8431364131024", "3228021000145", "8480000430069", "5000488104165", "8000270018257", "4019300160556",
+	"8480000785077", "8410302106300", "8410086315028", "8470006792902", "8410091026896", "4039361053604",
+	"9788494288142", "8480000101990", "8411959101007", "8412478247689", "5411188116592", "4010355125927",
+	"8428899005135", "8420640601122", "4000980647819", "4311501358405", "8480000171535", "8480000180551",
+	"4903460067681"]
 	var barcodes_registered = [];
 
 	async.each(products.products, function (product, products_callback) {
 		try {
-			barcode = randomEAN13()
-			while(barcodes_registered.indexOf(barcode) >= 0) {
+
+			if (barcodes_test.length>0) {
+				barcode = barcodes_test[0]
+				barcodes_test.splice(0, 1);
+			} else {
 				barcode = randomEAN13()
 			}
+			while(barcodes_registered.indexOf(barcode) >= 0) {
+				if (barcodes_test.length>0) {
+					barcode = barcodes_test[0]
+					barcodes_test.splice(0, 1);
+				} else {
+					barcode = randomEAN13()
+				}
+			}
+
+			barcodes_registered.push(barcode);
 
 			fs.accessSync('public/img/'+product.image, fs.F_OK);
 			// Exists, save product

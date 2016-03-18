@@ -18,7 +18,7 @@ function ($scope, $http, $translate, $location, ngToast) {
 
 		imgDropzone.on('success', function(file, response){
 			var p_id = response['p_id']
-			if(p_id != -1) {
+			if(p_id) {
 				$location.url('/product/' + p_id)
 			} else {
 				$translate(['Product.BarcodeScanError']).then(function (translation) {
