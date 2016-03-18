@@ -13,7 +13,7 @@ var Schema = mongoose.Schema,
 var productSchema = mongoose.Schema({
 	name: {type: String, required: true, minlength: 1, maxlength: 100},
 	description: {type: String, required: true, maxlength: 1000},
-	code: {type: String, required: true, unique:true},
+	code: {type: String, required: true, unique:true, minlength: 13, maxlength: 13},
 	image: String,
 	keywords: [String],
 	minPrice: {type: Number, required:false, min:0},

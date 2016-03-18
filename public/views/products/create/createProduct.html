@@ -7,16 +7,34 @@
 
 	<h2 class="head">{{ 'Products.Create' | translate }}</h4>
 	<form method="post" name="createProductForm" id="submit-form" ng-submit="submitCreateProduct()" class="product_form" novalidate>
-		<div class="input-group">
-			<input name="name" type="text" class="form-control" placeholder="{{ 'Product.Create.Name' | translate }}*" ng-model="product.name" ng-class="{'has-error': createProductForm.name.$dirty && createProductForm.name.$error.required }" required>
+		<div class="input-group" ng-class="{'has-error': createProductForm.name.$dirty && createProductForm.name.$error.required }">
+			<input name="name" type="text" class="form-control" placeholder="{{ 'Product.Create.Name' | translate }}*" ng-model="name"  required>
+		</div>
+		<div class="input-group" ng-class="{'has-error': createProductForm.description.$dirty && createProductForm.description.$error.required}">
+			<textarea name="description" class="form-control" placeholder="{{ 'Product.Create.Description' | translate }}*" ng-model="description" rows="5" required></textarea>
+		</div>
+		<div class="input-group"  ng-class="{'has-error': createProductForm.code.$dirty && createProductForm.code.$invalid, 'has-success': createProductForm.code.$dirty && !createProductForm.code.$invalid}">
+			<input name="code" type="text" class="form-control" ng-model="code" placeholder="{{'Product.Create.Code' | translate}}" ng-readonly="checkedCode" ng-minlength="13" ng-maxlength="13" ng-pattern="/^0|[1-9]\d*$/" required>
+			<span class="input-group-btn">
+				<button class="btn btn-default" type="button" ng-click="checkCode(code)" ng-disabled="checkedCode">
+					<span class="glyphicon glyphicon-play"></span>
+				</button>
+			</span>
+		</div>
+		<div ng-switch="checkedCode">
+			<div class="alert alert-danger" role="alert" ng-switch-when="false">
+				<span class="glyphicon glyphicon-remove" aria-hidden="true"></span> 
+				<strong>{{'Product.Create.CodeError' | translate}}</strong>
+			</div>
+			<div class="alert alert-success" role="alert" ng-switch-when="true">
+				<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> 
+				<strong>{{'Product.Create.CodeSuccess' | translate}}</strong>
+			</div>
 		</div>
 		<div class="input-group">
-			<textarea name="description" class="form-control" placeholder="{{ 'Product.Create.Description' | translate }}*" ng-model="product.description" ng-class="{'has-error': createProductForm.description.$dirty && createProductForm.description.$error.required}" rows="5" required></textarea>
-		</div>
-		<div class="input-group">
-			<input type="file" class="form-control" ngf-select ng-model="product.image" name="image" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100" ng-class="{'has-error': createProductForm.image.$dirty && createProductForm.image.$error.required}" required />
+			<input type="file" class="form-control" ngf-select ng-model="image" name="image" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="20MB" ngf-min-height="100" ng-class="{'has-error': createProductForm.image.$dirty && createProductForm.image.$error.required}" required />
 		</div>
 		
-		<button id="createproduct-submit" type="submit" name="submit" class="grey" ng-disabled="createProductForm.$invalid">{{ 'Global.Submit' | translate }}</button>
+		<button id="createproduct-submit" type="submit" name="submit" class="grey" ng-disabled="createProductForm.$invalid || !checkedCode">{{ 'Global.Submit' | translate }}</button>
 	</form>
 </div>

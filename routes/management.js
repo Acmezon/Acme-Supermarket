@@ -70,18 +70,48 @@ function loadCategories (callback) {
 	});
 }
 
+function stringGen(len) {
+	var text = "";
+	var charset = "0123456789";
+	for( var i=0; i < len; i++ )
+		text += charset.charAt(Math.floor(Math.random() * charset.length));
+	return text;
+}
+
+function ean13_checksum(message) {
+    var checksum = 0;
+    message = message.split('').reverse();
+    for(var pos in message){
+        checksum += message[pos] * (3 - 2 * (pos % 2));
+    }
+    return ((10 - (checksum % 10 )) % 10);
+}
+
+function randomEAN13(){
+	var p1 = stringGen(12)
+	var p2 = ean13_checksum(p1).toString()
+	return p1 + p2
+}
+
 function loadProducts(callback) {
 	var products_f = fs.readFileSync('big_db/products.json', 'UTF-8');
 	var products = JSON.parse(products_f);
 
 	var products_mapping = {};
 
+	var barcodes_registered = [];
+
 	async.each(products.products, function (product, products_callback) {
 		try {
+			barcode = randomEAN13()
+			while(barcodes_registered.indexOf(barcode) >= 0) {
+				barcode = randomEAN13()
+			}
+
 			fs.accessSync('public/img/'+product.image, fs.F_OK);
 			// Exists, save product
 				var new_product = new Product({
-				"code" : mongoose.Types.ObjectId(),
+				"code" : barcode,
 				"name" : product.name,
 				"description" : product.description || "-",
 				"image" : product.image,

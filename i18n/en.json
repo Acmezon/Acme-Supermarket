@@ -370,7 +370,11 @@
 		"RatingProvidePurchaseError" : "You can not rate a supplier without purchasing from him",
 		"Create" : {
 			"Name" : "Nombre",
-			"Description" : "Descripción"
+			"Description" : "Descripción",
+			"Code" : "Código",
+			"Check" : "Comprobar",
+			"CodeError" : "Código no disponible",
+			"CodeSuccess" : "Código disponible"
 		},
 		"Provide" : "Provide this product",
 		"ProvidePrice" : "Product price",

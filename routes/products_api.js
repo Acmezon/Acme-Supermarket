@@ -282,6 +282,37 @@ exports.getProduct = function(req, res) {
 	});
 };
 
+// Get a product by its unique barcode
+exports.getProductByCode = function(req, res) {
+	var code = req.params.code;
+	console.log('Function-productsApi-getProductByBarcode  --_code:' + code);
+
+	var jwtKey = req.app.get('superSecret');
+	var cookie = req.cookies.session;
+
+	// Check authenticated
+	ActorService.getUserRole(cookie, jwtKey, function(role) {
+		if (role == 'customer' || role == 'admin' || role == 'supplier') {
+			Product.findOne({code: code}, function(err, product) {
+				if (err) {
+					console.log('---ERROR finding Product with barcode: ' + code);
+					res.status(500).json({
+						success: false,
+						message: err
+					});
+				} else {
+					res.status(200).json(product);
+				}
+			});
+		} else {
+			res.status(401).json({
+				success: false,
+				message: "Not authenticated"
+			});
+		}
+	});
+};
+
 // Updates a product
 exports.updateProduct = function(req, res) {
 	console.log('Function-productsApi-updateProduct  --_id:' + req.body.id);
@@ -400,63 +431,66 @@ exports.createProduct = function(req, res) {
 	ActorService.getUserRole(cookie, jwtKey, function (role) {
 		if (role == 'admin') {
 			var product = new Product({
-				'code': mongoose.Types.ObjectId(),
+				'code': "9999999999999",
 				'name': "tmp",
 				'description': "tmp",
 				'avgRating': 0
 			});
 			product.save(function (err, saved) {
 				if (err) {
+					console.log(1)
 					console.log(err);
 					res.sendStatus(500);
-				}
+				} else {
 
-				var storage = multer.diskStorage({
-					destination: function(req, file, cb) {
-						cb(null, 'public/img/')
-					},
-					filename: function(req, file, cb) {
-						var originalExtension = file.originalname.split(".")[file.originalname.split(".").length - 1]
+					var storage = multer.diskStorage({
+						destination: function(req, file, cb) {
+							cb(null, 'public/img/')
+						},
+						filename: function(req, file, cb) {
+							var originalExtension = file.originalname.split(".")[file.originalname.split(".").length - 1]
 
-						filename = "products/" + saved.id + "." + originalExtension;
+							filename = "products/" + saved.id + "." + originalExtension;
 
-						cb(null, filename);
-					}
-				});
-
-				var upload = multer({
-					storage: storage
-				}).single('file');
-				upload(req, res, function(err) {
-					if (err) {
-						res.sendStatus(500);
-						return;
-					}
-
-					//Check if fields are present
-					if(req.body.name == undefined || req.body.description == undefined) {
-						res.sendStatus(500);
-						return;
-					}
-
-					Product.findByIdAndUpdate(saved.id, {
-						$set: {
-							"name": req.body.name,
-							"description": req.body.description,
-							"image": filename
-						}
-					}, function (err, product) {
-						if (err) {
-							console.log(err);
-
-							fs.unlinkSync('/public/img/' + filename);
-
-							res.sendStatus(500);
-						} else {
-							res.sendStatus(200);
+							cb(null, filename);
 						}
 					});
-				});
+
+					var upload = multer({
+						storage: storage
+					}).single('file');
+					upload(req, res, function(err) {
+						if (err) {
+							console.log(err)
+							res.sendStatus(500);
+							return;
+						}
+
+						//Check if fields are present
+						if(req.body.name == undefined || req.body.description == undefined || req.body.code == undefined) {
+							res.sendStatus(500);
+							return;
+						}
+						Product.findByIdAndUpdate(saved.id, {
+							$set: {
+								"name": req.body.name,
+								"description": req.body.description,
+								"code" : req.body.code,
+								"image": filename
+							}
+						}, function (err, product) {
+							if (err) {
+								console.log(err);
+
+								fs.unlinkSync('/public/img/' + filename);
+
+								res.sendStatus(500);
+							} else {
+								res.sendStatus(200);
+							}
+						});
+					});
+				}
 			});
 		} else {
 			res.status(403).json({
@@ -612,6 +646,32 @@ exports.deleteProduct = function(req, res) {
 				message: "Doesnt have permission"
 			});
 			return;
+		}
+	});
+}
+
+// Checks code available
+exports.checkCode = function(req, res) {
+	var jwtKey = req.app.get('superSecret');
+	var cookie = req.cookies.session;
+
+	// Check principal is admin
+	ActorService.getUserRole(cookie, jwtKey, function(role) {
+		if (role == 'admin') {
+			var barcode = req.params.code;
+			Product.find({code: barcode})
+				.select({'code': 1})
+				.exec(function (err, products) {
+					if (err) {
+						res.sendStatus(500)
+					} else {
+						var barcodes = products.map(function (product) { return product.code; });
+						not_registered = barcodes.indexOf(barcode) == -1
+						res.status(200).json(not_registered)
+					}
+				});
+		} else {
+			res.status(401).json({success: false, message: "Doesnt have permission"})
 		}
 	});
 }

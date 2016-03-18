@@ -371,7 +371,11 @@
 		"RatingProvidePurchaseError" : "No puede valorar un proveedor sin haberle comprado antes",
 		"Create" : {
 			"Name" : "Name",
-			"Description" : "Description"
+			"Description" : "Description",
+			"Code" : "Code",
+			"Check" : "Check",
+			"CodeError" : "Code not available",
+			"CodeSuccess" : "Code available"
 		},
 		"Provide" : "Proveer este producto",
 		"ProvidePrice" : "Precio del producto",

@@ -71,6 +71,7 @@ app.post('/api/products/myproducts/filtered', api.Products.getSupplierProductsFi
 app.post('/api/products/myproducts/filtered/count', api.Products.countSupplierProductsFiltered);
 app.get('/api/products/limit/:limit', api.Products.getAllProductsLimit)
 app.get('/api/product/:id', api.Products.getProduct);
+app.get('/api/product/barcode/:code', api.Products.getProductByCode);
 app.post('/api/product/updateProduct', api.Products.updateProduct);
 app.post('/api/product/updateProductImage', api.Products.updateProductImage);
 app.post('/api/product/updateProductRating', api.Products.updateProductRating);
@@ -174,6 +175,7 @@ app.post('/api/productrule/create', api.SocialMediaRules.createProductRule);
 app.get('/api/notifications/:id', api.SocialMediaNotifications.getNotificationsBySocialMediaRuleId);
 
 // Barcode
+app.get('/api/products/checkcode/:code', api.Products.checkCode)
 app.post('/api/barcode', api.Products.scanBarcode);
 app.get('/api/barcode/checkStatus', api.Products.checkStatusBarcodeServer);
 
