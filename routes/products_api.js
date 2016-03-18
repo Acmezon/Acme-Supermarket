@@ -703,7 +703,6 @@ exports.scanBarcode = function(req, res) {
 
 			upload(req, res, function(err) {
 				if(err) {
-					console.log(err)
 					res.status(200).json({ 'success' : false });
 					return
 				}
@@ -723,9 +722,18 @@ exports.scanBarcode = function(req, res) {
 						p_id = -1;
 						if(number != -1) {
 							// Buscar en la BD el articulo correspondiente y meterla en p_id
+							Product.findOne({code:number}).exec(function (err, product) {
+								if (err) {
+									res.sendStatus(500)
+								} else {
+									if (product) {
+										res.status(200).json({ 'success' : true, 'p_id' : p_id });
+									} else {
+										res.status(200).json({ 'success' : false });
+									}
+								}
+							});
 						}
-
-						res.status(200).json({ 'p_id' : p_id });
 					}
 				});
 			});

@@ -1,6 +1,30 @@
 var path = require('path');
 
+function stringGen(len) {
+	var text = "";
+	var charset = "0123456789";
+	for( var i=0; i < len; i++ )
+		text += charset.charAt(Math.floor(Math.random() * charset.length));
+	return text;
+}
+
+function ean13_checksum(message) {
+    var checksum = 0;
+    message = message.split('').reverse();
+    for(var pos in message){
+        checksum += message[pos] * (3 - 2 * (pos % 2));
+    }
+    return ((10 - (checksum % 10 )) % 10);
+}
+
+function randomEAN13(){
+	var p1 = stringGen(12)
+	var p2 = ean13_checksum(p1).toString()
+	return p1 + p2
+}
+
 describe('Product creation', function () {
+
 
 	beforeEach(function() {
 		// Mandatory visit in order to make cookies work
@@ -57,12 +81,14 @@ describe('Product creation', function () {
 		element(by.css('a.add-product')).click();
 
 		var product_name = 'zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz';
-		element(by.model('product.name')).sendKeys(product_name);
-		element(by.model('product.description')).sendKeys('Prueba descripción');
+		element(by.model('name')).sendKeys(product_name);
+		element(by.model('description')).sendKeys('Prueba descripción');
+		element(by.model('code')).sendKeys(randomEAN13());
+		element(by.css('span.input-group-btn>button')).click()
 		var fileToUpload = '../../resources/images/img-thing.jpg',
 		absolutePath = path.resolve(__dirname, fileToUpload);
 
-		$('form#submit-form>div:nth-child(3)>input[type="file"]').sendKeys(absolutePath);
+		$('form#submit-form>div:nth-child(5)>input[type="file"]').sendKeys(absolutePath);
 
 		$('button#createproduct-submit').click();
 

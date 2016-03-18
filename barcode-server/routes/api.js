@@ -19,7 +19,7 @@ exports.scanBarcode = function(req, res) {
 }
 
 var exec_py = function(barcode_path, callback){
-	exec('~/anaconda3/envs/mc-final/bin/python3.5 -W ignore ./opencv-barcode/main.py -p ' + barcode_path, callback);
+	exec('python3 -W ignore ./opencv-barcode/main.py -p ' + barcode_path, callback);
 }
 
 exports.checkStatus = function(req, res) {
