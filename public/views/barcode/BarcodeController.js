@@ -17,9 +17,9 @@ function ($scope, $http, $translate, $location, ngToast) {
 		});
 
 		imgDropzone.on('success', function(file, response){
-			var p_id = response['p_id']
-			if(p_id) {
-				$location.url('/product/' + p_id)
+			if(response['success']) {
+				$location.url('/product/' + response['p_id'])
+				$scope.$apply()
 			} else {
 				$translate(['Product.BarcodeScanError']).then(function (translation) {
 					imgDropzone.removeAllFiles(true)

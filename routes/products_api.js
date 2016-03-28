@@ -721,13 +721,16 @@ exports.scanBarcode = function(req, res) {
 						number = body;
 						p_id = -1;
 						if(number != -1) {
+							number = number.replace(/"/g, '')
+							console.log(number)
 							// Buscar en la BD el articulo correspondiente y meterla en p_id
-							Product.findOne({code:number}).exec(function (err, product) {
+							Product.find({ 'code' : number }).limit(1).exec(function (err, products) {
 								if (err) {
+									console.log(err)
 									res.sendStatus(500)
 								} else {
-									if (product) {
-										res.status(200).json({ 'success' : true, 'p_id' : product._id });
+									if (products.length) {
+										res.status(200).json({ 'success' : true, 'p_id' : products[0]._id });
 									} else {
 										res.status(200).json({ 'success' : false });
 									}
