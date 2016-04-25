@@ -16,3 +16,10 @@ exports.runPurchasesRecommendation = function (user_id, callback){
 exports.updateParameters = function (user_id, callback) {
 	exec('/home/adminuser/anaconda3/envs/asr-aia/bin/python executables/run_filter.py -o pre -u 1', callback);
 }
+
+//Actualiza las reglas de asociación para la vista del carrito
+exports.updateAIARules = function (callback) {
+	exec("python3 ../PROYECTO/rules/run_rules.py -db Acme-Supermarket -t enhanced -s 0.015 -c 0.5",
+		callback
+	);
+}

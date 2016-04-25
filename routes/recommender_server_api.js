@@ -1,4 +1,5 @@
-var request = require('request');
+var request = require('request'),
+	Products = require('../models/product');
 
 exports.checkStatus = function (req, res) {
 	request({
@@ -13,4 +14,41 @@ exports.checkStatus = function (req, res) {
 		}
 
 	})
+}
+
+exports.getAssociationRules = function (req, res) {
+	var shoppingcart = req.body.shoppingcart
+	request.post({
+			url: 'http://localhost:3030/api/recommend/associationrules/getconsequents',
+			timeout : 1000,
+			form: {
+				shoppingcart: shoppingcart
+			}
+		}, function(err,httpResponse,body){
+			if(err){
+				res.sendStatus(500)
+			} else {
+				if (body.length>0) {
+					products = []
+					errors = false
+					for (var id in body){
+						Products.findById(id).exec(function (err, product) {
+							if (err) {
+								errors = true
+							} else {
+								products.push(product)
+							}
+						})
+					}
+					if (errors) {
+						res.sendStatus(500)
+					} else {
+						res.status(200).json(products);
+					}
+					
+				} else {
+					res.status.json([])
+				}
+			}
+	});
 }

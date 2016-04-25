@@ -196,6 +196,7 @@ app.get('/api/socialMedia/stop', api.SocialMedia.stopTwitterScrapper);
 
 //Recommender server
 app.get('/api/recommender/checkStatus', api.RecommenderServer.checkStatus);
+app.post('/api/associationrules/', api.RecommenderServer.getAssociationRules);
 
 //Business Intelligence
 app.get('/api/bi/getSalesOverTime/:id', api.BusinessIntelligence.getSalesOverTime);

@@ -4,6 +4,7 @@ var Recommendation_rates = require('../models/recommendations_rates'),
 	Config_rates = require('../models/config_rates'),
 	Config_purchases = require('../models/config_purchases'),
 	Purchase = require('../models/purchase'),
+	Rules = require('../models/rule'),
 	recommendation_service = require('./services/service_recommender_system');
 
 // Returns the recommendations of a customer identified by received id
@@ -112,6 +113,40 @@ exports.storePurchase = function(req, res) {
 		}
 
 	});
+}
+
+exports.getAssociationRulesRecommendationsFromCart = function(req, res) {
+	console.log("Api-getAssociationRulesFromCart")
+	var shoppingcart = []
+	for (var key in req.body) {
+		shoppingcart.push(req.body[key])
+	}
+	Rules.find({ancetedents: {$all: shoppingcart}}).limit(5).exec(function (err, rules) {
+		if (err) {
+			res.sendStatus(500)
+		} else {
+			var consequents = rules.map(function(rule) {
+				return rule.consequent_id;
+			});
+
+			consequents = consequents.filter(function(elem, index, self) {
+			    return index == self.indexOf(elem);
+			})
+			res.status(200).json(consequents)
+		}
+	});
+}
+
+exports.updateAssociationRules = function(req, res) {
+	console.log("Api-UpdateAIARules")
+	recommendation_service.updateAIARules(
+		function (error, stdout, stderr) {
+			if(error) {
+				res.sendStatus(500);
+			}
+			res.sendStatus(200)
+		}
+	);
 }
 
 exports.checkStatus = function(req, res) {

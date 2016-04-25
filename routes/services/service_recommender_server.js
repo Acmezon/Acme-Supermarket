@@ -23,3 +23,11 @@ exports.computeSimilarity = function(callback) {
 		}
 	);
 }
+
+exports.preprocessingRules = function(callback) {
+	request.get('http://localhost:3030/api/recommend/associationrules/update',
+		function (err, response, body) {
+			callback(err, response);
+		}
+	);
+}

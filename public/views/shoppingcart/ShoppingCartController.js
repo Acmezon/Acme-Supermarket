@@ -1,6 +1,26 @@
 'use strict'
 
 angular.module('acme_supermarket').registerCtrl('ShoppingCartCtrl', ['$scope', '$http', '$cookies', '$cookieStore', '$window', function ($scope, $http, $cookies, $cookieStore, $window) {
+
+	// -- Association rules
+
+	$scope.getRecommendations = function() {
+		var antecedents = []
+		$scope.shoppingcart.forEach(function(product) {
+			antecedents.push(product.product_id)
+		});
+
+		$http({
+			method: 'POST',
+			url: '/api/associationrules/',
+			data: {
+				shoppingcart : antecedents
+			}
+		}).
+		then(function success(response) {
+			$scope.associationrules = response.data
+		});
+	};
 	
 	var cookie = $cookies.get("shoppingcart");
 	$scope.shoppingcart = [];
@@ -8,7 +28,6 @@ angular.module('acme_supermarket').registerCtrl('ShoppingCartCtrl', ['$scope', '
 		cookie = JSON.parse(cookie);
 		if (!$.isEmptyObject(cookie)) {
 			Object.keys(cookie).forEach(function(id) {
-
 
 				$http({
 					method: 'GET',
@@ -45,6 +64,9 @@ angular.module('acme_supermarket').registerCtrl('ShoppingCartCtrl', ['$scope', '
 							// FINISH QUERYING
 							// PUSH INTO SHOPPING CART
 							$scope.shoppingcart.push(row)
+
+							$scope.getRecommendations()
+
 						}, function error(response3) {
 						});
 
@@ -56,13 +78,14 @@ angular.module('acme_supermarket').registerCtrl('ShoppingCartCtrl', ['$scope', '
 				}, function error(response1) {
 				});
 
-
-
 			});
+
 
 			
 		}
 	}
+
+	
 
 	$scope.productsInCart = function() {
 		var r = 0;
@@ -177,5 +200,7 @@ angular.module('acme_supermarket').registerCtrl('ShoppingCartCtrl', ['$scope', '
 			}
 		}
 		return r;
-	}
+	};
+
+
 }]);

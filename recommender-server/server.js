@@ -20,6 +20,8 @@ var api = require('./routes/api');
 app.get('/api/recommendations/:userId', api.getRecommendations);
 app.get('/api/recommend/rates/:userId', api.recommendRates);
 app.get('/api/recommend/purchases/:userId', api.recommendPurchases);
+app.get('/api/recommend/associationrules/update', api.updateAssociationRules);
+app.post('/api/recommend/associationrules/getconsequents', api.getAssociationRulesRecommendationsFromCart);
 app.get('/api/updateParameters/:userId', api.updateParameters);
 app.post('/api/storePurchase', api.storePurchase);
 app.get('/api/checkStatus', api.checkStatus);

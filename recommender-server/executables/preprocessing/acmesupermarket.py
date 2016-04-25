@@ -10,7 +10,6 @@ def connect():
     connection = MongoClient()
     return connection
 
-
 def disconnect(connection):
     connection.close()
 
@@ -66,3 +65,47 @@ def compute_ratings_matrix(ratings_matrix_file):
     disconnect(connection)
 
     return matrix_file
+
+def load_transactions(transactions_file):
+    connection = connect()
+    db = connection['Acme-Supermarket']
+    purchases = db.purchases.find({})
+
+    transactions = np.array([])
+
+    i = 0
+    row_starts = np.array([0])
+    for purchase in purchases:
+        print(str(i) + "/" + str(purchases.count()), end='\r')
+        i += 1
+        purchase_id = purchase['_id']
+        purchase_lines = db.purchase_lines.find({'purchase_id': purchase_id})
+        transaction = np.array([line['product_id']
+                                for line in purchase_lines], dtype='i4')
+        row_starts = np.append(row_starts, row_starts[-1] + transaction.size)
+        transactions = np.concatenate((transactions, transaction))
+
+    row_ends = np.concatenate((row_starts, [transactions.size]))
+    lengths = np.diff(row_ends)
+    pad_lengths = np.max(lengths) - lengths
+    pad_indices = np.repeat(row_ends[1:], pad_lengths)
+
+    transactions_padded = np.insert(
+        transactions, pad_indices, -1).reshape(-1, np.max(lengths))
+
+    np.save(transactions_file, transactions_padded)
+
+    print("                       ", end='\r')
+
+def save_rules(rules):
+    connection = connect()
+    db = connection['Acme-Supermarket-Recommendations']
+    db.rules.remove()
+    for rule in rules:
+        antecedents = rule[0]
+        consequent = rule[1]
+        rule = {
+                'antecedents': antecedents,
+                'consequent_id' : consequent
+            }
+        db.rules.insert_one(rule)

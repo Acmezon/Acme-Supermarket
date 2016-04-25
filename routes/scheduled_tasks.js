@@ -42,7 +42,7 @@ exports.scheduleAutomaticPurchases = function() {
 }
 
 exports.scheduleSimilarityMatrix = function() {
-											//Every day at 03:00AM
+	//Every day at 03:00AM
 	var autoPurchase = schedule.scheduleJob({hour: 3, minute: 0}, function(){
 		RecommenderService.computeSimilarity(function (err, data){
 			if(err) {
@@ -52,5 +52,19 @@ exports.scheduleSimilarityMatrix = function() {
 		});
 	});
 
-	console.log("Automatic purchases task successfuly scheduled")
+	console.log("Automatic similarity computation successfuly scheduled")
+}
+
+exports.scheduleAssociationRules = function() {
+	//Every day at 03:00AM
+	var autoPurchase = schedule.scheduleJob({hour: 3, minute: 0}, function(){
+		RecommenderService.preprocessingRules(function (err, response){
+			if(err) {
+				log.info('Error executing automatic association rules preprocessing. Error %s', err);
+			}
+			console.log("Finished");
+		});
+	});
+
+	console.log("Automatic association rules preprocessing successfuly scheduled")
 }
