@@ -14,16 +14,7 @@ exports.getRecommendations = function (req, res) {
 		if(err) res.sendStatus(500);
 
 		if(!recommendation_rate.length) {
-			Recommendation_purchases.find({ "customer_id" : user_id}).select({ 'product_id' : 1, '_id' : 0 }).exec(
-				function (err, recommendation_purchase) {
-					if(err) res.sendStatus(500);
-
-					if(!recommendation_purchase.length) {
-						res.sendStatus(204);
-					} else {
-						res.status(200).json(recommendation_purchase);
-					}
-			});
+			res.sendStatus(204);
 		} else {
 			res.status(200).json(recommendation_rate);
 		}
@@ -48,6 +39,7 @@ exports.recommendRates = function(req, res) {
 }
 
 exports.recommendPurchases = function(req, res) {
+	throw "Not supported";
 	var user_id = req.params.userId;
 	recommendation_service.runPurchasesRecommendation(user_id, 
 		function (error, stdout, stderr) {
@@ -76,6 +68,7 @@ exports.updateParameters = function(req, res) {
 }
 
 exports.storePurchase = function(req, res) {
+	throw "Not supported";
 	var customer_id = req.body.customer;
 	var product_id = req.body.product;
 

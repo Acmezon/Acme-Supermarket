@@ -15,3 +15,11 @@ exports.recommendPurchases = function(customer_id, callback) {
 		}
 	);
 }
+
+exports.computeSimilarity = function(callback) {
+	request.get('http://localhost:3030/api/updateParameters/1',
+		function (err, response, body){
+			callback(err, response);
+		}
+	);
+}

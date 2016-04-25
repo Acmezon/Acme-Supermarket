@@ -5,36 +5,8 @@ var request = require('request'),
 	Purchase = require('../../models/purchase'),
 	ProvideService = require('./service_provides'),
 	PurchaseLine = require('../../models/purchase_line'),
-	RecommenderService = require('./service_recommender_server'),
 	DiscountService = require('./service_discounts'),
 	sync = require('synchronize');
-
-var storePurchaseInRecommendation = function(customer, product) {
-	request.post(
-		{
-			url:'http://localhost:3030/api/storePurchase', 
-			form: {
-					customer: customer,
-					product : product
-				}
-		}, function (err,httpResponse,body){
-			if(err) {
-				return false;
-			}
-
-			if(httpResponse.statusCode == 500) {
-				console.log("Is 500");
-				return false;
-			}
-
-			if(httpResponse.statusCode == 200) {
-				return true;
-			}
-		}
-	);
-}
-
-exports.storePurchaseInRecommendation = storePurchaseInRecommendation;
 
 //Called by the standard purchase method. Performs all the checks and call the purchase method
 exports.purchaseStandard = function (discountCode, billingMethod, cookie, session, jwtKey, callback) {
@@ -216,7 +188,6 @@ function purchase(discountCode, billingMethod, customer_id, provide_list, sessio
 									}
 								});
 
-								storePurchaseInRecommendation(customer_id, provide.product_id);
 
 							});
 						} else {
@@ -234,7 +205,6 @@ function purchase(discountCode, billingMethod, customer_id, provide_list, sessio
 							// Save it
 							sync.await(newPurchaseLine.save(sync.defer()));
 
-							storePurchaseInRecommendation(customer_id, provide.product_id);
 						}
 
 
@@ -245,17 +215,6 @@ function purchase(discountCode, billingMethod, customer_id, provide_list, sessio
 
 						// Internal error: Provide no longer exists
 						callback(503, null);
-					}
-				});
-				// FINISH LOOP
-				// FINISH PURCHASE PROCESS
-				// RECALCULATE RECOMMENDATION
-				RecommenderService.recommendPurchases(customer_id, function (err, response){
-					if(err || response.statusCode == 500) {
-						console.log(err);
-						console.log("No recommendation updated")
-					} else {
-						console.log("Recommendations updated")
 					}
 				});
 				callback(200, newPurchase);

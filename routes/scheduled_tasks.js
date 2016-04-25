@@ -2,6 +2,7 @@ var schedule = require('node-schedule'),
 	sync = require('synchronize'),
 	PurchasingRule = require('../models/purchasing_rule'),
 	PurchaseService = require('./services/service_purchase'),
+	RecommenderService = require('./services/service_recommender_server'),
 	log = require('../logger');
 
 exports.scheduleAutomaticPurchases = function() {
@@ -34,6 +35,20 @@ exports.scheduleAutomaticPurchases = function() {
 				}
 				console.log("Finished");
 			})
+		});
+	});
+
+	console.log("Automatic purchases task successfuly scheduled")
+}
+
+exports.scheduleSimilarityMatrix = function() {
+											//Every day at 03:00AM
+	var autoPurchase = schedule.scheduleJob({hour: 3, minute: 0}, function(){
+		RecommenderService.computeSimilarity(function (err, data){
+			if(err) {
+				log.info('Error executing automatic similarity computation. Error %s', err);
+			}
+			console.log("Finished");
 		});
 	});
 
