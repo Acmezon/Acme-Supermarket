@@ -53,6 +53,7 @@ db_utils.connect();
 var scheduledTasks = require('./routes/scheduled_tasks');
 scheduledTasks.scheduleAutomaticPurchases();
 scheduledTasks.scheduleSimilarityMatrix();
+scheduledTasks.scheduleAssociationRules();
 
 var api = require('./routes/api');
 
