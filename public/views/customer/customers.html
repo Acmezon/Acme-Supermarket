@@ -74,7 +74,7 @@
 		  							</tr>
 		  							<tr>
 		  								<td>{{'Customers.Customer.TimeWindow' | translate}}</td>
-		  								<td>{{customer.timeWindow}}</td>
+		  								<td>{{'Customers.TimeWindows.'+customer.timeWindow | translate}}</td>
 		  							</tr>
 	  							</tbody>
 	  							<thead>
@@ -177,6 +177,18 @@
 					</span>
             		<div class="controls" ng-class="phone.$invalid && phone.$dirty ? 'has-error' : ''" ng-switch-when="true">
               			<input type="text" name="phone" ng-model="customer.phone" class="editable-input form-control input-sm" ng-minlength="9" ng-maxlength="15" required/>
+            		</div>
+				</td>
+				<td data-title="'Customers.Customer.TimeWindow' | translate" filter="{timeWindow: 'text'}" sortable="'timeWindow'" ng-switch="customer.isEditing" ng-class="timeWindow.$dirty ? 'bg-warning' : ''" ng-form="timeWindow" demo-tracked-table-cell>
+					<span ng-switch-default class="editable-text customer-timeWindow">
+						{{'Customers.TimeWindows.'+customer.timeWindow | translate}}
+					</span>
+            		<div class="controls" ng-class="timeWindow.$invalid && timeWindow.$dirty ? 'has-error' : ''" ng-switch-when="true">
+						<select name="timeWindow" id="timeWindow" ng-model="customer.timeWindow" class="editable-input form-control input-sm" required>
+							<option value="BOTH">{{'Customers.TimeWindows.BOTH' | translate}}</option>
+							<option value="MORNING">{{'Customers.TimeWindows.MORNING' | translate}}</option>
+							<option value="AFTERNOON">{{'Customers.TimeWindows.AFTERNOON' | translate}}</option>
+						</select>
             		</div>
 				</td>
 				<td data-title="'Customers.Remove' | translate" style="width:6%">

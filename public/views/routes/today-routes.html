@@ -1,0 +1,44 @@
+<script src="views/routes/TodayRoutesController.js"></script>
+
+<div class="wrap">
+	<ul class="breadcrumb breadcrumb__t">
+		<li><a class="home" href="/">{{ 'Home.Title' | translate }}</a> / {{ 'Title.TodayDelivery' | translate }}</li>
+	</ul>
+
+	<h2 class="head">{{ 'Title.TodayDelivery' | translate }}</h2>
+	<div class="row">
+		<table class="table table-bordered table-hover">
+		  	<thead>
+			  	<tr>
+					<th>{{'Purchases.ID' | translate}}</th>
+					<th>{{'Global.Customer' | translate}}</th>
+					<th>{{'Purchases.DeliveryTime' | translate}}</th>
+					<th>{{'Signup.TimeWindow' | translate}}</th>
+					<th>+ info</th>
+			  	</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="purchase in route">
+					<td>
+						{{purchase._id}}
+					</td>
+					<td>
+						{{purchase.customer.name}} {{purchase.customer.surname}}
+					</td>
+					<td>
+						{{purchase.time | date:'HH:mm'}}
+					</td>
+					<td>
+						{{'Customers.TimeWindows.'+purchase.customer.timeWindow | translate}}
+					<td>
+						<a href="/purchase/{{purchase._id}}">
+							<button type="button" class="btn btn-info btn-sm">
+								<span class="glyphicon glyphicon-info-sign"></span>
+							</button>
+						</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

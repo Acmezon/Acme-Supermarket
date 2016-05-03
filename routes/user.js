@@ -53,6 +53,7 @@ exports.getMyProfile = function (req, res) {
 											country : actor.country,
 											city : actor.city,
 											phone: actor.phone,
+											timeWindow: actor.timeWindow,
 											credit_card: actor.credit_card_id
 										});
 									} else {
@@ -74,7 +75,8 @@ exports.getMyProfile = function (req, res) {
 													surname : actor.surname,
 													email : actor.email,
 													coordinates : actor.coordinates,
-													address : actor.address
+													address : actor.address,
+													timeWindow : actor.timeWindow
 												});
 											} else {
 												res.status(401).send({
@@ -117,13 +119,21 @@ exports.updateUser = function (req, res) {
 		if (role=='customer' || role=='supplier' || role=='admin') {
 			ActorService.checkPrincipal(cookie, jwtKey, req.body.id, function (isPrincipal) {
 				if ( (role=='customer' && isPrincipal) || (role=='supplier' && isPrincipal) || (role=='admin')) {
-					Actor.findByIdAndUpdate(req.body.id, { $set: set }, function (err, response) {
+					Actor.findById(req.body.id).exec(function(err, actor) {
 						if(err){
-							res.status(500).send("Unable to save field, check input.")
+							res.status(500).send("User not found")
 						} else {
-							res.status(200).json({success: true});
+							actor[req.body.field] = req.body.data
+							actor.save(function (err) {
+								if (err){
+									res.status(500).send("Unable to save field, check input.")
+								} else {
+									res.status(200).json({success: true});
+								}
+							});
+							
 						}
-					});
+					})
 				} else {
 					res.status(401).json({success: false, message: "Doesn't have permission"});
 				}

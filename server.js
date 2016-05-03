@@ -54,6 +54,7 @@ var scheduledTasks = require('./routes/scheduled_tasks');
 scheduledTasks.scheduleAutomaticPurchases();
 scheduledTasks.scheduleSimilarityMatrix();
 scheduledTasks.scheduleAssociationRules();
+scheduledTasks.scheduleRoutes();
 
 var api = require('./routes/api');
 
@@ -203,6 +204,9 @@ app.post('/api/associationrules/', api.RecommenderServer.getAssociationRules);
 app.get('/api/bi/getSalesOverTime/:id', api.BusinessIntelligence.getSalesOverTime);
 app.post('/api/bi/getReport', api.BusinessIntelligence.getReport);
 app.get('/api/bi/checkStatus', api.BusinessIntelligence.checkStatus);
+
+//Routes
+app.get('/api/routes/today', api.Routes.getTodayRoute);
 
 //Test
 

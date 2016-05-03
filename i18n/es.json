@@ -4,7 +4,8 @@
 		"es": "Español"
 	},
 	"Global" : {
-		"Submit" : "Enviar"
+		"Submit" : "Enviar",
+		"Customer" : "Cliente"
 	},
 	"Errors": {
 		"401" : {
@@ -64,6 +65,7 @@
 		"Notifications" : "Notificaciones",
 		"Reports" : "Informe de ventas",
 		"Barcode" : "Escanear código de barras",
+		"TodayDelivery" : "Reparto de hoy",
 		"401" : "Error 401",
 		"403" : "Error 403",
 		"404" : "Error 404",
@@ -280,6 +282,10 @@
 		"Password" : "Contraseña",
 		"Coordinates" : "Tu posición actual",
 		"GetCoordinates" : "Obtener coordenadas",
+		"Select" : {
+			"Country" : "Seleccione un pais",
+			"TimeWindow" : "Seleccione un periodo de entrega"
+		},
 		"Address" : "Dirección",
 		"City" : "Ciudad",
 		"Phone" : "Teléfono",
@@ -289,7 +295,8 @@
 		"Banner" : "Regístrate en Acme-Supermarket para disfrutar de los mejores precios en una gran variedad de productos. Tenemos un servicio de envío libre de costes sólo para tí. ¿A qué esperas? Haz clic en 'Crear tu cuenta' para unirte a nosotros y comenzar a comprar.",
 		"Terms" : {
 			"Text" : "Al hacer clic en 'Enviar' aceptas nuestros ",
-			"Link" : "Términos y condiciones"
+			"Link" : "Términos y condiciones",
+			"MandatoryValues" : "*: Valores requeridos."
 		}
 	},
 	"Signin" : {
@@ -576,6 +583,7 @@
 	"Purchases" : {
 		"Title" : "Administración de compras",
 		"Customer" : "ID Cliente",
+		"ID" : "ID Compra",
 		"Filter" : {
 			"Title" : "Filtros",
 			"Customer" : "Filtro ID de cliente"
@@ -583,6 +591,7 @@
 		"Purchase" : "Compra",
 		"PaymentDate" : "Fecha de pago",
 		"DeliveryDate" : "Fecha de entrega",
+		"DeliveryTime" : "Hora de entrega",
 		"Details" : "Detalles",
 		"Empty" : "Ninguna compra en el sistema",
 		"Number" : "compras en el sistema",

@@ -471,6 +471,15 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			activetab: 'products',
 			title: 'Title.Barcode'
 		}).
+		when('/todaydelivery', {
+			templateUrl: 'views/routes/today-routes.html',
+			controller: 'TodayRoutesCtrl',
+			resolve: {
+				admin: checkLoggedin
+			},
+			activetab: 'management',
+			title: 'Title.TodayDelivery'
+		}).
 		when('/401', {
 			templateUrl: 'views/public/errors/401.html',
 			title: 'Title.401'

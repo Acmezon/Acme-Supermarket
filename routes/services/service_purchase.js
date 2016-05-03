@@ -228,3 +228,11 @@ function purchase(discountCode, billingMethod, customer_id, provide_list, sessio
 		}
 	});
 }
+
+exports.todayRoutePlanification = function(purchases, callback) {
+	request.get('http://localhost:3033/api/routes/calculate',
+		function (err, response, body){
+			callback(err, response);
+		}
+	);
+}

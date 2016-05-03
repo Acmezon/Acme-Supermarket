@@ -28,7 +28,7 @@
 				</div>
 				<div>
 					<select id="country" name="country" ng-model="customer.country" class="frm-field required" ng-change="validateCountry()" required>
-						<option value="" disabled>Select a Country</option>         
+						<option value="" disabled>{{'Signup.Select.Country' | translate}}*</option>         
 						<option value="Afganistan">Afghanistan</option>
 						<option value="Albania">Albania</option>
 						<option value="Algeria">Algeria</option>
@@ -284,9 +284,17 @@
 				<div>
 					<input class="phone" name="phone" type="text" ng-model="customer.phone" placeholder="{{ 'Signup.Phone' | translate }}*" ng-minlength="9" ng-maxlength="15" ng-blur="setValid('phone')" ng-pattern="/^\d*$/" ng-class="{'has-error': signupForm.phone.$dirty && (signupForm.phone.$error.required || signupForm.phone.$error.invalid) || signupForm.phone.$error.minlength || signupForm.phone.$error.maxlength || signupForm.phone.$error.pattern}" required>
 				</div>
+				<div>
+					<select id="timeWindow" name="timeWindow" ng-model="customer.timeWindow" class="frm-field required" required>
+						<option value="" disabled>{{'Signup.Select.TimeWindow' | translate}}*</option>
+						<option value="MORNING">{{'Customers.TimeWindows.MORNING' | translate}}</option>
+						<option value="AFTERNOON">{{'Customers.TimeWindows.AFTERNOON' | translate}}</option>      
+						<option value="BOTH">{{'Customers.TimeWindows.BOTH' | translate}}</option>
+					</select>
+				</div>
 			</div>
 			<button id="signup-submit" type="submit" name="submit" class="grey" ng-disabled="signupForm.$invalid">{{ 'Global.Submit' | translate }}</button>
-		<p class="terms">{{'Signup.Terms.Text' | translate}}<a href="/terms">{{'Signup.Terms.Link' | translate}}</a>.</p>
+		<p class="terms">{{'Signup.Terms.MandatoryValues' | translate}} {{'Signup.Terms.Text' | translate}}<a href="/terms">{{'Signup.Terms.Link' | translate}}</a>.</p>
 		<div class="clear"></div>
 		</form>
 	</div>

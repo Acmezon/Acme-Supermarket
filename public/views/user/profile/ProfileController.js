@@ -6,6 +6,8 @@ function ($scope, $http, $translate, ngToast) {
 	$scope.selectedTab = 1;
 	$scope.ccEditing = false;
 
+	$scope.timeWindows = ['BOTH', 'MORNING', 'AFTERNOON']
+
 	$http.get('/api/myprofile').then(function success(customer){
 		$scope.user = customer.data;
 		if ($scope.user._type.toLowerCase()=='customer') {

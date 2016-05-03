@@ -132,9 +132,10 @@ exports.newCustomer = function (customer, callback) {
 	var _country = customer.country;
 	var _city = customer.city;
 	var _phone = customer.phone;
+	var _timeWindow = customer.timeWindow;
 
 	// Server validation
-	var pass = CustomerService.checkFieldsCorrect(_name, _surname, _email, _password, _coordinates, _address, _country, _city, _phone);
+	var pass = CustomerService.checkFieldsCorrect(_name, _surname, _email, _password, _coordinates, _address, _country, _city, _phone, _timeWindow);
 
 	if (pass) {
 		var md5Password = crypto.createHash('md5').update(_password).digest("hex");
@@ -149,7 +150,8 @@ exports.newCustomer = function (customer, callback) {
 			address: _address,
 			country: _country,
 			city: _city,
-			phone: _phone
+			phone: _phone,
+			timeWindow: _timeWindow
 		});
 
 		newCustomer.save(function (err) {

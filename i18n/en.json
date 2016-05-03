@@ -4,7 +4,8 @@
 		"es": "Spanish"
 	},
 	"Global" : {
-		"Submit" : "Submit"
+		"Submit" : "Submit",
+		"Customer" : "Customer"
 	},
 	"Errors": {
 		"401" : {
@@ -64,6 +65,7 @@
 		"Notifications" : "Notifications",
 		"Reports" : "Reports of sales",
 		"Barcode" : "Scan barcode",
+		"TodayDelivery" : "Today Delivery",
 		"401" : "401 Error",
 		"403" : "403 Error",
 		"404" : "404 Error",
@@ -280,6 +282,10 @@
 		"Coordinates" : "Your current position",
 		"GetCoordinates" : "Get your position",
 		"Address" : "Address",
+		"Select" : {
+			"Country" : "Select a country",
+			"TimeWindow" : "Select a delivery period"
+		},
 		"City" : "City",
 		"Phone" : "Phone",
 		"TimeWindow" : "Delivery period",
@@ -288,7 +294,8 @@
 		"Banner" : "Register in Acme-Supermarket and get amazing prices at the best products. We have a no-cost delivery service just for you. What are you waiting for? Click on 'Create an account' for joining us and start buying.",
 		"Terms" : {
 			"Text" : "By clicking 'Submit' you agree to the ",
-			"Link" : "Terms and conditions"
+			"Link" : "Terms and conditions",
+			"MandatoryValues" : "*: Required values."
 		}
 	},
 	"Signin" : {
@@ -575,6 +582,7 @@
 	"Purchases" : {
 		"Title" : "Purchase management",
 		"Customer" : "Customer ID",
+		"ID" : "Purchase ID",
 		"Filter" : {
 			"Title" : "Filters",
 			"Customer" : "Customer ID filter"
@@ -582,6 +590,7 @@
 		"Purchase" : "Purchase",
 		"PaymentDate" : "Payment date",
 		"DeliveryDate" : "Delivery date",
+		"DeliveryTime" : "Delivery time",
 		"Details" : "Details",
 		"Empty" : "No purchases in the system.",
 		"Number" : "purchases in the system.",
