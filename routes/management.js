@@ -38,6 +38,24 @@ function random(max, min) {
 function randomDate(start, end) {
 	return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 }
+
+function randomCoords() {
+	points = [[37.412164190504484, -6.005916595458984],
+			  [37.412164190504484, -5.909099578857422],
+			  [37.33931889054622, -5.909099578857422],
+			  [37.33931889054622, -6.005916595458984]]
+
+	latitude_max = points[0][0]
+	latitude_min =  points[3][0]
+	longitude_max = points[0][1]
+	longitude_min = points[3][1]
+
+	latitude = Math.random()*(latitude_max-latitude_min)+latitude_min;
+	longitude = Math.random()*(longitude_max-longitude_min)+longitude_min;
+
+	return [latitude, longitude]
+}
+
 // Restore Mongo DB to development state
 function startProcess(callback) {
 	loadCategories(callback);
@@ -293,13 +311,14 @@ function loadCustomers(callback) {
 		credit_card.save( function (err, card) {
 			if(err) console.log("--ERR: Error saving credit card: " + err);
 
+			var coordinates = randomCoords()
 			var customer1 = new Customer({
 				"_type" : customer._type,
 				"name" : customer.name,
 				"surname" : customer.surname,
 				"email" : customer.email,
 				"password" : customer.password, //customer
-				"coordinates" : customer.coordinates,
+				"coordinates" : coordinates[0] + ";" + coordinates[1],
 				"address" : customer.address,
 				"country" : customer.country,
 				"city" : customer.city,
@@ -579,6 +598,7 @@ function loadSpeacialUsers(callback) {
 		});
 
 		var cc = sync.await(credit_card.save(sync.defer()));
+		var coordinates = randomCoords()
 
 		//Customer with no purchases
 		var customer1 = new Customer({
@@ -587,7 +607,7 @@ function loadSpeacialUsers(callback) {
 			"surname" : "Customer",
 			"email" : "no.purchases@mail.com",
 			"password" : "91ec1f9324753048c0096d036a694f86", //customer
-			"coordinates":"37.358716;-5.987814",
+			"coordinates": coordinates[0] + ";" + coordinates[1],
 			"country":"Spain",
 			"city":"La Coruña",
 			"address":"3481 Calle Del Prado",
@@ -597,6 +617,7 @@ function loadSpeacialUsers(callback) {
 
 		sync.await(customer1.save(sync.defer()));
 		
+		coordinates = randomCoords()
 		//Customer with no rules
 		var customer2 = new Customer({
 			"_type" : "Customer",
@@ -604,7 +625,7 @@ function loadSpeacialUsers(callback) {
 			"surname" : "Customer",
 			"email" : "no.rules@mail.com",
 			"password" : "91ec1f9324753048c0096d036a694f86", //customer
-			"coordinates":"37.358716;-5.987814",
+			"coordinates": coordinates[0] + ";" + coordinates[1],
 			"country":"Spain",
 			"city":"La Coruña",
 			"address":"3481 Calle Del Prado",
@@ -708,8 +729,6 @@ function makePurchase(products, customer_id, dates, callback) {
 
 				sync.await(rate.save(sync.defer()))
 				sync.await(reputation.save(sync.defer()))
-
-				PurchaseService.storePurchaseInRecommendation(customer_id, product.id);
 			}
 		}, function (err, data) {
 			callback(err, data)
