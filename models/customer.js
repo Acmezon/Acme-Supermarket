@@ -21,7 +21,8 @@ var customerSchema = Actor.schema.extend({
 	address: {type: String, required: true},
 	country: {type: String, required: true},
 	city: {type: String, required: true},
-	phone: {type: String, required: true, validate: validators.isLength(9, 15)}
+	phone: {type: String, required: true, validate: validators.isLength(9, 15)},
+	timeWindow: {type: String, required: true, enum:['MORNING', 'AFTERNOON', 'BOTH'], default:'BOTH'}
 });
 
 module.exports = mongoose.model('Customer', customerSchema);

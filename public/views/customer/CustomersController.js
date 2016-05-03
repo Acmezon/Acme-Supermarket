@@ -34,7 +34,7 @@ angular.module('acme_supermarket').registerCtrl('CustomersCtrl', ['$scope', '$ht
 				hasChanged = $scope.copy[i].name != customer.name || $scope.copy[i].surname != customer.surname 
 				|| $scope.copy[i].email != customer.email || $scope.copy[i].address != customer.address 
 				|| $scope.copy[i].country != customer.country || $scope.copy[i].city != customer.city 
-				|| $scope.copy[i].phone != customer.phone;
+				|| $scope.copy[i].phone != customer.phone || $scope.copy[i].timeWindow != customer.timeWindow;
 				break;
 			}
 		}

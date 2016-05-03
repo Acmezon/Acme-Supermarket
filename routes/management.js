@@ -323,6 +323,7 @@ function loadCustomers(callback) {
 				"country" : customer.country,
 				"city" : customer.city,
 				"phone" : customer.phone,
+				"timeWindow" : customer.timeWindow,
 				"credit_card_id" : card.id
 			});
 

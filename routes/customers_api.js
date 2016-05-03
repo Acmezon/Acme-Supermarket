@@ -252,7 +252,8 @@ exports.updateCustomer = function (req, res) {
 							address: req.body.address,
 							country: req.body.country,
 							city: req.body.city,
-							phone: req.body.phone}
+							phone: req.body.phone,
+							timeWindow: req.body.timeWindow}
 						}, 
 						function(error, result) {
 				      		if (error) {

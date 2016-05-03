@@ -283,6 +283,7 @@
 		"Address" : "Dirección",
 		"City" : "Ciudad",
 		"Phone" : "Teléfono",
+		"TimeWindow" : "Periodo de entrega",
 		"Geoerror" : "No se han podido obtener tus coordenadas, asegúrate de que tu navegador permite obtener coordenadas y de que no las estás bloqueando.",
 		"Complete" : "Register completed. Now you can sign in.",
 		"Banner" : "Regístrate en Acme-Supermarket para disfrutar de los mejores precios en una gran variedad de productos. Tenemos un servicio de envío libre de costes sólo para tí. ¿A qué esperas? Haz clic en 'Crear tu cuenta' para unirte a nosotros y comenzar a comprar.",
@@ -446,7 +447,8 @@
 			"Country" : "Pais",
 			"City" : "Ciudad",
 			"Phone" : "Teléfono",
-			"Coordinates" : "Coordenadas"
+			"Coordinates" : "Coordenadas",
+			"TimeWindow" : "Periodo de entrega"
 		},
 		"CreditCard" : {
 			"Id" : "ID",
@@ -455,6 +457,11 @@
 			"Number" : "Número",
 			"Expiration" : "Expiración",
 			"CvcCode" : "CVC"
+		},
+		"TimeWindows" : {
+			"BOTH" : "AMBOS",
+			"MORNING" : "MAÑANA (9-14AM)",
+			"AFTERNOON" : "TARDE (15-22PM)"
 		},
 		"Profile" : "Perfil",
 		"Manage" : "Administrar",
