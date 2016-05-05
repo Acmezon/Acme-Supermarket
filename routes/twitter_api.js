@@ -45,7 +45,7 @@ exports.getAnalysis = function (req, res) {
 			} else {
 				if (body.length > 0) {
 					var jsonBody = JSON.parse(body);
-					
+
 					res.status(200).json(jsonBody);
 				} else {
 					res.status.json([])

@@ -16,9 +16,11 @@ exports.getAnalysis = function(req, res){
 		'from_time' : {
 			'$gte': start
 		}
-	}).exec(function (err, proportions){
+	}).sort('from_time').exec(function (err, proportions){
 		if(err) {
+			console.log(err)
 			res.sendStatus(500)
+			return
 		}
 
 		data = []

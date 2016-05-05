@@ -58,7 +58,10 @@
 		});
 
 		data.sort(function (a, b) {
-			return b.rates[0].y1 - a.rates[0].y1;
+			a_hour = parseInt(a.hour.split('-')[0])
+			b_hour = parseInt(b.hour.split('-')[0])
+
+			return a_hour - b_hour;
 		});
 
 		x.domain(data.map(function (d) {
