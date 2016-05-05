@@ -21,6 +21,7 @@ exports.stop_twitter_listener = function() {
 		console.log(pid);
 		var killed = process.kill(pid, 'SIGTERM');
 		console.log(killed);
+		removePID()
 		return killed;
 	} catch (e) {
 		console.log(e);

@@ -462,6 +462,15 @@ app.config(['$routeProvider', '$locationProvider', '$controllerProvider', '$http
 			activetab: 'businessIntelligence',
 			title: 'Title.SalesOverTime'
 		}).
+		when('/twitter', {
+			templateUrl: 'views/businessintelligence/twitteranalysis.html',
+			controller: 'TwitterAnalysisCtrl',
+			resolve: {
+				admin: checkAdmin
+			},
+			activetab: 'businessIntelligence',
+			title: 'Title.TwitterAnalysis'
+		}).
 		when('/barcode', {
 			templateUrl: 'views/barcode/barcode.html',
 			controller: 'BarcodeCtrl',

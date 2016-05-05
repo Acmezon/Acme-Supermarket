@@ -25,3 +25,12 @@ exports.is_listener_alive = function(req, res) {
 
 	res.status(200).json({running : isRunning});
 }
+
+exports.force_sentiment_analysis = function(req, res) {
+	SentimentService.runSentimentAnalysis(function (err, data){
+		if(err) {
+			console.log('Error executing automatic sentiment analysis. Error %s', err);
+		}
+		console.log('Automatic sentiment analysis executed successfuly');
+	});
+}

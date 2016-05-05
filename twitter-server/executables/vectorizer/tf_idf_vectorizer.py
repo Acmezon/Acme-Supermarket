@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import numpy as np
 import vectorizer.utils as utils
+import os
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.pipeline import Pipeline
@@ -10,10 +11,12 @@ from sklearn.linear_model import LogisticRegression
 tweets = None
 classifications = None
 
-with open('vectorizer/corpus/sanders/tweets.txt', 'r') as tweets_file:
+curr_dir = os.path.dirname(os.path.abspath(__file__));
+
+with open(os.path.join(curr_dir, 'corpus/sanders/tweets.txt'), 'r') as tweets_file:
     tweets = np.array(tweets_file.read().splitlines() )
     
-with open('vectorizer/corpus/sanders/classification.txt', 'r') as classifications_file:
+with open(os.path.join(curr_dir, 'corpus/sanders/classification.txt'), 'r') as classifications_file:
     classifications = np.array(classifications_file.read().splitlines())
 
 def build_sentiment_no_sentiment():

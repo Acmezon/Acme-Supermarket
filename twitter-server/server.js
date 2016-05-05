@@ -19,7 +19,7 @@ var scheduledTasks = require('./routes/scheduled_tasks');
 scheduledTasks.scheduleSentimentAnalysis();
 
 var ListenerService = require('./routes/services/service_twitter_listener');
-ListenerService.start_twitter_listener()
+// ListenerService.start_twitter_listener()
 
 var api = require('./routes/api');
 
@@ -27,6 +27,10 @@ var api = require('./routes/api');
 app.get('/api/listener/start', api.ListenerApi.start_twitter_listener);
 app.get('/api/listener/stop', api.ListenerApi.stop_twitter_listener);
 app.get('/api/listener/status', api.ListenerApi.is_listener_alive);
+
+app.get('/api/forceSentimentAnalysis', api.ListenerApi.force_sentiment_analysis);
+
+app.get('/api/getAnalysis', api.getAnalysis)
 
 // redirect all others to the index (HTML5 history) Use in production only
 app.get('*', api.notFound);

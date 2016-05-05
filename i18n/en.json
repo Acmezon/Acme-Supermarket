@@ -58,6 +58,7 @@
 		"RatingManagement" : "Rating management",
 		"Discounts" : "Discounts management",
 		"PurchasingRules" : "Purchasing rules management",
+		"TwitterAnalysis" : "Twitter Analysis",
 		"Monitoring rules" : {
 			"List" : "Monitoring rules management",
 			"Creation" : "Create a monitoring rule"
@@ -113,7 +114,8 @@
 		"SocialMedia" : "Social Media",
 		"BusinessIntelligence": "Business Intelligence",
 		"SalesOverTime" : "Sales over time",
-		"SuplierReport" : "Sales report"
+		"SuplierReport" : "Sales report",
+		"TwitterAnalysis" : "Twitter Analysis"
 	},
 	"Footer": {
 		"AboutUs" : "About Us",
@@ -497,6 +499,17 @@
 			"Stopping" : "The social media presence analysis is being stopped. It could take a few seconds",
 			"StopError" : "The social media presence analysis is not able to stop. Try again later"
 		},
+		"Twitter" : {
+			"Running" : "Running",
+			"Stopped" : "Stopped",
+			"StartService" : "Start",
+			"StopService" : "Stop",
+			"Service" : "Opinion's analysis in Twitter",
+			"Started" : "Opinion's analysis in Twitter started successfuly",
+			"StartError" : "Opinion's analysis in Twitter could not start. Try again later",
+			"Stopping" : "Opinion's analysis in Twitter is being stopped. It could take a few seconds",
+			"StopError" : "Opinion's analysis in Twitter is not able to stop. Try again later"
+		},
 		"Recommender" : {
 			"Server" : "Recommender system server",
 			"Running" : "Online",
@@ -745,5 +758,10 @@
 		"SupplierEmail" : "Supplier email",
 		"ProductId" : "Product ID (optional)",
 		"Loading" : "Loading"
+	},
+	"TwitterAnalysis" : {
+		"Title": "Twitter Analysis",
+		"Loading" : "Loading",
+		"Chart" : "Opinions of the company in Twitter"
 	}
 }

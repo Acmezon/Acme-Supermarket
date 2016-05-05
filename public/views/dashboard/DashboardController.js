@@ -1,6 +1,7 @@
 angular.module('acme_supermarket').registerCtrl('DashboardCtrl', ['$scope', '$http', '$translate', 'ngToast', '$location',
 function ($scope, $http, $translate, ngToast, $location) {
 	checkSocialMediaStatus();
+	checkTwitterStatus();
 	checkRecommenderServerStatus();
 	checkBIServerStatus();
 	checkBarcodeStatus();
@@ -78,6 +79,83 @@ function ($scope, $http, $translate, ngToast, $location) {
 		$http.get('/api/socialMedia/status').then(
 			function success(response){
 				$scope.socialMediaServiceRunning = response.data.running;
+			}
+		,function error(response){});
+	}
+
+	$scope.startTwitter = function() {
+		if($scope.twitterRunning) {
+			return;
+		}
+
+		$http.get('/api/tw/start').then(
+			function success(response) {
+				$translate(['Dashboard.Twitter.Started']).then(function (translation) {
+					ngToast.create({
+						className: 'success',
+						content: translation['Dashboard.Twitter.Started']
+					});
+				});
+
+				checkTwitterStatus();
+			}, function error(response) {
+				switch(response.status) {
+					case 403:
+						$location.url('/403');
+						break;
+					case 503:
+						$translate(['Dashboard.Twitter.StartError']).then(function (translation) {
+							ngToast.create({
+								className: 'danger',
+								content: translation['Dashboard.Twitter.StartError']
+							});
+						});
+						break;
+				}
+
+			}
+		);
+	};
+
+	$scope.stopTwitterService = function() {
+		if(!$scope.twitterRunning) {
+			return;
+		}
+
+		$http.get('/api/tw/stop').then(
+			function success(response) {
+				$translate(['Dashboard.Twitter.Stopping']).then(function (translation) {
+					ngToast.create({
+						className: 'success',
+						content: translation['Dashboard.Twitter.Stopping']
+					});
+				});
+
+				checkTwitterStatus();
+			}, function error(response) {
+				switch(response.status) {
+					case 403:
+						$location.url('/403');
+						break;
+					case 503:
+						$translate(['Dashboard.Twitter.StopError']).then(function (translation) {
+							ngToast.create({
+								className: 'danger',
+								content: translation['Dashboard.Twitter.StopError']
+							});
+						});
+						break;
+				}
+
+			}
+		);
+	};
+
+
+	function checkTwitterStatus() {
+		$http.get('/api/tw/checkStatus').then(
+			function success(response){
+				$scope.twitterRunning = response.data.running;
 			}
 		,function error(response){});
 	}

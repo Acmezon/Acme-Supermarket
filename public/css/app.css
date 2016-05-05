@@ -472,3 +472,30 @@ div#sales-chart {
 button#refreshBtn {
 	z-index: 1;
 }
+
+
+/* Sentiment graph*/
+h1 { 
+	font-family: helvetica, arial, sans-serif; 
+	text-align:center; 
+	margin-top: 80px;
+}
+
+
+.viz-portfolio-delinquent-status {
+	font-family: helvetica, arial, sans-serif; 
+	margin: 0 auto;
+	font-size: 10px;
+	width: 450px;
+	height: 300px
+}
+
+path {
+	fill: #83B0EA;
+}
+
+.domain { 
+	fill: none; 
+	stroke: #000; 
+	stroke-width: 1px; 
+} 

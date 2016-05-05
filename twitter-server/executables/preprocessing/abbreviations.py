@@ -6,6 +6,7 @@ from lxml import etree
 from urllib.request import urlopen
 
 def download_abbreviations():
+    curr_dir = os.path.dirname(os.path.abspath(__file__));
     abbreviations = {}
     response = urlopen('http://public.oed.com/how-to-use-the-oed/abbreviations/')
     broken_html = response.read()
@@ -26,13 +27,15 @@ def download_abbreviations():
                         abbreviations[abbreviation] = meaning
       
     abbreviations["c'mon"] = "come on"
-    with open('preprocessing/data/abbreviations_english.json', 'w') as outfile:
+    with open(os.path.join(curr_dir, 'data/abbreviations_english.json', 'w')) as outfile:
         json.dump(abbreviations, outfile)
 
     return abbreviations
 
 def get_abbreviations():
-    file_path = 'preprocessing/data/abbreviations_english.json'
+    curr_dir = os.path.dirname(os.path.abspath(__file__));
+
+    file_path = os.path.join(curr_dir, 'data/abbreviations_english.json')
     if not os.path.exists(file_path):
         abbreviations = download_abbreviations()
     else:

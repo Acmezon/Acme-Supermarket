@@ -22,6 +22,7 @@ pos_neg = tf_idf.build_positive_negative()
 neut = 0
 pos = 0
 neg = 0
+
 for document in cursor:
     doc = tweet.sanitize(document['text'])
     s_ns = sent_nosent.predict([doc])

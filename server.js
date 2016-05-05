@@ -205,6 +205,12 @@ app.get('/api/bi/getSalesOverTime/:id', api.BusinessIntelligence.getSalesOverTim
 app.post('/api/bi/getReport', api.BusinessIntelligence.getReport);
 app.get('/api/bi/checkStatus', api.BusinessIntelligence.checkStatus);
 
+//Twitter Analysis
+app.get('/api/tw/getAnalysis', api.TwitterApi.getAnalysis);
+app.get('/api/tw/start', api.TwitterApi.start);
+app.get('/api/tw/stop', api.TwitterApi.stop);
+app.get('/api/tw/checkStatus', api.TwitterApi.checkStatus);
+
 //Routes
 app.get('/api/routes/today', api.Routes.getTodayRoute);
 

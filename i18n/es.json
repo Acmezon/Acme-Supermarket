@@ -34,6 +34,7 @@
 		"Signout" : "Salir",
 		"Signup" : "Registrarse",
 		"MyProfile" : "Mi perfil",
+		"TwitterAnalysis" : "Análisis de Twitter",
 		"MyPurchasingRules" : "Mis reglas de compra",
 		"Product" : {
 			"List" : "Productos",
@@ -113,7 +114,8 @@
 		"SocialMedia" : "Medios sociales",
 		"BusinessIntelligence": "Business Intelligence",
 		"SalesOverTime" : "Ventas en el tiempo",
-		"SuplierReport" : "Informes de ventas"
+		"SuplierReport" : "Informes de ventas",
+		"TwitterAnalysis" : "Análisis de Twitter"
  	},
 	"Footer": {
 		"AboutUs" : "Sobre nosotros",
@@ -498,6 +500,17 @@
 			"Stopping" : "El anlálisis de presencia en redes sociales se está deteniendo. Puede tardar unos segundos",
 			"StopError" : "El anlálisis de presencia en redes sociales no ha podido ser detenido. Inténtelo de nuevo más tarde"
 		},
+		"Twitter" : {
+			"Running" : "Ejecutándose",
+			"Stopped" : "Parado",
+			"StopService" : "Parar",
+			"StartService" : "Iniciar",
+			"Service" : "Análisis de opiniones en Twitter",
+			"Started" : "El anlálisis de opiniones en Twitter se inició correctamente",
+			"StartError" : "El anlálisis de opiniones en Twitter no se pudo iniciar. Inténtelo de nuevo más tarde",
+			"Stopping" : "El anlálisis de opiniones en Twitter se está deteniendo. Puede tardar unos segundos",
+			"StopError" : "El anlálisis de opiniones en Twitter no ha podido ser detenido. Inténtelo de nuevo más tarde"
+		},
 		"Recommender" : {
 			"Server" : "Servidor del sistema de recomendación",
 			"Running" : "Online",
@@ -746,5 +759,10 @@
 		"SupplierEmail" : "Email del proveedor",
 		"ProductId" : "ID de un producto (opcional)",
 		"Loading" : "Cargando"
+	},
+	"TwitterAnalysis" : {
+		"Title": "Análisis de Twitter",
+		"Loading" : "Cargando",
+		"Chart" : "Opiniones de la empresa en Twitter"
 	}
 }
