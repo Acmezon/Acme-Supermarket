@@ -16,7 +16,6 @@ def run_acmesupermarket(today_purchases, today_customers):
     customers_coords = [coords.replace(b';', b',').decode('utf-8') for coords in today_customers['c']]
     
     customers_ids = today_customers['id']
-    print(customers_ids)
 
     today = datetime.utcnow().date()
     route = {
@@ -79,7 +78,6 @@ def run_acmesupermarket(today_purchases, today_customers):
                             {"$set": {"deliveryDate": tomorrow}}
                         )
 
-        print(best_sol.get_solution())
         route['customers'] = [int(customers_ids[int(id_)]) for id_ in best_sol.get_solution()]
         route['customers'][0] = -1
         route['customers'].append(-1)
@@ -92,8 +90,6 @@ def run_acmesupermarket(today_purchases, today_customers):
             route['times'][i] = cust.get_time_visited()
         route['times'].append(23*60*60)
 
-        print(route['customers'])
-        print(route['times'])
         for i, s in enumerate(route['times']):
             hour = int(s/3600)
             minute = int((s-(hour*3600))/60)
