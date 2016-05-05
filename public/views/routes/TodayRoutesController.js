@@ -7,7 +7,9 @@ angular.module('acme_supermarket').registerCtrl('TodayRoutesCtrl', ['$scope', '$
 		url: '/api/routes/today'
 	}).
 	then(function success(response) {
-		$scope.route = response.data
+		$scope.date = response.data['date']
+		$scope.route = response.data['route']
+
 	}, function error(response) {
 		// mensaje chungo
 	});

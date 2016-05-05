@@ -601,6 +601,7 @@
 				"Description" : "You haven't purchased yet."
 			}
 		},
+		"Depot" : "Depot",
 		"Remove" : "Remove",
 		"First" : "First",
 		"Last" : "Last"

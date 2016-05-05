@@ -7,38 +7,61 @@
 
 	<h2 class="head">{{ 'Title.TodayDelivery' | translate }}</h2>
 	<div class="row">
-		<table class="table table-bordered table-hover">
-		  	<thead>
-			  	<tr>
-					<th>{{'Purchases.ID' | translate}}</th>
-					<th>{{'Global.Customer' | translate}}</th>
-					<th>{{'Purchases.DeliveryTime' | translate}}</th>
-					<th>{{'Signup.TimeWindow' | translate}}</th>
-					<th>+ info</th>
+		<div class="col-md-4">
+			<table class="table table-bordered table-hover">
+				<tr>
+					<th style="width:30%">{{'Checkout.Purchase.DeliveryDate' | translate}}</th>
+					<td>{{date | date:'dd/MM/yyyy' }}</td>
 			  	</tr>
-			</thead>
-			<tbody>
-				<tr ng-repeat="purchase in route">
-					<td>
-						{{purchase._id}}
-					</td>
-					<td>
-						{{purchase.customer.name}} {{purchase.customer.surname}}
-					</td>
-					<td>
-						{{purchase.time | date:'HH:mm'}}
-					</td>
-					<td>
-						{{'Customers.TimeWindows.'+purchase.customer.timeWindow | translate}}
-					<td>
-						<a href="/purchase/{{purchase._id}}">
-							<button type="button" class="btn btn-info btn-sm">
-								<span class="glyphicon glyphicon-info-sign"></span>
-							</button>
-						</a>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+			</table>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-8 col-md-offset-2">
+			<table class="table table-bordered table-hover">
+				<colgroup>
+					<col width="11%" />
+					<col />
+					<col width="30%" />
+					<col width="20%" />
+				</colgroup>
+			  	<thead>
+				  	<tr>
+						<th>{{'Purchases.Customer' | translate}}
+						<th>{{'Global.Customer' | translate}}</th>
+						<th>{{'Purchases.DeliveryTime' | translate}}</th>
+						<th>{{'Signup.TimeWindow' | translate}}</th>
+				  	</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="node in route">
+						<td ng-if="node.customer_id==-1">
+							{{'Purchases.Depot' | translate}}
+						</td>
+						<td ng-if="node.customer_id!=-1">
+							{{node.customer_id}}
+						</td>
+						<td ng-if="node.customer_id==-1">
+							--
+						</td>
+						<td ng-if="node.customer_id!=-1">
+							{{node.customer.name}} {{node.customer.surname}}
+						</td>
+						<td ng-if="node.customer_id==-1">
+							--
+						</td>
+						<td ng-if="node.customer_id!=-1">
+							{{node.time | date:'HH:mm'}}
+						</td>
+						<td ng-if="node.customer_id==-1">
+							--
+						</td>
+						<td ng-if="node.customer_id!=-1">
+							{{'Customers.TimeWindows.'+node.customer.timeWindow | translate}}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 	</div>
 </div>

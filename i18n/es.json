@@ -602,6 +602,7 @@
 				"Description" : "Todavía no has realizado una compra."
 			}
 		},
+		"Depot" : "Almacen",
 		"Remove" : "Eliminar",
 		"First" : "Primero",
 		"Last" : "Último"
