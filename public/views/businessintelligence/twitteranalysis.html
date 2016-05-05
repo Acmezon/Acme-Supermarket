@@ -20,8 +20,8 @@
 			left: 60
 		};
 
-		width = 450 - margin.left - margin.right;
-		height = 315 - margin.top - margin.bottom;
+		width = 800 - margin.left - margin.right;
+		height = 600 - margin.top - margin.bottom;
 
 		var x = d3.scale.ordinal().rangeRoundBands([0, width], .3);
 
@@ -96,7 +96,7 @@
 		});
 
 		var legend = svg.selectAll(".legend").data(color.domain().slice().reverse()).enter().append("g").attr("class", "legend").attr("transform", function (d, i) {
-			return "translate(" + i * -70 + ",283)";
+			return "translate(" + i * -70 + ",570)";
 		});
 
 
