@@ -4,6 +4,7 @@ var schedule = require('node-schedule'),
 	Purchase = require('../models/purchase'),
 	PurchaseService = require('./services/service_purchase'),
 	RecommenderService = require('./services/service_recommender_server'),
+	RouteService = require('./services/service_routes'),
 	log = require('../logger');
 
 exports.scheduleAutomaticPurchases = function() {
@@ -73,27 +74,11 @@ exports.scheduleAssociationRules = function() {
 exports.scheduleRoutes = function() {
 	var autoRoute = schedule.scheduleJob({hour: 1, minute: 0}, function(){
 		//Every day at 01:00AM
-		var today = new Date();
-		var start = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-		var end = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-		end.setHours(23,59,59,999);
-
-		Purchases.find({
-			"deliveryDate": {"$gte": start, "$lte": end}
-		}).exec(function (err, purchases) {
-			if (err) {
+		RouteService.todayRoutePlanification(function (err, response) {
+			if (err){
 				log.info('Error executing automatic route planification. Error %s', err);
-			} else {
-				PurchaseService.todayRoutePlanification(purchases, function (err, response) {
-					if (err){
-						log.info('Error executing automatic route planification. Error %s', err);
-					}
-				});
 			}
-			console.log("Finished");
 		});
-
 	});
-
 	console.log("Automatic route planification successfuly scheduled")
-};
+}
