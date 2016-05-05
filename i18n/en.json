@@ -467,7 +467,7 @@
 		"TimeWindows" : {
 			"BOTH" : "BOTH",
 			"MORNING" : "MORNING (9-14AM)",
-			"AFTERNOON" : "AFTERNOON (15-22PM)"
+			"AFTERNOON" : "AFTERNOON (14-22PM)"
 		},
 		"Profile" : "Profile",
 		"Manage" : "Manage",

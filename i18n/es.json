@@ -468,7 +468,7 @@
 		"TimeWindows" : {
 			"BOTH" : "AMBOS",
 			"MORNING" : "MAÑANA (9-14AM)",
-			"AFTERNOON" : "TARDE (15-22PM)"
+			"AFTERNOON" : "TARDE (14-22PM)"
 		},
 		"Profile" : "Perfil",
 		"Manage" : "Administrar",
