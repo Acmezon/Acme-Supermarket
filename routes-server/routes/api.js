@@ -5,11 +5,13 @@ var exec = require('child_process').exec, child;
 exports.calculateRoute = function(req, res) {
 	console.log("Api-CalculateRoute.");
 	exec_py(function (error, stdout, stderr) {
-			if(error) {
-				res.sendStatus(500);
-			} else {
-				res.sendStatus(200);
-			}
+		console.log(stdout)
+		if(error) {
+			console.log("Error: \n" + stderr)
+			res.sendStatus(500);
+		} else {
+			res.sendStatus(200);
+		}
 	});
 }
 

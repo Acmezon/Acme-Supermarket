@@ -18,7 +18,12 @@
 	</div>
 	<div class="row">
 		<div class="col-md-8 col-md-offset-2">
-			<table class="table table-bordered table-hover">
+			<div ng-if="!route.length" class="panel panel-info">
+				<div class="panel-body">
+					<p>{{'Purchases.NoRoutes' | translate}}</p>
+				</div>
+			</div>
+			<table ng-if="route.length" class="table table-bordered table-hover">
 				<colgroup>
 					<col width="11%" />
 					<col />

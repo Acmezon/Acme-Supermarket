@@ -8,7 +8,6 @@ from exact.read_file import from_google_maps, lopez_ibanez_blum_format
 from exact.Dumas import Dumas
 from datetime import date, datetime, timedelta
 from pymongo import MongoClient
-from maps.acme_database import today_customers, today_purchases
 from maps.matrices import get_matrices
 
 def run_acmesupermarket(today_purchases, today_customers):
@@ -24,7 +23,7 @@ def run_acmesupermarket(today_purchases, today_customers):
 		'year': today.year
 	}
 
-	if len(today_customers):
+	if len(today_customers)>1:
    
 		data = get_matrices(customers_coords)
 		time_matrix = data[0]
@@ -44,7 +43,7 @@ def run_acmesupermarket(today_purchases, today_customers):
 			else:
 				deleted_customer = today_customers[-1]
 				today_customers = np.delete(today_customers,-1)
-				tomorrow = datetime.date.today() + datetime.timedelta(days=1)
+				tomorrow = date.today() + timedelta(days=1)
 				for purchase in today_purchases:
 					if purchase['customer_id']==deleted_customer['id']:
 						result = db.purchases.update_one(
@@ -53,10 +52,9 @@ def run_acmesupermarket(today_purchases, today_customers):
 						)
 
 		result_customers = []
+		print(sol.vertices)
 		for vertex in sol.vertices:
-			if vertex.label!='start' and vertex.label!='end':
-				result_customers.append(-1)
-			elif vertex.label=='end':
+			if vertex.label=='start' or vertex.label=='end':
 				result_customers.append(-1)
 			else:
 				result_customers.append(int(vertex.label))

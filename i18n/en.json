@@ -468,7 +468,7 @@
 		},
 		"TimeWindows" : {
 			"BOTH" : "BOTH",
-			"MORNING" : "MORNING (9-14AM)",
+			"MORNING" : "MORNING (8-14AM)",
 			"AFTERNOON" : "AFTERNOON (14-22PM)"
 		},
 		"Profile" : "Profile",
@@ -604,6 +604,7 @@
 		"PaymentDate" : "Payment date",
 		"DeliveryDate" : "Delivery date",
 		"DeliveryTime" : "Delivery time",
+		"NoRoutes" : "No delivery today",
 		"Details" : "Details",
 		"Empty" : "No purchases in the system.",
 		"Number" : "purchases in the system.",

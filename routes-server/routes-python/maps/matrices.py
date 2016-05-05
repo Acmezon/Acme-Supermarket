@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import maps.apikey as api
 import googlemaps
 import math
 import numpy as np
@@ -7,14 +8,7 @@ import time
 
 def get_matrices(coords):
 
-    apikey = ""
-    if not os.path.isfile('apikey.txt'):
-        raise ValueError('ApiKey Document must be present')
-    else:
-        with open('apikey.txt', 'r') as f:
-            apikey = f.read()
-
-    gmaps = googlemaps.Client(key=apikey)
+    gmaps = googlemaps.Client(key=api.key)
     
     coords = np.array(coords)    
     

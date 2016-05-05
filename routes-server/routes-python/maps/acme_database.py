@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import math
+import random
 import numpy as np
 
 from datetime import datetime, timedelta
@@ -24,7 +26,9 @@ def today_purchases():
     end = start + timedelta(days=1)
 
     purchases = []
-    for doc in db.purchases.find({'deliveryTime': {'$gte': start, '$lt': end}}):
+    #db.purchases.find({'deliveryDate': {'$gte': start, '$lt': end}})
+    #db.purchases.find().sort({'deliveryDate':1}).limit(10)
+    for doc in db.purchases.find().sort('deliveryDate',1).limit(10):
         purchases.append(doc)
 
     return purchases
@@ -40,8 +44,8 @@ def get_customers(ids):
             customer = {
                 '_id' : id,
                 'coordinates': "37.358380;-5.988009",
-                'window_start': 0*60*60,
-                'window_end': 24*60*60
+                'window_start': 0,
+                'window_end': 24*60*60-1
             }
         else:
             customer = db.actors.find({'_id': id})[0]

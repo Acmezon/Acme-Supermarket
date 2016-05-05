@@ -9,8 +9,6 @@ angular.module('acme_supermarket').registerCtrl('TodayRoutesCtrl', ['$scope', '$
 	then(function success(response) {
 		$scope.date = response.data['date']
 		$scope.route = response.data['route']
-
-	}, function error(response) {
-		// mensaje chungo
 	});
+	
 }]);	

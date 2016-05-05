@@ -469,7 +469,7 @@
 		},
 		"TimeWindows" : {
 			"BOTH" : "AMBOS",
-			"MORNING" : "MAÑANA (9-14AM)",
+			"MORNING" : "MAÑANA (8-14AM)",
 			"AFTERNOON" : "TARDE (14-22PM)"
 		},
 		"Profile" : "Perfil",
@@ -605,6 +605,7 @@
 		"PaymentDate" : "Fecha de pago",
 		"DeliveryDate" : "Fecha de entrega",
 		"DeliveryTime" : "Hora de entrega",
+		"NoRoutes" : "No hay repartos hoy",
 		"Details" : "Detalles",
 		"Empty" : "Ninguna compra en el sistema",
 		"Number" : "compras en el sistema",
