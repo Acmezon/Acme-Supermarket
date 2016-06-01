@@ -1,5 +1,6 @@
 var PurchaseLine = require('../../models/purchase_line'),
-	Purchase = require('../../models/purchase');
+	Purchase = require('../../models/purchase'),
+	async = require('async');
 
 exports.getPurchaseLineByPurchaseId = function(purchase_id, callback) {
 	PurchaseLine.find({purchase_id: purchase_id}, function (err, purchaselines) {
@@ -12,7 +13,7 @@ exports.getPurchaseLineByPurchaseId = function(purchase_id, callback) {
 }
 
 // Returns all historic purchase lines of customer
-exports.getPurchaseLinesByCustomerProduct = function(customer_id, product_id, callback) {
+exports.getPurchaseLinesByCustomerProduct = function (customer_id, product_id, callback) {
 	Purchase.find({customer_id: customer_id})
 	.exec(function (err, purchases) {
 		if (err) {

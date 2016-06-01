@@ -28,7 +28,7 @@
 			<tbody>
 			  	<tr ng-repeat="product in shoppingcart">
 					<td style="width:5%"><span ng-click="remove(product._id)" class="remove-provide glyphicon glyphicon-remove-sign"></span></td>
-					<td style="width:10%"><a href="/product/{{product._id}}"><img class="img-responsive img-thumbnail" src="img/{{product.image}}"/></a></td>
+					<td style="width:10%"><a href="/product/{{product.product_id}}"><img class="img-responsive img-thumbnail" src="img/{{product.image}}"/></a></td>
 					<td>{{product.name}}</td>
 					<td>{{product.supplier}}</td>
 					<td>{{product.code}}</td>

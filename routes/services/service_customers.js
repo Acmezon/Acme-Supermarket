@@ -72,7 +72,7 @@ exports.getPrincipalCustomer = function(cookie, jwtKey, callback) {
 //	1. It does exists in the DB
 //	2. It's a customer
 exports.getCustomerFromCredentials = function(email, password, callback) {
-	Customer.findOne({email: email, password: password, type: 'customer'})
+	Customer.findOne({email: email, password: password, _type: 'Customer'})
 	.exec(function (err, customer) {
 		if (err) {
 			callback(null);

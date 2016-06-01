@@ -5,7 +5,9 @@ var db = require('./db_utils'),
 	customers_api = require('./customers_api'),
 	crypto = require('crypto'),
 	cookieParser = require('cookie-parser'),
-	ActorService = require('./services/service_actors');
+	ActorService = require('./services/service_actors'),
+	RaspberryCartLineService = require('./services/service_raspberry_cart_lines'),
+	RaspberryCartLine = require('../models/raspberry_cart_line');
 
 // Authenticate in the system
 exports.authenticate = function (req, res) {
@@ -43,7 +45,32 @@ exports.authenticate = function (req, res) {
 					maxAge: 365 * 24 * 60 * 60 * 1000
 				});
 
-				res.json({success: true});
+				RaspberryCartLineService.getRaspberryCartLinesFromPrincipal(
+					{token: token}, req.app.get('superSecret'),
+					function (err, raspberryCartLines) {
+						if (raspberryCartLines) {
+							var shoppingcart = {}
+							raspberryCartLines.forEach(function (raspb_line) {
+
+								var key = raspb_line['provide_id']
+								var value = raspb_line['quantity']
+								shoppingcart[key] = value
+								console.log(raspb_line)
+								RaspberryCartLine.remove({_id: raspb_line._id}, function (err){
+									if (err) console.log("Error deleting cart line")
+								});
+							});
+							res.cookie('shoppingcart', 
+								JSON.stringify(shoppingcart), 
+							{
+								maxAge: 365 * 24 * 60 * 60 * 1000
+							});
+							
+						}
+						res.json({success: true});
+					});
+
+				
 			}
 		}
 	});

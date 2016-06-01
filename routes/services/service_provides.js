@@ -1,7 +1,8 @@
 var Provide = require('../../models/provide'),
 	CustomerService = require('./service_customers'),
 	PurchaseLineService = require('./service_purchase_lines'),
-	db_utils = require('../db_utils');
+	db_utils = require('../db_utils'),
+	async = require('async');
 
 // Returns a provide object by id
 exports.getProvideById = function(provide_id, callback) {
