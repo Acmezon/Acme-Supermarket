@@ -228,3 +228,18 @@ function purchase(discountCode, billingMethod, customer_id, provide_list, sessio
 		}
 	});
 }
+
+exports.getPurchasesByCustomer = function(customer_id, callback) {
+	Purchase.find({customer_id: customer_id})
+	.exec(function (err, purchases) {
+		if (err) {
+			callback(null);
+		} else {
+			if (purchases) {
+				callback(purchases);
+			} else {
+				callback([]);
+			}
+		}
+	});
+}

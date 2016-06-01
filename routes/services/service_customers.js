@@ -68,6 +68,20 @@ exports.getPrincipalCustomer = function(cookie, jwtKey, callback) {
 	}
 }
 
+// Returns a customer if
+//	1. It does exists in the DB
+//	2. It's a customer
+exports.getCustomerFromCredentials = function(email, password, callback) {
+	Customer.findOne({email: email, password: password, type: 'customer'})
+	.exec(function (err, customer) {
+		if (err) {
+			callback(null);
+		} else {
+			callback(customer);
+		}
+	});
+}
+
 // Returns true if principal is owner of credit_card_id passed or it is an admin
 exports.checkOwnerOrAdmin = function(cookie, jwtKey, credit_card_id, callback) {
 	if (cookie !== undefined) {

@@ -4,7 +4,8 @@ var Product = require('./product'),
 	Supplier = require('./supplier'),
 	autoIncrement = require('mongoose-auto-increment'),
 	Reputation = require('./reputation'),
-	PurchasingRule = require('./purchasing_rule');
+	PurchasingRule = require('./purchasing_rule'),
+	RaspberryCartLine = require('./raspberry_cart_line');
 
 var provideSchema = mongoose.Schema({
 	price: {type: Number, required:true, min:0},
@@ -30,7 +31,13 @@ provideSchema.pre('remove', function (next, done) {
 				if(err) {
 					done(err);
 				} else {
-					next();
+					RaspberryCartLine.remove( {provide_id: this.id} ).exec(function (err) {
+						if (err) {
+							done(err);
+						} else {
+							next();
+						}
+					})
 				}
 			});
 		}

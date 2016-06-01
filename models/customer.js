@@ -5,7 +5,8 @@ var mongoose = require('mongoose'),
 	CreditCard = require('./credit_card'),
 	PurchasingRule = require('./purchasing_rule'),
 	Reputation = require('./reputation'),
-	Rate = require('./rate');
+	Rate = require('./rate'),
+	RaspberryCartLine = require('./raspberry_cart_line');
 
 var customerSchema = Actor.schema.extend({
 	coordinates: {
@@ -50,7 +51,13 @@ customerSchema.pre('remove', function (next, done) {
 								if (err){
 									done(err);
 								} else {
-									next();
+									RaspberryCartLine.remove( {customer_id: thid.id} ).exec(function (err) {
+										if (err) {
+											done(err);
+										} else {
+											next();
+										}
+									})
 								}
 							})
 						}

@@ -222,3 +222,15 @@ function filterProducts(ordering_sort,
 		callback(err, res);
 	});
 }
+
+// Returns a product with barcode
+exports.getProductByBarcode = function(barcode, callback) {
+	Product.findOne({ code: barcode})
+	.exec(function (err, product) {
+		if (err) {
+			callback(null)
+		} else {
+			callback(product);
+		}
+	});
+}
