@@ -7,17 +7,79 @@ var RaspberryCartLine = require('../models/raspberry_cart_line'),
 	RaspberryCartLineService = require('./services/service_raspberry_cart_lines'),
 	async = require('async');
 
+exports.saveRaspberryCart = function(req, res){
+	/* PARAMS
+		email
+		password (MD5)
+		products : [{'_id', 'quantity'}]
+	*/
+	console.log('Function-raspberryCartLinesApi-saveRaspberryCart');
+	CustomerService.getCustomerFromCredentials(req.body.email, req.body.password, function (customer) {
+		if (customer) {
+			async.each(JSON.parse(req.body.products), function (product, callback) {
+				ProvideService.getMostFrequentlyPurchased(customer._id, product._id, function (provide) {
+					if (provide) {
+						rasp_line = RaspberryCartLine({
+							provide_id: provide._id,
+							quantity: product.quantity,
+							customer_id: customer._id
+						});
+						RaspberryCartLineService.saveRaspberryCartLine(rasp_line, function (err) {
+							callback();
+						})
+					} else {
+						ProvideService.getCheapestProvideOfProduct(product._id, function (err, provide) {
+							if (err) {
+								callback(err);
+							} else {
+								rasp_line = RaspberryCartLine({
+									provide_id: provide._id,
+									quantity: product.quantity,
+									customer_id: customer._id
+								});
+								RaspberryCartLineService.saveRaspberryCartLine(rasp_line, function (err) {
+									callback();
+								})
+							}
+						});
+					}
+				});
+			}, function (err){
+				if (err) {
+					res.status(500).json({success: false, message: err});
+				} else {
+					res.sendStatus(200)
+				}
+			});
+		} else {
+			res.status(500).json({success: false, message: "Authentication failed"});
+		}
+	});
+}
+
+
 // Save a collection of Raspberry Cart Lines
 exports.saveRaspberryCart = function(req, res) {
 	console.log('Function-raspberryCartLinesApi-saveRaspberryCart');
 	var body = req.body;
 	CustomerService.getCustomerFromCredentials (req.body.email, req.body.password, function(customer) {
 		if (customer) {
-			async.each(JSON.parse(req.body.barcodes), function (barcode, callback) {
-				ProductService.getProductByBarcode(barcode.code, function (product) {
-					if (product){
-						ProvideService.getMostFrequentlyPurchased(customer._id, product._id, function (provide) {
-							if (provide) {
+			async.each(JSON.parse(req.body.product_ids), function (product_id, callback) {
+				ProvideService.getMostFrequentlyPurchased(customer._id, product_id, function (provide) {
+					if (provide) {
+						rasp_line = RaspberryCartLine({
+							provide_id: provide._id,
+							quantity: barcode.quantity,
+							customer_id: customer._id
+						});
+						RaspberryCartLineService.saveRaspberryCartLine(rasp_line, function (err) {
+							callback();
+						})
+					} else {
+						ProvideService.getCheapestProvideOfProduct(product_id, function (err, provide) {
+							if (err) {
+								callback(err);
+							} else {
 								rasp_line = RaspberryCartLine({
 									provide_id: provide._id,
 									quantity: barcode.quantity,
@@ -26,25 +88,8 @@ exports.saveRaspberryCart = function(req, res) {
 								RaspberryCartLineService.saveRaspberryCartLine(rasp_line, function (err) {
 									callback();
 								})
-							} else {
-								ProvideService.getCheapestProvideOfProduct(product._id, function (err, provide) {
-									if (err) {
-										callback(err);
-									} else {
-										rasp_line = RaspberryCartLine({
-											provide_id: provide._id,
-											quantity: barcode.quantity,
-											customer_id: customer._id
-										});
-										RaspberryCartLineService.saveRaspberryCartLine(rasp_line, function (err) {
-											callback();
-										})
-									}
-								});
 							}
 						});
-					} else {
-						callback(500);
 					}
 				});
 			}, function(err) {

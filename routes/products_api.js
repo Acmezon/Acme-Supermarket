@@ -282,36 +282,100 @@ exports.getProduct = function(req, res) {
 	});
 };
 
-// Get a product by its unique barcode
+// Get a product by its unique barcode.
+// Returns 503 if not available
 exports.getProductByCode = function(req, res) {
-	var code = req.params.code;
+	var code = req.params.barcode;
 	console.log('Function-productsApi-getProductByBarcode  --_code:' + code);
 
-	var jwtKey = req.app.get('superSecret');
-	var cookie = req.cookies.session;
-
-	// Check authenticated
-	ActorService.getUserRole(cookie, jwtKey, function(role) {
-		if (role == 'customer' || role == 'admin' || role == 'supplier') {
-			Product.findOne({code: code}, function(err, product) {
-				if (err) {
-					console.log('---ERROR finding Product with barcode: ' + code);
-					res.status(500).json({
-						success: false,
-						message: err
-					});
-				} else {
-					res.status(200).json(product);
-				}
+	Product.findOne({code: code}, function(err, product) {
+		if (err) {
+			console.log('---ERROR finding Product with barcode: ' + code);
+			res.status(500).json({
+				success: false,
+				message: err
 			});
 		} else {
-			res.status(401).json({
-				success: false,
-				message: "Not authenticated"
-			});
+			if (product) {
+				Provide.find({product_id: product._id, deleted: false})
+				.exec(function (err, provides) {
+					if (err) {
+						res.status(500).json({
+							success: false,
+							message: err
+						});
+					} else {
+						if (provides) {
+							res.status(200).json({
+								product: product,
+								available: true
+							});
+						} else {
+							res.status(200).json({
+								product: product,
+								available: false
+							});
+						}
+					}
+				});
+			} else {
+				res.status(200).json({
+					product: null,
+					available: false
+				});
+			}
 		}
 	});
 };
+
+//Get most similar product by text
+// Returns 503 if not available
+exports.getProductByTextSearch = function(req, res) {
+	var name = req.params.name;
+	console.log('Function-productsApi-getProductByTextSearch  --_name:' + name);
+
+	ProductService.getProductsFiltered(
+	'name', 1, 0, 1000, -1, -1, 0, 5, name, false, 
+	function (err, products) {
+		if (err) {
+			console.log('---ERROR finding Product with text search: ' + name);
+			res.status(500).json({
+				success: false,
+				message: err
+			});
+		} else {
+			if (products) {
+				var product = products[0];
+				Provide.find({product_id: product._id, deleted: false})
+				.exec(function (err, provides) {
+					if (err) {
+						res.status(500).json({
+							success: false,
+							message: err
+						});
+					} else {
+						if (provides) {
+							res.status(200).json({
+								product: product,
+								available: true
+							});
+						} else {
+							res.status(200).json({
+								product: product,
+								available: false
+							});
+						}
+					}
+				});
+			} else {
+				res.status(200).json({
+					product: null,
+					available: false
+				});
+			}
+		}
+	});
+}
 
 // Updates a product
 exports.updateProduct = function(req, res) {
