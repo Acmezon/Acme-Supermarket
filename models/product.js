@@ -32,7 +32,15 @@ productSchema.index({
 module.exports = mongoose.model('Product', productSchema);
 
 productSchema.pre('save', function (next, done) {
-	this.keywords = this.name.split(" ");
+	var temp_keywords = this.name.replace(/[.:-@#$%&(){}=*,;]/g, ' ').split(" ")
+	var r_keywords = [];
+	for (var i in temp_keywords) {
+		var keyword = temp_keywords[i];
+		if (isNaN(keyword)){
+			r_keywords.push(keyword);
+		}
+	}
+	this.keywords = r_keywords;
 	next();
 });
 
