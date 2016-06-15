@@ -305,7 +305,7 @@ exports.getProductByCode = function(req, res) {
 							message: err
 						});
 					} else {
-						if (provides) {
+						if (provides.length) {
 							res.status(200).json({
 								product: product,
 								available: true
@@ -344,7 +344,7 @@ exports.getProductByTextSearch = function(req, res) {
 				message: err
 			});
 		} else {
-			if (products) {
+			if (products.length) {
 				var product = products[0];
 				Provide.find({product_id: product._id, deleted: false})
 				.exec(function (err, provides) {
@@ -354,7 +354,7 @@ exports.getProductByTextSearch = function(req, res) {
 							message: err
 						});
 					} else {
-						if (provides) {
+						if (provides.length) {
 							res.status(200).json({
 								product: product,
 								available: true
