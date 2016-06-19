@@ -18,7 +18,8 @@ var app = angular.module('acme_supermarket',
 				'ngToast',
 				'credit-cards',
 				'ngTable',
-				'ngFileUpload'
+				'ngFileUpload',
+				'firebase'
 			]
 	);
 

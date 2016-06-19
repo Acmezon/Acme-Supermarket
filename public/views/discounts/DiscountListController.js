@@ -1,31 +1,21 @@
 'use strict'
 
-angular.module('acme_supermarket').registerCtrl('DiscountListCtrl', ['$scope', '$http', 'ngTableParams', '$route', '$translate', 'ngToast', function ($scope, $http, ngTableParams, $route, $translate, ngToast) {
+angular.module('acme_supermarket').registerCtrl('DiscountListCtrl', ['$scope', '$http', 'ngTableParams', '$route', '$translate', 'ngToast', '$firebaseArray', function ($scope, $http, ngTableParams, $route, $translate, ngToast, $firebaseArray) {
 
-	$scope.discount = {};
+	var database = firebase.database().ref();
 
-	$http({
-		method: 'GET',
-		url: '/api/discounts'
-	}).
-	then(function success(response) {
-		$scope.$data = response.data;
+	var discounts = database.child("discounts");
 
-		$scope.$data.forEach(function (discount) {
-			$http({
-				method: 'GET',
-				url: '/api/discounts/numberproducts/' + discount._id
-			}).
-			then(function success(response) {
-				discount.numberOfProducts = response.data;
-			});
-		});
-		
+	$scope.$data = $firebaseArray(discounts);
+
+	$scope.$data.$loaded(function(data) {
 		$scope.tableParams = new ngTableParams({}, {dataset:$scope.$data});
 
 		$scope.copy = angular.copy($scope.$data);
+	})
+	
 
-	});
+	$scope.discount = {};
 
 	$scope.submit = function () {
 		if(parseInt($scope.discount.value) < 0 || parseInt($scope.discount.value) > 100) {
@@ -46,13 +36,9 @@ angular.module('acme_supermarket').registerCtrl('DiscountListCtrl', ['$scope', '
 					});
 				});
 			} else {
-				$http({
-					method: 'POST',
-					url: '/api/discount/create',
-					data: {
-						code : $scope.discount.code,
-						value: $scope.discount.value
-					}
+				$scope.$data.$add({
+					code : $scope.discount.code,
+					value: $scope.discount.value
 				}).
 				then(function success(response) {
 					$scope.discount = {};
@@ -98,7 +84,7 @@ angular.module('acme_supermarket').registerCtrl('DiscountListCtrl', ['$scope', '
 	$scope.edit = function (originalModel) {
 		// Make a copy of discount being edited
 		for (var i = 0; i < $scope.copy.length; i++) {
-			if ($scope.copy[i]._id == originalModel._id) {
+			if ($scope.copy[i].$id == originalModel.$id) {
 				originalModel.isEditing = true;
 				$scope.copy[i] = angular.copy(originalModel);
 				break;
@@ -110,7 +96,7 @@ angular.module('acme_supermarket').registerCtrl('DiscountListCtrl', ['$scope', '
 		var hasChanged = false;
 
 		for (var i = 0; i < $scope.copy.length; i++) {
-			if ($scope.copy[i]._id == discount._id) {
+			if ($scope.copy[i].$id == discount.$id) {
 				hasChanged = $scope.copy[i].value != discount.value;
 				break;
 			}
@@ -127,30 +113,21 @@ angular.module('acme_supermarket').registerCtrl('DiscountListCtrl', ['$scope', '
 					});
 				});
 			} else {
-				$http.post('/api/discount',
-				{
-					discount_id: discount._id,
-					value : discount.value
-				}
-				).
-				then(function success(response) {
-					// Make a copy
-					for (var i = 0; i < $scope.copy.length; i++) {
-						if ($scope.copy[i]._id == discount._id) {
-							discount.isEditing = false;
-							$scope.copy[i] = angular.copy(discount);
-							form.$setPristine();
-							break;
+				delete discount.isEditing
+
+				$scope.$data.$save(discount)
+				.then(function (ref) {
+					if(ref.key == discount.$id) {
+						// Make a copy
+						for (var i = 0; i < $scope.copy.length; i++) {
+							if ($scope.copy[i].$id == discount.$id) {
+								discount.isEditing = false;
+								$scope.copy[i] = angular.copy(discount);
+								form.$setPristine();
+								break;
+							}
 						}
 					}
-				}, function error(response) {
-					$translate(['Discounts.Error.Server']).then(function (translation) {
-						ngToast.create({
-							className: 'danger',
-							content: translation['Discounts.Error.Server'],
-							timeout: 10000
-						});
-					});
 				});
 			}
 		}
@@ -172,17 +149,22 @@ angular.module('acme_supermarket').registerCtrl('DiscountListCtrl', ['$scope', '
 	};
 
 	$scope.delete = function(discount) {
+		$scope.$data.$remove(discount).then(function (ref){
+			if(ref.key == discount.$id) {
+				var i = $scope.$data.indexOf(discount)
+				if(i != -1) {
+					$scope.$data.splice(i, 1);
+					$scope.copy.splice(i, 1);
+				}
+				$scope.tableParams.reload()
+			}
+		})
 		$http({ url: '/api/discount', 
 			method: 'DELETE', 
 			data: {id: discount._id}, 
 			headers: {"Content-Type": "application/json;charset=utf-8"}
 		}).then(function(res) {
-			var i = $scope.$data.indexOf(discount)
-			if(i != -1) {
-				$scope.$data.splice(i, 1);
-				$scope.copy.splice(i, 1);
-			}
-			$scope.tableParams.reload()
+			
 		}, function(error) {
 			console.log(error);
 		});

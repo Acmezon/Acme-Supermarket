@@ -15,10 +15,6 @@
 	<div ng-if="!$data.length" style="margin-bottom: 3%">
 		<h4 class="title">{{'Discounts.Empty.Title' | translate}}</h4>
 		<p>{{'Discounts.Empty.Description' | translate}}</p>
-	</div>
-
-	<div ng-if="$data.length" style="margin-bottom: 3%">
-
 		<div class="panel panel-default">
 			<div class="panel-heading" role="tab" id="create-discount-heading">
 				<a role="button" data-toggle="collapse" data-target="#create-discount" aria-expanded="true" aria-controls="create-discount">
@@ -59,7 +55,9 @@
 				</div>
 			</div>
 		</div>
+	</div>
 
+	<div ng-if="$data.length" style="margin-bottom: 3%">
 		<div class="row">
 			<div class="col-md-5 col-md-offset-3">
 				<p>
@@ -88,9 +86,9 @@
 							</div>
 						</td>
 
-						<td title="'Discounts.ProductsNumber' | translate" filter="{ numberOfProducts: 'text'}" sortable="'numberOfProducts'">
+						<!--<td title="'Discounts.ProductsNumber' | translate" filter="{ numberOfProducts: 'text'}" sortable="'numberOfProducts'">
 		            		{{discount.numberOfProducts}}
-		            	</td>
+		            	</td>-->
 
 						
 						<td>

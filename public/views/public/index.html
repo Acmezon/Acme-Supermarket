@@ -19,6 +19,8 @@
 
     <script src="js/lib/jquery.js"></script>
     <script src="js/lib/template_bootstrap/jquery-ui.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/3.0.3/firebase.js"></script>
+
     
 	<!-- Font awesome -->
 	<link rel="stylesheet" href="css/font-awesome.css" type="text/css">
@@ -66,6 +68,7 @@
 	<script src="js/lib/angular/angular-credit-cards.js"></script>
 	<script src="js/lib/angular/ng-file-upload.js"></script>
 	<script src="js/lib/angular/ng-file-upload-shim.js"></script>
+	<script src="https://cdn.firebase.com/libs/angularfire/2.0.1/angularfire.min.js"></script>
 	<script src="js/lib/bootstrap-editable.js"></script>
 	<script src="js/lib/dropzone.js"></script>
 	<script src="js/lib/ng-table.min.js"></script>
@@ -80,6 +83,17 @@
 	<script src="js/lib/nv.d3.min.js"></script>
 	<link rel="stylesheet" href="css/nv.d3.css" type="text/css">
 	
+</script>
+
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBBsSYglgIDvUkP1ODaoLX8X_xpWRV230c",
+    authDomain: "acme-supermarket.firebaseapp.com",
+    databaseURL: "https://acme-supermarket.firebaseio.com",
+    storageBucket: "acme-supermarket.appspot.com",
+  };
+  firebase.initializeApp(config);
 </script>
 
 <!-- Begin Cookie Consent plugin by Silktide - http://silktide.com/cookieconsent -->
