@@ -46,12 +46,19 @@ exports.saveRaspberryCart = function(req, res){
 				});
 			}, function (err){
 				if (err) {
+					console.log("Error 1")
+					console.log(err)
 					res.status(500).json({success: false, message: err});
 				} else {
 					res.sendStatus(200)
 				}
 			});
 		} else {
+			console.log("Error 2")
+			console.log("Email: " + req.body.email)
+			console.log("password: " + req.body.password)
+			console.log("Customer:" + customer);
+
 			res.status(500).json({success: false, message: "Authentication failed"});
 		}
 	});
