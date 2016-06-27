@@ -13,12 +13,10 @@ exports.saveRaspberryCart = function(req, res){
 		password (MD5)
 		products : [{'_id', 'quantity'}]
 	*/
-	console.log(req.body)
 	console.log('Function-raspberryCartLinesApi-saveRaspberryCart');
-	var products = JSON.parse(req.body.products)
 	CustomerService.getCustomerFromCredentials(req.body.email, req.body.password, function (customer) {
 		if (customer) {
-			async.each(JSON.parse(products), function (product, callback) {
+			async.each(JSON.parse(req.body.products), function (product, callback) {
 				ProvideService.getMostFrequentlyPurchased(customer._id, product.product._id, function (provide) {
 					if (provide) {
 						rasp_line = RaspberryCartLine({
@@ -27,7 +25,7 @@ exports.saveRaspberryCart = function(req, res){
 							customer_id: customer._id
 						});
 						RaspberryCartLineService.saveRaspberryCartLine(rasp_line, function (err) {
-							callback();
+							callback(err);
 						})
 					} else {
 						ProvideService.getCheapestProvideOfProduct(product._id, function (err, provide) {
@@ -41,7 +39,7 @@ exports.saveRaspberryCart = function(req, res){
 										customer_id: customer._id
 									});
 									RaspberryCartLineService.saveRaspberryCartLine(rasp_line, function (err) {
-										callback();
+										callback(err);
 									})
 								} else {
 									callback("0 provides of product ID " + product.product._id);
@@ -52,19 +50,12 @@ exports.saveRaspberryCart = function(req, res){
 				});
 			}, function (err){
 				if (err) {
-					console.log("Error 1")
-					console.log(err)
 					res.status(500).json({success: false, message: err});
 				} else {
 					res.sendStatus(200)
 				}
 			});
 		} else {
-			console.log("Error 2")
-			console.log("Email: " + req.body.email)
-			console.log("password: " + req.body.password)
-			console.log("Customer:" + customer);
-
 			res.status(500).json({success: false, message: "Authentication failed"});
 		}
 	});
