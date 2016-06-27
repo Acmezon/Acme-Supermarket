@@ -15,9 +15,10 @@ exports.saveRaspberryCart = function(req, res){
 	*/
 	console.log(req.body)
 	console.log('Function-raspberryCartLinesApi-saveRaspberryCart');
+	var products = JSON.parse(req.body.products)
 	CustomerService.getCustomerFromCredentials(req.body.email, req.body.password, function (customer) {
 		if (customer) {
-			async.each(JSON.parse(req.body.products), function (product, callback) {
+			async.each(JSON.parse(products), function (product, callback) {
 				ProvideService.getMostFrequentlyPurchased(customer._id, product.product._id, function (provide) {
 					if (provide) {
 						rasp_line = RaspberryCartLine({
