@@ -13,6 +13,7 @@ exports.saveRaspberryCart = function(req, res){
 		password (MD5)
 		products : [{'_id', 'quantity'}]
 	*/
+	console.log(req.body)
 	console.log('Function-raspberryCartLinesApi-saveRaspberryCart');
 	CustomerService.getCustomerFromCredentials(req.body.email, req.body.password, function (customer) {
 		if (customer) {
