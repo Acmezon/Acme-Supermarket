@@ -22,7 +22,7 @@ var getProvidesPurchasedByCustomerProduct = function (customer_id, product_id, c
 	PurchaseLineService.getPurchaseLinesByCustomerProduct(customer_id, product_id, function (purchase_lines) {
 		if (purchase_lines) {
 			async.each(purchase_lines, function(purchase_line, _callback) {
-				Provide.find(purchase_line.provide_id)
+				Provide.findById(purchase_line.provide_id)
 				.exec(function (err, provide) {
 					if (err) {
 						_callback(500);
@@ -52,8 +52,19 @@ exports.getProvidesPurchasedByCustomerProduct = getProvidesPurchasedByCustomerPr
 var getMostFrequentlyPurchased = function(customer_id, product_id, callback) {
 	getProvidesPurchasedByCustomerProduct(customer_id, product_id, function (provides) {
 		if (provides) {
-			var provide = db_utils.sortByFrequency(provides).reverse()[0];
-			callback(provide);
+			var provide_id = db_utils.sortByFrequency(provides).reverse()[0];
+			Provide.findById(provide_id)
+			.exec(function (err, provide) {
+				if (err) {
+					callback(null);
+				} else {
+					if (provide) {
+						callback(provide);
+					} else {
+						callback(null);
+					}
+				}
+			});
 		} else {
 			callback(null);
 		}
