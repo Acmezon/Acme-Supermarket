@@ -37,13 +37,13 @@ exports.saveRaspberryCartLine = function (new_rasp_cart_line, callback) {
 	RaspberryCartLine.findOne({provide_id: new_rasp_cart_line.provide_id, customer_id: new_rasp_cart_line.customer_id})
 	.exec (function (err, raspberry_cart_line) {
 		if (err) {
-			callback(500);
+			callback("Error finding a raspberry cart line");
 		} else {
 			if (raspberry_cart_line) {
 				raspberry_cart_line.quantity += new_rasp_cart_line.quantity;
 				raspberry_cart_line.save(function (err) {
 					if (err) {
-						callback(500)
+						callback(err)
 					} else {
 						callback();
 					}
@@ -51,7 +51,7 @@ exports.saveRaspberryCartLine = function (new_rasp_cart_line, callback) {
 			} else {
 				new_rasp_cart_line.save(function (err) {
 					if (err) {
-						callback(500)
+						callback(err)
 					} else {
 						callback();
 					}
