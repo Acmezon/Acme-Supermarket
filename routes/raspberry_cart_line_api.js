@@ -28,7 +28,7 @@ exports.saveRaspberryCart = function(req, res){
 							callback(err);
 						})
 					} else {
-						ProvideService.getCheapestProvideOfProduct(product._id, function (err, provide) {
+						ProvideService.getCheapestProvideOfProduct(product.product._id, function (err, provide) {
 							if (err) {
 								callback(err);
 							} else {
@@ -50,6 +50,7 @@ exports.saveRaspberryCart = function(req, res){
 				});
 			}, function (err){
 				if (err) {
+					console.log(err);
 					res.status(500).json({success: false, message: err});
 				} else {
 					res.sendStatus(200)
