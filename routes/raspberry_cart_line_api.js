@@ -17,7 +17,7 @@ exports.saveRaspberryCart = function(req, res){
 	CustomerService.getCustomerFromCredentials(req.body.email, req.body.password, function (customer) {
 		if (customer) {
 			async.each(JSON.parse(req.body.products), function (product, callback) {
-				ProvideService.getMostFrequentlyPurchased(customer._id, product._id, function (provide) {
+				ProvideService.getMostFrequentlyPurchased(customer._id, product.product._id, function (provide) {
 					if (provide) {
 						rasp_line = RaspberryCartLine({
 							provide_id: provide._id,
@@ -32,14 +32,18 @@ exports.saveRaspberryCart = function(req, res){
 							if (err) {
 								callback(err);
 							} else {
-								rasp_line = RaspberryCartLine({
-									provide_id: provide._id,
-									quantity: product.quantity,
-									customer_id: customer._id
-								});
-								RaspberryCartLineService.saveRaspberryCartLine(rasp_line, function (err) {
-									callback();
-								})
+								if (provide) {
+									rasp_line = RaspberryCartLine({
+										provide_id: provide._id,
+										quantity: product.quantity,
+										customer_id: customer._id
+									});
+									RaspberryCartLineService.saveRaspberryCartLine(rasp_line, function (err) {
+										callback();
+									})
+								} else {
+									callback("0 provides of product ID " + product.product._id);
+								}
 							}
 						});
 					}
