@@ -17,7 +17,7 @@ exports.saveRaspberryCart = function(req, res){
 	CustomerService.getCustomerFromCredentials(req.body.email, req.body.password, function (customer) {
 		if (customer) {
 			async.each(JSON.parse(req.body.products), function (product, callback) {
-				ProvideService.getMostFrequentlyPurchased(customer._id, product.product._id, function (provide) {
+				ProvideService.getMostFrequentlyPurchased(customer._id, product._id, function (provide) {
 					if (provide) {
 						rasp_line = RaspberryCartLine({
 							provide_id: provide._id,
@@ -28,7 +28,7 @@ exports.saveRaspberryCart = function(req, res){
 							callback(err);
 						})
 					} else {
-						ProvideService.getCheapestProvideOfProduct(product.product._id, function (provide) {
+						ProvideService.getCheapestProvideOfProduct(product._id, function (provide) {
 							if (provide) {
 								rasp_line = RaspberryCartLine({
 									provide_id: provide._id,
@@ -39,7 +39,7 @@ exports.saveRaspberryCart = function(req, res){
 									callback(err);
 								})
 							} else {
-								console.log("No provides for product " + product.product._id + " : " + product.product.name);
+								console.log("No provides for product " + product._id + " : " + product.name);
 								callback("error2");
 							}
 						});
