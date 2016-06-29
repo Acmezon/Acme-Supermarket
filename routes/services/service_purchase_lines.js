@@ -17,7 +17,7 @@ exports.getPurchaseLinesByCustomerProduct = function (customer_id, product_id, c
 	Purchase.find({customer_id: customer_id})
 	.exec(function (err, purchases) {
 		if (err) {
-			callback(null)
+			callback(z)
 		} else {
 			var purchase_lines = [];
 			async.each(purchases, function (purchase, _callback) {

@@ -28,30 +28,32 @@ exports.saveRaspberryCart = function(req, res){
 							callback(err);
 						})
 					} else {
-						ProvideService.getCheapestProvideOfProduct(product.product._id, function (err, provide) {
-							if (err) {
-								callback(err);
+						ProvideService.getCheapestProvideOfProduct(product.product._id, function (provide) {
+							if (provide) {
+								rasp_line = RaspberryCartLine({
+									provide_id: provide._id,
+									quantity: product.quantity,
+									customer_id: customer._id
+								});
+								RaspberryCartLineService.saveRaspberryCartLine(rasp_line, function (err) {
+									callback(err);
+								})
 							} else {
-								if (provide) {
-									rasp_line = RaspberryCartLine({
-										provide_id: provide._id,
-										quantity: product.quantity,
-										customer_id: customer._id
-									});
-									RaspberryCartLineService.saveRaspberryCartLine(rasp_line, function (err) {
-										callback(err);
-									})
-								} else {
-									callback("0 provides of product ID " + product.product._id);
-								}
+								console.log("No provides for product " + product.product._id + " : " + product.product.name);
+								callback("error2");
 							}
 						});
 					}
 				});
 			}, function (err){
 				if (err) {
-					console.log(err);
-					res.status(500).json({success: false, message: err});
+					if (error=="error1") {
+						res.status(500).json({success: false, message: "Internal Server Error"});
+					} else if(error=="error2") {
+						res.status(500).json({success: false, message: "Some product not available"})
+					} else {
+						res.status(500).json({success: false, message: "Internal Server Error"});
+					}
 				} else {
 					res.sendStatus(200)
 				}

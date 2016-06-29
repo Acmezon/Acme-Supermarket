@@ -77,12 +77,12 @@ var getCheapestProvideOfProduct = function(product_id, callback) {
 	Provide.find({product_id: product_id, deleted: false}).sort({price: 1}).limit(1)
 	.exec(function (err, provides) {
 		if (err) {
-			callback(500, null);
+			callback(null);
 		} else {
 			if (provides) {
-				callback(null, provides[0])
+				callback(provides[0])
 			} else {
-				callback(null, null)
+				callback(null)
 			}
 		}
 	});
@@ -109,11 +109,11 @@ exports.getPreferedProvide = function(customer, product_id, callback) {
 				}
 			});
 		} else {
-			getCheapestProvideOfProduct(product_id, function(err, provide) {
-				if (err) {
-					callback(null);
-				} else {
+			getCheapestProvideOfProduct(product_id, function(provide) {
+				if (provide) {
 					callback(provide);
+				} else {
+					callback(null);
 				}
 			});
 		}
